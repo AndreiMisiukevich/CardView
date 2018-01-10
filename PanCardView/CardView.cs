@@ -13,16 +13,31 @@ namespace PanCardView
         private const double MoveDistance = 100;
         private const double NextViewScale = 0.8;
 
+        public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
+            var view = bindable as CardView;
+            view.SetCurrentView();
+        });
+
         public readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList<object>), typeof(CardView), null, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable as CardView;
             view.SetCurrentView();
         });
 
+        public readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardView), null, propertyChanged: (bindable, oldValue, newValue) => {
+            var view = bindable as CardView;
+            view.InitView();
+        });
+
         private View _currentView;
         private View _nextView;
-        private int _currentIndex;
 
         private double _currentDiff;
+
+        public int CurrentIndex 
+        {
+            get => (int)GetValue(CurrentIndexProperty);
+            set => SetValue(CurrentIndexProperty, value);
+        }
 
         public IList<object> Items 
         {
@@ -30,19 +45,17 @@ namespace PanCardView
             set => SetValue(ItemsProperty, value);
         }
 
-        public CardView(Func<View> viewFactory)
+        public DataTemplate ItemTemplate 
         {
-            AddPanGesture(_currentView = viewFactory.Invoke());
-            AddPanGesture(_nextView = viewFactory.Invoke());
-
-            Children.Add(_currentView);
+            get => GetValue(ItemTemplateProperty) as DataTemplate;
+            set => SetValue(ItemTemplateProperty, value);
         }
 
         private void SetCurrentView()
         {
-            if (Items != null && _currentIndex < Items.Count)
+            if (Items != null && _currentView != null && CurrentIndex < Items.Count)
             {
-                _currentView.BindingContext = Items[_currentIndex];
+                _currentView.BindingContext = Items[CurrentIndex];
             }
         }
 
@@ -86,8 +99,8 @@ namespace PanCardView
         private void HandleTouch(double diff)
         {
             var ind = diff > 0 
-                ? _currentIndex - 1 
-                : _currentIndex + 1;
+                ? CurrentIndex - 1 
+                : CurrentIndex + 1;
             
             if(ind < 0 || ind >= Items.Count)
             {
@@ -109,21 +122,35 @@ namespace PanCardView
             var absDiff = Math.Abs(_currentDiff);
             if(absDiff > MoveDistance)
             {
-                InitView(_nextView);
+                ResetView(_nextView);
                 SwapViews();
-                _currentIndex -= Math.Sign(_currentDiff);
+                CurrentIndex -= Math.Sign(_currentDiff);
             }
             else
             {
-                InitView(_currentView);
+                ResetView(_currentView);
             }
             _currentDiff = 0;
             Children.Remove(_nextView);
 
-            InitView(_nextView);
+            ResetView(_nextView);
         }
 
-        private void InitView(View view)
+        private void InitView()
+        {
+            foreach(var child in Children.ToArray())
+            {
+                Children.Remove(child);
+                child.GestureRecognizers.Clear();
+            }
+            AddPanGesture(_currentView = ItemTemplate.CreateContent() as View);
+            AddPanGesture(_nextView = ItemTemplate.CreateContent() as View);
+            Children.Add(_currentView);
+
+            SetCurrentView();
+        }
+
+        private void ResetView(View view)
         {
             view.TranslationX = 0;
             view.Rotation = 0;

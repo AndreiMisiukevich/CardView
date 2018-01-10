@@ -14,12 +14,7 @@ namespace PanCardViewSample
             var content = new ContentPage
             {
                 Title = "PanCardViewSample",
-                Content = new CardView(() =>
-                {
-                    var view = new ContentView();
-                    view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
-                    return view;
-                })
+                Content = new CardView
                 {
                     Items = new List<object> 
                     { 
@@ -28,7 +23,14 @@ namespace PanCardViewSample
                         new { Color = Color.Green },
                         new { Color = Color.Blue },
                         new { Color = Color.Black }
-                    }
+                    },
+
+                    ItemTemplate = new DataTemplate(() =>
+                    {
+                        var view = new ContentView();
+                        view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
+                        return view;
+                    })
                 }
             };
 
