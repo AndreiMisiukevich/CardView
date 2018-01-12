@@ -14,7 +14,7 @@ namespace PanCardViewSample
             var content = new ContentPage
             {
                 Title = "PanCardViewSample",
-                Content = new CardView
+                Content = new CardsView
                 {
                     Items = new List<object> 
                     { 
@@ -37,15 +37,10 @@ namespace PanCardViewSample
     {
         private readonly CardViewFactoryRule _rule = new CardViewFactoryRule
         {
-            //Creator = () =>
-            //{
-            //    var view = new ContentView();
-            //    view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
-            //    return view;
-            //}
             Creator = () =>
             {
-                var view = new Image() { Source = "icon" };
+                var view = new CardItemView();
+                view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
                 return view;
             }
         };

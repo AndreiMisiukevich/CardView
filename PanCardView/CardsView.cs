@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace PanCardView
 {
-    public class CardView : AbsoluteLayout
+    public class CardsView : AbsoluteLayout
     {
         private const double Rad = 57.2957795;
         private const int AnimationLength = 150;
 
-        public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
+        public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
             if(view.ShouldIgnoreSetCurrentView)
             {
@@ -22,24 +22,24 @@ namespace PanCardView
             view.SetCurrentView();
         });
 
-        public readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList<object>), typeof(CardView), null, propertyChanged: (bindable, oldValue, newValue) => {
+        public readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList<object>), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetItemsCount();
             bindable.AsCardView().SetCurrentView();
         });
 
-        public readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardView), null, propertyChanged: (bindable, oldValue, newValue) => {
+        public readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().InitView();
         });
 
-        public readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardView), 100.0);
+        public readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), 100.0);
 
-        public readonly BindableProperty NextViewScaleProperty = BindableProperty.Create(nameof(NextViewScale), typeof(double), typeof(CardView), 0.8);
+        public readonly BindableProperty NextViewScaleProperty = BindableProperty.Create(nameof(NextViewScale), typeof(double), typeof(CardsView), 0.8);
 
-        private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
-        private View _currentView;
-        private View _nextView;
-        private View _prevView;
-        private View _currentBackView;
+        private readonly Dictionary<CardViewFactoryRule, List<CardItemView>> _viewsPool = new Dictionary<CardViewFactoryRule, List<CardItemView>>();
+        private CardItemView _currentView;
+        private CardItemView _nextView;
+        private CardItemView _prevView;
+        private CardItemView _currentBackView;
 
         private int _itemsCount;
         private double _currentDiff;
@@ -76,28 +76,9 @@ namespace PanCardView
             set => SetValue(NextViewScaleProperty, value);
         }
 
-        private void SetCurrentView()
+        public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            if (Items != null && CurrentIndex < _itemsCount)
-            {
-                _currentView = GetView(CurrentIndex, _currentView);
-            }
-        }
-
-        private void AddPanGesture(View view)
-        {
-            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
-            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
-
-            RemovePanGesture(view);
-            var panGesture = new PanGestureRecognizer();
-            panGesture.PanUpdated += OnPanUpdated;
-            view.GestureRecognizers.Add(panGesture);
-        }
-
-        private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
-        {
-            if(Items == null || !Items.Any())
+            if (Items == null || !Items.Any())
             {
                 return;
             }
@@ -115,6 +96,29 @@ namespace PanCardView
                 case GestureStatus.Completed:
                     HandleTouchEnd();
                     break;
+            }
+        }
+
+        private void SetCurrentView()
+        {
+            if (Items != null && CurrentIndex < _itemsCount)
+            {
+                _currentView = GetView(CurrentIndex, _currentView);
+            }
+        }
+
+        private void AddPanGesture(CardItemView view)
+        {
+            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
+            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+
+            RemovePanGesture(view);
+
+            if (Device.RuntimePlatform != Device.Android)
+            {
+                var panGesture = new PanGestureRecognizer();
+                panGesture.PanUpdated += OnPanUpdated;
+                view.GestureRecognizers.Add(panGesture);
             }
         }
 
@@ -140,7 +144,7 @@ namespace PanCardView
         private void HandleTouch(double diff)
         {
 
-            View invisibleView;
+            CardItemView invisibleView;
             if(diff > 0)
             {
                 _currentBackView = _prevView;
@@ -210,7 +214,7 @@ namespace PanCardView
             SetCurrentView();
         }
 
-        private void ResetView(View view)
+        private void ResetView(CardItemView view)
         {
             view.TranslationX = 0;
             view.Rotation = 0;
@@ -226,7 +230,7 @@ namespace PanCardView
             _prevView = null;
         }
 
-        private View GetView(int index, View oldView, bool isVisible = true, double scale = 1)
+        private CardItemView GetView(int index, CardItemView oldView, bool isVisible = true, double scale = 1)
         {
             if(index < 0 || index >= _itemsCount)
             {
@@ -241,10 +245,10 @@ namespace PanCardView
                 return null;
             }
 
-            List<View> viewsList;
+            List<CardItemView> viewsList;
             if (!_viewsPool.TryGetValue(rule, out viewsList))
             {
-                viewsList = new List<View> 
+                viewsList = new List<CardItemView> 
                 {
                     rule.Creator.Invoke() 
                 };
@@ -277,7 +281,7 @@ namespace PanCardView
             return view;
         }
 
-        private void SetBackViewLayerPosition(View view)
+        private void SetBackViewLayerPosition(CardItemView view)
         {
             if(view == null)
             {

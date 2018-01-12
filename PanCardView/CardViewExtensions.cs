@@ -5,7 +5,7 @@ namespace PanCardView
 {
     internal static class CardViewExtensions
     {
-        internal static CardView AsCardView(this BindableObject bindable)
-        => bindable as CardView;
+        internal static CardsView AsCardView(this BindableObject bindable)
+        => bindable as CardsView;
     }
 }

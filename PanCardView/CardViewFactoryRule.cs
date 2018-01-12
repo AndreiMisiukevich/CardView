@@ -5,6 +5,6 @@ namespace PanCardView
 {
     public sealed class CardViewFactoryRule
     {
-        public Func<View> Creator { get; set; }
+        public Func<CardItemView> Creator { get; set; }
     }
 }
