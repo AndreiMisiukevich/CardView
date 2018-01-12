@@ -37,10 +37,15 @@ namespace PanCardViewSample
     {
         private readonly CardViewFactoryRule _rule = new CardViewFactoryRule
         {
+            //Creator = () =>
+            //{
+            //    var view = new ContentView();
+            //    view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
+            //    return view;
+            //}
             Creator = () =>
             {
-                var view = new ContentView();
-                view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
+                var view = new Image() { Source = "icon" };
                 return view;
             }
         };
