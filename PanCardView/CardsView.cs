@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System.Diagnostics;
 
 namespace PanCardView
 {
@@ -35,11 +36,13 @@ namespace PanCardView
 
         public readonly BindableProperty NextViewScaleProperty = BindableProperty.Create(nameof(NextViewScale), typeof(double), typeof(CardsView), 0.8);
 
-        private readonly Dictionary<CardViewFactoryRule, List<CardItemView>> _viewsPool = new Dictionary<CardViewFactoryRule, List<CardItemView>>();
-        private CardItemView _currentView;
-        private CardItemView _nextView;
-        private CardItemView _prevView;
-        private CardItemView _currentBackView;
+        private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
+
+        private readonly object _childLocker = new object();
+        private View _currentView;
+        private View _nextView;
+        private View _prevView;
+        private View _currentBackView;
 
         private int _itemsCount;
         private double _currentDiff;
@@ -107,7 +110,7 @@ namespace PanCardView
             }
         }
 
-        private void AddPanGesture(CardItemView view)
+        private void AddPanGesture(View view)
         {
             SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
@@ -124,6 +127,11 @@ namespace PanCardView
 
         private void HandleTouchStart()
         {
+            if(_currentBackView != null)
+            {
+                ViewExtensions.CancelAnimations(_currentBackView);
+            }
+
             var nextIndex = CurrentIndex + 1;
             var prevIndex = CurrentIndex - 1;
 
@@ -135,16 +143,20 @@ namespace PanCardView
 
             SetBackViewLayerPosition(_nextView);
             SetBackViewLayerPosition(_prevView);
-            foreach(var child in Children.Where(c => c.BindingContext == null).ToArray())
+            foreach(var child in Children.Where(ShouldBeRemoved).ToArray())
             {
-                Children.Remove(child);
+                RemoveChild(child);
             }
         }
 
         private void HandleTouch(double diff)
         {
-
-            CardItemView invisibleView;
+            if(Math.Abs(diff) < 2)
+            {
+                return;
+            }
+            Debug.WriteLine(diff);
+            View invisibleView;
             if(diff > 0)
             {
                 _currentBackView = _prevView;
@@ -195,11 +207,11 @@ namespace PanCardView
 
             if (_currentBackView != null)
             {
-                await _currentBackView.FadeTo(0, AnimationLength);
-                _currentBackView.IsVisible = false;
-                _currentBackView.Opacity = 1;
-                _currentBackView.BindingContext = null;
-                ResetView(_currentBackView);
+                var backView = _currentBackView;
+                await backView.FadeTo(0, AnimationLength);
+                backView.IsVisible = false;
+                backView.Opacity = 1;
+                ResetView(backView);
             }
         }
 
@@ -207,17 +219,20 @@ namespace PanCardView
         {
             foreach(var child in Children.ToArray())
             {
-                Children.Remove(child);
+                RemoveChild(child);
                 RemovePanGesture(child);
             }
 
             SetCurrentView();
         }
 
-        private void ResetView(CardItemView view)
+        private void ResetView(View view)
         {
-            view.TranslationX = 0;
-            view.Rotation = 0;
+            if (view != null)
+            {
+                view.TranslationX = 0;
+                view.Rotation = 0;
+            }
         }
 
         private void SwapViews()
@@ -230,7 +245,7 @@ namespace PanCardView
             _prevView = null;
         }
 
-        private CardItemView GetView(int index, CardItemView oldView, bool isVisible = true, double scale = 1)
+        private View GetView(int index, View oldView, bool isVisible = true, double scale = 1)
         {
             if(index < 0 || index >= _itemsCount)
             {
@@ -245,10 +260,10 @@ namespace PanCardView
                 return null;
             }
 
-            List<CardItemView> viewsList;
+            List<View> viewsList;
             if (!_viewsPool.TryGetValue(rule, out viewsList))
             {
-                viewsList = new List<CardItemView> 
+                viewsList = new List<View> 
                 {
                     rule.Creator.Invoke() 
                 };
@@ -270,18 +285,19 @@ namespace PanCardView
 
             if (view != null && !Children.Contains(view))
             {
-                Children.Insert(0, view);
+                AddChild(view, 0);
             }
 
             if (oldView != null && oldView != view)
             {
+                RemoveChild(oldView);
                 oldView.BindingContext = null;
             }
 
             return view;
         }
 
-        private void SetBackViewLayerPosition(CardItemView view)
+        private void SetBackViewLayerPosition(View view)
         {
             if(view == null)
             {
@@ -294,8 +310,8 @@ namespace PanCardView
 
                 if(currentIndex < backIndex)
                 {
-                    Children.Remove(view);
-                    Children.Insert(0, view);
+                    RemoveChild(view);
+                    AddChild(view, 0);
                 }
             }
         }
@@ -318,5 +334,29 @@ namespace PanCardView
         }
 
         private void SetItemsCount() => _itemsCount = Items?.Count ?? -1;
+
+        private void AddChild(View view, int index = -1)
+        {
+            lock (_childLocker)
+            {
+                if (index < 0)
+                {
+                    Children.Add(view);
+                    return;
+                }
+                Children.Insert(index, view);
+            }
+        }
+
+        private void RemoveChild(View view)
+        {
+            lock (_childLocker)
+            {
+                Children.Remove(view);
+            }
+        }
+
+        private bool ShouldBeRemoved(View view)
+        => view != _currentView && view != _nextView && view != _prevView;
     }
 }

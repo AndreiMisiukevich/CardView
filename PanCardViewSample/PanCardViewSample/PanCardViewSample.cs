@@ -39,7 +39,7 @@ namespace PanCardViewSample
         {
             Creator = () =>
             {
-                var view = new CardItemView();
+                var view = new ContentView();
                 view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
                 return view;
             }

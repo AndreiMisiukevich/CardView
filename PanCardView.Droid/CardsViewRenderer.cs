@@ -6,6 +6,7 @@ using Android.Content;
 using PanCardView.Droid;
 using PanCardView;
 using Android.Views;
+using Android.Util;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
@@ -13,6 +14,8 @@ namespace PanCardView.Droid
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
         private bool _panStarted;
+        private float _startX;
+        private float _startY;
 
         public CardsViewRenderer(Context context) : base(context)
         {
@@ -31,39 +34,41 @@ namespace PanCardView.Droid
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            var totalX = e.GetX();
-            var totalY = e.GetY();
+            var totalX = ToDp(e.GetX());
+            var totalY = ToDp(e.GetY());
+
+            var currentX = totalX - _startX;
+            var currentY = totalY - _startY;
+
             var element = Element as CardsView;
 
             switch (e.Action)
             {
                 case MotionEventActions.Down:
                     _panStarted = true;
-                    element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Started, e.ActionIndex, totalX, totalY));
+                    _startX = totalX;
+                    _startY = totalY;
+                    element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Started, e.ActionIndex, 0, 0));
                     return true;
 
                 case MotionEventActions.Move:
-                    if (e.PointerCount > 1)
+                    if (_panStarted)
                     {
-                        var x1 = e.GetX(1);
-                        var y1 = e.GetY(1);
-
-                        if (_panStarted)
+                        if (e.PointerCount > 1)
                         {
-                            EndPan(element, totalX, totalY);
+                            EndPan(element, currentX, currentY);
+                        }
+                        else
+                        {
+                            element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Running, e.ActionIndex, currentX, currentY));
                         }
                     }
-                    else if (_panStarted)
-                    {
-                        element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Running, e.ActionIndex, totalX, totalY));
-                    }
-
                     return true;
 
                 case MotionEventActions.Up:
                     if (_panStarted)
                     {
-                        EndPan(element, totalX, totalY);
+                        EndPan(element, currentX, currentY);
                     }
                     return true;
 
@@ -76,6 +81,11 @@ namespace PanCardView.Droid
         {
             element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Completed, 0, x, y));
             _panStarted = false;
+            _startX = 0;
+            _startY = 0;
         }
+
+        private float ToDp(float px)
+        => px / Context.Resources.DisplayMetrics.Density;
     }
 }
