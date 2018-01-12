@@ -25,16 +25,26 @@ namespace PanCardViewSample
                         new { Color = Color.Black }
                     },
 
-                    ItemTemplate = new DataTemplate(() =>
-                    {
-                        var view = new ContentView();
-                        view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
-                        return view;
-                    })
+                    ItemViewFactory = new SampleFactory()
                 }
             };
 
             MainPage = new NavigationPage(content);
         }
+    }
+
+    public sealed class SampleFactory : CardViewItemFactory
+    {
+        private readonly CardViewFactoryRule _rule = new CardViewFactoryRule
+        {
+            Creator = () =>
+            {
+                var view = new ContentView();
+                view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
+                return view;
+            }
+        };
+
+        public override CardViewFactoryRule GetRule(object context) => _rule;
     }
 }
