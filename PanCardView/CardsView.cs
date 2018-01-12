@@ -51,6 +51,14 @@ namespace PanCardView
 
         private int _itemsCount;
         private double _currentDiff;
+        private bool _isPanRunning;
+
+        public CardsView()
+        {
+            var panGesture = new PanGestureRecognizer();
+            panGesture.PanUpdated += OnPanUpdated;
+            GestureRecognizers.Add(panGesture);
+        }
 
         private bool ShouldIgnoreSetCurrentView { get; set; }
 
@@ -115,23 +123,15 @@ namespace PanCardView
             }
         }
 
-        private void AddPanGesture(View view)
+        private void SetupLayout(View view)
         {
             SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
-
-            RemovePanGesture(view);
-
-            if (Device.RuntimePlatform != Device.Android)
-            {
-                var panGesture = new PanGestureRecognizer();
-                panGesture.PanUpdated += OnPanUpdated;
-                view.GestureRecognizers.Add(panGesture);
-            }
         }
 
         private void HandleTouchStart()
         {
+            _isPanRunning = true;
             if(_currentBackView != null)
             {
                 ViewExtensions.CancelAnimations(_currentBackView);
@@ -191,6 +191,11 @@ namespace PanCardView
 
         private async void HandleTouchEnd()
         {
+            if(!_isPanRunning)
+            {
+                return;
+            }
+            _isPanRunning = false;
             var absDiff = Math.Abs(_currentDiff);
             if(absDiff > MoveDistance)
             {
@@ -220,7 +225,6 @@ namespace PanCardView
             foreach(var child in Children.ToArray())
             {
                 RemoveChild(child);
-                RemovePanGesture(child);
             }
 
             SetCurrentView();
@@ -281,7 +285,7 @@ namespace PanCardView
             view.Scale = scale;
             view.BindingContext = context;
 
-            AddPanGesture(view);
+            SetupLayout(view);
 
             if (view != null && !Children.Contains(view))
             {
@@ -316,15 +320,6 @@ namespace PanCardView
             }
         }
 
-        private void RemovePanGesture(View view)
-        {
-            foreach (var gesture in view.GestureRecognizers.OfType<PanGestureRecognizer>().ToArray())
-            {
-                gesture.PanUpdated -= OnPanUpdated;
-                view.GestureRecognizers.Remove(gesture);
-            }
-        }
-
         private void ClearBindingContext(View view)
         {
             if(view != null)
@@ -355,7 +350,12 @@ namespace PanCardView
             var oldCount = e.OldItems?.Count ?? 0;
             if (_currentView != null)
             {
-                CurrentIndex = Children.IndexOf(v => v.BindingContext == _currentView.BindingContext);
+                var newIndex = Items.IndexOf(item => item == _currentView.BindingContext);
+                if(newIndex < 0)
+                {
+                    newIndex = CurrentIndex - 1;
+                }
+                CurrentIndex = newIndex;
             }
             _itemsCount = Items?.Count ?? -1; 
         }

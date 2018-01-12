@@ -23,7 +23,6 @@ namespace PanCardViewSample.Droid
             base.OnCreate(bundle);
 
             Forms.SetFlags("FastRenderers_Experimental");
-            CardsViewRenderer.Init();
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             LoadApplication(new App());

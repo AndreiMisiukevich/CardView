@@ -26,66 +26,16 @@ namespace PanCardView.Droid
             var now = DateTime.Now;
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
-        {
-            base.OnElementChanged(e);
-            _panStarted = false;
-        }
-
         public override bool OnTouchEvent(MotionEvent e)
         {
-            var totalX = ToDp(e.GetX());
-            var totalY = ToDp(e.GetY());
+            base.OnTouchEvent(e);
 
-            var currentX = totalX - _startX;
-            var currentY = totalY - _startY;
-
-            var element = Element as CardsView;
-
-            switch (e.Action)
+            if (e.Action == MotionEventActions.Up)
             {
-                case MotionEventActions.Down:
-                    _panStarted = true;
-                    _startX = totalX;
-                    _startY = totalY;
-                    element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Started, e.ActionIndex, 0, 0));
-                    return true;
-
-                case MotionEventActions.Move:
-                    if (_panStarted)
-                    {
-                        if (e.PointerCount > 1)
-                        {
-                            EndPan(element, currentX, currentY);
-                        }
-                        else
-                        {
-                            element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Running, e.ActionIndex, currentX, currentY));
-                        }
-                    }
-                    return true;
-
-                case MotionEventActions.Up:
-                    if (_panStarted)
-                    {
-                        EndPan(element, currentX, currentY);
-                    }
-                    return true;
-
-                default:
-                    return base.OnTouchEvent(e);
+                (Element as CardsView)?.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Completed, e.ActionIndex, 0, 0));
             }
-        }
 
-        private void EndPan(CardsView element, float x, float y)
-        {
-            element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Completed, 0, x, y));
-            _panStarted = false;
-            _startX = 0;
-            _startY = 0;
+            return true;
         }
-
-        private float ToDp(float px)
-        => px / Context.Resources.DisplayMetrics.Density;
     }
 }
