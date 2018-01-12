@@ -62,6 +62,8 @@ namespace PanCardView
 
         private bool ShouldIgnoreSetCurrentView { get; set; }
 
+        private bool ShouldSetIndexAfterPan { get; set; }
+
         public int CurrentIndex 
         {
             get => (int)GetValue(CurrentIndexProperty);
@@ -195,7 +197,6 @@ namespace PanCardView
             {
                 return;
             }
-            _isPanRunning = false;
             var absDiff = Math.Abs(_currentDiff);
             if(absDiff > MoveDistance)
             {
@@ -217,6 +218,14 @@ namespace PanCardView
                 backView.IsVisible = false;
                 backView.Opacity = 1;
                 ResetView(backView);
+            }
+
+            _isPanRunning = false;
+
+            if(ShouldSetIndexAfterPan)
+            {
+                ShouldSetIndexAfterPan = false;
+                SetNewIndex();
             }
         }
 
@@ -346,18 +355,33 @@ namespace PanCardView
 
         private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newCount = e.NewItems?.Count ?? 0;
-            var oldCount = e.OldItems?.Count ?? 0;
+            _itemsCount = Items?.Count ?? -1;
+
+            ShouldSetIndexAfterPan = _isPanRunning;
+            if(!_isPanRunning)
+            {
+                SetNewIndex();
+            }
+        }
+
+        private void SetNewIndex()
+        {
+            var index = 0;
             if (_currentView != null)
             {
-                var newIndex = Items.IndexOf(item => item == _currentView.BindingContext);
-                if(newIndex < 0)
+                index = Items.IndexOf(item => item == _currentView.BindingContext);
+                if (index < 0)
                 {
-                    newIndex = CurrentIndex - 1;
+                    index = CurrentIndex - 1;
                 }
-                CurrentIndex = newIndex;
             }
-            _itemsCount = Items?.Count ?? -1; 
+
+            if (index < 0)
+            {
+                index = 0;
+            }
+
+            CurrentIndex = index;
         }
 
         private void AddChild(View view, int index = -1)
