@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Xamarin.Forms;
 
 namespace PanCardViewSample.Droid
 {
@@ -20,6 +21,7 @@ namespace PanCardViewSample.Droid
 
             base.OnCreate(bundle);
 
+            Forms.SetFlags("FastRenderers_Experimental");
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             LoadApplication(new App());

@@ -110,6 +110,8 @@ namespace PanCardView
                 case GestureStatus.Running:
                     HandleTouch(e.TotalX);
                     break;
+
+                case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     HandleTouchEnd();
                     break;
@@ -137,6 +139,7 @@ namespace PanCardView
 
         private void HandleTouch(double diff)
         {
+
             View invisibleView;
             if(diff > 0)
             {
@@ -268,7 +271,6 @@ namespace PanCardView
 
             if (oldView != null && oldView != view)
             {
-                Children.Remove(oldView);
                 oldView.BindingContext = null;
             }
 
