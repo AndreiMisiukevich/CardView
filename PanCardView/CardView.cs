@@ -10,6 +10,7 @@ namespace PanCardView
     public class CardView : AbsoluteLayout
     {
         private const double Rad = 57.2957795;
+        private const int AnimationLength = 150;
 
         public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
@@ -169,7 +170,7 @@ namespace PanCardView
             _currentBackView.Scale = Math.Min(calcScale, 1);
         }
 
-        private void HandleTouchEnd()
+        private async void HandleTouchEnd()
         {
             var absDiff = Math.Abs(_currentDiff);
             if(absDiff > MoveDistance)
@@ -187,7 +188,9 @@ namespace PanCardView
 
             if (_currentBackView != null)
             {
+                await _currentBackView.FadeTo(0, AnimationLength);
                 _currentBackView.IsVisible = false;
+                _currentBackView.Opacity = 1;
                 _currentBackView.BindingContext = null;
                 ResetView(_currentBackView);
             }
