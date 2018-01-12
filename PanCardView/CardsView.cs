@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using Xamarin.Forms.Internals;
 
 namespace PanCardView
 {
@@ -13,7 +16,7 @@ namespace PanCardView
         private const double Rad = 57.2957795;
         private const int AnimationLength = 150;
 
-        public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
+        public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
             if(view.ShouldIgnoreSetCurrentView)
             {
@@ -23,18 +26,18 @@ namespace PanCardView
             view.SetCurrentView();
         });
 
-        public readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList<object>), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
+        public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList<object>), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetItemsCount();
             bindable.AsCardView().SetCurrentView();
         });
 
-        public readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
+        public static readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().InitView();
         });
 
-        public readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), 100.0);
+        public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), 100.0);
 
-        public readonly BindableProperty NextViewScaleProperty = BindableProperty.Create(nameof(NextViewScale), typeof(double), typeof(CardsView), 0.8);
+        public static readonly BindableProperty NextViewScaleProperty = BindableProperty.Create(nameof(NextViewScale), typeof(double), typeof(CardsView), 0.8);
 
         private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
 
@@ -43,6 +46,8 @@ namespace PanCardView
         private View _nextView;
         private View _prevView;
         private View _currentBackView;
+
+        private INotifyCollectionChanged _currentObservableCollection;
 
         private int _itemsCount;
         private double _currentDiff;
@@ -151,11 +156,6 @@ namespace PanCardView
 
         private void HandleTouch(double diff)
         {
-            if(Math.Abs(diff) < 2)
-            {
-                return;
-            }
-            Debug.WriteLine(diff);
             View invisibleView;
             if(diff > 0)
             {
@@ -333,7 +333,32 @@ namespace PanCardView
             }
         }
 
-        private void SetItemsCount() => _itemsCount = Items?.Count ?? -1;
+        private void SetItemsCount()
+        {
+            if(_currentObservableCollection != null)
+            {
+                _currentObservableCollection.CollectionChanged -= OnObservableCollectionChanged;
+            }
+
+            if(Items is INotifyCollectionChanged observableCollection)
+            {
+                _currentObservableCollection = observableCollection;
+                observableCollection.CollectionChanged += OnObservableCollectionChanged;
+            }
+
+            OnObservableCollectionChanged(Items, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var newCount = e.NewItems?.Count ?? 0;
+            var oldCount = e.OldItems?.Count ?? 0;
+            if (_currentView != null)
+            {
+                CurrentIndex = Children.IndexOf(v => v.BindingContext == _currentView.BindingContext);
+            }
+            _itemsCount = Items?.Count ?? -1; 
+        }
 
         private void AddChild(View view, int index = -1)
         {

@@ -4,6 +4,8 @@ using System;
 using Xamarin.Forms;
 using PanCardView;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace PanCardViewSample
 {
@@ -11,22 +13,18 @@ namespace PanCardViewSample
     {
         public App()
         {
+            var cardsView = new CardsView
+            {
+                ItemViewFactory = new SampleFactory()
+            };
+            cardsView.SetBinding(CardsView.ItemsProperty, nameof(SampleViewModel.Items));
+            cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SampleViewModel.CurrentIndex));
+
             var content = new ContentPage
             {
                 Title = "PanCardViewSample",
-                Content = new CardsView
-                {
-                    Items = new List<object> 
-                    { 
-                        new { Color = Color.Red },
-                        new { Color = Color.Yellow },
-                        new { Color = Color.Green },
-                        new { Color = Color.Blue },
-                        new { Color = Color.Black }
-                    },
-
-                    ItemViewFactory = new SampleFactory()
-                }
+                Content = cardsView,
+                BindingContext = new SampleViewModel()
             };
 
             MainPage = new NavigationPage(content);
@@ -46,5 +44,41 @@ namespace PanCardViewSample
         };
 
         public override CardViewFactoryRule GetRule(object context) => _rule;
+    }
+
+    public sealed class SampleViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private int _currentIndex;
+
+        public SampleViewModel()
+        {
+            Items = new ObservableCollection<object>
+            {
+                new { Color = Color.Red },
+                new { Color = Color.Yellow },
+                new { Color = Color.Green },
+                new { Color = Color.Blue },
+                new { Color = Color.Black }
+            };
+        }
+
+        public int CurrentIndex
+        {
+            get => _currentIndex;
+            set
+            {
+                if(value + 1 >= Items.Count)
+                {
+                    Items.Add(new { Color = Color.Orange });
+                    Items.RemoveAt(0);
+                }
+                _currentIndex = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentIndex)));
+            }
+        }
+
+        public ObservableCollection<object> Items { get; }
     }
 }
