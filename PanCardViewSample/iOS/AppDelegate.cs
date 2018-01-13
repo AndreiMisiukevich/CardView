@@ -5,6 +5,7 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using FFImageLoading.Forms.Touch;
 
 namespace PanCardViewSample.iOS
 {
@@ -13,6 +14,7 @@ namespace PanCardViewSample.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            CachedImageRenderer.Init();
             global::Xamarin.Forms.Forms.Init();
 
             LoadApplication(new App());

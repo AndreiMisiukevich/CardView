@@ -9,6 +9,7 @@ using Android.Widget;
 using Android.OS;
 using Xamarin.Forms;
 using PanCardView.Droid;
+using FFImageLoading.Forms.Droid;
 
 namespace PanCardViewSample.Droid
 {
@@ -23,6 +24,7 @@ namespace PanCardViewSample.Droid
             base.OnCreate(bundle);
 
             Forms.SetFlags("FastRenderers_Experimental");
+            CachedImageRenderer.Init(true);
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             LoadApplication(new App());
