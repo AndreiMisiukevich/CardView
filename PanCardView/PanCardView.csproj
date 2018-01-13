@@ -33,6 +33,9 @@
     <Compile Include="CardViewExtensions.cs" />
     <Compile Include="CardViewFactoryRule.cs" />
     <Compile Include="CardViewItemFactory.cs" />
+    <Compile Include="ICardProcessor.cs" />
+    <Compile Include="BaseFrontViewProcessor.cs" />
+    <Compile Include="BaseBackViewProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
