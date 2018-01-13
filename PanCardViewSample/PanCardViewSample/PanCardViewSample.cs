@@ -16,7 +16,7 @@ namespace PanCardViewSample
             var cardsView = new CardsView
             {
                 ItemViewFactory = new CardViewItemFactory(SampleFactory.Rule),
-                BackgroundColor = Color.Black.MultiplyAlpha(.8)
+                BackgroundColor = Color.Black.MultiplyAlpha(.9)
             };
             cardsView.SetBinding(CardsView.ItemsProperty, nameof(SampleViewModel.Items));
             cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SampleViewModel.CurrentIndex));
@@ -38,11 +38,23 @@ namespace PanCardViewSample
         {
             Creator = () =>
             {
-                var frame = new Frame { Padding = 0, HasShadow = false, CornerRadius = 10 };
-                //view.SetBinding(VisualElement.BackgroundColorProperty, "Color");
-                frame.Content = new Image();
-                frame.Content.SetBinding(Image.SourceProperty, "Source");
-                return frame;
+                var content = new AbsoluteLayout();
+                var frame = new Frame 
+                {
+                    Padding = 0, 
+                    HasShadow = false,
+                    CornerRadius = 10
+                };
+                content.Children.Add(frame, new Rectangle(.5, .5, 300, 300), AbsoluteLayoutFlags.PositionProportional);
+
+                var image = new Image
+                {
+                    Aspect = Aspect.AspectFill
+                };
+                image.SetBinding(Image.SourceProperty, "Source");
+
+                frame.Content = image;
+                return content;
             }
         };
 
@@ -54,17 +66,17 @@ namespace PanCardViewSample
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int _currentIndex;
-        private int _imageSize = 400;
+        private int _imageSize = 500;
 
         public SampleViewModel()
         {
             Items = new ObservableCollection<object>
             {
-                new { Color = Color.Red, Source = CreateSource() },
-                new { Color = Color.Yellow, Source = CreateSource() },
-                new { Color = Color.Green, Source = CreateSource() },
-                new { Color = Color.Blue, Source = CreateSource() },
-                new { Color = Color.Black, Source = CreateSource() }
+                new { Source = CreateSource() },
+                new { Source = CreateSource() },
+                new { Source = CreateSource() },
+                new { Source = CreateSource() },
+                new { Source = CreateSource() }
             };
         }
 
@@ -78,7 +90,6 @@ namespace PanCardViewSample
                     var rand = new Random();
                     Items.Add(new 
                     {
-                        Color = Color.FromRgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255)),
                         Source = CreateSource()
                     });
                     Items.RemoveAt(0);
@@ -90,11 +101,11 @@ namespace PanCardViewSample
 
         public ObservableCollection<object> Items { get; }
 
-        private string CreateSource()
+        private UriImageSource CreateSource()
         {
-            var source = $"http://lorempixel.com/{_imageSize}/{_imageSize}/";
+            var url = $"http://lorempixel.com/{_imageSize}/{_imageSize}/";
             _imageSize++;
-            return source;
+            return new UriImageSource { Uri = new Uri(url) };
         }
     }
 }

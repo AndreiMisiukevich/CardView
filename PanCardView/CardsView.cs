@@ -280,6 +280,12 @@ namespace PanCardView
             }
 
             var context = Items[index];
+
+            if(oldView?.BindingContext == context)
+            {
+                return oldView;
+            }
+
             var rule = ItemViewFactory?.GetRule(context);
 
             if(rule == null)
