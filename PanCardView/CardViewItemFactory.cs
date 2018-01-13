@@ -2,8 +2,18 @@
 using System;
 namespace PanCardView
 {
-    public abstract class CardViewItemFactory
+    public class CardViewItemFactory
     {
-        public abstract CardViewFactoryRule GetRule(object context);
+        private readonly CardViewFactoryRule _defaultRule;
+
+        public CardViewItemFactory() : this(null)
+        {
+        }
+
+        public CardViewItemFactory(CardViewFactoryRule defaultRule)
+        => _defaultRule = defaultRule;
+
+        public virtual CardViewFactoryRule GetRule(object context) 
+        => _defaultRule;
     }
 }
