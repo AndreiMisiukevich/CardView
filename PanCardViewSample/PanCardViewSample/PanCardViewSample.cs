@@ -71,7 +71,8 @@ namespace PanCardViewSample
             {
                 if(value + 1 >= Items.Count)
                 {
-                    Items.Add(new { Color = Color.Orange });
+                    var rand = new Random();
+                    Items.Add(new { Color = Color.FromRgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255)) });
                     Items.RemoveAt(0);
                 }
                 _currentIndex = value;

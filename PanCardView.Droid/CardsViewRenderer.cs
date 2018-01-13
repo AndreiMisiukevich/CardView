@@ -13,6 +13,10 @@ namespace PanCardView.Droid
 {
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
+        private bool _panStarted;
+        private float _startX;
+        private float _startY;
+
         public CardsViewRenderer(Context context) : base(context)
         {
         }
@@ -22,17 +26,39 @@ namespace PanCardView.Droid
             var now = DateTime.Now;
         }
 
+        protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
+        {
+            base.OnElementChanged(e);
+            _panStarted = false;
+        }
+
         public override bool OnTouchEvent(MotionEvent e)
         {
-            var res = base.OnTouchEvent(e);
+            var element = Element as CardsView;
+            var action = e.Action;
 
-            if (e.Action == MotionEventActions.Up)
+            if(_panStarted && ((action == MotionEventActions.Move && e.PointerCount > 1) || action == MotionEventActions.Up))
             {
-                (Element as CardsView)?.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Completed, e.ActionIndex, 0, 0));
-                res = true;
+                EndPan(element, e.ActionIndex);
+            }
+            else if(action == MotionEventActions.Down)
+            {
+                StartPan(element, e.ActionIndex);
             }
 
-            return res;
+            return base.OnTouchEvent(e);
+        }
+
+        private void StartPan(CardsView element, int id)
+        {
+            _panStarted = true;
+            element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Started, id, 0, 0));
+        }
+
+        private void EndPan(CardsView element, int id)
+        {
+            element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Completed, id, 0, 0));
+            _panStarted = false;
         }
     }
 }

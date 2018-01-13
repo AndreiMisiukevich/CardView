@@ -52,7 +52,7 @@ namespace PanCardView
         private int _itemsCount;
         private double _currentDiff;
         private bool _isPanRunning;
-        private bool _isPanEndRequested;
+        private bool _isPanEndRequested = true;
 
         public CardsView()
         {
@@ -90,7 +90,7 @@ namespace PanCardView
                 var dist = (double)GetValue(MoveDistanceProperty);
                 return dist > 0
                         ? dist
-                        : Width / 2;
+                        : Width * 0.35;
             }
             set => SetValue(MoveDistanceProperty, value);
         }
@@ -140,6 +140,10 @@ namespace PanCardView
 
         private void HandleTouchStart()
         {
+            if(!_isPanEndRequested)
+            {
+                return;
+            }
             _isPanRunning = true;
             _isPanEndRequested = false; 
             if(_currentBackView != null)
