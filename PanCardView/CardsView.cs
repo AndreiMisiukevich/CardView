@@ -111,15 +111,14 @@ namespace PanCardView
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
-                    HandleTouchStart();
+                    OnTouchStarted();
                     break;
                 case GestureStatus.Running:
-                    HandleTouch(e.TotalX);
+                    OnTouchChanged(e.TotalX);
                     break;
-
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
-                    HandleTouchEnd();
+                    OnTouchEnded();
                     break;
             }
         }
@@ -138,7 +137,7 @@ namespace PanCardView
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
         }
 
-        private void HandleTouchStart()
+        private void OnTouchStarted()
         {
             if(!_isPanEndRequested)
             {
@@ -151,24 +150,10 @@ namespace PanCardView
                 ViewExtensions.CancelAnimations(_currentBackView);
             }
 
-            var nextIndex = CurrentIndex + 1;
-            var prevIndex = CurrentIndex - 1;
-
-            ClearBindingContext(_nextView);
-            ClearBindingContext(_prevView);
-
-            _nextView = GetView(nextIndex, _nextView, false, NextViewScale);
-            _prevView = GetView(prevIndex, _prevView, false, NextViewScale);
-
-            SetBackViewLayerPosition(_nextView);
-            SetBackViewLayerPosition(_prevView);
-            foreach(var child in Children.Where(ShouldBeRemoved).ToArray())
-            {
-                RemoveChild(child);
-            }
+            SetupBackViews(false);
         }
 
-        private void HandleTouch(double diff)
+        private void OnTouchChanged(double diff)
         {
             View invisibleView;
             if(diff > 0)
@@ -203,7 +188,7 @@ namespace PanCardView
             _currentBackView.Scale = Math.Min(calcScale, 1);
         }
 
-        private async void HandleTouchEnd()
+        private async void OnTouchEnded()
         {
             if(_isPanEndRequested)
             {
@@ -215,14 +200,14 @@ namespace PanCardView
 
             if(absDiff > MoveDistance)
             {
-                ResetView(_currentBackView);
+                ResetPanPosition(_currentBackView);
                 SwapViews();
                 ShouldIgnoreSetCurrentView = true;
                 CurrentIndex -= Math.Sign(_currentDiff);
             }
             else
             {
-                ResetView(_currentView);
+                ResetPanPosition(_currentView);
             }
             _currentDiff = 0;
 
@@ -232,7 +217,7 @@ namespace PanCardView
                 await backView.FadeTo(0, AnimationLength);
                 backView.IsVisible = false;
                 backView.Opacity = 1;
-                ResetView(backView);
+                ResetPanPosition(backView);
             }
             _isPanRunning = false;
 
@@ -241,6 +226,8 @@ namespace PanCardView
                 ShouldSetIndexAfterPan = false;
                 SetNewIndex();
             }
+
+            SetupBackViews(true);
         }
 
         private void InitView()
@@ -253,7 +240,29 @@ namespace PanCardView
             SetCurrentView();
         }
 
-        private void ResetView(View view)
+        private void SetupBackViews(bool shouldClearBindings)
+        {
+            var nextIndex = CurrentIndex + 1;
+            var prevIndex = CurrentIndex - 1;
+
+            if (shouldClearBindings)
+            {
+                ClearBindingContext(_nextView);
+                ClearBindingContext(_prevView);
+            }
+
+            _nextView = GetView(nextIndex, _nextView, false, NextViewScale);
+            _prevView = GetView(prevIndex, _prevView, false, NextViewScale);
+
+            SetBackViewLayerPosition(_nextView);
+            SetBackViewLayerPosition(_prevView);
+            foreach (var child in Children.Where(ShouldBeRemoved).ToArray())
+            {
+                RemoveChild(child);
+            }
+        }
+
+        private void ResetPanPosition(View view)
         {
             if (view != null)
             {
