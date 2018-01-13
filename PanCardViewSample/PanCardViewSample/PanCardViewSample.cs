@@ -44,7 +44,8 @@ namespace PanCardViewSample
                 {
                     Padding = 0, 
                     HasShadow = false,
-                    CornerRadius = 10
+                    CornerRadius = 10,
+                    IsClippedToBounds = true
                 };
                 content.Children.Add(frame, new Rectangle(.5, .5, 300, 300), AbsoluteLayoutFlags.PositionProportional);
 
@@ -88,7 +89,6 @@ namespace PanCardViewSample
             {
                 if(value + 1 >= Items.Count)
                 {
-                    var rand = new Random();
                     Items.Add(new 
                     {
                         Source = CreateSource()
@@ -102,11 +102,10 @@ namespace PanCardViewSample
 
         public ObservableCollection<object> Items { get; }
 
-        private UriImageSource CreateSource()
+        private string CreateSource()
         {
-            var url = $"http://lorempixel.com/{_imageSize}/{_imageSize}/";
             _imageSize++;
-            return new UriImageSource { Uri = new Uri(url) };
+            return $"http://lorempixel.com/{_imageSize}/{_imageSize}/";
         }
     }
 }

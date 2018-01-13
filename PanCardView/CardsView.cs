@@ -240,12 +240,12 @@ namespace PanCardView
             SetCurrentView();
         }
 
-        private void SetupBackViews(bool shouldClearBindings)
+        private void SetupBackViews(bool isOnEndTouchAction)
         {
             var nextIndex = CurrentIndex + 1;
             var prevIndex = CurrentIndex - 1;
 
-            if (shouldClearBindings)
+            if (isOnEndTouchAction)
             {
                 ClearBindingContext(_nextView);
                 ClearBindingContext(_prevView);
@@ -256,9 +256,13 @@ namespace PanCardView
 
             SetBackViewLayerPosition(_nextView);
             SetBackViewLayerPosition(_prevView);
-            foreach (var child in Children.Where(ShouldBeRemoved).ToArray())
+
+            if (!isOnEndTouchAction)
             {
-                RemoveChild(child);
+                foreach (var child in Children.Where(ShouldBeRemoved).ToArray())
+                {
+                    RemoveChild(child);
+                }
             }
         }
 
@@ -431,6 +435,7 @@ namespace PanCardView
             lock (_childLocker)
             {
                 Children.Remove(view);
+                view.BindingContext = null;
             }
         }
 
