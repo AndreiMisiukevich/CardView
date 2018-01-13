@@ -178,7 +178,7 @@ namespace PanCardView
             BackViewProcessor.HandlePanChanged(_currentBackView, diff);
         }
 
-        private async void OnTouchEnded()
+        private void OnTouchEnded()
         {
             if(_isPanEndRequested)
             {

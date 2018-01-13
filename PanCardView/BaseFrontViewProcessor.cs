@@ -30,8 +30,11 @@ namespace PanCardView
         {
             if (view != null)
             {
-                view.TranslationX = 0;
-                view.Rotation = 0;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    view.TranslationX = 0;
+                    view.Rotation = 0;
+                });
             }
         }
 
