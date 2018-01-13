@@ -13,10 +13,6 @@ namespace PanCardView.Droid
 {
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
-        private bool _panStarted;
-        private float _startX;
-        private float _startY;
-
         public CardsViewRenderer(Context context) : base(context)
         {
         }
@@ -28,14 +24,15 @@ namespace PanCardView.Droid
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            base.OnTouchEvent(e);
+            var res = base.OnTouchEvent(e);
 
             if (e.Action == MotionEventActions.Up)
             {
                 (Element as CardsView)?.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Completed, e.ActionIndex, 0, 0));
+                res = true;
             }
 
-            return true;
+            return res;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace PanCardView
             bindable.AsCardView().InitView();
         });
 
-        public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), 100.0);
+        public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
         public static readonly BindableProperty NextViewScaleProperty = BindableProperty.Create(nameof(NextViewScale), typeof(double), typeof(CardsView), 0.8);
 
@@ -52,6 +52,7 @@ namespace PanCardView
         private int _itemsCount;
         private double _currentDiff;
         private bool _isPanRunning;
+        private bool _isPanEndRequested;
 
         public CardsView()
         {
@@ -84,7 +85,13 @@ namespace PanCardView
 
         public double MoveDistance
         {
-            get => (double)GetValue(MoveDistanceProperty);
+            get
+            {
+                var dist = (double)GetValue(MoveDistanceProperty);
+                return dist > 0
+                        ? dist
+                        : Width / 2;
+            }
             set => SetValue(MoveDistanceProperty, value);
         }
 
@@ -134,6 +141,7 @@ namespace PanCardView
         private void HandleTouchStart()
         {
             _isPanRunning = true;
+            _isPanEndRequested = false; 
             if(_currentBackView != null)
             {
                 ViewExtensions.CancelAnimations(_currentBackView);
@@ -193,11 +201,14 @@ namespace PanCardView
 
         private async void HandleTouchEnd()
         {
-            if(!_isPanRunning)
+            if(_isPanEndRequested)
             {
                 return;
             }
+
+            _isPanEndRequested = true; 
             var absDiff = Math.Abs(_currentDiff);
+
             if(absDiff > MoveDistance)
             {
                 ResetView(_currentBackView);
@@ -219,7 +230,6 @@ namespace PanCardView
                 backView.Opacity = 1;
                 ResetView(backView);
             }
-
             _isPanRunning = false;
 
             if(ShouldSetIndexAfterPan)
