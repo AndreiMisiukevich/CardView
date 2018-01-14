@@ -13,7 +13,7 @@ namespace PanCardViewSample
             {
                 ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9),
-                IsOnlyForwardDirection = true
+                //IsOnlyForwardDirection = true
             };
             cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
             cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
