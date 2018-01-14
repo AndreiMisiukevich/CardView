@@ -68,7 +68,7 @@ namespace PanCardViewSample
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int _currentIndex;
-        private int _imageSize = 500;
+        private int _ImageCount = 500;
 
         public SampleViewModel()
         {
@@ -104,8 +104,8 @@ namespace PanCardViewSample
 
         private string CreateSource()
         {
-            _imageSize++;
-            return $"http://lorempixel.com/{_imageSize}/{_imageSize}/";
+            _ImageCount++;
+            return $"http://lorempixel.com/400/400/sports/IMAGE{_ImageCount}/";
         }
     }
 }

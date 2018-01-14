@@ -1,17 +1,24 @@
 ﻿// 171(c) Andrei Misiukevich
 using System;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
+using System.Threading.Tasks;
 
 namespace PanCardView
 {
     public class BaseBackViewProcessor : ICardProcessor
     {
-        private const double InitialScale = 0.8;
+        protected double InitialScale { get; } = 0.8;
+        protected uint AnimationLength { get; } = 200;
 
         public virtual void InitView(View view)
         {
             if(view != null)
             {
+                view.TranslationX = 0;
+                view.Rotation = 0;
+                view.TranslationY = 0;
+                view.Opacity = 1;
                 view.IsVisible = false;
                 view.Scale = InitialScale;
             }
@@ -24,17 +31,25 @@ namespace PanCardView
             view.Scale = Math.Min(calcScale, 1);
         }
 
-        public virtual void HandlePanReset(View view)
+        public virtual Task HandlePanReset(View view)
         {
             if(view != null)
             {
-                view.Scale = InitialScale;
+                var tcs = new TaskCompletionSource<bool>();
+                var animLength = (uint)(AnimationLength * (view.Scale - InitialScale) * 5);
+                new Animation(v => view.Scale = v, view.Scale, InitialScale)
+                    .Commit(view, nameof(HandlePanReset), 16, animLength, finished: (v, t) => tcs.SetResult(true));
+                return tcs.Task;
             }
+            return Task.FromResult(true);
         }
 
-        public virtual void HandlePanApply(View view)
+        public virtual Task HandlePanApply(View view)
         {
-            view.Scale = 1;
+            Device.BeginInvokeOnMainThread(() => {
+                view.Scale = 1; 
+            });
+            return Task.FromResult(true);
         }
     }
 }
