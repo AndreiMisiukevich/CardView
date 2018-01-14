@@ -217,7 +217,7 @@ namespace PanCardView
                 invisibleView = _prevView;
             }
 
-            if(invisibleView != null)
+            if(invisibleView != null && invisibleView != _currentBackView)
             {
                 invisibleView.IsVisible = false;
             }

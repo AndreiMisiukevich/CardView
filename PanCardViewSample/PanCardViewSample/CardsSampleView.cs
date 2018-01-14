@@ -12,7 +12,8 @@ namespace PanCardViewSample
             var cardsView = new CardsView
             {
                 ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
-                BackgroundColor = Color.Black.MultiplyAlpha(.9)
+                BackgroundColor = Color.Black.MultiplyAlpha(.9),
+                IsOnlyForwardDirection = true
             };
             cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
             cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
