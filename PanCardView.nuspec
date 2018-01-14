@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>CardsView</id>
+    <version>1.0.0</version>
+    <title>CardsView</title>
+    <authors>Andrei Misiukevich</authors>
+    <owners>Andrei Misiukevich</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/AndreiMisiukevich/CardView</projectUrl>
+    <iconUrl>https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_view_carousel_48px-256.png</iconUrl>
+    <description>Cards View</description>
+    <summary>This package provides opportunity to create swipeable CardsView like in Tinder app has</summary>
+    <tags>xamarin, forms, xamarin.forms, mac, windows, android, ios, carousel, carouselview, card, cards, cardview, cardsview, panView, pan</tags>
+    <dependencies>
+      <group>
+          <dependency id="Xamarin.Forms" version="2.4" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+            <!--Net Standard-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\netstandard1.0\PanCardView.dll" />
+
+        <!--Core PCL-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\portable-win+net45+wp80+win81+wpa81\PanCardView.dll" />
+
+        <!--Xamarin.Android-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\MonoAndroid10\PanCardView.dll" />
+        <file src="PanCardView.Droid\bin\Release\PanCardView.Droid.dll" target="lib\MonoAndroid10\PanCardView.Droid.dll" />
+
+        <!--Xamarin.iOS-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\Xamarin.iOS10\PanCardView.dll" />
+
+        <!--Xamarin.Mac-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\Xamarin.Mac20\PanCardView.dll" />
+
+        <!--Windows WinUWP-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\uap\PanCardView.dll" />
+
+        <!--Windows WinRT-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\win81\PanCardView.dll" />
+
+        <!--Windows RT Phone-->
+        <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\wpa81\PanCardView.dll" />
+  </files>
+</package>
