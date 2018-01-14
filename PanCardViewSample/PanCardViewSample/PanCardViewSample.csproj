@@ -30,6 +30,8 @@
   <ItemGroup>
     <Compile Include="PanCardViewSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CardSampleViewModel.cs" />
+    <Compile Include="CardsSampleView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">
