@@ -18,15 +18,18 @@ Write next line of code in your MainActivity
 The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
 
 -> Create CardsView and setup it
+```csharp
 var cardsView = new CardsView
 {
     ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule)
 };
 cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
 cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
+```
 
 -> Create ViewRule and setup CardViewItemFactory (something like DataTemplate), or create subclass from CardViewItemFactory and manage several rules (like DataTemplateSelector)
 
+```csharp
 public static class RuleHolder
 {
     public static CardViewFactoryRule Rule { get; } = new CardViewFactoryRule
@@ -54,6 +57,7 @@ public static class RuleHolder
         }
     };
 }
+```
 
 -> Optionaly create ViewModel =)
 
