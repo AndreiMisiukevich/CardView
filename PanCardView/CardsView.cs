@@ -178,6 +178,7 @@ namespace PanCardView
             {
                 _currentView = GetView(CurrentIndex, _currentView, FrontViewProcessor);
             }
+            SetupBackViews(false);
         }
 
         private void SetupLayout(View view)
