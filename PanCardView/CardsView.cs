@@ -12,14 +12,14 @@ namespace PanCardView
 {
     public delegate void CardsViewPanStartEndHandler(CardsView view, int index, double diff);
     public delegate void CardsViewPanChangedHandler(CardsView view, double diff);
-    public delegate void CardsViewIndexChangedHandler(CardsView view, int index);
+    public delegate void CardsViewPositionChangedHandler(CardsView view, bool isNextSelected);
 
     public class CardsView : AbsoluteLayout
     {
         public event CardsViewPanStartEndHandler PanStarted;
         public event CardsViewPanStartEndHandler PanEnded;
         public event CardsViewPanChangedHandler PanChanged;
-        public event CardsViewIndexChangedHandler IndexChanged;
+        public event CardsViewPositionChangedHandler PositionChanged;
 
         public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
@@ -50,7 +50,7 @@ namespace PanCardView
 
         public static readonly BindableProperty PanChangedCommandProperty = BindableProperty.Create(nameof(PanChangedCommand), typeof(ICommand), typeof(CardsView), null);
 
-        public static readonly BindableProperty IndexChangedCommandProperty = BindableProperty.Create(nameof(IndexChangedCommand), typeof(ICommand), typeof(CardsView), null);
+        public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
 
         private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
         private readonly List<View> _viewsInUse = new List<View>();
@@ -144,10 +144,10 @@ namespace PanCardView
             set => SetValue(PanChangedCommandProperty, value);
         }
 
-        public ICommand IndexChangedCommand
+        public ICommand PositionChangedCommand
         {
-            get => GetValue(IndexChangedCommandProperty) as ICommand;
-            set => SetValue(IndexChangedCommandProperty, value);
+            get => GetValue(PositionChangedCommandProperty) as ICommand;
+            set => SetValue(PositionChangedCommandProperty, value);
         }
 
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
@@ -248,10 +248,6 @@ namespace PanCardView
             {
                 SwapViews();
                 ShouldIgnoreSetCurrentView = true;
-                if (IsOnlyForwardDirection)
-                {
-                    CurrentIndex += 1;
-                }
 
                 var indexDelta = -Math.Sign(CurrentDiff);
                 if (IsOnlyForwardDirection)
@@ -260,7 +256,7 @@ namespace PanCardView
                 }
                 CurrentIndex += indexDelta;
 
-                FirePanEnded(true);
+                FirePanEnded(CurrentDiff < 0);
 
                 await Task.WhenAll( //current view and backview were swapped
                     FrontViewProcessor.HandlePanApply(_currentBackView),
@@ -269,7 +265,7 @@ namespace PanCardView
             }
             else
             {
-                FirePanEnded(false);
+                FirePanEnded();
                 await Task.WhenAll(
                     FrontViewProcessor.HandlePanReset(_currentView),
                     BackViewProcessor.HandlePanReset(_currentBackView)
@@ -509,13 +505,13 @@ namespace PanCardView
             PanStartedCommand?.Execute(CurrentIndex);
         }
 
-        private void FirePanEnded(bool isIndexChanged)
+        private void FirePanEnded(bool? isIndexChanged = null)
         {
             PanEnded?.Invoke(this, CurrentIndex, CurrentDiff);
             PanEndedCommand?.Execute(CurrentIndex);
-            if(isIndexChanged)
+            if(isIndexChanged.HasValue)
             {
-                FireIndexChanged();
+                FirePositionChanged(isIndexChanged.GetValueOrDefault());
             }
         }
 
@@ -525,10 +521,10 @@ namespace PanCardView
             PanChangedCommand?.Execute(CurrentDiff);
         }
 
-        private void FireIndexChanged()
+        private void FirePositionChanged(bool isNextSelected)
         {
-            IndexChanged?.Invoke(this, CurrentIndex);
-            IndexChangedCommand?.Execute(CurrentIndex);
+            PositionChanged?.Invoke(this, isNextSelected);
+            PositionChangedCommand?.Execute(isNextSelected);
         }
     }
 }
