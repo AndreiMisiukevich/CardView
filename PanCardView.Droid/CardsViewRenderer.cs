@@ -37,7 +37,7 @@ namespace PanCardView.Droid
             var element = Element as CardsView;
             var action = e.Action;
 
-            if(_panStarted && ((action == MotionEventActions.Move && e.PointerCount > 1) || action == MotionEventActions.Up))
+            if(_panStarted && action == MotionEventActions.Up) // action == MotionEventActions.Move && e.PointerCount > 1
             {
                 EndPan(element, e.ActionIndex);
             }
