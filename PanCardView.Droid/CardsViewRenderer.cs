@@ -6,7 +6,6 @@ using Android.Content;
 using PanCardView.Droid;
 using PanCardView;
 using Android.Views;
-using Android.Util;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
@@ -14,8 +13,6 @@ namespace PanCardView.Droid
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
         private bool _panStarted;
-        private float _startX;
-        private float _startY;
 
         public CardsViewRenderer(Context context) : base(context)
         {

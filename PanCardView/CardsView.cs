@@ -2,22 +2,24 @@
 using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Xamarin.Forms.Internals;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PanCardView
 {
-    public delegate void CardsViewPanHandler(int index, double diff);
+    public delegate void CardsViewPanStartEndHandler(CardsView view, int index, double diff);
+    public delegate void CardsViewPanChangedHandler(CardsView view, double diff);
+    public delegate void CardsViewIndexChangedHandler(CardsView view, int index);
 
     public class CardsView : AbsoluteLayout
     {
-        public event CardsViewPanHandler PanStarted;
-        public event CardsViewPanHandler PanEnded;
+        public event CardsViewPanStartEndHandler PanStarted;
+        public event CardsViewPanStartEndHandler PanEnded;
+        public event CardsViewPanChangedHandler PanChanged;
+        public event CardsViewIndexChangedHandler IndexChanged;
 
         public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
@@ -42,6 +44,14 @@ namespace PanCardView
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
+        public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
+
+        public static readonly BindableProperty PanEndedCommandProperty = BindableProperty.Create(nameof(PanEndedCommand), typeof(ICommand), typeof(CardsView), null);
+
+        public static readonly BindableProperty PanChangedCommandProperty = BindableProperty.Create(nameof(PanChangedCommand), typeof(ICommand), typeof(CardsView), null);
+
+        public static readonly BindableProperty IndexChangedCommandProperty = BindableProperty.Create(nameof(IndexChangedCommand), typeof(ICommand), typeof(CardsView), null);
+
         private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
         private readonly List<View> _viewsInUse = new List<View>();
 
@@ -54,7 +64,6 @@ namespace PanCardView
         private INotifyCollectionChanged _currentObservableCollection;
 
         private int _itemsCount;
-        private double _currentDiff;
         private bool _isPanRunning;
         private bool _isPanEndRequested = true;
 
@@ -70,6 +79,8 @@ namespace PanCardView
             panGesture.PanUpdated += OnPanUpdated;
             GestureRecognizers.Add(panGesture);
         }
+
+        public double CurrentDiff { get; private set; }
 
         public ICardProcessor FrontViewProcessor { get; }
 
@@ -115,6 +126,30 @@ namespace PanCardView
             set => SetValue(IsOnlyForwardDirectionProperty, value);
         }
 
+        public ICommand PanStartedCommand
+        {
+            get => GetValue(PanStartedCommandProperty) as ICommand;
+            set => SetValue(PanStartedCommandProperty, value);
+        }
+
+        public ICommand PanEndedCommand
+        {
+            get => GetValue(PanEndedCommandProperty) as ICommand;
+            set => SetValue(PanEndedCommandProperty, value);
+        }
+
+        public ICommand PanChangedCommand
+        {
+            get => GetValue(PanChangedCommandProperty) as ICommand;
+            set => SetValue(PanChangedCommandProperty, value);
+        }
+
+        public ICommand IndexChangedCommand
+        {
+            get => GetValue(IndexChangedCommandProperty) as ICommand;
+            set => SetValue(IndexChangedCommandProperty, value);
+        }
+
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
             if (Items == null || !Items.Any())
@@ -157,7 +192,7 @@ namespace PanCardView
             {
                 return;
             }
-            PanStarted?.Invoke(CurrentIndex, 0);
+            FirePanStarted();
             _isPanRunning = true;
             _isPanEndRequested = false; 
             if(_currentBackView != null)
@@ -193,7 +228,7 @@ namespace PanCardView
             }
 
             _currentBackView.IsVisible = true;
-            _currentDiff = diff;
+            CurrentDiff = diff;
 
 
             FrontViewProcessor.HandlePanChanged(_currentView, diff);
@@ -207,7 +242,7 @@ namespace PanCardView
                 return;
             }
             _isPanEndRequested = true; 
-            var absDiff = Math.Abs(_currentDiff);
+            var absDiff = Math.Abs(CurrentDiff);
 
             if (absDiff > MoveDistance)
             {
@@ -218,14 +253,14 @@ namespace PanCardView
                     CurrentIndex += 1;
                 }
 
-                var indexDelta = -Math.Sign(_currentDiff);
+                var indexDelta = -Math.Sign(CurrentDiff);
                 if (IsOnlyForwardDirection)
                 {
                     indexDelta = Math.Abs(indexDelta);
                 }
                 CurrentIndex += indexDelta;
 
-                PanEnded?.Invoke(CurrentIndex, _currentDiff);
+                FirePanEnded(true);
 
                 await Task.WhenAll( //current view and backview were swapped
                     FrontViewProcessor.HandlePanApply(_currentBackView),
@@ -234,13 +269,13 @@ namespace PanCardView
             }
             else
             {
-                PanEnded?.Invoke(CurrentIndex, _currentDiff);
+                FirePanEnded(false);
                 await Task.WhenAll(
                     FrontViewProcessor.HandlePanReset(_currentView),
                     BackViewProcessor.HandlePanReset(_currentBackView)
                 );
             }
-            _currentDiff = 0;
+            CurrentDiff = 0;
 
             _isPanRunning = false;
 
@@ -467,5 +502,33 @@ namespace PanCardView
 
         private void AddRangeViewsInUse(params View[] views)
         => _viewsInUse.AddRange(views.Where(v => v != null));
+
+        private void FirePanStarted()
+        {
+            PanStarted?.Invoke(this, CurrentIndex, 0);
+            PanStartedCommand?.Execute(CurrentIndex);
+        }
+
+        private void FirePanEnded(bool isIndexChanged)
+        {
+            PanEnded?.Invoke(this, CurrentIndex, CurrentDiff);
+            PanEndedCommand?.Execute(CurrentIndex);
+            if(isIndexChanged)
+            {
+                FirePanChanged();
+            }
+        }
+
+        private void FirePanChanged()
+        {
+            IndexChanged?.Invoke(this, CurrentIndex);
+            IndexChangedCommand?.Execute(CurrentIndex);
+        }
+
+        private void FireIndexChanged()
+        {
+            IndexChanged?.Invoke(this, CurrentIndex);
+            IndexChangedCommand?.Execute(CurrentIndex);
+        }
     }
 }
