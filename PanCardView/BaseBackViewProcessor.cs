@@ -46,8 +46,12 @@ namespace PanCardView
 
         public virtual Task HandlePanApply(View view)
         {
-            Device.BeginInvokeOnMainThread(() => {
-                view.Scale = 1; 
+            Device.BeginInvokeOnMainThread(() => 
+            {
+                if (view != null)
+                {
+                    view.Scale = 1;
+                }
             });
             return Task.FromResult(true);
         }
