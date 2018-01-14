@@ -12,10 +12,12 @@ using System.Threading.Tasks;
 
 namespace PanCardView
 {
+    public delegate void CardsViewPanHandler(int index, double diff);
+
     public class CardsView : AbsoluteLayout
     {
-        public event Action PanStarted;
-        public event Action PanEnded;
+        public event CardsViewPanHandler PanStarted;
+        public event CardsViewPanHandler PanEnded;
 
         public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
@@ -37,6 +39,8 @@ namespace PanCardView
         });
 
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
+
+        public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
         private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
         private readonly List<View> _viewsInUse = new List<View>();
@@ -105,6 +109,12 @@ namespace PanCardView
             set => SetValue(MoveDistanceProperty, value);
         }
 
+        public bool IsOnlyForwardDirection
+        {
+            get => (bool)GetValue(IsOnlyForwardDirectionProperty);
+            set => SetValue(IsOnlyForwardDirectionProperty, value);
+        }
+
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
             if (Items == null || !Items.Any())
@@ -147,7 +157,7 @@ namespace PanCardView
             {
                 return;
             }
-            PanStarted?.Invoke();
+            PanStarted?.Invoke(CurrentIndex, 0);
             _isPanRunning = true;
             _isPanEndRequested = false; 
             if(_currentBackView != null)
@@ -196,7 +206,6 @@ namespace PanCardView
             {
                 return;
             }
-            PanEnded?.Invoke();
             _isPanEndRequested = true; 
             var absDiff = Math.Abs(_currentDiff);
 
@@ -204,7 +213,19 @@ namespace PanCardView
             {
                 SwapViews();
                 ShouldIgnoreSetCurrentView = true;
-                CurrentIndex -= Math.Sign(_currentDiff);
+                if (IsOnlyForwardDirection)
+                {
+                    CurrentIndex += 1;
+                }
+
+                var indexDelta = -Math.Sign(_currentDiff);
+                if (IsOnlyForwardDirection)
+                {
+                    indexDelta = Math.Abs(indexDelta);
+                }
+                CurrentIndex += indexDelta;
+
+                PanEnded?.Invoke(CurrentIndex, _currentDiff);
 
                 await Task.WhenAll( //current view and backview were swapped
                     FrontViewProcessor.HandlePanApply(_currentBackView),
@@ -213,6 +234,7 @@ namespace PanCardView
             }
             else
             {
+                PanEnded?.Invoke(CurrentIndex, _currentDiff);
                 await Task.WhenAll(
                     FrontViewProcessor.HandlePanReset(_currentView),
                     BackViewProcessor.HandlePanReset(_currentBackView)
@@ -244,7 +266,9 @@ namespace PanCardView
         private void SetupBackViews(bool isOnEndTouchAction)
         {
             var nextIndex = CurrentIndex + 1;
-            var prevIndex = CurrentIndex - 1;
+            var prevIndex = IsOnlyForwardDirection 
+                ? nextIndex 
+                : CurrentIndex - 1;
 
             if (isOnEndTouchAction)
             {
@@ -327,10 +351,7 @@ namespace PanCardView
 
             SetupLayout(view);
 
-            if (view != null && !Children.Contains(view))
-            {
-                AddChild(view, 0);
-            }
+            AddChild(view, 0);
 
             if (oldView != null && oldView != view)
             {
@@ -416,6 +437,11 @@ namespace PanCardView
 
         private void AddChild(View view, int index = -1)
         {
+            if (view == null || Children.Contains(view))
+            {
+                return;
+            }
+
             lock (_childLocker)
             {
                 if (index < 0)

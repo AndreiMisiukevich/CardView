@@ -8,7 +8,9 @@ namespace PanCardView
     {
         private const double Rad = 57.2957795;
 
-        protected uint AnimationLength { get; } = 200;
+        protected uint ApplyAnimationLength { get; set; } = 200;
+
+        protected uint ResetAnimationLength { get; set; } = 150;
 
         public virtual void InitView(View view)
         => ResetInitialState(view);
@@ -24,7 +26,7 @@ namespace PanCardView
         public virtual Task HandlePanReset(View view)
         {
             var parent = view.Parent as CardsView;
-            var animLength = (uint)(AnimationLength * Math.Min(Math.Abs(view.TranslationX / parent.MoveDistance), 1.0));
+            var animLength = (uint)(ResetAnimationLength * Math.Min(Math.Abs(view.TranslationX / parent.MoveDistance), 1.0));
             var tcs = new TaskCompletionSource<bool>();
             new Animation {
                 { 0, 1, new Animation (v => view.TranslationX = v, view.TranslationX, 0) },
@@ -42,7 +44,7 @@ namespace PanCardView
             var tcs = new TaskCompletionSource<bool>();
             Device.BeginInvokeOnMainThread(async () =>
             {
-                await view.FadeTo(0, AnimationLength);
+                await view.FadeTo(0, ApplyAnimationLength);
                 view.IsVisible = false;
                 tcs.SetResult(true);
             });
