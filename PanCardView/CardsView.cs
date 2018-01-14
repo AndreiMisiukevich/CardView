@@ -229,7 +229,7 @@ namespace PanCardView
 
             _currentBackView.IsVisible = true;
             CurrentDiff = diff;
-
+            FirePanChanged();
 
             FrontViewProcessor.HandlePanChanged(_currentView, diff);
             BackViewProcessor.HandlePanChanged(_currentBackView, diff);
@@ -515,14 +515,14 @@ namespace PanCardView
             PanEndedCommand?.Execute(CurrentIndex);
             if(isIndexChanged)
             {
-                FirePanChanged();
+                FireIndexChanged();
             }
         }
 
         private void FirePanChanged()
         {
-            IndexChanged?.Invoke(this, CurrentIndex);
-            IndexChangedCommand?.Execute(CurrentIndex);
+            PanChanged?.Invoke(this, CurrentDiff);
+            PanChangedCommand?.Execute(CurrentDiff);
         }
 
         private void FireIndexChanged()
