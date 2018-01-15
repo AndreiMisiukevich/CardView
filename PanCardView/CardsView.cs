@@ -261,7 +261,7 @@ namespace PanCardView
                 SwapViews();
                 ShouldIgnoreSetCurrentView = true;
 
-                CurrentIndex += newIndex;
+                CurrentIndex = newIndex;
 
                 FirePanEnded(CurrentDiff < 0);
 
