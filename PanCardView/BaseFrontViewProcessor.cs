@@ -17,7 +17,11 @@ namespace PanCardView
 
         public virtual void HandlePanChanged(View view, double xPos)
         {
-            var parent = view.Parent as CardsView;
+            var parent = view?.Parent as CardsView;
+            if(parent == null)
+            {
+                return;
+            }
             view.TranslationX = xPos;
             view.TranslationY = Math.Abs(xPos) / 10;
             view.Rotation = 0.3 * Math.Min(xPos / parent.Width, 1) * Rad;
@@ -50,8 +54,11 @@ namespace PanCardView
             var tcs = new TaskCompletionSource<bool>();
             Device.BeginInvokeOnMainThread(async () =>
             {
-                await view.FadeTo(0, ApplyAnimationLength);
-                view.IsVisible = false;
+                if (view != null)
+                {
+                    await view.FadeTo(0, ApplyAnimationLength);
+                    view.IsVisible = false;
+                }
                 tcs.SetResult(true);
             });
             return tcs.Task;

@@ -26,7 +26,11 @@ namespace PanCardView
 
         public virtual void HandlePanChanged(View view, double xPos)
         {
-            var parent = view.Parent as CardsView;
+            var parent = view?.Parent as CardsView;
+            if(parent == null)
+            {
+                return;
+            }
             var calcScale = InitialScale + Math.Abs((xPos / parent.MoveDistance) * (1 - InitialScale));
             view.Scale = Math.Min(calcScale, 1);
         }

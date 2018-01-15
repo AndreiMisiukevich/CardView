@@ -37,7 +37,7 @@ namespace PanCardView
         });
 
         public static readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
-            bindable.AsCardView().InitView();
+            bindable.AsCardView().SetCurrentView();
         });
 
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
@@ -289,16 +289,6 @@ namespace PanCardView
             }
 
             SetupBackViews(true);
-        }
-
-        private void InitView()
-        {
-            foreach(var child in Children.ToArray())
-            {
-                RemoveChild(child);
-            }
-
-            SetCurrentView();
         }
 
         private void SetupBackViews(bool isOnEndTouchAction)
