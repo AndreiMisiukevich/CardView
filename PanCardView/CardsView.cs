@@ -354,16 +354,12 @@ namespace PanCardView
             }
 
             processor.InitView(view);
+
             view.BindingContext = context;
 
             SetupLayout(view);
 
             AddChild(view, 0);
-
-            if (oldView != view)
-            {
-                ClearBindingContext(oldView);
-            }
 
             return view;
         }
