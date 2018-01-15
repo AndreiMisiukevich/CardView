@@ -505,17 +505,18 @@ namespace PanCardView
         {
             lock (_viewsInUseLocker)
             {
-                var removeCount = 3;
-                while (removeCount-- > 0 && _viewsInUse.Count > 0)
-                {
-                    var view = _viewsInUse[0];
-                    _viewsInUse.RemoveAt(0);
+                //var removeCount = 3;
+                //while (removeCount-- > 0 && _viewsInUse.Count > 0)
+                //{
+                //    var view = _viewsInUse[0];
+                //    _viewsInUse.RemoveAt(0);
 
-                    if(view != null && CheckNotUsedNow(view))
-                    {
-                        ClearBindingContext(view);    
-                    }
-                }
+                //    if(view != null && CheckNotUsedNow(view))
+                //    {
+                //        ClearBindingContext(view);    
+                //    }
+                //}
+                _viewsInUse.Clear();
             }
         }
 
