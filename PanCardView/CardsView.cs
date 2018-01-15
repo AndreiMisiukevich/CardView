@@ -312,7 +312,7 @@ namespace PanCardView
             else
             {
                 AddRangeViewsInUse();
-                foreach (var child in Children.Where(ShouldBeRemoved).ToArray())
+                foreach (var child in Children.Where(CheckNotUsedNow).ToArray())
                 {
                     RemoveChild(child);
                 }
@@ -353,7 +353,7 @@ namespace PanCardView
                 _viewsPool.Add(rule, viewsList);
             }
             var view = viewsList.FirstOrDefault(v => v.BindingContext == context) 
-                                ?? viewsList.FirstOrDefault(v => v.BindingContext == null && ShouldBeRemoved(v));
+                                ?? viewsList.FirstOrDefault(v => v.BindingContext == null && CheckNotUsedNow(v));
 
             if(view == null)
             {
@@ -480,7 +480,7 @@ namespace PanCardView
             }
         }
 
-        private bool ShouldBeRemoved(View view)
+        private bool CheckNotUsedNow(View view)
         => !_viewsInUse.Contains(view);
 
         private void AddRangeViewsInUse()
@@ -495,7 +495,7 @@ namespace PanCardView
 
         private void AddViewInUseIfNotContains(View view)
         {
-            if(!_viewsInUse.Contains(view))
+            if(CheckNotUsedNow(view))
             {
                 _viewsInUse.Add(view);
             }
@@ -506,10 +506,15 @@ namespace PanCardView
             lock (_viewsInUseLocker)
             {
                 var removeCount = 3;
-                while (removeCount > 0 && _viewsInUse.Count > 0)
+                while (removeCount-- > 0 && _viewsInUse.Count > 0)
                 {
-                    --removeCount;
+                    var view = _viewsInUse[0];
                     _viewsInUse.RemoveAt(0);
+
+                    if(view != null && CheckNotUsedNow(view))
+                    {
+                        ClearBindingContext(view);    
+                    }
                 }
             }
         }
