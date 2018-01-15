@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Xamarin.Forms;
+using System;
 
 namespace PanCardViewSample
 {
@@ -14,11 +16,11 @@ namespace PanCardViewSample
         {
             Items = new ObservableCollection<object>
             {
-                new { Source = CreateSource(), Ind = _ImageCount++ },
-                new { Source = CreateSource(), Ind = _ImageCount++ },
-                new { Source = CreateSource(), Ind = _ImageCount++ },
-                new { Source = CreateSource(), Ind = _ImageCount++ },
-                new { Source = CreateSource(), Ind = _ImageCount++ }
+                new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Red },
+                new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Green },
+                new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Gold },
+                new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Silver },
+                new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Blue }
             };
         }
 
@@ -27,12 +29,14 @@ namespace PanCardViewSample
             get => _currentIndex;
             set
             {
+                var rnd = new Random();
                 if (value + 1 >= Items.Count)
                 {
                     Items.Add(new
                     {
                         Source = CreateSource(),
-                        Ind = _ImageCount++
+                        Ind = _ImageCount++,
+                        Color = Color.FromRgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255))
                     });
                     Items.RemoveAt(0);
                 }
