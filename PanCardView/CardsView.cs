@@ -67,6 +67,7 @@ namespace PanCardView
         private int _itemsCount;
         private bool _isPanRunning;
         private bool _isPanEndRequested = true;
+        private Guid _gestureId;
 
         public CardsView() : this(null, null)
         {
@@ -196,6 +197,7 @@ namespace PanCardView
             {
                 return;
             }
+            _gestureId = Guid.NewGuid();
             FirePanStarted();
             _isPanRunning = true;
             _isPanEndRequested = false; 
@@ -243,6 +245,7 @@ namespace PanCardView
                 return;
             }
 
+            var gestureId = _gestureId;
             var currentView = _currentView;
             var nextView = _nextView;
             var prevView = _prevView;
@@ -285,7 +288,7 @@ namespace PanCardView
             }
 
             RemoveRangeViewsInUse(currentView, nextView, prevView);
-            if (_isPanEndRequested)
+            if (gestureId == _gestureId)
             {
                 _isPanRunning = false;
                 if (ShouldSetIndexAfterPan)
@@ -344,8 +347,10 @@ namespace PanCardView
                 };
                 _viewsPool.Add(rule, viewsList);
             }
-            var view = viewsList.FirstOrDefault(v => v.BindingContext == context) 
-                                ?? viewsList.FirstOrDefault(v => v.BindingContext == null && CheckNotUsedNow(v));
+
+            var notUsedViews = viewsList.Where(v => CheckNotUsedNow(v));
+            var view = notUsedViews.FirstOrDefault(v => v.BindingContext == context)
+                                   ?? notUsedViews.FirstOrDefault(v => v.BindingContext == null);
 
             if(view == null)
             {
