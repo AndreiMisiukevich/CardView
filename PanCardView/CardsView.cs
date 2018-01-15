@@ -247,15 +247,21 @@ namespace PanCardView
 
             if (absDiff > MoveDistance)
             {
-                SwapViews();
-                ShouldIgnoreSetCurrentView = true;
-
                 var indexDelta = -Math.Sign(CurrentDiff);
                 if (IsOnlyForwardDirection)
                 {
                     indexDelta = Math.Abs(indexDelta);
                 }
-                CurrentIndex += indexDelta;
+                var newIndex = CurrentIndex + indexDelta;
+                if(newIndex < 0 || newIndex >= _itemsCount)
+                {
+                    return;
+                }
+
+                SwapViews();
+                ShouldIgnoreSetCurrentView = true;
+
+                CurrentIndex += newIndex;
 
                 FirePanEnded(CurrentDiff < 0);
 
@@ -302,12 +308,6 @@ namespace PanCardView
                 ? nextIndex 
                 : CurrentIndex - 1;
 
-            if (isOnEndTouchAction)
-            {
-                ClearBindingContext(_nextView);
-                ClearBindingContext(_prevView);
-            }
-
             _nextView = GetView(nextIndex, _nextView, BackViewProcessor);
             _prevView = GetView(prevIndex, _prevView, BackViewProcessor);
 
@@ -348,18 +348,11 @@ namespace PanCardView
 
             var context = Items[index];
 
-            if(oldView?.BindingContext == context)
-            {
-                return oldView;
-            }
-
             var rule = ItemViewFactory?.GetRule(context);
-
             if(rule == null)
             {
                 return null;
             }
-
             List<View> viewsList;
             if (!_viewsPool.TryGetValue(rule, out viewsList))
             {
@@ -385,9 +378,9 @@ namespace PanCardView
 
             AddChild(view, 0);
 
-            if (oldView != null && oldView != view)
+            if (oldView != view)
             {
-                oldView.BindingContext = null;
+                ClearBindingContext(oldView);
             }
 
             return view;
@@ -487,10 +480,13 @@ namespace PanCardView
 
         private void RemoveChild(View view)
         {
-            lock (_childLocker)
+            if (view != null)
             {
-                Children.Remove(view);
-                view.BindingContext = null;
+                lock (_childLocker)
+                {
+                    Children.Remove(view);
+                    ClearBindingContext(view);
+                }
             }
         }
 
