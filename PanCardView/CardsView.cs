@@ -53,7 +53,7 @@ namespace PanCardView
         public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
 
         private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
-        private readonly List<View> _viewsInUse = new List<View>();
+        private readonly HashSet<View> _viewsInUse = new HashSet<View>();
 
         private readonly object _childLocker = new object();
         private readonly object _viewsInUseLocker = new object();
@@ -179,7 +179,9 @@ namespace PanCardView
             {
                 _currentView = GetView(CurrentIndex, _currentView, FrontViewProcessor);
             }
-            SetupBackViews(false);
+
+            SetupBackViews();
+            AddRangeViewsInUse(_currentView, _nextView, _prevView);
         }
 
         private void SetupLayout(View view)
@@ -197,12 +199,9 @@ namespace PanCardView
             FirePanStarted();
             _isPanRunning = true;
             _isPanEndRequested = false; 
-            if(_currentBackView != null)
-            {
-                ViewExtensions.CancelAnimations(_currentBackView);
-            }
 
-            SetupBackViews(false);
+            SetupBackViews();
+            AddRangeViewsInUse(_currentView, _nextView, _prevView);
         }
 
         private void OnTouchChanged(double diff)
@@ -239,11 +238,16 @@ namespace PanCardView
 
         private async void OnTouchEnded()
         {
-            if(_isPanEndRequested)
+            if (_isPanEndRequested)
             {
                 return;
             }
-            _isPanEndRequested = true; 
+
+            var currentView = _currentView;
+            var nextView = _nextView;
+            var prevView = _prevView;
+
+            _isPanEndRequested = true;
             var absDiff = Math.Abs(CurrentDiff);
 
             if (absDiff > MoveDistance)
@@ -254,7 +258,7 @@ namespace PanCardView
                     indexDelta = Math.Abs(indexDelta);
                 }
                 var newIndex = CurrentIndex + indexDelta;
-                if(newIndex < 0 || newIndex >= _itemsCount)
+                if (newIndex < 0 || newIndex >= _itemsCount)
                 {
                     return;
                 }
@@ -279,20 +283,21 @@ namespace PanCardView
                     BackViewProcessor.HandlePanReset(_currentBackView)
                 );
             }
-            CurrentDiff = 0;
 
-            _isPanRunning = false;
-
-            if(ShouldSetIndexAfterPan)
+            RemoveRangeViewsInUse(currentView, nextView, prevView);
+            if (_isPanEndRequested)
             {
-                ShouldSetIndexAfterPan = false;
-                SetNewIndex();
+                _isPanRunning = false;
+                if (ShouldSetIndexAfterPan)
+                {
+                    ShouldSetIndexAfterPan = false;
+                    SetNewIndex();
+                }
+                SetupBackViews();
             }
-
-            SetupBackViews(true);
         }
 
-        private void SetupBackViews(bool isOnEndTouchAction)
+        private void SetupBackViews()
         {
             var nextIndex = CurrentIndex + 1;
             var prevIndex = IsOnlyForwardDirection
@@ -304,19 +309,6 @@ namespace PanCardView
 
             SetBackViewLayerPosition(_nextView);
             SetBackViewLayerPosition(_prevView);
-
-            if (isOnEndTouchAction)
-            {
-                RemoveRangeViewsInUse();
-            }
-            else
-            {
-                AddRangeViewsInUse();
-                foreach (var child in Children.Where(CheckNotUsedNow).ToArray())
-                {
-                    RemoveChild(child);
-                }
-            }
         }
 
         private void SwapViews()
@@ -483,40 +475,30 @@ namespace PanCardView
         private bool CheckNotUsedNow(View view)
         => !_viewsInUse.Contains(view);
 
-        private void AddRangeViewsInUse()
+        private void AddRangeViewsInUse(params View[] views)
         {
             lock (_viewsInUseLocker)
             {
-                AddViewInUseIfNotContains(_currentView);
-                AddViewInUseIfNotContains(_nextView);
-                AddViewInUseIfNotContains(_prevView);
+                foreach (var view in views.Where(v => v != null))
+                {
+                    _viewsInUse.Add(view);
+                }
             }
-        }
 
-        private void AddViewInUseIfNotContains(View view)
-        {
-            if(CheckNotUsedNow(view))
+            foreach (var child in Children.Where(CheckNotUsedNow).ToArray())
             {
-                _viewsInUse.Add(view);
+                RemoveChild(child);
             }
         }
 
-        private void RemoveRangeViewsInUse()
+        private void RemoveRangeViewsInUse(params View[] views)
         {
             lock (_viewsInUseLocker)
             {
-                //var removeCount = 3;
-                //while (removeCount-- > 0 && _viewsInUse.Count > 0)
-                //{
-                //    var view = _viewsInUse[0];
-                //    _viewsInUse.RemoveAt(0);
-
-                //    if(view != null && CheckNotUsedNow(view))
-                //    {
-                //        ClearBindingContext(view);    
-                //    }
-                //}
-                _viewsInUse.Clear();
+                foreach (var view in views.Where(v => v != null).Union(_viewsInUse.Where(v => !Children.Contains(v) || v.BindingContext == null).ToArray()))
+                {
+                    _viewsInUse.Remove(view);
+                }
             }
         }
 
@@ -534,6 +516,7 @@ namespace PanCardView
             {
                 FirePositionChanged(isIndexChanged.GetValueOrDefault());
             }
+            CurrentDiff = 0;
         }
 
         private void FirePanChanged()

@@ -14,11 +14,11 @@ namespace PanCardViewSample
         {
             Items = new ObservableCollection<object>
             {
-                new { Source = CreateSource() },
-                new { Source = CreateSource() },
-                new { Source = CreateSource() },
-                new { Source = CreateSource() },
-                new { Source = CreateSource() }
+                new { Source = CreateSource(), Ind = _ImageCount++ },
+                new { Source = CreateSource(), Ind = _ImageCount++ },
+                new { Source = CreateSource(), Ind = _ImageCount++ },
+                new { Source = CreateSource(), Ind = _ImageCount++ },
+                new { Source = CreateSource(), Ind = _ImageCount++ }
             };
         }
 
@@ -31,7 +31,8 @@ namespace PanCardViewSample
                 {
                     Items.Add(new
                     {
-                        Source = CreateSource()
+                        Source = CreateSource(),
+                        Ind = _ImageCount++
                     });
                     Items.RemoveAt(0);
                 }
@@ -44,7 +45,6 @@ namespace PanCardViewSample
 
         private string CreateSource()
         {
-            _ImageCount++;
             return $"http://lorempixel.com/400/400/sports/IMAGE{_ImageCount}/";
         }
     }
