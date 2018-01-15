@@ -56,6 +56,7 @@ namespace PanCardView
         private readonly List<View> _viewsInUse = new List<View>();
 
         private readonly object _childLocker = new object();
+        private readonly object _viewsInUseLocker = new object();
         private View _currentView;
         private View _nextView;
         private View _prevView;
@@ -294,8 +295,8 @@ namespace PanCardView
         private void SetupBackViews(bool isOnEndTouchAction)
         {
             var nextIndex = CurrentIndex + 1;
-            var prevIndex = IsOnlyForwardDirection 
-                ? nextIndex 
+            var prevIndex = IsOnlyForwardDirection
+                ? nextIndex
                 : CurrentIndex - 1;
 
             _nextView = GetView(nextIndex, _nextView, BackViewProcessor);
@@ -304,14 +305,13 @@ namespace PanCardView
             SetBackViewLayerPosition(_nextView);
             SetBackViewLayerPosition(_prevView);
 
-            _viewsInUse.Clear();
-            if (!isOnEndTouchAction)
+            if (isOnEndTouchAction)
             {
-                AddRangeViewsInUse(_currentView, _nextView, _prevView);
+                RemoveRangeViewsInUse();
             }
-
-            if (!isOnEndTouchAction)
+            else
             {
+                AddRangeViewsInUse();
                 foreach (var child in Children.Where(ShouldBeRemoved).ToArray())
                 {
                     RemoveChild(child);
@@ -353,7 +353,7 @@ namespace PanCardView
                 _viewsPool.Add(rule, viewsList);
             }
             var view = viewsList.FirstOrDefault(v => v.BindingContext == context) 
-                                ?? viewsList.FirstOrDefault(v => v.BindingContext == null && !_viewsInUse.Contains(v));
+                                ?? viewsList.FirstOrDefault(v => v.BindingContext == null && ShouldBeRemoved(v));
 
             if(view == null)
             {
@@ -481,10 +481,38 @@ namespace PanCardView
         }
 
         private bool ShouldBeRemoved(View view)
-        => view != _currentView && view != _nextView && view != _prevView;
+        => !_viewsInUse.Contains(view);
 
-        private void AddRangeViewsInUse(params View[] views)
-        => _viewsInUse.AddRange(views.Where(v => v != null));
+        private void AddRangeViewsInUse()
+        {
+            lock (_viewsInUseLocker)
+            {
+                AddViewInUseIfNotContains(_currentView);
+                AddViewInUseIfNotContains(_nextView);
+                AddViewInUseIfNotContains(_prevView);
+            }
+        }
+
+        private void AddViewInUseIfNotContains(View view)
+        {
+            if(!_viewsInUse.Contains(view))
+            {
+                _viewsInUse.Add(view);
+            }
+        }
+
+        private void RemoveRangeViewsInUse()
+        {
+            lock (_viewsInUseLocker)
+            {
+                var removeCount = 3;
+                while (removeCount > 0 && _viewsInUse.Count > 0)
+                {
+                    --removeCount;
+                    _viewsInUse.RemoveAt(0);
+                }
+            }
+        }
 
         private void FirePanStarted()
         {
