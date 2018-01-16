@@ -1,6 +1,5 @@
-﻿// 21(c) Andrei Misiukevich
-using System;
-namespace PanCardView
+﻿
+namespace PanCardView.Factory
 {
     public class CardViewItemFactory
     {

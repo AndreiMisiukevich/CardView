@@ -1,7 +1,8 @@
 ﻿// 11(c) Andrei Misiukevich
 using System;
 using Xamarin.Forms;
-namespace PanCardView
+
+namespace PanCardView.Extensions
 {
     internal static class CardViewExtensions
     {

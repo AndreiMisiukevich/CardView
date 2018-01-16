@@ -2,6 +2,7 @@
 using System;
 using FFImageLoading.Forms;
 using PanCardView;
+using PanCardView.Factory;
 using Xamarin.Forms;
 namespace PanCardViewSample
 {

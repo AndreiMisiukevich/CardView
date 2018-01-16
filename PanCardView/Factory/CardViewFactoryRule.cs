@@ -1,7 +1,8 @@
 ﻿// 21(c) Andrei Misiukevich
 using System;
 using Xamarin.Forms;
-namespace PanCardView
+
+namespace PanCardView.Factory
 {
     public sealed class CardViewFactoryRule
     {

@@ -30,12 +30,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CardsView.cs" />
-    <Compile Include="CardViewExtensions.cs" />
-    <Compile Include="CardViewFactoryRule.cs" />
-    <Compile Include="CardViewItemFactory.cs" />
-    <Compile Include="ICardProcessor.cs" />
-    <Compile Include="BaseFrontViewProcessor.cs" />
-    <Compile Include="BaseBackViewProcessor.cs" />
+    <Compile Include="Processors\BaseBackViewProcessor.cs" />
+    <Compile Include="Processors\BaseFrontViewProcessor.cs" />
+    <Compile Include="Processors\ICardProcessor.cs" />
+    <Compile Include="Extensions\CardViewExtensions.cs" />
+    <Compile Include="Factory\CardViewFactoryRule.cs" />
+    <Compile Include="Factory\CardViewItemFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -50,6 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Processors\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Factory\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

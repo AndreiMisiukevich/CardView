@@ -1,8 +1,7 @@
-﻿// 171(c) Andrei Misiukevich
-using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using System.Threading.Tasks;
-namespace PanCardView
+
+namespace PanCardView.Processors
 {
     public interface ICardProcessor
     {

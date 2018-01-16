@@ -1,15 +1,14 @@
 ﻿// 171(c) Andrei Misiukevich
 using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 using System.Threading.Tasks;
 
-namespace PanCardView
+namespace PanCardView.Processors
 {
     public class BaseBackViewProcessor : ICardProcessor
     {
         protected double InitialScale { get; } = 0.8;
-        protected uint AnimationLength { get; } = 200;
+        protected uint ResetAnimationLength { get; } = 150;
 
         public virtual void InitView(View view)
         {
@@ -40,7 +39,7 @@ namespace PanCardView
             if(view != null)
             {
                 var tcs = new TaskCompletionSource<bool>();
-                var animLength = (uint)(AnimationLength * (view.Scale - InitialScale) * 5);
+                var animLength = (uint)(ResetAnimationLength * (view.Scale - InitialScale) * 5);
                 new Animation(v => view.Scale = v, view.Scale, InitialScale)
                     .Commit(view, nameof(HandlePanReset), 16, animLength, finished: (v, t) => tcs.SetResult(true));
                 return tcs.Task;

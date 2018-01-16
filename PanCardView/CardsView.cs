@@ -7,6 +7,9 @@ using System.Collections.Specialized;
 using Xamarin.Forms.Internals;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using PanCardView.Extensions;
+using PanCardView.Factory;
+using PanCardView.Processors;
 
 namespace PanCardView
 {
@@ -16,8 +19,6 @@ namespace PanCardView
 
     public class CardsView : AbsoluteLayout
     {
-        private const int MaxChildrenCount = 6;
-
         public event CardsViewPanStartEndHandler PanStarted;
         public event CardsViewPanStartEndHandler PanEnded;
         public event CardsViewPanChangedHandler PanChanged;
@@ -85,6 +86,10 @@ namespace PanCardView
             panGesture.PanUpdated += OnPanUpdated;
             GestureRecognizers.Add(panGesture);
         }
+
+        public int MaxChildrenCount { private get; set; } = 12;
+
+        public int DesiredMaxChildrenCount { private get; set; } = 7;
 
         public double CurrentDiff { get; private set; }
 
@@ -288,7 +293,8 @@ namespace PanCardView
             }
 
             RemoveRangeViewsInUse(gestureId);
-            if (gestureId == _gestureId)
+            var isProcessingNow = gestureId != _gestureId;
+            if (!isProcessingNow)
             {
                 _isPanRunning = false;
                 if (ShouldSetIndexAfterPan)
@@ -298,6 +304,13 @@ namespace PanCardView
                 }
                 SetupBackViews();
             }
+
+            var maxChildrenCount = isProcessingNow ? MaxChildrenCount : DesiredMaxChildrenCount;
+
+            if (_viewsChildrenCount > maxChildrenCount)
+            {
+                RemoveChildren(Children.Where(c => c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray());
+            }
         }
 
         private void SetupBackViews()
@@ -306,7 +319,7 @@ namespace PanCardView
             var prevIndex = IsOnlyForwardDirection
                 ? nextIndex
                 : CurrentIndex - 1;
-
+            
             _nextView = GetView(nextIndex, BackViewProcessor);
             _prevView = GetView(prevIndex, BackViewProcessor);
 
@@ -319,9 +332,6 @@ namespace PanCardView
             var view = _currentView;
             _currentView = _currentBackView;
             _currentBackView = view;
-
-            _nextView = null;
-            _prevView = null;
         }
 
         private View GetView(int index, ICardProcessor processor)
@@ -351,7 +361,7 @@ namespace PanCardView
             var notUsingViews = viewsList.Where(v => !CheckUsingNow(v));
             var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context)
                                     ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
-                                    ?? notUsingViews.FirstOrDefault(v => !Children.Contains(v));
+                                    ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
 
             if(view == null)
             {
@@ -454,29 +464,40 @@ namespace PanCardView
                 return;
             }
 
-            lock (_childLocker)
-            {
-                ++_viewsChildrenCount;
-                if (index < 0)
+            Device.BeginInvokeOnMainThread(() => {
+                lock (_childLocker)
                 {
-                    Children.Add(view);
-                    return;
-                }
-                Children.Insert(index, view);
-            }
+                    ++_viewsChildrenCount;
+                    if (index < 0)
+                    {
+                        Children.Add(view);
+                        return;
+                    }
+                    Children.Insert(index, view);
+                } 
+            });
         }
 
-        private void RemoveChild(View view)
+        private void RemoveChildren(View[] views)
         {
-            if (view != null)
+            if (views == null)
+            {
+                return;
+            }
+
+            Device.BeginInvokeOnMainThread(() =>
             {
                 lock (_childLocker)
                 {
-                    --_viewsChildrenCount;
-                    Children.Remove(view);
-                    ClearBindingContext(view);
+                    _viewsChildrenCount -= views.Length;
+
+                    foreach (var view in views)
+                    {
+                        Children.Remove(view);
+                        ClearBindingContext(view);
+                    }
                 }
-            }
+            });
         }
 
         private void SendChildToBack(View view)
@@ -486,6 +507,8 @@ namespace PanCardView
         }
 
         private bool CheckUsingNow(View view) => _viewsInUse.Contains(view);
+
+        private bool CheckIsProcessingView(View view) => view == _currentView || view == _nextView || view == _prevView;
 
         private void AddRangeViewsInUse()
         {
@@ -498,14 +521,6 @@ namespace PanCardView
                 foreach (var view in views.Where(v => v != null))
                 {
                     _viewsInUse.Add(view);
-                }
-            }
-
-            if (_viewsChildrenCount > MaxChildrenCount)
-            {
-                foreach (var child in Children.Where(c => c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - MaxChildrenCount).ToArray())
-                {
-                    RemoveChild(child);
                 }
             }
         }
@@ -524,8 +539,11 @@ namespace PanCardView
                 {
                     foreach (var view in views.ToArray())
                     {
-                        view.IsVisible = false;
-                        ClearBindingContext(view);
+                        if (view != null)
+                        {
+                            view.IsVisible = false;
+                            ClearBindingContext(view);
+                        }
                     }
                 }
             }

@@ -2,7 +2,7 @@
 using Xamarin.Forms;
 using System.Threading.Tasks;
 
-namespace PanCardView
+namespace PanCardView.Processors
 {
     public class BaseFrontViewProcessor : ICardProcessor
     {
