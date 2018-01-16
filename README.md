@@ -4,7 +4,7 @@ Just add nuget package into your PCL project
 
 something like this
 
-[![Sample GIF](https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif)
+![Sample GIF](https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif)
 
 ## Android additional setup
 Write next line of code in your MainActivity
