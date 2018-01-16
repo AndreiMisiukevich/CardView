@@ -178,7 +178,7 @@ namespace PanCardView
         {
             if (Items != null && CurrentIndex < _itemsCount)
             {
-                _currentView = GetView(CurrentIndex, _currentView, FrontViewProcessor);
+                _currentView = GetView(CurrentIndex, FrontViewProcessor);
             }
 
             SetupBackViews();
@@ -307,8 +307,8 @@ namespace PanCardView
                 ? nextIndex
                 : CurrentIndex - 1;
 
-            _nextView = GetView(nextIndex, _nextView, BackViewProcessor);
-            _prevView = GetView(prevIndex, _prevView, BackViewProcessor);
+            _nextView = GetView(nextIndex, BackViewProcessor);
+            _prevView = GetView(prevIndex, BackViewProcessor);
 
             SetBackViewLayerPosition(_nextView);
             SetBackViewLayerPosition(_prevView);
@@ -324,7 +324,7 @@ namespace PanCardView
             _prevView = null;
         }
 
-        private View GetView(int index, View oldView, ICardProcessor processor)
+        private View GetView(int index, ICardProcessor processor)
         {
             if(index < 0 || index >= _itemsCount)
             {
@@ -348,9 +348,10 @@ namespace PanCardView
                 _viewsPool.Add(rule, viewsList);
             }
 
-            var notUsedViews = viewsList.Where(v => CheckNotUsedNow(v));
-            var view = notUsedViews.FirstOrDefault(v => v.BindingContext == context)
-                                   ?? notUsedViews.FirstOrDefault(v => v.BindingContext == null);
+            var notUsingViews = viewsList.Where(v => !CheckUsingNow(v));
+            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context)
+                                    ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
+                                    ?? notUsingViews.FirstOrDefault(v => !Children.Contains(v));
 
             if(view == null)
             {
@@ -382,7 +383,7 @@ namespace PanCardView
 
                 if(currentIndex < backIndex)
                 {
-                    RemoveChild(view);
+                    RemoveChild(view, false);
                     AddChild(view, 0);
                 }
             }
@@ -461,32 +462,34 @@ namespace PanCardView
             }
         }
 
-        private void RemoveChild(View view)
+        private void RemoveChild(View view, bool shouldClearContext = true)
         {
             if (view != null)
             {
                 lock (_childLocker)
                 {
                     Children.Remove(view);
-                    ClearBindingContext(view);
+                    if (shouldClearContext)
+                    {
+                        ClearBindingContext(view);
+                    }
                 }
             }
         }
 
-        private bool CheckNotUsedNow(View view)
-        => !_viewsInUse.Contains(view);
+        private bool CheckUsingNow(View view) => _viewsInUse.Contains(view);
 
         private void AddRangeViewsInUse(params View[] views)
         {
             lock (_viewsInUseLocker)
             {
-                foreach (var view in views.Where(v => v != null))
+                foreach (var view in views.Where(v => v != null && !_viewsInUse.Contains(v)))
                 {
                     _viewsInUse.Add(view);
                 }
             }
 
-            foreach (var child in Children.Where(CheckNotUsedNow).ToArray())
+            foreach (var child in Children.Where(c => !CheckUsingNow(c) && !c.IsVisible).ToArray())
             {
                 RemoveChild(child);
             }
@@ -496,7 +499,9 @@ namespace PanCardView
         {
             lock (_viewsInUseLocker)
             {
-                foreach (var view in views.Where(v => v != null).Union(_viewsInUse.Where(v => !Children.Contains(v) || v.BindingContext == null).ToArray()))
+                var notNullViews = views.Where(v => v != null);
+                var notUsingViews = _viewsInUse.Where(v => !Children.Contains(v) || !v.IsVisible);
+                foreach (var view in notNullViews.Union(notUsingViews).ToArray())
                 {
                     _viewsInUse.Remove(view);
                 }
