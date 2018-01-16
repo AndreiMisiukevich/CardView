@@ -16,6 +16,8 @@ namespace PanCardView
 
     public class CardsView : AbsoluteLayout
     {
+        private const int MaxChildrenCount = 6;
+
         public event CardsViewPanStartEndHandler PanStarted;
         public event CardsViewPanStartEndHandler PanEnded;
         public event CardsViewPanChangedHandler PanChanged;
@@ -54,6 +56,7 @@ namespace PanCardView
 
         private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
         private readonly HashSet<View> _viewsInUse = new HashSet<View>();
+        private readonly Dictionary<Guid, View[]> _viewsGestureCounter = new Dictionary<Guid, View[]>();
 
         private readonly object _childLocker = new object();
         private readonly object _viewsInUseLocker = new object();
@@ -65,6 +68,7 @@ namespace PanCardView
         private INotifyCollectionChanged _currentObservableCollection;
 
         private int _itemsCount;
+        private int _viewsChildrenCount;
         private bool _isPanRunning;
         private bool _isPanEndRequested = true;
         private Guid _gestureId;
@@ -182,7 +186,6 @@ namespace PanCardView
             }
 
             SetupBackViews();
-            AddRangeViewsInUse(_currentView, _nextView, _prevView);
         }
 
         private void SetupLayout(View view)
@@ -191,7 +194,7 @@ namespace PanCardView
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
         }
 
-        private void OnTouchStarted()
+        private  void OnTouchStarted()
         {
             if(!_isPanEndRequested)
             {
@@ -200,10 +203,10 @@ namespace PanCardView
             _gestureId = Guid.NewGuid();
             FirePanStarted();
             _isPanRunning = true;
-            _isPanEndRequested = false; 
+            _isPanEndRequested = false;
 
             SetupBackViews();
-            AddRangeViewsInUse(_currentView, _nextView, _prevView);
+            AddRangeViewsInUse();
         }
 
         private void OnTouchChanged(double diff)
@@ -246,9 +249,6 @@ namespace PanCardView
             }
 
             var gestureId = _gestureId;
-            var currentView = _currentView;
-            var nextView = _nextView;
-            var prevView = _prevView;
 
             _isPanEndRequested = true;
             var absDiff = Math.Abs(CurrentDiff);
@@ -287,7 +287,7 @@ namespace PanCardView
                 );
             }
 
-            RemoveRangeViewsInUse(currentView, nextView, prevView);
+            RemoveRangeViewsInUse(gestureId);
             if (gestureId == _gestureId)
             {
                 _isPanRunning = false;
@@ -376,6 +376,7 @@ namespace PanCardView
             {
                 return;
             }
+
             if(_currentView != null)
             {
                 var currentIndex = Children.IndexOf(_currentView);
@@ -383,8 +384,10 @@ namespace PanCardView
 
                 if(currentIndex < backIndex)
                 {
-                    RemoveChild(view, false);
-                    AddChild(view, 0);
+                    lock(_childLocker)
+                    {
+                        SendChildToBack(view);
+                    }
                 }
             }
         }
@@ -453,6 +456,7 @@ namespace PanCardView
 
             lock (_childLocker)
             {
+                ++_viewsChildrenCount;
                 if (index < 0)
                 {
                     Children.Add(view);
@@ -462,48 +466,67 @@ namespace PanCardView
             }
         }
 
-        private void RemoveChild(View view, bool shouldClearContext = true)
+        private void RemoveChild(View view)
         {
             if (view != null)
             {
                 lock (_childLocker)
                 {
+                    --_viewsChildrenCount;
                     Children.Remove(view);
-                    if (shouldClearContext)
-                    {
-                        ClearBindingContext(view);
-                    }
+                    ClearBindingContext(view);
                 }
             }
         }
 
+        private void SendChildToBack(View view)
+        {
+            Children.Remove(view);
+            Children.Insert(0, view);
+        }
+
         private bool CheckUsingNow(View view) => _viewsInUse.Contains(view);
 
-        private void AddRangeViewsInUse(params View[] views)
+        private void AddRangeViewsInUse()
         {
             lock (_viewsInUseLocker)
             {
-                foreach (var view in views.Where(v => v != null && !_viewsInUse.Contains(v)))
+                var views = new View[] { _currentView, _nextView, _prevView };
+
+                _viewsGestureCounter[_gestureId] = views;
+
+                foreach (var view in views.Where(v => v != null))
                 {
                     _viewsInUse.Add(view);
                 }
             }
 
-            foreach (var child in Children.Where(c => !CheckUsingNow(c) && !c.IsVisible).ToArray())
+            if (_viewsChildrenCount > MaxChildrenCount)
             {
-                RemoveChild(child);
+                foreach (var child in Children.Where(c => c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - MaxChildrenCount).ToArray())
+                {
+                    RemoveChild(child);
+                }
             }
         }
 
-        private void RemoveRangeViewsInUse(params View[] views)
+        private void RemoveRangeViewsInUse(Guid gestureId)
         {
             lock (_viewsInUseLocker)
             {
-                var notNullViews = views.Where(v => v != null);
-                var notUsingViews = _viewsInUse.Where(v => !Children.Contains(v) || !v.IsVisible);
-                foreach (var view in notNullViews.Union(notUsingViews).ToArray())
+                var views = _viewsGestureCounter[gestureId];
+                foreach (var view in views.ToArray())
                 {
                     _viewsInUse.Remove(view);
+                }
+
+                if(_gestureId != gestureId)
+                {
+                    foreach (var view in views.ToArray())
+                    {
+                        view.IsVisible = false;
+                        ClearBindingContext(view);
+                    }
                 }
             }
         }
