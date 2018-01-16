@@ -42,13 +42,13 @@ namespace PanCardViewSample
                 frame.SetBinding(VisualElement.BackgroundColorProperty, "Color");
                 content.Children.Add(frame, new Rectangle(.5, .5, 300, 300), AbsoluteLayoutFlags.PositionProportional);
 
-                //var image = new CachedImage
-                //{
-                //    Aspect = Aspect.AspectFill
-                //};
-                //image.SetBinding(CachedImage.SourceProperty, "Source");
+                var image = new CachedImage
+                {
+                    Aspect = Aspect.AspectFill
+                };
+                image.SetBinding(CachedImage.SourceProperty, "Source");
 
-                //frame.Content = image;
+                frame.Content = image;
                 return content;
             }
         };

@@ -30,7 +30,7 @@ namespace PanCardViewSample
             set
             {
                 var rnd = new Random();
-                if (value + 1 >= Items.Count)
+                if (value + 2 >= Items.Count)
                 {
                     Items.Add(new
                     {
@@ -49,7 +49,7 @@ namespace PanCardViewSample
 
         private string CreateSource()
         {
-            return $"http://lorempixel.com/400/400/sports/IMAGE{_ImageCount}/";
+            return $"http://lorempixel.com/300/300/animals/text{_ImageCount}/";
         }
     }
 }
