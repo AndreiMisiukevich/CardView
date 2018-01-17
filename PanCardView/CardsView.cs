@@ -47,6 +47,8 @@ namespace PanCardView
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
+        public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 0);
+
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
         public static readonly BindableProperty PanEndedCommandProperty = BindableProperty.Create(nameof(PanEndedCommand), typeof(ICommand), typeof(CardsView), null);
@@ -73,6 +75,7 @@ namespace PanCardView
         private bool _isPanRunning;
         private bool _isPanEndRequested = true;
         private Guid _gestureId;
+        private DateTime _lastPanTime;
 
         public CardsView() : this(null, null)
         {
@@ -129,6 +132,12 @@ namespace PanCardView
                         : Width * 0.35;
             }
             set => SetValue(MoveDistanceProperty, value);
+        }
+
+        public int PanDelay
+        {
+            get => (int)GetValue(PanDelayProperty);
+            set => SetValue(PanDelayProperty, value);
         }
 
         public bool IsOnlyForwardDirection
@@ -205,6 +214,13 @@ namespace PanCardView
             {
                 return;
             }
+
+            var deltaTime = DateTime.Now - _lastPanTime;
+            if(deltaTime.TotalMilliseconds < PanDelay)
+            {
+                return;
+            }
+
             _gestureId = Guid.NewGuid();
             FirePanStarted();
             _isPanRunning = true;
@@ -253,6 +269,7 @@ namespace PanCardView
                 return;
             }
 
+            _lastPanTime = DateTime.Now;
             var gestureId = _gestureId;
 
             _isPanEndRequested = true;
