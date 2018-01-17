@@ -73,7 +73,7 @@ namespace PanCardView
 
         private INotifyCollectionChanged _currentObservableCollection;
 
-        private int _itemsCount;
+        private int _itemsCount = -1;
         private int _viewsChildrenCount;
         private bool _isPanRunning;
         private bool _isPanEndRequested = true;
@@ -184,7 +184,7 @@ namespace PanCardView
 
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            if (Items == null || !Items.Any())
+            if (_itemsCount < 0)
             {
                 return;
             }
