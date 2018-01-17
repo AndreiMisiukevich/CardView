@@ -76,6 +76,7 @@ namespace PanCardView
         private bool _isPanEndRequested = true;
         private Guid _gestureId;
         private DateTime _lastPanTime;
+        private bool _shouldSkipTouch;
 
         public CardsView() : this(null, null)
         {
@@ -218,8 +219,10 @@ namespace PanCardView
             var deltaTime = DateTime.Now - _lastPanTime;
             if(deltaTime.TotalMilliseconds < PanDelay)
             {
+                _shouldSkipTouch = true;
                 return;
             }
+            _shouldSkipTouch = false;
 
             _gestureId = Guid.NewGuid();
             FirePanStarted();
@@ -232,6 +235,11 @@ namespace PanCardView
 
         private void OnTouchChanged(double diff)
         {
+            if(_shouldSkipTouch)
+            {
+                return;
+            }
+
             View invisibleView;
             if(diff > 0)
             {
@@ -264,7 +272,7 @@ namespace PanCardView
 
         private async void OnTouchEnded()
         {
-            if (_isPanEndRequested)
+            if (_isPanEndRequested || _shouldSkipTouch)
             {
                 return;
             }
@@ -481,18 +489,16 @@ namespace PanCardView
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(() => {
-                lock (_childLocker)
+            lock (_childLocker)
+            {
+                ++_viewsChildrenCount;
+                if (index < 0)
                 {
-                    ++_viewsChildrenCount;
-                    if (index < 0)
-                    {
-                        Children.Add(view);
-                        return;
-                    }
-                    Children.Insert(index, view);
-                } 
-            });
+                    Children.Add(view);
+                    return;
+                }
+                Children.Insert(index, view);
+            }
         }
 
         private void RemoveChildren(View[] views)
@@ -502,19 +508,16 @@ namespace PanCardView
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(() =>
+            lock (_childLocker)
             {
-                lock (_childLocker)
-                {
-                    _viewsChildrenCount -= views.Length;
+                _viewsChildrenCount -= views.Length;
 
-                    foreach (var view in views)
-                    {
-                        Children.Remove(view);
-                        ClearBindingContext(view);
-                    }
+                foreach (var view in views)
+                {
+                    Children.Remove(view);
+                    ClearBindingContext(view);
                 }
-            });
+            }
         }
 
         private void SendChildToBack(View view)

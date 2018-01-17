@@ -49,13 +49,10 @@ namespace PanCardView.Processors
 
         public virtual Task HandlePanApply(View view)
         {
-            Device.BeginInvokeOnMainThread(() => 
+            if (view != null)
             {
-                if (view != null)
-                {
-                    view.Scale = 1;
-                }
-            });
+                view.Scale = 1;
+            }
             return Task.FromResult(true);
         }
     }

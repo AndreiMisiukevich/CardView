@@ -49,34 +49,25 @@ namespace PanCardView.Processors
             return tcs.Task;
         }
 
-        public virtual Task HandlePanApply(View view)
+        public virtual async Task HandlePanApply(View view)
         {
-            var tcs = new TaskCompletionSource<bool>();
-            Device.BeginInvokeOnMainThread(async () =>
+            if (view != null)
             {
-                if (view != null)
-                {
-                    await view.FadeTo(0, ApplyAnimationLength);
-                    view.IsVisible = false;
-                }
-                tcs.SetResult(true);
-            });
-            return tcs.Task;
+                await view.FadeTo(0, ApplyAnimationLength);
+                view.IsVisible = false;
+            }
         }
 
         protected virtual void ResetInitialState(View view, bool isVisible = true)
         {
             if (view != null)
             {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    view.Scale = 1;
-                    view.Opacity = 1;
-                    view.TranslationX = 0;
-                    view.Rotation = 0;
-                    view.TranslationY = 0;
-                    view.IsVisible = isVisible;
-                });
+                view.Scale = 1;
+                view.Opacity = 1;
+                view.TranslationX = 0;
+                view.Rotation = 0;
+                view.TranslationY = 0;
+                view.IsVisible = isVisible;
             }
         }
 
