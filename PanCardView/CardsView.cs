@@ -505,7 +505,15 @@ namespace PanCardView
             var index = 0;
             if (_currentView != null)
             {
-                index = Items.IndexOf(item => item == _currentView.BindingContext);
+                for (var i = 0; i < _itemsCount; ++i)
+                {
+                    if(Items[i] == _currentView.BindingContext)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
                 if (index < 0)
                 {
                     index = CurrentIndex - 1;
