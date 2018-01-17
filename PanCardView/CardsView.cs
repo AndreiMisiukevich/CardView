@@ -48,6 +48,8 @@ namespace PanCardView
 
         public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 200);
 
+        public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), false);
+
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
         public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 7);
@@ -79,6 +81,8 @@ namespace PanCardView
         private bool _isPanEndRequested = true;
         private Guid _gestureId;
         private DateTime _lastPanTime;
+        private int _inCoursePanDelay;
+
         private bool _shouldSkipTouch;
 
         public CardsView() : this(null, null)
@@ -136,8 +140,14 @@ namespace PanCardView
 
         public int PanDelay
         {
-            get => (int)GetValue(PanDelayProperty);
+            get => IsPanInCourse ? _inCoursePanDelay : (int)GetValue(PanDelayProperty);
             set => SetValue(PanDelayProperty, value);
+        }
+
+        public bool IsPanInCourse
+        {
+            get => (bool)GetValue(IsPanInCourseProperty);
+            set => SetValue(IsPanInCourseProperty, value);
         }
 
         public int MaxChildrenCount
@@ -226,7 +236,7 @@ namespace PanCardView
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
         }
 
-        private  void OnTouchStarted()
+        private void OnTouchStarted()
         {
             if(!_isPanEndRequested)
             {
@@ -240,6 +250,11 @@ namespace PanCardView
                 return;
             }
             _shouldSkipTouch = false;
+
+            if(IsPanInCourse)
+            {
+                _inCoursePanDelay = int.MaxValue;
+            }
 
             _gestureId = Guid.NewGuid();
             FirePanStarted();
@@ -352,6 +367,11 @@ namespace PanCardView
             if (_viewsChildrenCount > maxChildrenCount)
             {
                 RemoveChildren(Children.Where(c => c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray());
+            }
+
+            if (IsPanInCourse)
+            {
+                _inCoursePanDelay = 0;
             }
         }
 
