@@ -1,9 +1,4 @@
-﻿// 01(c) Andrei Misiukevich
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
 using UIKit;
 using FFImageLoading.Forms.Touch;
 

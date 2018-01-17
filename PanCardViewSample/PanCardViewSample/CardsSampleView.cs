@@ -1,9 +1,8 @@
-﻿// 11(c) Andrei Misiukevich
-using System;
-using FFImageLoading.Forms;
+﻿using FFImageLoading.Forms;
 using PanCardView;
 using PanCardView.Factory;
 using Xamarin.Forms;
+
 namespace PanCardViewSample
 {
     public class CardsSampleView : ContentPage
@@ -13,8 +12,7 @@ namespace PanCardViewSample
             var cardsView = new CardsView
             {
                 ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
-                BackgroundColor = Color.Black.MultiplyAlpha(.9),
-                PanDelay = 500
+                BackgroundColor = Color.Black.MultiplyAlpha(.9)
             };
             cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
             cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));

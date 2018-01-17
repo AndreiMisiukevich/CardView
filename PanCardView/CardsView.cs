@@ -1,5 +1,4 @@
-﻿// 01(c) Andrei Misiukevich
-using System;
+﻿using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +46,7 @@ namespace PanCardView
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
-        public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 0);
+        public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 201);
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 

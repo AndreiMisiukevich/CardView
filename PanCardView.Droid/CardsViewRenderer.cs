@@ -1,5 +1,4 @@
-﻿// 221(c) Andrei Misiukevich
-using System;
+﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Android.Content;

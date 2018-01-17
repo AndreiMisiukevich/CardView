@@ -1,5 +1,4 @@
-﻿// 171(c) Andrei Misiukevich
-using System;
+﻿using System;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 
