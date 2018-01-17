@@ -2,6 +2,7 @@
 using PanCardView;
 using PanCardView.Factory;
 using Xamarin.Forms;
+using System.Collections.Generic;
 
 namespace PanCardViewSample
 {

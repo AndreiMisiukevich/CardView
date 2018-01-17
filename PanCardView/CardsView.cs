@@ -9,6 +9,7 @@ using System.Windows.Input;
 using PanCardView.Extensions;
 using PanCardView.Factory;
 using PanCardView.Processors;
+using System.Collections;
 
 namespace PanCardView
 {
@@ -33,7 +34,7 @@ namespace PanCardView
             view.SetCurrentView();
         });
 
-        public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList<object>), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
+        public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetItemsCount();
             bindable.AsCardView().SetCurrentView();
         });
@@ -114,9 +115,9 @@ namespace PanCardView
             set => SetValue(CurrentIndexProperty, value);
         }
 
-        public IList<object> Items 
+        public IList Items 
         {
-            get => GetValue(ItemsProperty) as IList<object>;
+            get => GetValue(ItemsProperty) as IList;
             set => SetValue(ItemsProperty, value);
         }
 
