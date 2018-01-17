@@ -35,11 +35,11 @@ namespace PanCardView.Droid
 
             if(_panStarted && action == MotionEventActions.Up) // action == MotionEventActions.Move && e.PointerCount > 1
             {
-                EndPan(element, e.ActionIndex);
+                EndPan(element, -1);
             }
             else if(action == MotionEventActions.Down)
             {
-                StartPan(element, e.ActionIndex);
+                StartPan(element, -1);
             }
 
             return base.OnTouchEvent(e);

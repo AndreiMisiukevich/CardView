@@ -46,7 +46,11 @@ namespace PanCardView
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
-        public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 201);
+        public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 200);
+
+        public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
+
+        public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 7);
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -89,10 +93,6 @@ namespace PanCardView
             panGesture.PanUpdated += OnPanUpdated;
             GestureRecognizers.Add(panGesture);
         }
-
-        public int MaxChildrenCount { private get; set; } = 12;
-
-        public int DesiredMaxChildrenCount { private get; set; } = 7;
 
         public double CurrentDiff { get; private set; }
 
@@ -140,6 +140,18 @@ namespace PanCardView
             set => SetValue(PanDelayProperty, value);
         }
 
+        public int MaxChildrenCount
+        {
+            get => (int)GetValue(MaxChildrenCountProperty);
+            set => SetValue(MaxChildrenCountProperty, value);
+        }
+
+        public int DesiredMaxChildrenCount
+        {
+            get => (int)GetValue(DesiredMaxChildrenCountProperty);
+            set => SetValue(DesiredMaxChildrenCountProperty, value);
+        }
+
         public bool IsOnlyForwardDirection
         {
             get => (bool)GetValue(IsOnlyForwardDirectionProperty);
@@ -180,14 +192,20 @@ namespace PanCardView
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
-                    OnTouchStarted();
+                    if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
+                    {
+                        OnTouchStarted();
+                    }
                     break;
                 case GestureStatus.Running:
                     OnTouchChanged(e.TotalX);
                     break;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
-                    OnTouchEnded();
+                    if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
+                    {
+                        OnTouchEnded();
+                    }
                     break;
             }
         }
