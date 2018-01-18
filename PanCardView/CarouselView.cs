@@ -6,7 +6,7 @@ namespace PanCardView
 {
     public class CarouselView : CardsView
     {
-        public CarouselView() : this(new BaseCardFrontViewProcessor(), new BaseCarouselBackViewProcessor())
+        public CarouselView() : this(new BaseCarouselFrontViewProcessor(), new BaseCarouselBackViewProcessor())
         {
         }
 
