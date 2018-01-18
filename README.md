@@ -6,13 +6,17 @@ something like this
 
 ![Sample GIF](https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif)
 
-## Android additional setup
-Write next line of code in your MainActivity
-
--> CardsViewRenderer.Init();
-
 ## NuGet
 * [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
+
+Add nuget package to your Xamarin.Forms PCL project and to your Xamarin.Forms Android project.
+
+## Android additional setup
+Write next line of code in your MainActivity for preserving linking
+
+```csharp
+CardsViewRenderer.Init();
+```
 
 ## Samples
 The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
