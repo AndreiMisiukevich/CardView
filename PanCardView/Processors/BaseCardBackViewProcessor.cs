@@ -10,7 +10,7 @@ namespace PanCardView.Processors
         protected double InitialScale { get; } = 0.8;
         protected uint ResetAnimationLength { get; } = 150;
 
-        public virtual void InitView(View view, PanItemPosition panItemPosition)
+        public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if(view != null)
             {
@@ -23,18 +23,13 @@ namespace PanCardView.Processors
             }
         }
 
-        public virtual void HandlePanChanged(View view, double xPos, PanItemPosition panItemPosition)
+        public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
-            var parent = view?.Parent as CardsView;
-            if(parent == null)
-            {
-                return;
-            }
-            var calcScale = InitialScale + Math.Abs((xPos / parent.MoveDistance) * (1 - InitialScale));
+            var calcScale = InitialScale + Math.Abs((xPos / cardsView.MoveDistance) * (1 - InitialScale));
             view.Scale = Math.Min(calcScale, 1);
         }
 
-        public virtual Task HandlePanReset(View view, PanItemPosition panItemPosition)
+        public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if(view != null)
             {
@@ -47,7 +42,7 @@ namespace PanCardView.Processors
             return Task.FromResult(true);
         }
 
-        public virtual Task HandlePanApply(View view, PanItemPosition panItemPosition)
+        public virtual Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {

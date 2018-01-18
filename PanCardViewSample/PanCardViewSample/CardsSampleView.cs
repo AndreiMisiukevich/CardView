@@ -2,6 +2,7 @@
 using PanCardView;
 using PanCardView.Factory;
 using Xamarin.Forms;
+using PanCardView.Processors;
 
 namespace PanCardViewSample
 {
@@ -9,7 +10,7 @@ namespace PanCardViewSample
     {
         public CardsSampleView()
         {
-            var cardsView = new CardsView
+            var cardsView = new CardsView(new BaseCarouselFrontViewProcessor(), new BaseCarouselBackViewProcessor())
             {
                 ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9),

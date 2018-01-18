@@ -293,8 +293,8 @@ namespace PanCardView
             CurrentDiff = diff;
             FirePanChanged();
 
-            FrontViewProcessor.HandlePanChanged(_currentView, diff, _currentBackPanItemPosition);
-            BackViewProcessor.HandlePanChanged(_currentBackView, diff, _currentBackPanItemPosition);
+            FrontViewProcessor.HandlePanChanged(_currentView, this, diff, _currentBackPanItemPosition);
+            BackViewProcessor.HandlePanChanged(_currentBackView, this, diff, _currentBackPanItemPosition);
         }
 
         private async void OnTouchEnded()
@@ -337,16 +337,16 @@ namespace PanCardView
                 FirePanEnded(CurrentDiff < 0);
 
                 await Task.WhenAll( //current view and backview were swapped
-                    FrontViewProcessor.HandlePanApply(_currentBackView, _currentBackPanItemPosition),
-                    BackViewProcessor.HandlePanApply(_currentView, _currentBackPanItemPosition)
+                    FrontViewProcessor.HandlePanApply(_currentBackView, this, _currentBackPanItemPosition),
+                    BackViewProcessor.HandlePanApply(_currentView, this, _currentBackPanItemPosition)
                 );
             }
             else
             {
                 FirePanEnded();
                 await Task.WhenAll(
-                    FrontViewProcessor.HandlePanReset(_currentView, _currentBackPanItemPosition),
-                    BackViewProcessor.HandlePanReset(_currentBackView, _currentBackPanItemPosition)
+                    FrontViewProcessor.HandlePanReset(_currentView, this, _currentBackPanItemPosition),
+                    BackViewProcessor.HandlePanReset(_currentBackView, this, _currentBackPanItemPosition)
                 );
             }
 
@@ -629,7 +629,7 @@ namespace PanCardView
         private void InitProcessor(View view, PanItemPosition panItemPosition)
         => (panItemPosition == PanItemPosition.Current
             ? FrontViewProcessor
-            : BackViewProcessor).InitView(view, panItemPosition);
+            : BackViewProcessor).InitView(view, this, panItemPosition);
 
         private void RemoveRangeViewsInUse(Guid gestureId)
         {

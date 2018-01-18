@@ -13,29 +13,23 @@ namespace PanCardView.Processors
 
         protected uint ResetAnimationLength { get; set; } = 150;
 
-        public virtual void InitView(View view, PanItemPosition panItemPosition)
+        public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         => ResetInitialState(view);
 
-        public virtual void HandlePanChanged(View view, double xPos, PanItemPosition panItemPosition)
+        public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
-            var parent = view?.Parent as CardsView;
-            if(parent == null)
-            {
-                return;
-            }
             view.TranslationX = xPos;
             view.TranslationY = Math.Abs(xPos) / 10;
-            view.Rotation = 0.3 * Math.Min(xPos / parent.Width, 1) * Rad;
+            view.Rotation = 0.3 * Math.Min(xPos / cardsView.Width, 1) * Rad;
         }
 
-        public virtual Task HandlePanReset(View view, PanItemPosition panItemPosition)
+        public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
-            var parent = view.Parent as CardsView;
             var tcs = new TaskCompletionSource<bool>();
 
             if (!CheckIsInitialPosition(view))
             {
-                var animLength = (uint)(ResetAnimationLength * Math.Min(Math.Abs(view.TranslationX / parent.MoveDistance), 1.0));
+                var animLength = (uint)(ResetAnimationLength * Math.Min(Math.Abs(view.TranslationX / cardsView.MoveDistance), 1.0));
                 new Animation {
                     { 0, 1, new Animation (v => view.TranslationX = v, view.TranslationX, 0) },
                     { 0, 1, new Animation (v => view.TranslationY = v, view.TranslationY, 0) },
@@ -50,7 +44,7 @@ namespace PanCardView.Processors
             return tcs.Task;
         }
 
-        public virtual async Task HandlePanApply(View view, PanItemPosition panItemPosition)
+        public virtual async Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
