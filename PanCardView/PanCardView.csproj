@@ -30,8 +30,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CardsView.cs" />
-    <Compile Include="Processors\BaseBackViewProcessor.cs" />
-    <Compile Include="Processors\BaseFrontViewProcessor.cs" />
+    <Compile Include="Processors\BaseCardBackViewProcessor.cs" />
+    <Compile Include="Processors\BaseCardFrontViewProcessor.cs" />
     <Compile Include="Processors\ICardProcessor.cs" />
     <Compile Include="Extensions\CardViewExtensions.cs" />
     <Compile Include="Factory\CardViewFactoryRule.cs" />

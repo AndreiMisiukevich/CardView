@@ -5,7 +5,7 @@ using PanCardView.Enums;
 
 namespace PanCardView.Processors
 {
-    public class BaseBackViewProcessor : ICardProcessor
+    public class BaseCardBackViewProcessor : ICardProcessor
     {
         protected double InitialScale { get; } = 0.8;
         protected uint ResetAnimationLength { get; } = 150;

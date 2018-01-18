@@ -97,8 +97,8 @@ namespace PanCardView
 
         public CardsView(ICardProcessor frontViewProcessor, ICardProcessor backViewProcessor)
         {
-            FrontViewProcessor = frontViewProcessor ?? new BaseFrontViewProcessor();
-            BackViewProcessor = backViewProcessor ?? new BaseBackViewProcessor();
+            FrontViewProcessor = frontViewProcessor ?? new BaseCardFrontViewProcessor();
+            BackViewProcessor = backViewProcessor ?? new BaseCardBackViewProcessor();
             var panGesture = new PanGestureRecognizer();
             panGesture.PanUpdated += OnPanUpdated;
             GestureRecognizers.Add(panGesture);

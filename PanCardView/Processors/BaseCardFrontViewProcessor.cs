@@ -5,7 +5,7 @@ using PanCardView.Enums;
 
 namespace PanCardView.Processors
 {
-    public class BaseFrontViewProcessor : ICardProcessor
+    public class BaseCardFrontViewProcessor : ICardProcessor
     {
         private const double Rad = 57.2957795;
 
