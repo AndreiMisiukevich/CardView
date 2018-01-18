@@ -101,6 +101,7 @@ namespace PanCardView
             var panGesture = new PanGestureRecognizer();
             panGesture.PanUpdated += OnPanUpdated;
             GestureRecognizers.Add(panGesture);
+            IsClippedToBounds = true;
         }
 
         public double CurrentDiff { get; private set; }

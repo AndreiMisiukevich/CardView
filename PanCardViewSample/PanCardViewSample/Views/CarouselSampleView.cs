@@ -22,7 +22,7 @@ namespace PanCardViewSample.Views
             cardsView.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
             cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 
-            Title = "CardsView";
+            Title = "CarouselView";
             Content = cardsView;
             BindingContext = new SharedSampleViewModel();
         }
