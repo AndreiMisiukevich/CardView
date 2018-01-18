@@ -16,7 +16,7 @@ namespace PanCardView.Processors
         public virtual void InitView(View view, PanItemPosition panItemPosition)
         => ResetInitialState(view);
 
-        public virtual void HandlePanChanged(View view, double xPos)
+        public virtual void HandlePanChanged(View view, double xPos, PanItemPosition panItemPosition)
         {
             var parent = view?.Parent as CardsView;
             if(parent == null)
@@ -28,7 +28,7 @@ namespace PanCardView.Processors
             view.Rotation = 0.3 * Math.Min(xPos / parent.Width, 1) * Rad;
         }
 
-        public virtual Task HandlePanReset(View view)
+        public virtual Task HandlePanReset(View view, PanItemPosition panItemPosition)
         {
             var parent = view.Parent as CardsView;
             var tcs = new TaskCompletionSource<bool>();
@@ -50,7 +50,7 @@ namespace PanCardView.Processors
             return tcs.Task;
         }
 
-        public virtual async Task HandlePanApply(View view)
+        public virtual async Task HandlePanApply(View view, PanItemPosition panItemPosition)
         {
             if (view != null)
             {

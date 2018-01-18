@@ -76,6 +76,8 @@ namespace PanCardView
         private View _nextView;
         private View _prevView;
         private View _currentBackView;
+        private PanItemPosition _currentBackPanItemPosition
+;
 
         private INotifyCollectionChanged _currentObservableCollection;
 
@@ -234,7 +236,7 @@ namespace PanCardView
         {
             if (Items != null && CurrentIndex < _itemsCount)
             {
-                _currentView = GetView(CurrentIndex, PanItemPosition.Current, true);
+                _currentView = GetView(CurrentIndex, PanItemPosition.Current);
             }
 
             SetupBackViews();
@@ -282,24 +284,7 @@ namespace PanCardView
                 return;
             }
 
-            View invisibleView;
-            if(diff > 0)
-            {
-                _currentBackView = _prevView;
-                invisibleView = _nextView;
-            }
-            else
-            {
-                _currentBackView = _nextView;
-                invisibleView = _prevView;
-            }
-
-            if(invisibleView != null && invisibleView != _currentBackView)
-            {
-                invisibleView.IsVisible = false;
-            }
-
-            if (_currentBackView == null)
+            if (!TrySetSelectedBackView(diff))
             {
                 return;
             }
@@ -308,8 +293,8 @@ namespace PanCardView
             CurrentDiff = diff;
             FirePanChanged();
 
-            FrontViewProcessor.HandlePanChanged(_currentView, diff);
-            BackViewProcessor.HandlePanChanged(_currentBackView, diff);
+            FrontViewProcessor.HandlePanChanged(_currentView, diff, _currentBackPanItemPosition);
+            BackViewProcessor.HandlePanChanged(_currentBackView, diff, _currentBackPanItemPosition);
         }
 
         private async void OnTouchEnded()
@@ -352,16 +337,16 @@ namespace PanCardView
                 FirePanEnded(CurrentDiff < 0);
 
                 await Task.WhenAll( //current view and backview were swapped
-                    FrontViewProcessor.HandlePanApply(_currentBackView),
-                    BackViewProcessor.HandlePanApply(_currentView)
+                    FrontViewProcessor.HandlePanApply(_currentBackView, _currentBackPanItemPosition),
+                    BackViewProcessor.HandlePanApply(_currentView, _currentBackPanItemPosition)
                 );
             }
             else
             {
                 FirePanEnded();
                 await Task.WhenAll(
-                    FrontViewProcessor.HandlePanReset(_currentView),
-                    BackViewProcessor.HandlePanReset(_currentBackView)
+                    FrontViewProcessor.HandlePanReset(_currentView, _currentBackPanItemPosition),
+                    BackViewProcessor.HandlePanReset(_currentBackView, _currentBackPanItemPosition)
                 );
             }
 
@@ -389,6 +374,30 @@ namespace PanCardView
             {
                 _inCoursePanDelay = 0;
             }
+        }
+
+        private bool TrySetSelectedBackView(double diff)
+        {
+            View invisibleView;
+            if (diff > 0)
+            {
+                _currentBackView = _prevView;
+                invisibleView = _nextView;
+                _currentBackPanItemPosition = PanItemPosition.Prev;
+            }
+            else
+            {
+                _currentBackView = _nextView;
+                invisibleView = _prevView;
+                _currentBackPanItemPosition = PanItemPosition.Next;
+            }
+
+            if (invisibleView != null && invisibleView != _currentBackView)
+            {
+                invisibleView.IsVisible = false;
+            }
+
+            return _currentBackView != null;
         }
 
         private void SetupBackViews()
