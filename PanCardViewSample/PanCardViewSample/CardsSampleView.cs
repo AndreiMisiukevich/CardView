@@ -2,7 +2,6 @@
 using PanCardView;
 using PanCardView.Factory;
 using Xamarin.Forms;
-using System.Collections.Generic;
 
 namespace PanCardViewSample
 {
@@ -13,7 +12,9 @@ namespace PanCardViewSample
             var cardsView = new CardsView
             {
                 ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
-                BackgroundColor = Color.Black.MultiplyAlpha(.9)
+                BackgroundColor = Color.Black.MultiplyAlpha(.9),
+                IsPanInCourse = true,
+                IsRecycled = true
             };
             cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
             cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
@@ -45,9 +46,19 @@ namespace PanCardViewSample
                 {
                     Aspect = Aspect.AspectFill
                 };
-                image.SetBinding(CachedImage.SourceProperty, "Source");
 
                 frame.Content = image;
+
+
+                content.BindingContextChanged += (sender, e) => {
+                    if(content?.BindingContext == null)
+                    {
+                        return;
+                    }
+
+                    image.Source = ((dynamic)content.BindingContext).Source;
+                };
+
                 return content;
             }
         };

@@ -29,17 +29,17 @@ namespace PanCardViewSample
             get => _currentIndex;
             set
             {
-                var rnd = new Random();
-                if (value + 2 >= Items.Count)
-                {
-                    Items.Add(new
-                    {
-                        Source = CreateSource(),
-                        Ind = _ImageCount++,
-                        Color = Color.FromRgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255))
-                    });
-                    Items.RemoveAt(0);
-                }
+                //var rnd = new Random();
+                //if (value + 2 >= Items.Count)
+                //{
+                //    Items.Add(new
+                //    {
+                //        Source = CreateSource(),
+                //        Ind = _ImageCount++,
+                //        Color = Color.FromRgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255))
+                //    });
+                //    Items.RemoveAt(0);
+                //}
                 _currentIndex = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentIndex)));
             }

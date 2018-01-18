@@ -51,6 +51,8 @@ namespace PanCardView
 
         public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), false);
 
+        public static readonly BindableProperty IsRecycledProperty = BindableProperty.Create(nameof(IsRecycled), typeof(bool), typeof(CardsView), false);
+
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 18);
 
         public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 12);
@@ -151,6 +153,12 @@ namespace PanCardView
             set => SetValue(IsPanInCourseProperty, value);
         }
 
+        public bool IsRecycled
+        {
+            get => (bool)GetValue(IsRecycledProperty);
+            set => SetValue(IsRecycledProperty, value);
+        }
+
         public int MaxChildrenCount
         {
             get => (int)GetValue(MaxChildrenCountProperty);
@@ -225,7 +233,7 @@ namespace PanCardView
         {
             if (Items != null && CurrentIndex < _itemsCount)
             {
-                _currentView = GetView(CurrentIndex, FrontViewProcessor);
+                _currentView = GetView(CurrentIndex, FrontViewProcessor, true);
             }
 
             SetupBackViews();
@@ -324,9 +332,15 @@ namespace PanCardView
                     indexDelta = Math.Abs(indexDelta);
                 }
                 var newIndex = CurrentIndex + indexDelta;
+
                 if (newIndex < 0 || newIndex >= _itemsCount)
                 {
-                    return;
+                    if (!IsRecycled)
+                    {
+                        return;
+                    }
+
+                    newIndex = GetRecycledIndex(newIndex);
                 }
 
                 SwapViews();
@@ -383,8 +397,8 @@ namespace PanCardView
                 ? nextIndex
                 : CurrentIndex - 1;
             
-            _nextView = GetView(nextIndex, BackViewProcessor);
-            _prevView = GetView(prevIndex, BackViewProcessor);
+            _nextView = GetView(nextIndex, BackViewProcessor, false);
+            _prevView = GetView(prevIndex, BackViewProcessor, false);
 
             SetBackViewLayerPosition(_nextView);
             SetBackViewLayerPosition(_prevView);
@@ -397,11 +411,22 @@ namespace PanCardView
             _currentBackView = view;
         }
 
-        private View GetView(int index, ICardProcessor processor)
+        private View GetView(int index, ICardProcessor processor, bool canBeSingle)
         {
-            if(index < 0 || index >= _itemsCount)
+            if(_itemsCount < 0)
             {
                 return null;
+            }
+            
+            if(index < 0 || index >= _itemsCount)
+            {
+                if(!IsRecycled || (!canBeSingle && _itemsCount < 2))
+                {
+                    return null;
+                }
+
+                index = GetRecycledIndex(index);
+
             }
 
             var context = Items[index];
@@ -613,6 +638,15 @@ namespace PanCardView
                     }
                 }
             }
+        }
+
+        private int GetRecycledIndex(int index)
+        {
+            while (index < 0 || index >= _itemsCount)
+            {
+                index = Math.Abs(_itemsCount - Math.Abs(index));
+            }
+            return index;
         }
 
         private void FirePanStarted()
