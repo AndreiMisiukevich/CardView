@@ -36,6 +36,7 @@
     <Compile Include="Extensions\CardViewExtensions.cs" />
     <Compile Include="Factory\CardViewFactoryRule.cs" />
     <Compile Include="Factory\CardViewItemFactory.cs" />
+    <Compile Include="Enums\PanItemPosition.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -55,6 +56,7 @@
     <Folder Include="Processors\" />
     <Folder Include="Extensions\" />
     <Folder Include="Factory\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

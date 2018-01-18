@@ -10,6 +10,7 @@ using PanCardView.Extensions;
 using PanCardView.Factory;
 using PanCardView.Processors;
 using System.Collections;
+using PanCardView.Enums;
 
 namespace PanCardView
 {
@@ -233,7 +234,7 @@ namespace PanCardView
         {
             if (Items != null && CurrentIndex < _itemsCount)
             {
-                _currentView = GetView(CurrentIndex, FrontViewProcessor, true);
+                _currentView = GetView(CurrentIndex, PanItemPosition.Current, true);
             }
 
             SetupBackViews();
@@ -397,8 +398,8 @@ namespace PanCardView
                 ? nextIndex
                 : CurrentIndex - 1;
             
-            _nextView = GetView(nextIndex, BackViewProcessor, false);
-            _prevView = GetView(prevIndex, BackViewProcessor, false);
+            _nextView = GetView(nextIndex, PanItemPosition.Next);
+            _prevView = GetView(prevIndex, PanItemPosition.Prev);
 
             SetBackViewLayerPosition(_nextView);
             SetBackViewLayerPosition(_prevView);
@@ -411,7 +412,7 @@ namespace PanCardView
             _currentBackView = view;
         }
 
-        private View GetView(int index, ICardProcessor processor, bool canBeSingle)
+        private View GetView(int index, PanItemPosition panIntemPosition)
         {
             if(_itemsCount < 0)
             {
@@ -420,7 +421,7 @@ namespace PanCardView
             
             if(index < 0 || index >= _itemsCount)
             {
-                if(!IsRecycled || (!canBeSingle && _itemsCount < 2))
+                if(!IsRecycled || (panIntemPosition != PanItemPosition.Current && _itemsCount < 2))
                 {
                     return null;
                 }
@@ -457,7 +458,7 @@ namespace PanCardView
                 viewsList.Add(view);
             }
 
-            processor.InitView(view);
+            InitProcessor(view, panIntemPosition);
 
             view.BindingContext = context;
 
@@ -615,6 +616,11 @@ namespace PanCardView
                 }
             }
         }
+
+        private void InitProcessor(View view, PanItemPosition panItemPosition)
+        => (panItemPosition == PanItemPosition.Current
+            ? FrontViewProcessor
+            : BackViewProcessor).InitView(view, panItemPosition);
 
         private void RemoveRangeViewsInUse(Guid gestureId)
         {

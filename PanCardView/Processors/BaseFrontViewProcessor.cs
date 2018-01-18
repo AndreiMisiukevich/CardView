@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using PanCardView.Enums;
 
 namespace PanCardView.Processors
 {
@@ -12,7 +13,7 @@ namespace PanCardView.Processors
 
         protected uint ResetAnimationLength { get; set; } = 150;
 
-        public virtual void InitView(View view)
+        public virtual void InitView(View view, PanItemPosition panItemPosition)
         => ResetInitialState(view);
 
         public virtual void HandlePanChanged(View view, double xPos)

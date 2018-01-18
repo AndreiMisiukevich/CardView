@@ -9,7 +9,7 @@ namespace PanCardView.Processors
         protected double InitialScale { get; } = 0.8;
         protected uint ResetAnimationLength { get; } = 150;
 
-        public virtual void InitView(View view)
+        public virtual void InitView(View view, PanItemPosition panItemPosition)
         {
             if(view != null)
             {
