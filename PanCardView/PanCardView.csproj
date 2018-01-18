@@ -37,6 +37,8 @@
     <Compile Include="Factory\CardViewFactoryRule.cs" />
     <Compile Include="Factory\CardViewItemFactory.cs" />
     <Compile Include="Enums\PanItemPosition.cs" />
+    <Compile Include="Processors\BaseCarouselBackViewProcessor.cs" />
+    <Compile Include="Processors\BaseCarouselFrontViewProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
