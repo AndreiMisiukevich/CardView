@@ -3,16 +3,16 @@ using System.ComponentModel;
 using Xamarin.Forms;
 using System;
 
-namespace PanCardViewSample
+namespace PanCardViewSample.ViewModels
 {
-    public sealed class PanCardSampleViewModel : INotifyPropertyChanged
+    public sealed class SharedSampleViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int _currentIndex;
         private int _ImageCount = 500;
 
-        public PanCardSampleViewModel()
+        public SharedSampleViewModel()
         {
             Items = new ObservableCollection<object>
             {

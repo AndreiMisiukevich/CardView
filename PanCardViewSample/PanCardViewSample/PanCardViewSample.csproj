@@ -30,8 +30,10 @@
   <ItemGroup>
     <Compile Include="PanCardViewSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CardSampleViewModel.cs" />
-    <Compile Include="CardsSampleView.cs" />
+    <Compile Include="Views\CardsSampleView.cs" />
+    <Compile Include="Views\CarouselSampleView.cs" />
+    <Compile Include="ViewModels\CardSampleViewModel.cs" />
+    <Compile Include="CardsFactory\RuleHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">
@@ -61,6 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="CardsFactory\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

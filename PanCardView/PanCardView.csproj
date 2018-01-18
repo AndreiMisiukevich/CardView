@@ -39,6 +39,7 @@
     <Compile Include="Enums\PanItemPosition.cs" />
     <Compile Include="Processors\BaseCarouselBackViewProcessor.cs" />
     <Compile Include="Processors\BaseCarouselFrontViewProcessor.cs" />
+    <Compile Include="CarouselView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

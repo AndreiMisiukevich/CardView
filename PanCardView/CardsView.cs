@@ -76,8 +76,7 @@ namespace PanCardView
         private View _nextView;
         private View _prevView;
         private View _currentBackView;
-        private PanItemPosition _currentBackPanItemPosition
-;
+        private PanItemPosition _currentBackPanItemPosition;
 
         private INotifyCollectionChanged _currentObservableCollection;
 
