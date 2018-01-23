@@ -15,9 +15,14 @@ namespace PanCardViewSample
     {
         public StartPage()
         {
-            var toCardsBtn = new Button { Text = "CardsView" };
+            var toCardsBtn = new Button { Text = "CardsView Items" };
             toCardsBtn.Clicked += (sender, e) => {
                 this.Navigation.PushAsync(new CardsSampleView());
+            };
+
+            var toCardsBtnCustom = new Button { Text = "CardsView CustomContexts" };
+            toCardsBtnCustom.Clicked += (sender, e) => {
+                this.Navigation.PushAsync(new CardsSampleCustomView());
             };
 
             var toCarouselBtn = new Button { Text = "CarouselView" };
@@ -29,6 +34,7 @@ namespace PanCardViewSample
             {
                 Children = {
                     toCardsBtn,
+                    toCardsBtnCustom,
                     toCarouselBtn
                 }
             };

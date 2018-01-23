@@ -44,6 +44,17 @@ namespace PanCardView
             bindable.AsCardView().SetCurrentView();
         });
 
+        public static readonly BindableProperty CurrentContextProperty = BindableProperty.Create(nameof(CurrentContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay, propertyChanged: (bindable, oldValue, newValue) => {
+            if(newValue != null && bindable.AsCardView()._currentView == null)
+            {
+                bindable.AsCardView().SetCurrentView();
+            }
+        });
+
+        public static readonly BindableProperty NextContextProperty = BindableProperty.Create(nameof(NextContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
+
+        public static readonly BindableProperty PrevContextProperty = BindableProperty.Create(nameof(PrevContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
+
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
@@ -56,7 +67,7 @@ namespace PanCardView
 
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 18);
 
-        public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 12);
+        public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 9);
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -130,6 +141,24 @@ namespace PanCardView
         {
             get => GetValue(ItemViewFactoryProperty) as CardViewItemFactory;
             set => SetValue(ItemViewFactoryProperty, value);
+        }
+
+        public object CurrentContext
+        {
+            get => GetValue(CurrentContextProperty);
+            set => SetValue(CurrentContextProperty, value);
+        }
+
+        public object NextContext
+        {
+            get => GetValue(NextContextProperty);
+            set => SetValue(NextContextProperty, value);
+        }
+
+        public object PrevContext
+        {
+            get => GetValue(PrevContextProperty);
+            set => SetValue(PrevContextProperty, value);
         }
 
         public double MoveDistance
@@ -206,7 +235,7 @@ namespace PanCardView
 
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            if (_itemsCount < 0)
+            if (_itemsCount < 0 && CurrentContext == null)
             {
                 return;
             }
@@ -234,7 +263,7 @@ namespace PanCardView
 
         private void SetCurrentView()
         {
-            if (Items != null && CurrentIndex < _itemsCount)
+            if ((Items != null && CurrentIndex < _itemsCount) || CurrentContext  != null)
             {
                 _currentView = GetView(CurrentIndex, PanItemPosition.Current);
             }
@@ -312,27 +341,16 @@ namespace PanCardView
 
             if (absDiff > MoveDistance)
             {
-                var indexDelta = -Math.Sign(CurrentDiff);
-                if (IsOnlyForwardDirection)
+                var index = GetNewIndexFromDiff();
+                if(index < 0)
                 {
-                    indexDelta = Math.Abs(indexDelta);
-                }
-                var newIndex = CurrentIndex + indexDelta;
-
-                if (newIndex < 0 || newIndex >= _itemsCount)
-                {
-                    if (!IsRecycled)
-                    {
-                        return;
-                    }
-
-                    newIndex = GetRecycledIndex(newIndex);
+                    return;
                 }
 
                 SwapViews();
                 ShouldIgnoreSetCurrentView = true;
 
-                CurrentIndex = newIndex;
+                CurrentIndex = index;
 
                 FirePanEnded(CurrentDiff < 0);
 
@@ -374,6 +392,33 @@ namespace PanCardView
             {
                 _inCoursePanDelay = 0;
             }
+        }
+
+        private int GetNewIndexFromDiff()
+        {
+            if(CurrentContext != null)
+            {
+                return 0;
+            }
+
+            var indexDelta = -Math.Sign(CurrentDiff);
+            if (IsOnlyForwardDirection)
+            {
+                indexDelta = Math.Abs(indexDelta);
+            }
+            var newIndex = CurrentIndex + indexDelta;
+
+            if (newIndex < 0 || newIndex >= _itemsCount)
+            {
+                if (!IsRecycled)
+                {
+                    return - 1;
+                }
+
+                newIndex = GetRecycledIndex(newIndex);
+            }
+
+            return newIndex;
         }
 
         private bool TrySetSelectedBackView(double diff)
@@ -423,23 +468,11 @@ namespace PanCardView
 
         private View GetView(int index, PanItemPosition panIntemPosition)
         {
-            if(_itemsCount < 0)
+            var context = GetContext(index, panIntemPosition);
+            if(context == null)
             {
                 return null;
             }
-            
-            if(index < 0 || index >= _itemsCount)
-            {
-                if(!IsRecycled || (panIntemPosition != PanItemPosition.Current && _itemsCount < 2))
-                {
-                    return null;
-                }
-
-                index = GetRecycledIndex(index);
-
-            }
-
-            var context = Items[index];
 
             var rule = ItemViewFactory?.GetRule(context);
             if(rule == null)
@@ -476,6 +509,39 @@ namespace PanCardView
             AddChild(view, 0);
 
             return view;
+        }
+
+        private object GetContext(int index, PanItemPosition panIntemPosition)
+        {
+            if (CurrentContext != null)
+            {
+                switch (panIntemPosition)
+                {
+                    case PanItemPosition.Current:
+                        return CurrentContext;
+                    case PanItemPosition.Next:
+                        return NextContext;
+                    case PanItemPosition.Prev:
+                        return PrevContext;
+                }
+            }
+
+            if (_itemsCount < 0)
+            {
+                return null;
+            }
+
+            if (index < 0 || index >= _itemsCount)
+            {
+                if (!IsRecycled || (panIntemPosition != PanItemPosition.Current && _itemsCount < 2))
+                {
+                    return null;
+                }
+
+                index = GetRecycledIndex(index);
+            }
+
+            return Items[index];
         }
 
         private void SetBackViewLayerPosition(View view)
