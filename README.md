@@ -1,3 +1,8 @@
+## NuGet
+* [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
+
+Add nuget package to your Xamarin.Forms PCL project and to your platform-specific projects.
+
 ## CardsView
 This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms applications like in Tinder app has
 Just add nuget package into your PCL project
@@ -8,11 +13,6 @@ Just add nuget package into your PCL project
 You are able to setup CarouselView control, that is based on CardsView
 
 ![Sample GIF](https://media.giphy.com/media/xULW8AB7TQf3mbEi7m/giphy.gif)
-
-## NuGet
-* [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
-
-Add nuget package to your Xamarin.Forms PCL project and to your platform-specific projects.
 
 ## Android additional setup
 Write next line of code in your MainActivity for preserving linking
