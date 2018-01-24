@@ -12,6 +12,7 @@ namespace PanCardView
 
         public CarouselView(ICardProcessor frontViewProcessor, ICardProcessor backViewProcessor) : base(frontViewProcessor, backViewProcessor)
         {
+    		IsClippedToBounds = true;
         }
     }
 }
