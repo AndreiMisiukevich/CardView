@@ -51,7 +51,7 @@ namespace PanCardView
 
         public static readonly BindableProperty PrevContextProperty = BindableProperty.Create(nameof(PrevContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
 
-        public static readonly BindableProperty CanPanProperty = BindableProperty.Create(nameof(CanPan), typeof(bool), typeof(CardsView), true);
+        public static readonly BindableProperty IsPanEnabledProperty = BindableProperty.Create(nameof(IsPanEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
@@ -158,10 +158,10 @@ namespace PanCardView
             set => SetValue(PrevContextProperty, value);
         }
 
-        public bool CanPan
+        public bool IsPanEnabled
         {
-            get => (bool)GetValue(CanPanProperty);
-            set => SetValue(CanPanProperty, value);
+            get => (bool)GetValue(IsPanEnabledProperty);
+            set => SetValue(IsPanEnabledProperty, value);
         }
 
         public double MoveDistance
@@ -264,7 +264,20 @@ namespace PanCardView
             }
         }
 
-        private void SetCurrentView(bool canResetContext = false)
+        protected virtual void SetupBackViews(bool? isOnStart = null)
+        {
+            var canResetContext = CurrentContext != null;
+            SetupNextView(canResetContext);
+            SetupPrevView(canResetContext);
+        }
+
+        protected virtual void SetupLayout(View view)
+        {
+            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
+            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+        }
+
+        protected virtual void SetCurrentView(bool canResetContext = false)
         {
             if (TryResetContext(canResetContext, _currentView, CurrentContext))
             {
@@ -276,13 +289,43 @@ namespace PanCardView
                 _currentView = GetView(CurrentIndex, PanItemPosition.Current);
             }
 
-            SetupBackViews();
+            SetupBackViews(null);
         }
 
-        private void SetupLayout(View view)
+        protected virtual void SetupNextView(bool canResetContext = false)
         {
-            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
-            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+            if (TryResetContext(canResetContext, _nextView, NextContext))
+            {
+                return;
+            }
+
+            var nextIndex = CurrentIndex + 1;
+            _nextView = GetView(nextIndex, PanItemPosition.Next);
+            SetBackViewLayerPosition(_nextView);
+        }
+
+        protected virtual void SetupPrevView(bool canResetContext = false)
+        {
+            if (TryResetContext(canResetContext, _prevView, PrevContext))
+            {
+                return;
+            }
+
+            var prevIndex = IsOnlyForwardDirection
+                ? CurrentIndex + 1
+                : CurrentIndex - 1;
+            _prevView = GetView(prevIndex, PanItemPosition.Prev);
+            SetBackViewLayerPosition(_prevView);
+        }
+
+        protected virtual bool TryResetContext(bool canResetContext, View view, object context)
+        {
+            if (canResetContext && view != null)
+            {
+                view.BindingContext = context;
+                return true;
+            }
+            return false;
         }
 
         private void OnTouchStarted()
@@ -293,7 +336,7 @@ namespace PanCardView
             }
 
             var deltaTime = DateTime.Now - _lastPanTime;
-            if(!CanPan || deltaTime.TotalMilliseconds < PanDelay)
+            if(!IsPanEnabled || deltaTime.TotalMilliseconds < PanDelay)
             {
                 _shouldSkipTouch = true;
                 return;
@@ -310,7 +353,7 @@ namespace PanCardView
             _isPanRunning = true;
             _isPanEndRequested = false;
 
-            SetupBackViews();
+            SetupBackViews(true);
             AddRangeViewsInUse();
         }
 
@@ -386,7 +429,7 @@ namespace PanCardView
                     ShouldSetIndexAfterPan = false;
                     SetNewIndex();
                 }
-                SetupBackViews();
+                SetupBackViews(false);
             }
 
             var maxChildrenCount = isProcessingNow ? MaxChildrenCount : DesiredMaxChildrenCount;
@@ -451,48 +494,6 @@ namespace PanCardView
             }
 
             return _currentBackView != null;
-        }
-
-        private void SetupBackViews()
-        {
-            SetupNextView();
-            SetupPrevView();
-        }
-
-        private void SetupNextView(bool canResetContext = false)
-        {
-            if (TryResetContext(canResetContext, _nextView, NextContext))
-            {
-                return;
-            }
-
-            var nextIndex = CurrentIndex + 1;
-            _nextView = GetView(nextIndex, PanItemPosition.Next);
-            SetBackViewLayerPosition(_nextView);
-        }
-
-        private void SetupPrevView(bool canResetContext = false)
-        {
-            if(TryResetContext(canResetContext, _prevView, PrevContext))
-            {
-                return;
-            }
-
-            var prevIndex = IsOnlyForwardDirection
-                ? CurrentIndex + 1
-                : CurrentIndex - 1;
-            _prevView = GetView(prevIndex, PanItemPosition.Prev);
-            SetBackViewLayerPosition(_prevView);
-        }
-
-        private bool TryResetContext(bool canResetContext, View view, object context)
-        {
-            if (canResetContext && view != null)
-            {
-                view.BindingContext = context;
-                return true;
-            }
-            return false;
         }
 
         private void SwapViews()
