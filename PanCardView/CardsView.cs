@@ -284,8 +284,10 @@ namespace PanCardView
 
         protected virtual void SetupBackViews(bool? isOnStart = null)
         {
-            SetupNextView();
-            SetupPrevView();
+            var canResetContext = CurrentContext != null && isOnStart == false;
+
+            SetupNextView(canResetContext);
+            SetupPrevView(canResetContext);
         }
 
         protected virtual void SetupLayout(View view)
@@ -422,7 +424,7 @@ namespace PanCardView
                     return;
                 }
 
-                SwapViews();
+                SwapViews(isNextSelected.GetValueOrDefault());
                 ShouldIgnoreSetCurrentView = true;
 
                 CurrentIndex = index;
@@ -443,6 +445,8 @@ namespace PanCardView
                 );
             }
 
+            FirePanEnded(isNextSelected, index, diff);
+
             RemoveRangeViewsInUse(gestureId);
             var isProcessingNow = gestureId != _gestureId;
             if (!isProcessingNow)
@@ -452,6 +456,10 @@ namespace PanCardView
                 {
                     ShouldSetIndexAfterPan = false;
                     SetNewIndex();
+                }
+                if(CurrentContext != null)
+                {
+                    await Task.Delay(5);
                 }
                 SetupBackViews(false);
             }
@@ -467,8 +475,6 @@ namespace PanCardView
             {
                 _inCoursePanDelay = 0;
             }
-
-            FirePanEnded(isNextSelected, index, diff);
         }
 
         private int GetNewIndexFromDiff()
@@ -522,11 +528,20 @@ namespace PanCardView
             return _currentBackView != null;
         }
 
-        private void SwapViews()
+        private void SwapViews(bool isNext)
         {
             var view = _currentView;
             _currentView = _currentBackView;
             _currentBackView = view;
+
+            if(isNext)
+            {
+                _nextView = _prevView;
+                _prevView = _currentBackView;
+                return;
+            }
+            _prevView = _nextView;
+            _nextView = _currentBackView;
         }
 
         private View GetView(int index, PanItemPosition panIntemPosition)
