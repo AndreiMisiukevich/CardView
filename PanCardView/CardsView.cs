@@ -20,8 +20,10 @@ namespace PanCardView
     public class CardsView : AbsoluteLayout
     {
         public event CardsViewPanStartEndHandler PanStarted;
+        public event CardsViewPanStartEndHandler PanEnding;
         public event CardsViewPanStartEndHandler PanEnded;
         public event CardsViewPanChangedHandler PanChanged;
+        public event CardsViewPositionChangedHandler PositionChanging;
         public event CardsViewPositionChangedHandler PositionChanged;
 
         public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
@@ -69,9 +71,13 @@ namespace PanCardView
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
+        public static readonly BindableProperty PanEndingCommandProperty = BindableProperty.Create(nameof(PanEndingCommand), typeof(ICommand), typeof(CardsView), null);
+
         public static readonly BindableProperty PanEndedCommandProperty = BindableProperty.Create(nameof(PanEndedCommand), typeof(ICommand), typeof(CardsView), null);
 
         public static readonly BindableProperty PanChangedCommandProperty = BindableProperty.Create(nameof(PanChangedCommand), typeof(ICommand), typeof(CardsView), null);
+
+        public static readonly BindableProperty PositionChangingCommandProperty = BindableProperty.Create(nameof(PositionChangingCommand), typeof(ICommand), typeof(CardsView), null);
 
         public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -218,6 +224,12 @@ namespace PanCardView
             set => SetValue(PanStartedCommandProperty, value);
         }
 
+        public ICommand PanEndingCommand
+        {
+            get => GetValue(PanEndingCommandProperty) as ICommand;
+            set => SetValue(PanEndingCommandProperty, value);
+        }
+
         public ICommand PanEndedCommand
         {
             get => GetValue(PanEndedCommandProperty) as ICommand;
@@ -228,6 +240,12 @@ namespace PanCardView
         {
             get => GetValue(PanChangedCommandProperty) as ICommand;
             set => SetValue(PanChangedCommandProperty, value);
+        }
+
+        public ICommand PositionChangingCommand
+        {
+            get => GetValue(PositionChangingCommandProperty) as ICommand;
+            set => SetValue(PositionChangingCommandProperty, value);
         }
 
         public ICommand PositionChangedCommand
@@ -266,9 +284,8 @@ namespace PanCardView
 
         protected virtual void SetupBackViews(bool? isOnStart = null)
         {
-            var canResetContext = CurrentContext != null;
-            SetupNextView(canResetContext);
-            SetupPrevView(canResetContext);
+            SetupNextView();
+            SetupPrevView();
         }
 
         protected virtual void SetupLayout(View view)
@@ -390,9 +407,16 @@ namespace PanCardView
             _isPanEndRequested = true;
             var absDiff = Math.Abs(CurrentDiff);
 
-            if (absDiff > MoveDistance)
+            var index = CurrentIndex;
+            var diff = CurrentDiff;
+
+            var isNextSelected = absDiff > MoveDistance 
+                ? CurrentDiff < 0 
+                : (bool?)null;
+
+            if (isNextSelected.HasValue)
             {
-                var index = GetNewIndexFromDiff();
+                index = GetNewIndexFromDiff();
                 if(index < 0)
                 {
                     return;
@@ -403,7 +427,7 @@ namespace PanCardView
 
                 CurrentIndex = index;
 
-                FirePanEnded(CurrentDiff < 0);
+                FirePanEnding(isNextSelected, index, diff);
 
                 await Task.WhenAll( //current view and backview were swapped
                     FrontViewProcessor.HandlePanApply(_currentBackView, this, _currentBackPanItemPosition),
@@ -412,7 +436,7 @@ namespace PanCardView
             }
             else
             {
-                FirePanEnded();
+                FirePanEnding(isNextSelected, index, diff);
                 await Task.WhenAll(
                     FrontViewProcessor.HandlePanReset(_currentView, this, _currentBackPanItemPosition),
                     BackViewProcessor.HandlePanReset(_currentBackView, this, _currentBackPanItemPosition)
@@ -443,6 +467,8 @@ namespace PanCardView
             {
                 _inCoursePanDelay = 0;
             }
+
+            FirePanEnded(isNextSelected, index, diff);
         }
 
         private int GetNewIndexFromDiff()
@@ -739,6 +765,7 @@ namespace PanCardView
             lock (_viewsInUseLocker)
             {
                 var views = _viewsGestureCounter[gestureId];
+                _viewsGestureCounter.Remove(gestureId);
                 foreach (var view in views.ToArray())
                 {
                     _viewsInUse.Remove(view);
@@ -773,21 +800,37 @@ namespace PanCardView
             PanStartedCommand?.Execute(CurrentIndex);
         }
 
-        private void FirePanEnded(bool? isIndexChanged = null)
+        private void FirePanEnding(bool? isNextSelected, int index, double diff)
         {
-            PanEnded?.Invoke(this, CurrentIndex, CurrentDiff);
-            PanEndedCommand?.Execute(CurrentIndex);
-            if(isIndexChanged.HasValue)
+            PanEnding?.Invoke(this, index, diff);
+            PanEndingCommand?.Execute(index);
+            if (isNextSelected.HasValue)
             {
-                FirePositionChanged(isIndexChanged.GetValueOrDefault());
+                FirePositionChanging(isNextSelected.GetValueOrDefault());
             }
             CurrentDiff = 0;
+        }
+
+        private void FirePanEnded(bool? isNextSelected, int index, double diff)
+        {
+            PanEnded?.Invoke(this, index, diff);
+            PanEndedCommand?.Execute(index);
+            if(isNextSelected.HasValue)
+            {
+                FirePositionChanged(isNextSelected.GetValueOrDefault());
+            }
         }
 
         private void FirePanChanged()
         {
             PanChanged?.Invoke(this, CurrentDiff);
             PanChangedCommand?.Execute(CurrentDiff);
+        }
+
+        public void FirePositionChanging(bool isNextSelected)
+        {
+            PositionChanging?.Invoke(this, isNextSelected);
+            PositionChangingCommand?.Execute(isNextSelected);
         }
 
         private void FirePositionChanged(bool isNextSelected)
