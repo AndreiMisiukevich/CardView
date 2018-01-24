@@ -3,7 +3,6 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.Specialized;
-using Xamarin.Forms.Internals;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PanCardView.Extensions;
@@ -45,15 +44,14 @@ namespace PanCardView
         });
 
         public static readonly BindableProperty CurrentContextProperty = BindableProperty.Create(nameof(CurrentContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay, propertyChanged: (bindable, oldValue, newValue) => {
-            if(newValue != null && bindable.AsCardView()._currentView == null)
-            {
-                bindable.AsCardView().SetCurrentView();
-            }
+            bindable.AsCardView().SetCurrentView(true);
         });
 
         public static readonly BindableProperty NextContextProperty = BindableProperty.Create(nameof(NextContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
 
         public static readonly BindableProperty PrevContextProperty = BindableProperty.Create(nameof(PrevContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
+
+        public static readonly BindableProperty CanPanProperty = BindableProperty.Create(nameof(CanPan), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
@@ -160,6 +158,12 @@ namespace PanCardView
             set => SetValue(PrevContextProperty, value);
         }
 
+        public bool CanPan
+        {
+            get => (bool)GetValue(CanPanProperty);
+            set => SetValue(CanPanProperty, value);
+        }
+
         public double MoveDistance
         {
             get
@@ -260,8 +264,13 @@ namespace PanCardView
             }
         }
 
-        private void SetCurrentView()
+        private void SetCurrentView(bool canResetContext = false)
         {
+            if (TryResetContext(canResetContext, _currentView, CurrentContext))
+            {
+                return;
+            }
+
             if ((Items != null && CurrentIndex < _itemsCount) || CurrentContext  != null)
             {
                 _currentView = GetView(CurrentIndex, PanItemPosition.Current);
@@ -284,7 +293,7 @@ namespace PanCardView
             }
 
             var deltaTime = DateTime.Now - _lastPanTime;
-            if(deltaTime.TotalMilliseconds < PanDelay)
+            if(!CanPan || deltaTime.TotalMilliseconds < PanDelay)
             {
                 _shouldSkipTouch = true;
                 return;
@@ -446,16 +455,44 @@ namespace PanCardView
 
         private void SetupBackViews()
         {
-            var nextIndex = CurrentIndex + 1;
-            var prevIndex = IsOnlyForwardDirection
-                ? nextIndex
-                : CurrentIndex - 1;
-            
-            _nextView = GetView(nextIndex, PanItemPosition.Next);
-            _prevView = GetView(prevIndex, PanItemPosition.Prev);
+            SetupNextView();
+            SetupPrevView();
+        }
 
+        private void SetupNextView(bool canResetContext = false)
+        {
+            if (TryResetContext(canResetContext, _nextView, NextContext))
+            {
+                return;
+            }
+
+            var nextIndex = CurrentIndex + 1;
+            _nextView = GetView(nextIndex, PanItemPosition.Next);
             SetBackViewLayerPosition(_nextView);
+        }
+
+        private void SetupPrevView(bool canResetContext = false)
+        {
+            if(TryResetContext(canResetContext, _prevView, PrevContext))
+            {
+                return;
+            }
+
+            var prevIndex = IsOnlyForwardDirection
+                ? CurrentIndex + 1
+                : CurrentIndex - 1;
+            _prevView = GetView(prevIndex, PanItemPosition.Prev);
             SetBackViewLayerPosition(_prevView);
+        }
+
+        private bool TryResetContext(bool canResetContext, View view, object context)
+        {
+            if (canResetContext && view != null)
+            {
+                view.BindingContext = context;
+                return true;
+            }
+            return false;
         }
 
         private void SwapViews()

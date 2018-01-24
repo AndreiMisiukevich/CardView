@@ -51,6 +51,7 @@ namespace PanCardViewSample.ViewModels
                 }
                 else
                 {
+                    --_ImageCount;
                     NextContext = CurrentContext;
                     CurrentContext = PrevContext;
                     _contextStack.Pop();

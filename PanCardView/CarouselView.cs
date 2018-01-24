@@ -1,6 +1,4 @@
-﻿// 11(c) Andrei Misiukevich
-using System;
-using PanCardView.Processors;
+﻿using PanCardView.Processors;
 
 namespace PanCardView
 {

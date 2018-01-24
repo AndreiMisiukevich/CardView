@@ -19,6 +19,12 @@ namespace PanCardViewSample.Views
                 IsPanInCourse = true
             };
 
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.SetBinding(TapGestureRecognizer.CommandProperty, nameof(SharedSampleCustomViewModel.PanPositionChangedCommand));
+            tapGesture.CommandParameter = true;
+            cardsView.GestureRecognizers.Add(tapGesture);
+
+
             cardsView.SetBinding(CardsView.CurrentContextProperty, nameof(SharedSampleCustomViewModel.CurrentContext));
             cardsView.SetBinding(CardsView.NextContextProperty, nameof(SharedSampleCustomViewModel.NextContext));
             cardsView.SetBinding(CardsView.PrevContextProperty, nameof(SharedSampleCustomViewModel.PrevContext));
