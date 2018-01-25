@@ -412,7 +412,7 @@ namespace PanCardView
             var index = CurrentIndex;
             var diff = CurrentDiff;
 
-            var isNextSelected = absDiff > MoveDistance 
+            var isNextSelected = IsPanEnabled && absDiff > MoveDistance 
                 ? CurrentDiff < 0 
                 : (bool?)null;
 
