@@ -7,8 +7,11 @@ namespace PanCardView.Processors
 {
     public class BaseCardBackViewProcessor : ICardProcessor
     {
-        protected double InitialScale { get; } = 0.8;
-        protected uint ResetAnimationLength { get; } = 150;
+        protected double InitialScale { get; set; } = 0.8;
+
+        protected uint ResetAnimationLength { get; set; } = 150;
+
+        protected Easing ResetEasing { get; set; } = Easing.SinIn;
 
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
@@ -34,9 +37,9 @@ namespace PanCardView.Processors
             if(view != null)
             {
                 var tcs = new TaskCompletionSource<bool>();
-                var animLength = (uint)(ResetAnimationLength * (view.Scale - InitialScale) * 5);
+                var animLength = (uint)(ResetAnimationLength * (view.Scale - InitialScale) / (1 - InitialScale));
                 new Animation(v => view.Scale = v, view.Scale, InitialScale)
-                    .Commit(view, nameof(HandlePanReset), 16, animLength, finished: (v, t) => tcs.SetResult(true));
+                    .Commit(view, nameof(HandlePanReset), 16, animLength, ResetEasing, (v, t) => tcs.SetResult(true));
                 return tcs.Task;
             }
             return Task.FromResult(true);

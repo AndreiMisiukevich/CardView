@@ -13,6 +13,10 @@ namespace PanCardView.Processors
 
         protected uint ResetAnimationLength { get; set; } = 150;
 
+        protected Easing ResetEasing { get; set; } = Easing.SinIn;
+
+        protected Easing ApplyEasing { get; set; } = Easing.SinOut;
+
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         => ResetInitialState(view);
 
@@ -34,7 +38,7 @@ namespace PanCardView.Processors
                     { 0, 1, new Animation (v => view.TranslationX = v, view.TranslationX, 0) },
                     { 0, 1, new Animation (v => view.TranslationY = v, view.TranslationY, 0) },
                     { 0, 1, new Animation (v => view.Rotation = v, view.Rotation, 0) }
-                }.Commit(view, nameof(HandlePanReset), 16, animLength, null, (v, c) => SetInitialResult(view, tcs));
+                }.Commit(view, nameof(HandlePanReset), 16, animLength, ResetEasing, (v, c) => SetInitialResult(view, tcs));
             }
             else
             {
@@ -48,7 +52,7 @@ namespace PanCardView.Processors
         {
             if (view != null)
             {
-                await view.FadeTo(0, ApplyAnimationLength);
+                await view.FadeTo(0, ApplyAnimationLength, ApplyEasing);
                 view.IsVisible = false;
             }
         }
