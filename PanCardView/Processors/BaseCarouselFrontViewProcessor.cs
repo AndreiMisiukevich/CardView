@@ -20,6 +20,11 @@ namespace PanCardView.Processors
             }
         }
 
+        public virtual void AutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        {
+
+        }
+
         public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
             if (Math.Abs(xPos) > cardsView.Width || (panItemPosition == PanItemPosition.Prev && xPos < 0) || (panItemPosition == PanItemPosition.Next && xPos > 0))
@@ -48,11 +53,10 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 var tcs = new TaskCompletionSource<bool>();
-
-                var animTimePercent = (cardsView.Width - Math.Abs(view.TranslationX)) / cardsView.Width;
+                var animTimePercent = 1 - (cardsView.Width - Math.Abs(view.TranslationX)) / cardsView.Width;
                 var animLength = (uint)(AnimationLength * animTimePercent);
-                new Animation(v => view.TranslationX = v, view.TranslationX, -Math.Sign((int)panItemPosition) * cardsView.Width)
-                    .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
+                new Animation(v => view.TranslationX = v, view.TranslationX, 0)
+                    .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
                 return tcs.Task;
             }
             return Task.FromResult(true);

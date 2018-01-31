@@ -1,11 +1,18 @@
 ﻿
+using System;
+using Xamarin.Forms;
+
 namespace PanCardView.Factory
 {
     public class CardViewItemFactory
     {
         private readonly CardViewFactoryRule _defaultRule;
 
-        public CardViewItemFactory() : this(null)
+        public CardViewItemFactory() : this(default(CardViewFactoryRule))
+        {
+        }
+
+        public CardViewItemFactory(Func<View> creator) : this(new CardViewFactoryRule(creator))
         {
         }
 

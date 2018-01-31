@@ -7,11 +7,21 @@ namespace PanCardView.Processors
 {
     public class BaseCardBackViewProcessor : ICardProcessor
     {
+        private const double Rad = 57.2958;
+
         protected double InitialScale { get; set; } = 0.8;
+
+        protected uint ApplyAnimationLength { get; set; } = 200;
 
         protected uint ResetAnimationLength { get; set; } = 150;
 
+        protected uint AutoNavigateAnimationLength { get; set; } = 100;
+
+        protected Easing ApplyEasing { get; set; } = Easing.SinOut;
+
         protected Easing ResetEasing { get; set; } = Easing.SinIn;
+
+        protected Easing AutoNavigateEasing { get; set; } = Easing.Linear;
 
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
@@ -23,6 +33,20 @@ namespace PanCardView.Processors
                 view.Opacity = 1;
                 view.IsVisible = false;
                 view.Scale = InitialScale;
+            }
+        }
+
+        public virtual void AutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        {
+            if (view != null)
+            {
+                cardsView.AutoNavigatingStarted(view);
+                new Animation(v => HandleAutoAnimatingPosChanged(view, cardsView, v, panItemPosition), 0, cardsView.MoveDistance)
+                    .Commit(view, nameof(AutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, async (v, t) =>
+                    {
+                        await HandlePanApply(view, cardsView, panItemPosition);
+                        cardsView.AutoNavigatingEnded(view);
+                    });
             }
         }
 
@@ -45,13 +69,25 @@ namespace PanCardView.Processors
             return Task.FromResult(true);
         }
 
-        public virtual Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual async Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
-                view.Scale = 1;
+                await view.FadeTo(0, ApplyAnimationLength, ApplyEasing);
+                view.IsVisible = false;
             }
-            return Task.FromResult(true);
+        }
+
+        private void HandleAutoAnimatingPosChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
+        {
+            if(panItemPosition == PanItemPosition.Next)
+            {
+                xPos = -xPos;
+            }
+
+            view.TranslationX = xPos;
+            view.TranslationY = Math.Abs(xPos) / 10;
+            view.Rotation = 0.3 * Math.Min(xPos / cardsView.Width, 1) * Rad;
         }
     }
 }

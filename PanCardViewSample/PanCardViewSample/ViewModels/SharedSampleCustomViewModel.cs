@@ -58,9 +58,9 @@ namespace PanCardViewSample.ViewModels
                     PrevContext = _contextStack.Any() ? _contextStack.Peek() : null;
                 }
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentContext)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NextContext)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PrevContext)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentContext)));
             });
         }
 

@@ -97,13 +97,12 @@ namespace PanCardView
 
         private int _itemsCount = -1;
         private int _viewsChildrenCount;
+        private int _inCoursePanDelay;
         private bool _isPanRunning;
         private bool _isPanEndRequested = true;
+        private bool _shouldSkipTouch;
         private Guid _gestureId;
         private DateTime _lastPanTime;
-        private int _inCoursePanDelay;
-
-        private bool _shouldSkipTouch;
 
         public CardsView() : this(null, null)
         {
@@ -282,12 +281,39 @@ namespace PanCardView
             }
         }
 
+        public void AutoNavigatingStarted(View view)
+        {
+            if (view != null)
+            {
+                if(IsPanInCourse)
+                {
+                    _inCoursePanDelay = int.MaxValue;
+                }
+                lock (_viewsInUseLocker)
+                {
+                    _viewsInUse.Add(view);
+                }
+            }
+        }
+
+        public void AutoNavigatingEnded(View view)
+        {
+            _inCoursePanDelay = 0;
+            if(view != null)
+            {
+                lock (_viewsInUseLocker)
+                {
+                    _viewsInUse.Remove(view);
+                    view.IsVisible = false;
+                    ClearBindingContext(view);
+                }
+            }
+        }
+
         protected virtual void SetupBackViews(bool? isOnStart = null)
         {
-            var canResetContext = CurrentContext != null && isOnStart == false;
-
-            SetupNextView(canResetContext);
-            SetupPrevView(canResetContext);
+            SetupNextView();
+            SetupPrevView();
         }
 
         protected virtual void SetupLayout(View view)
@@ -298,17 +324,62 @@ namespace PanCardView
 
         protected virtual void SetCurrentView(bool canResetContext = false)
         {
+            if(TryAutoNavigate())
+            {
+                return;
+            }
+
             if (TryResetContext(canResetContext, _currentView, CurrentContext))
             {
                 return;
             }
 
-            if ((Items != null && CurrentIndex < _itemsCount) || CurrentContext  != null)
+            if (Items != null || CurrentContext != null)
             {
                 _currentView = GetView(CurrentIndex, PanItemPosition.Current);
             }
 
             SetupBackViews(null);
+        }
+
+        protected virtual bool TryAutoNavigate()
+        {
+            if (_currentView == null)
+            {
+                return false;
+            }
+
+            var context = GetContext(CurrentIndex, PanItemPosition.Current);
+
+            if(_currentView.BindingContext == context)
+            {
+                return false;
+            }
+
+            var autoNavigatePanPosition = GetAutoNavigatePanPosition();
+
+            var oldView = _currentView;
+            var view = PrepareView(CurrentIndex, PanItemPosition.Current, out context);
+            if(view == null)
+            {
+                return false;
+            }
+
+            _currentView = view;
+
+            BackViewProcessor.InitView(_currentView, this, autoNavigatePanPosition);
+
+            _currentView.BindingContext = context;
+            SetupLayout(_currentView);
+
+            AddChild(_currentView, oldView);
+
+            BackViewProcessor.AutoNavigate(oldView, this, autoNavigatePanPosition);
+            FrontViewProcessor.AutoNavigate(_currentView, this, autoNavigatePanPosition);
+
+            SetupBackViews(null);
+
+            return true;
         }
 
         protected virtual void SetupNextView(bool canResetContext = false)
@@ -320,7 +391,6 @@ namespace PanCardView
 
             var nextIndex = CurrentIndex + 1;
             _nextView = GetView(nextIndex, PanItemPosition.Next);
-            SetBackViewLayerPosition(_nextView);
         }
 
         protected virtual void SetupPrevView(bool canResetContext = false)
@@ -334,7 +404,6 @@ namespace PanCardView
                 ? CurrentIndex + 1
                 : CurrentIndex - 1;
             _prevView = GetView(prevIndex, PanItemPosition.Prev);
-            SetBackViewLayerPosition(_prevView);
         }
 
         protected virtual bool TryResetContext(bool canResetContext, View view, object context)
@@ -345,6 +414,20 @@ namespace PanCardView
                 return true;
             }
             return false;
+        }
+
+        private PanItemPosition GetAutoNavigatePanPosition()
+        {
+            if(CurrentContext != null)
+            {
+                return CurrentContext == _prevView?.BindingContext
+                       ? PanItemPosition.Prev
+                       : PanItemPosition.Next;
+            }
+
+            return CurrentIndex < Items.IndexOf(_currentView.BindingContext)
+                       ? PanItemPosition.Prev
+                       : PanItemPosition.Next;
         }
 
         private void OnTouchStarted()
@@ -431,9 +514,9 @@ namespace PanCardView
 
                 FirePanEnding(isNextSelected, index, diff);
 
-                await Task.WhenAll( //current view and backview were swapped
-                    FrontViewProcessor.HandlePanApply(_currentBackView, this, _currentBackPanItemPosition),
-                    BackViewProcessor.HandlePanApply(_currentView, this, _currentBackPanItemPosition)
+                await Task.WhenAll(
+                    FrontViewProcessor.HandlePanApply(_currentView, this, _currentBackPanItemPosition),
+                    BackViewProcessor.HandlePanApply(_currentBackView, this, _currentBackPanItemPosition)
                 );
             }
             else
@@ -457,11 +540,10 @@ namespace PanCardView
                     ShouldSetIndexAfterPan = false;
                     SetNewIndex();
                 }
-                if(CurrentContext != null)
+                if(CurrentContext == null)
                 {
-                    await Task.Delay(5);
+                    SetupBackViews(false);
                 }
-                SetupBackViews(false);
             }
 
             var maxChildrenCount = isProcessingNow ? MaxChildrenCount : DesiredMaxChildrenCount;
@@ -471,10 +553,7 @@ namespace PanCardView
                 RemoveChildren(Children.Where(c => c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray());
             }
 
-            if (IsPanInCourse)
-            {
-                _inCoursePanDelay = 0;
-            }
+            _inCoursePanDelay = 0;
         }
 
         private int GetNewIndexFromDiff()
@@ -546,45 +625,59 @@ namespace PanCardView
 
         private View GetView(int index, PanItemPosition panIntemPosition)
         {
-            var context = GetContext(index, panIntemPosition);
-            if(context == null)
+            var view = PrepareView(index, panIntemPosition, out object context);
+            if(view == null)
+            {
+                return null;
+            }
+            InitProcessor(view, panIntemPosition);
+            view.BindingContext = context;
+            SetupLayout(view);
+            if(panIntemPosition == PanItemPosition.Current)
+            {
+                AddChild(view, 0);
+            }
+            else
+            {
+                AddChild(view, _currentView);
+            }
+            return view;
+        }
+
+        private View PrepareView(int index, PanItemPosition panIntemPosition, out object context)
+        {
+            context = GetContext(index, panIntemPosition);
+            if (context == null)
             {
                 return null;
             }
 
             var rule = ItemViewFactory?.GetRule(context);
-            if(rule == null)
+            if (rule == null)
             {
                 return null;
             }
             List<View> viewsList;
             if (!_viewsPool.TryGetValue(rule, out viewsList))
             {
-                viewsList = new List<View> 
+                viewsList = new List<View>
                 {
-                    rule.Creator.Invoke() 
+                    rule.Creator.Invoke()
                 };
                 _viewsPool.Add(rule, viewsList);
             }
 
             var notUsingViews = viewsList.Where(v => !CheckUsingNow(v));
-            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context)
+            var currentContext = context;
+            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == currentContext)
                                     ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
                                     ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
 
-            if(view == null)
+            if (view == null)
             {
                 view = rule.Creator.Invoke();
                 viewsList.Add(view);
             }
-
-            InitProcessor(view, panIntemPosition);
-
-            view.BindingContext = context;
-
-            SetupLayout(view);
-
-            AddChild(view, 0);
 
             return view;
         }
@@ -622,24 +715,21 @@ namespace PanCardView
             return Items[index];
         }
 
-        private void SetBackViewLayerPosition(View view)
+        private void SendChildrenToBackIfNeeded(View view, View topView)
         {
-            if(view == null)
+            if(view == null || topView == null)
             {
                 return;
             }
 
-            if(_currentView != null)
-            {
-                var currentIndex = Children.IndexOf(_currentView);
-                var backIndex = Children.IndexOf(view);
+            var currentIndex = Children.IndexOf(topView);
+            var backIndex = Children.IndexOf(view);
 
-                if(currentIndex < backIndex)
+            if (currentIndex < backIndex)
+            {
+                lock (_childLocker)
                 {
-                    lock(_childLocker)
-                    {
-                        SendChildToBack(view);
-                    }
+                    SendChildToBack(view);
                 }
             }
         }
@@ -724,6 +814,27 @@ namespace PanCardView
                 }
                 Children.Insert(index, view);
             }
+        }
+
+        private void AddChild(View view, View topView)
+        {
+            if (view == null)
+            {
+                return;
+            }
+
+            if(Children.Contains(view))
+            {
+                SendChildrenToBackIfNeeded(view, topView);
+                return;
+            }
+
+            lock (_childLocker)
+            {
+                ++_viewsChildrenCount;
+                Children.Insert(Children.IndexOf(topView), view);
+            }
+
         }
 
         private void RemoveChildren(View[] views)

@@ -7,18 +7,28 @@ namespace PanCardView.Processors
 {
     public class BaseCardFrontViewProcessor : ICardProcessor
     {
-        private const double Rad = 57.2957795;
-
-        protected uint ApplyAnimationLength { get; set; } = 200;
+        private const double Rad = 57.2958;
 
         protected uint ResetAnimationLength { get; set; } = 150;
 
+        protected uint AutoNavigateAnimationLength { get; set; } = 100;
+
         protected Easing ResetEasing { get; set; } = Easing.SinIn;
 
-        protected Easing ApplyEasing { get; set; } = Easing.SinOut;
+        protected Easing AutoNavigateEasing { get; set; } = Easing.Linear;
 
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         => ResetInitialState(view);
+
+        public virtual void AutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        {
+            if (view != null)
+            {
+                view.IsVisible = true;
+                new Animation(v => view.Scale = v, view.Scale, 1)
+                    .Commit(view, nameof(AutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing);
+            }
+        }
 
         public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
@@ -48,13 +58,13 @@ namespace PanCardView.Processors
             return tcs.Task;
         }
 
-        public virtual async Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
-                await view.FadeTo(0, ApplyAnimationLength, ApplyEasing);
-                view.IsVisible = false;
+                view.Scale = 1;
             }
+            return Task.FromResult(true);
         }
 
         protected virtual void ResetInitialState(View view, bool isVisible = true)
