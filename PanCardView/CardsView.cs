@@ -28,6 +28,7 @@ namespace PanCardView
 
         public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
+            view.OldIndex = (int)oldValue;
             if(view.ShouldIgnoreSetCurrentView)
             {
                 view.ShouldIgnoreSetCurrentView = false;
@@ -61,9 +62,11 @@ namespace PanCardView
 
         public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 200);
 
-        public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), false);
+        public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty IsRecycledProperty = BindableProperty.Create(nameof(IsRecycled), typeof(bool), typeof(CardsView), false);
+
+        public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource);
 
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 18);
 
@@ -118,6 +121,8 @@ namespace PanCardView
         }
 
         public double CurrentDiff { get; private set; }
+
+        public int OldIndex { get; private set; } = -1;
 
         public ICardProcessor FrontViewProcessor { get; }
 
@@ -197,6 +202,12 @@ namespace PanCardView
         {
             get => (bool)GetValue(IsRecycledProperty);
             set => SetValue(IsRecycledProperty, value);
+        }
+
+        public bool IsAutoNavigating
+        {
+            get => (bool)GetValue(IsAutoNavigatingProperty);
+            set => SetValue(IsAutoNavigatingProperty, value);
         }
 
         public int MaxChildrenCount
@@ -285,6 +296,7 @@ namespace PanCardView
         {
             if (view != null)
             {
+                IsAutoNavigating = true;
                 if(IsPanInCourse)
                 {
                     _inCoursePanDelay = int.MaxValue;
@@ -308,6 +320,7 @@ namespace PanCardView
                     ClearBindingContext(view);
                 }
             }
+            IsAutoNavigating = false;
         }
 
         protected virtual void SetupBackViews(bool? isOnStart = null)
@@ -425,9 +438,27 @@ namespace PanCardView
                        : PanItemPosition.Next;
             }
 
-            return CurrentIndex < Items.IndexOf(_currentView.BindingContext)
+            if(!IsRecycled)
+            {
+                return CurrentIndex < Items.IndexOf(_currentView.BindingContext)
                        ? PanItemPosition.Prev
                        : PanItemPosition.Next;
+            }
+
+            var recIndex = GetRecycledIndex(CurrentIndex);
+            var oldRecIndex = GetRecycledIndex(OldIndex);
+
+            var deltaIndex = recIndex - oldRecIndex;
+            if(Math.Abs(deltaIndex) == 1)
+            {
+                return deltaIndex > 0
+                    ? PanItemPosition.Next
+                     : PanItemPosition.Prev;
+            }
+
+            return deltaIndex > 0
+                    ? PanItemPosition.Prev
+                     : PanItemPosition.Next;
         }
 
         private void OnTouchStarted()
@@ -913,9 +944,23 @@ namespace PanCardView
 
         private int GetRecycledIndex(int index)
         {
-            while (index < 0 || index >= _itemsCount)
+            if(_itemsCount < 0)
             {
-                index = Math.Abs(_itemsCount - Math.Abs(index));
+                return -1;
+            }
+
+            if(index < 0)
+            {
+                while(index < 0)
+                {
+                    index += _itemsCount;
+                }
+                return index;
+            }
+
+            while(index >= _itemsCount)
+            {
+                index -= _itemsCount;
             }
             return index;
         }

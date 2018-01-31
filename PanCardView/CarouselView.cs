@@ -12,7 +12,6 @@ namespace PanCardView
         {
     		IsClippedToBounds = true;
             IsRecycled = true;
-            IsPanInCourse = true;
         }
     }
 }

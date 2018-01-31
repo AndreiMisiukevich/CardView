@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using Xamarin.Forms;
 using System;
+using System.Windows.Input;
 
 namespace PanCardViewSample.ViewModels
 {
@@ -22,24 +23,27 @@ namespace PanCardViewSample.ViewModels
                 new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Silver },
                 new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Blue }
             };
+
+            PanPositionChangedCommand = new Command(v =>
+            {
+                var val = (bool)v;
+                if (val)
+                {
+                    CurrentIndex += 1;
+                    return;
+                }
+
+                CurrentIndex -= 1;
+            });
         }
+
+        public ICommand PanPositionChangedCommand { get; }
 
         public int CurrentIndex
         {
             get => _currentIndex;
             set
             {
-                //var rnd = new Random();
-                //if (value + 2 >= Items.Count)
-                //{
-                //    Items.Add(new
-                //    {
-                //        Source = CreateSource(),
-                //        Ind = _ImageCount++,
-                //        Color = Color.FromRgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255))
-                //    });
-                //    Items.RemoveAt(0);
-                //}
                 _currentIndex = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentIndex)));
             }

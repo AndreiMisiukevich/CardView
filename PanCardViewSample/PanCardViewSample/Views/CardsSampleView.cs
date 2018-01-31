@@ -12,12 +12,32 @@ namespace PanCardViewSample.Views
     {
         public CardsSampleView()
         {
-            var cardsView = new CardsView()
+            var cardsView = new CardsView
             {
                 ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9),
-                IsPanInCourse = true
+                IsRecycled = true
             };
+
+            var prevItem = new ToolbarItem
+            {
+                Text = "**Prev**",
+                Icon = "prev",
+                CommandParameter = false
+            };
+            prevItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+
+            var nextItem = new ToolbarItem
+            {
+                Text = "**Next**",
+                Icon = "next",
+                CommandParameter = true
+            };
+            nextItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+
+            ToolbarItems.Add(prevItem);
+            ToolbarItems.Add(nextItem);
+
             cardsView.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
             cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 

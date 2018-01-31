@@ -22,7 +22,12 @@ namespace PanCardView.Processors
 
         public virtual void AutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
-
+            if (view != null)
+            {
+                view.IsVisible = true;
+                new Animation(v => view.TranslationX = v, view.TranslationX, 0)
+                    .Commit(view, nameof(AutoNavigate), 16, AnimationLength, AnimEasing);
+            }
         }
 
         public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)

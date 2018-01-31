@@ -11,7 +11,7 @@ namespace PanCardView.Processors
 
         protected uint ResetAnimationLength { get; set; } = 150;
 
-        protected uint AutoNavigateAnimationLength { get; set; } = 100;
+        protected uint AutoNavigateAnimationLength { get; set; } = 150;
 
         protected Easing ResetEasing { get; set; } = Easing.SinIn;
 

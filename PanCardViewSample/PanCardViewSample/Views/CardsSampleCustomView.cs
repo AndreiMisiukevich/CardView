@@ -12,18 +12,31 @@ namespace PanCardViewSample.Views
     {
         public CardsSampleCustomView()
         {
-            var cardsView = new CardsView()
+            var cardsView = new CardsView
             {
                 ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9),
                 IsPanInCourse = true
             };
 
-            var tapGesture = new TapGestureRecognizer();
-            tapGesture.SetBinding(TapGestureRecognizer.CommandProperty, nameof(SharedSampleCustomViewModel.PanPositionChangedCommand));
-            tapGesture.CommandParameter = true;
-            cardsView.GestureRecognizers.Add(tapGesture);
+            var prevItem = new ToolbarItem
+            {
+                Text = "**Prev**",
+                Icon = "prev",
+                CommandParameter = false
+            };
+            prevItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleCustomViewModel.PanPositionChangedCommand));
 
+            var nextItem = new ToolbarItem
+            {
+                Text = "**Next**",
+                Icon = "next",
+                CommandParameter = true
+            };
+            nextItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleCustomViewModel.PanPositionChangedCommand));
+
+            ToolbarItems.Add(prevItem);
+            ToolbarItems.Add(nextItem);
 
             cardsView.SetBinding(CardsView.CurrentContextProperty, nameof(SharedSampleCustomViewModel.CurrentContext));
             cardsView.SetBinding(CardsView.NextContextProperty, nameof(SharedSampleCustomViewModel.NextContext));
