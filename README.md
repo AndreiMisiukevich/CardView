@@ -14,13 +14,6 @@ You are able to setup CarouselView control, that is based on CardsView
 
 ![Sample GIF](https://media.giphy.com/media/xULW8AB7TQf3mbEi7m/giphy.gif)
 
-## Android additional setup
-Write next line of code in your MainActivity for preserving linking
-
-```csharp
-CardsViewRenderer.Init();
-```
-
 ## Samples
 The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
 
