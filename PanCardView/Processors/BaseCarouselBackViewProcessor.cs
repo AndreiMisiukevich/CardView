@@ -9,7 +9,7 @@ namespace PanCardView.Processors
     {
         public uint AnimationLength { get; set; } = 300;
 
-        public Easing AnimEasing { get; set; } = Easing.CubicInOut;
+        public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {

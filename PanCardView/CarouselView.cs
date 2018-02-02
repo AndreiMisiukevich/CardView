@@ -12,7 +12,7 @@ namespace PanCardView
         {
     		IsClippedToBounds = true;
             IsRecycled = true;
-            MoveWidthPercentage = 0.3;
+            MoveWidthPercentage = 0.21;
         }
     }
 }
