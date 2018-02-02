@@ -21,7 +21,7 @@ The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/
 ```csharp
 var cardsView = new CardsView
 {
-    ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule)
+    ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule) // or you can put Creator's delegate directly
 };
 cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
 cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
