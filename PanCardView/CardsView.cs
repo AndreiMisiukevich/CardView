@@ -58,7 +58,7 @@ namespace PanCardView
 
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
-        public static readonly BindableProperty MoveWidthPercentageProperty = BindableProperty.Create(nameof(MoveWidthPercentage), typeof(double), typeof(CardsView), .32);
+        public static readonly BindableProperty MoveWidthPercentageProperty = BindableProperty.Create(nameof(MoveWidthPercentage), typeof(double), typeof(CardsView), .325);
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
@@ -73,6 +73,8 @@ namespace PanCardView
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
         public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 6);
+
+        public static readonly BindableProperty SwipeThresholdProperty = BindableProperty.Create(nameof(SwipeThreshold), typeof(double), typeof(CardsView), 75.0);
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -123,6 +125,8 @@ namespace PanCardView
         }
 
         public double CurrentDiff { get; private set; }
+
+        public double PrevDiff { get; private set; }
 
         public int OldIndex { get; private set; } = -1;
 
@@ -228,6 +232,12 @@ namespace PanCardView
         {
             get => (int)GetValue(DesiredMaxChildrenCountProperty);
             set => SetValue(DesiredMaxChildrenCountProperty, value);
+        }
+
+        public double SwipeThreshold
+        {
+            get => (double)GetValue(SwipeThresholdProperty);
+            set => SetValue(SwipeThresholdProperty, value);
         }
 
         public bool IsOnlyForwardDirection
@@ -511,6 +521,7 @@ namespace PanCardView
             }
 
             _currentBackView.IsVisible = true;
+            PrevDiff = CurrentDiff;
             CurrentDiff = diff;
             FirePanChanged();
 
@@ -534,8 +545,8 @@ namespace PanCardView
             var index = CurrentIndex;
             var diff = CurrentDiff;
 
-            var isNextSelected = IsPanEnabled && absDiff > MoveDistance 
-                ? CurrentDiff < 0 
+            var isNextSelected = IsPanEnabled && (absDiff > MoveDistance || Math.Abs(diff - PrevDiff) >= SwipeThreshold)
+                ? diff < 0 
                 : (bool?)null;
 
             if (isNextSelected.HasValue)
@@ -987,6 +998,8 @@ namespace PanCardView
             {
                 FirePositionChanging(isNextSelected.GetValueOrDefault());
             }
+
+            PrevDiff = 0;
             CurrentDiff = 0;
         }
 
