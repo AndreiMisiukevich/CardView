@@ -7,9 +7,9 @@ namespace PanCardView.Processors
 {
     public class BaseCarouselFrontViewProcessor : ICardProcessor
     {
-        protected uint AnimationLength { get; set; } = 250;
+        public uint AnimationLength { get; set; } = 300;
 
-        protected Easing AnimEasing { get; set; } = Easing.SinIn;
+        public Easing AnimEasing { get; set; } = Easing.CubicInOut;
 
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {

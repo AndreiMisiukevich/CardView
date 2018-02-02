@@ -5,10 +5,12 @@ using Android.Content;
 using PanCardView.Droid;
 using PanCardView;
 using Android.Views;
+using Android.Runtime;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
 {
+    [Preserve(AllMembers = true)]
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
         private bool _panStarted;
@@ -17,6 +19,7 @@ namespace PanCardView.Droid
         {
         }
 
+        [Obsolete("You needn't have to call this method. Now, Cards ViewRenderer is marked by Preserve attribute")]
         public static void Init()
         {
             var now = DateTime.Now;

@@ -2,20 +2,19 @@
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using PanCardView.Enums;
+using static PanCardView.Processors.Constants;
 
 namespace PanCardView.Processors
 {
     public class BaseCardFrontViewProcessor : ICardProcessor
     {
-        private const double Rad = 57.2958;
+        public uint ResetAnimationLength { get; set; } = 150;
 
-        protected uint ResetAnimationLength { get; set; } = 150;
+        public uint AutoNavigateAnimationLength { get; set; } = 150;
 
-        protected uint AutoNavigateAnimationLength { get; set; } = 150;
+        public Easing ResetEasing { get; set; } = Easing.CubicInOut;
 
-        protected Easing ResetEasing { get; set; } = Easing.SinIn;
-
-        protected Easing AutoNavigateEasing { get; set; } = Easing.Linear;
+        public Easing AutoNavigateEasing { get; set; } = Easing.Linear;
 
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         => ResetInitialState(view);
