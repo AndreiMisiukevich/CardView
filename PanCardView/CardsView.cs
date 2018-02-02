@@ -74,7 +74,9 @@ namespace PanCardView
 
         public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 6);
 
-        public static readonly BindableProperty SwipeThresholdProperty = BindableProperty.Create(nameof(SwipeThreshold), typeof(double), typeof(CardsView), 75.0);
+        public static readonly BindableProperty SwipeDistanceThresholdProperty = BindableProperty.Create(nameof(SwipeDistanceThreshold), typeof(double), typeof(CardsView), 65.0);
+
+        public static readonly BindableProperty SwipeTimeThresholdProperty = BindableProperty.Create(nameof(SwipeTimeThreshold), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(50));
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -91,9 +93,10 @@ namespace PanCardView
         private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
         private readonly HashSet<View> _viewsInUse = new HashSet<View>();
         private readonly Dictionary<Guid, View[]> _viewsGestureCounter = new Dictionary<Guid, View[]>();
-
+        private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
         private readonly object _childLocker = new object();
         private readonly object _viewsInUseLocker = new object();
+
         private View _currentView;
         private View _nextView;
         private View _prevView;
@@ -125,8 +128,6 @@ namespace PanCardView
         }
 
         public double CurrentDiff { get; private set; }
-
-        public double PrevDiff { get; private set; }
 
         public int OldIndex { get; private set; } = -1;
 
@@ -234,10 +235,16 @@ namespace PanCardView
             set => SetValue(DesiredMaxChildrenCountProperty, value);
         }
 
-        public double SwipeThreshold
+        public double SwipeDistanceThreshold
         {
-            get => (double)GetValue(SwipeThresholdProperty);
-            set => SetValue(SwipeThresholdProperty, value);
+            get => (double)GetValue(SwipeDistanceThresholdProperty);
+            set => SetValue(SwipeDistanceThresholdProperty, value);
+        }
+
+        public TimeSpan SwipeTimeThreshold
+        {
+            get => (TimeSpan)GetValue(SwipeTimeThresholdProperty);
+            set => SetValue(SwipeTimeThresholdProperty, value);
         }
 
         public bool IsOnlyForwardDirection
@@ -506,6 +513,12 @@ namespace PanCardView
 
             SetupBackViews(true);
             AddRangeViewsInUse();
+
+            _timeDiffItems.Add(new TimeDiffItem
+            {
+                Time = DateTime.Now,
+                Diff = 0
+            });
         }
 
         private void OnTouchChanged(double diff)
@@ -521,8 +534,10 @@ namespace PanCardView
             }
 
             _currentBackView.IsVisible = true;
-            PrevDiff = CurrentDiff;
             CurrentDiff = diff;
+
+            SetupDiffItems(diff);
+
             FirePanChanged();
 
             FrontViewProcessor.HandlePanChanged(_currentView, this, diff, _currentBackPanItemPosition);
@@ -545,7 +560,9 @@ namespace PanCardView
             var index = CurrentIndex;
             var diff = CurrentDiff;
 
-            var isNextSelected = IsPanEnabled && (absDiff > MoveDistance || Math.Abs(diff - PrevDiff) >= SwipeThreshold)
+            var prevDiff = _timeDiffItems.FirstOrDefault().Diff;
+
+            var isNextSelected = IsPanEnabled && (absDiff > MoveDistance || Math.Abs(diff - prevDiff) >= SwipeDistanceThreshold)
                 ? diff < 0 
                 : (bool?)null;
 
@@ -604,6 +621,23 @@ namespace PanCardView
             }
 
             _inCoursePanDelay = 0;
+        }
+
+        private void SetupDiffItems(double diff)
+        {
+            var timeNow = DateTime.Now;
+            var diffSign = Math.Sign(diff);
+
+            foreach(var item in _timeDiffItems.Where(i => timeNow - i.Time > SwipeTimeThreshold).ToArray())
+            {
+                _timeDiffItems.Remove(item);
+            }
+
+            _timeDiffItems.Add(new TimeDiffItem
+            {
+                Time = timeNow,
+                Diff = diff
+            });
         }
 
         private int GetNewIndexFromDiff()
@@ -999,7 +1033,6 @@ namespace PanCardView
                 FirePositionChanging(isNextSelected.GetValueOrDefault());
             }
 
-            PrevDiff = 0;
             CurrentDiff = 0;
         }
 
@@ -1030,5 +1063,11 @@ namespace PanCardView
             PositionChanged?.Invoke(this, isNextSelected);
             PositionChangedCommand?.Execute(isNextSelected);
         }
+    }
+
+    internal struct TimeDiffItem
+    {
+        public DateTime Time { get; set; }
+        public double Diff { get; set; }
     }
 }
