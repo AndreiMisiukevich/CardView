@@ -562,9 +562,16 @@ namespace PanCardView
 
             CleanDiffItems();
 
-            var isNextSelected = IsPanEnabled && (absDiff > MoveDistance || CheckDiffItems())
-                ? diff < 0 
-                : (bool?)null;
+            bool? isNextSelected = null;
+
+            if(IsEnabled)
+            {
+                var checkSwipe = CheckSwipe();
+                if(checkSwipe.HasValue && (checkSwipe.Value || absDiff > MoveDistance))
+                {
+                    isNextSelected = diff < 0;
+                }
+            }
 
             _timeDiffItems.Clear();
 
@@ -625,7 +632,7 @@ namespace PanCardView
             _inCoursePanDelay = 0;
         }
 
-        private bool CheckDiffItems()
+        private bool? CheckSwipe()
         {
             if(_timeDiffItems.Count < 2)
             {
@@ -635,12 +642,19 @@ namespace PanCardView
             var lastItem = _timeDiffItems.Last();
             var firstItem = _timeDiffItems.First();
 
-            var distDiff = Math.Abs(lastItem.Diff - firstItem.Diff);
+            var distDiff = lastItem.Diff - firstItem.Diff;
+
+            if(Math.Sign(distDiff) != Math.Sign(lastItem.Diff))
+            {
+                return null;
+            }
+
+            var absDistDiff = Math.Abs(distDiff);
             var timeDiff = lastItem.Time - firstItem.Time;
 
             var acceptValue = SwipeThresholdDistance * timeDiff.TotalMilliseconds / SwipeThresholdTime.TotalMilliseconds;
 
-            return distDiff >= acceptValue;
+            return absDistDiff >= acceptValue;
         }
 
         private void SetupDiffItems(double diff)
