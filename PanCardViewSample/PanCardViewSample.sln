@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardView", "..\PanCardVi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardView.Droid", "..\PanCardView.Droid\PanCardView.Droid.csproj", "{47A15982-1485-4E70-8440-84EFBA28C584}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardViewSample.UWP", "PanCardViewSample.UWP\PanCardViewSample.UWP.csproj", "{36DB8471-585A-479E-B232-F258DF93DD8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardViewSample.UWP", "UWP\PanCardViewSample.UWP.csproj", "{36DB8471-585A-479E-B232-F258DF93DD8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
