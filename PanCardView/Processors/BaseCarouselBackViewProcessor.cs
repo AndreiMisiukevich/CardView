@@ -54,7 +54,7 @@ namespace PanCardView.Processors
                 var tcs = new TaskCompletionSource<bool>();
 
                 var animTimePercent = (cardsView.Width - Math.Abs(view.TranslationX)) / cardsView.Width;
-                var animLength = (uint)(AnimationLength * animTimePercent);
+                var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
                 new Animation(v => view.TranslationX = v, view.TranslationX, Math.Sign((int)panItemPosition) * cardsView.Width)
                     .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
                 return tcs.Task;

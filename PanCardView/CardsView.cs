@@ -74,9 +74,9 @@ namespace PanCardView
 
         public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 6);
 
-        public static readonly BindableProperty SwipeDistanceThresholdProperty = BindableProperty.Create(nameof(SwipeDistanceThreshold), typeof(double), typeof(CardsView), 65.0);
+        public static readonly BindableProperty SwipeThresholdDistanceProperty = BindableProperty.Create(nameof(SwipeThresholdDistance), typeof(double), typeof(CardsView), 17.0);
 
-        public static readonly BindableProperty SwipeTimeThresholdProperty = BindableProperty.Create(nameof(SwipeTimeThreshold), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(50));
+        public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(60));
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -235,16 +235,16 @@ namespace PanCardView
             set => SetValue(DesiredMaxChildrenCountProperty, value);
         }
 
-        public double SwipeDistanceThreshold
+        public double SwipeThresholdDistance
         {
-            get => (double)GetValue(SwipeDistanceThresholdProperty);
-            set => SetValue(SwipeDistanceThresholdProperty, value);
+            get => (double)GetValue(SwipeThresholdDistanceProperty);
+            set => SetValue(SwipeThresholdDistanceProperty, value);
         }
 
-        public TimeSpan SwipeTimeThreshold
+        public TimeSpan SwipeThresholdTime
         {
-            get => (TimeSpan)GetValue(SwipeTimeThresholdProperty);
-            set => SetValue(SwipeTimeThresholdProperty, value);
+            get => (TimeSpan)GetValue(SwipeThresholdTimeProperty);
+            set => SetValue(SwipeThresholdTimeProperty, value);
         }
 
         public bool IsOnlyForwardDirection
@@ -560,11 +560,13 @@ namespace PanCardView
             var index = CurrentIndex;
             var diff = CurrentDiff;
 
-            var prevDiff = _timeDiffItems.FirstOrDefault().Diff;
+            CleanDiffItems();
 
-            var isNextSelected = IsPanEnabled && (absDiff > MoveDistance || Math.Abs(diff - prevDiff) >= SwipeDistanceThreshold)
+            var isNextSelected = IsPanEnabled && (absDiff > MoveDistance || CheckDiffItems())
                 ? diff < 0 
                 : (bool?)null;
+
+            _timeDiffItems.Clear();
 
             if (isNextSelected.HasValue)
             {
@@ -623,14 +625,31 @@ namespace PanCardView
             _inCoursePanDelay = 0;
         }
 
+        private bool CheckDiffItems()
+        {
+            if(_timeDiffItems.Count < 2)
+            {
+                return false;
+            }
+
+            var lastItem = _timeDiffItems.Last();
+            var firstItem = _timeDiffItems.First();
+
+            var distDiff = Math.Abs(lastItem.Diff - firstItem.Diff);
+            var timeDiff = lastItem.Time - firstItem.Time;
+
+            var acceptValue = SwipeThresholdDistance * timeDiff.TotalMilliseconds / SwipeThresholdTime.TotalMilliseconds;
+
+            return distDiff >= acceptValue;
+        }
+
         private void SetupDiffItems(double diff)
         {
             var timeNow = DateTime.Now;
-            var diffSign = Math.Sign(diff);
 
-            foreach(var item in _timeDiffItems.Where(i => timeNow - i.Time > SwipeTimeThreshold).ToArray())
+            if(_timeDiffItems.Count >= 25)
             {
-                _timeDiffItems.Remove(item);
+                CleanDiffItems();
             }
 
             _timeDiffItems.Add(new TimeDiffItem
@@ -638,6 +657,19 @@ namespace PanCardView
                 Time = timeNow,
                 Diff = diff
             });
+        }
+
+        private void CleanDiffItems()
+        {
+            var time = _timeDiffItems.LastOrDefault().Time;
+
+            for (var i = _timeDiffItems.Count - 1; i >= 0; --i)
+            {
+                if (time - _timeDiffItems[i].Time > SwipeThresholdTime)
+                {
+                    _timeDiffItems.RemoveAt(i);
+                }
+            }
         }
 
         private int GetNewIndexFromDiff()
