@@ -302,18 +302,24 @@ namespace PanCardView
                     if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
                     {
                         OnTouchStarted();
+                        (_currentView as ICardItem)?.HandleTouchStarted();
                     }
-                    break;
+                    return;
                 case GestureStatus.Running:
-                    OnTouchChanged(e.TotalX);
-                    break;
+                    var handled = (_currentView as ICardItem)?.HandeTouchChanged(e.TotalX, e.TotalY) ?? false;
+                    if (!handled)
+                    {
+                        OnTouchChanged(e.TotalX);
+                    }
+                    return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
                     {
                         OnTouchEnded();
+                        (_currentView as ICardItem)?.HandleTouchEnded();
                     }
-                    break;
+                    return;
             }
         }
 

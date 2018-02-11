@@ -41,6 +41,7 @@
     <Compile Include="Processors\BaseCarouselFrontViewProcessor.cs" />
     <Compile Include="CarouselView.cs" />
     <Compile Include="Processors\Constants.cs" />
+    <Compile Include="ICardItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

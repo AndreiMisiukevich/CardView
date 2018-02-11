@@ -3,28 +3,41 @@ using PanCardView.Factory;
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
 using PanCardViewSample.CardsFactory;
+using System;
 
 namespace PanCardViewSample.Views
 {
     public class CarouselSampleStressView : ContentPage
     {
+        private readonly CarouselView _carouselView;
+
         public CarouselSampleStressView()
         {
-            var cardsView = new CarouselView
+            _carouselView = new CarouselView
             {
                 ItemViewFactory = new CardViewItemFactory(GetCardItem),
                 IsRecycled = true
             };
-            cardsView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleStressViewModel.Items));
+            _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleStressViewModel.Items));
 
             Title = "CarouselView StressTest";
 
-            Content = cardsView;
+            Content = _carouselView;
             BindingContext = new CarouselSampleStressViewModel();
         }
 
 
-        private View GetCardItem()
+        private View GetCardItem() => new CardItem();
+    }
+
+    public class CardItem : ContentView, ICardItem
+    {
+        private readonly ScrollView _scroller;
+
+        private double _prevScrollY;
+        private bool? _handled;
+
+        public CardItem()
         {
             var label = new Label
             {
@@ -38,13 +51,59 @@ namespace PanCardViewSample.Views
             };
             label.SetBinding(Label.TextProperty, "Number");
 
-            var content = new ContentView
+            _scroller = new ScrollView
             {
+                WidthRequest = 280,
                 BackgroundColor = Color.Black,
-                Content = label
+                Content = new StackLayout
+                {
+                    WidthRequest = 280,
+                    Children =
+                    {
+                        label,
+                        new Label
+                        {
+                            WidthRequest = 280,
+                            TextColor = Color.Gold,
+                            FontSize = 50,
+                            Text = "\nasfla jlasjf lkasj flkasjf lkajslk fjasl fjlas jflkjf alk sjflkasj lkasj flkasj flkajs lfjasl kfjaslk fjlaks jflask jfslka jlkaj flkasj faskf jalks fjlkas jflkas jfasj flas jfalks fjlaf "
+                        }
+                    }
+                },
+                IsEnabled = false
             };
 
-            return content;
+            Content = _scroller;
+        }
+
+        public bool HandeTouchChanged(double totalX, double totalY)
+        {
+            if(!_handled.HasValue)
+            {
+                var absX = Math.Abs(totalX);
+                var absY = Math.Abs(totalY);
+                _handled = absY > absX;
+            }
+
+            if(_handled.Value)
+            {
+                _scroller.ScrollToAsync(0, _scroller.ScrollY - totalY + _prevScrollY, false);
+                _prevScrollY = totalY;
+            }
+
+            return _handled.Value;
+        }
+
+        public void HandleTouchEnded()
+        {
+            _handled = null;
+            _prevScrollY = 0.0;
+        }
+
+        public void HandleTouchStarted()
+        {
+            _handled = null;
+            _prevScrollY = 0.0;
         }
     }
 }
