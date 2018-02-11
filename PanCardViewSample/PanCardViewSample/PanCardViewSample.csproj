@@ -36,6 +36,8 @@
     <Compile Include="CardsFactory\RuleHolder.cs" />
     <Compile Include="Views\CardsSampleCustomView.cs" />
     <Compile Include="ViewModels\SharedSampleCustomViewModel.cs" />
+    <Compile Include="Views\CarouselSampleStressView.cs" />
+    <Compile Include="ViewModels\CarouselSampleStressViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">
