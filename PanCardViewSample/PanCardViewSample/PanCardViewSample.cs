@@ -35,13 +35,19 @@ namespace PanCardViewSample
                 this.Navigation.PushAsync(new CarouselSampleStressView());
             };
 
+            var toCarouselDoubleBtn = new Button { Text = "CarouselView DoubleView" };
+            toCarouselDoubleBtn.Clicked += (sender, e) => {
+                this.Navigation.PushAsync(new CarouselSampleDoubleView());
+            };
+
             Content = new StackLayout
             {
                 Children = {
                     toCardsBtn,
                     toCardsBtnCustom,
                     toCarouselBtn,
-                    toCarouselStressBtn
+                    toCarouselStressBtn,
+                    toCarouselDoubleBtn
                 }
             };
         }

@@ -38,6 +38,8 @@
     <Compile Include="ViewModels\SharedSampleCustomViewModel.cs" />
     <Compile Include="Views\CarouselSampleStressView.cs" />
     <Compile Include="ViewModels\CarouselSampleStressViewModel.cs" />
+    <Compile Include="Views\CarouselSampleDoubleView.cs" />
+    <Compile Include="ViewModels\CarouselSampleDoubleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">
