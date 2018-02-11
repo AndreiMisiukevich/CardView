@@ -87,7 +87,18 @@ namespace PanCardViewSample.Views
 
             if(_handled.Value)
             {
-                _scroller.ScrollToAsync(0, _scroller.ScrollY - totalY + _prevScrollY, false);
+                var y = _scroller.ScrollY - totalY + _prevScrollY;
+                if(y < 0)
+                {
+                    _prevScrollY = 0;
+                    return _handled.Value;
+                }
+                if(y > _scroller.Content.Height)
+                {
+                    _prevScrollY = _scroller.Content.Height;
+                    return _handled.Value;
+                }
+                _scroller.ScrollToAsync(0, y, false);
                 _prevScrollY = totalY;
             }
 
