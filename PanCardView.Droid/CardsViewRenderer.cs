@@ -1,5 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Android.Content;
 using PanCardView.Droid;
@@ -27,31 +26,25 @@ namespace PanCardView.Droid
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            var element = Element as CardsView;
             var action = e.Action;
 
             if(_panStarted && action == MotionEventActions.Up) // action == MotionEventActions.Move && e.PointerCount > 1
             {
-                EndPan(element, -1);
+                UpdatePan(false);
             }
             else if(action == MotionEventActions.Down)
             {
-                StartPan(element, -1);
+                UpdatePan(true);
             }
 
             return base.OnTouchEvent(e);
         }
 
-        private void StartPan(CardsView element, int id)
+        private void UpdatePan(bool isStarted)
         {
-            _panStarted = true;
-            element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Started, id, 0, 0));
-        }
-
-        private void EndPan(CardsView element, int id)
-        {
-            element.OnPanUpdated(this, new PanUpdatedEventArgs(GestureStatus.Completed, id, 0, 0));
-            _panStarted = false;
+            _panStarted = isStarted;
+            var args = new PanUpdatedEventArgs(isStarted ? GestureStatus.Started : GestureStatus.Completed, -1, 0, 0);
+            (Element as CardsView).OnPanUpdated(this, args);
         }
     }
 }
