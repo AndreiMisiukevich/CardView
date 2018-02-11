@@ -19,12 +19,6 @@ namespace PanCardView.Droid
         {
         }
 
-        [Obsolete("You needn't have to call this method. Now, Cards ViewRenderer is marked by Preserve attribute")]
-        public static void Init()
-        {
-            var now = DateTime.Now;
-        }
-
         protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
         {
             base.OnElementChanged(e);
