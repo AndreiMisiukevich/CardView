@@ -8,8 +8,6 @@ Add nuget package to your Xamarin.Forms PCL project and to your platform-specifi
 |Xamarin.iOS|
 |Xamarin.Android|
 |Windows 10 UWP|
-|.NET|4.5+|
-|.NET Core|
 
 ## CardsView
 This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms applications like in Tinder app has
