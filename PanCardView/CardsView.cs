@@ -381,6 +381,11 @@ namespace PanCardView
             if (Items != null || CurrentContext != null)
             {
                 _currentView = GetView(CurrentIndex, PanItemPosition.Current);
+                if(_currentView == null && CurrentIndex >= 0)
+                {
+                    ShouldIgnoreSetCurrentView = true;
+                    CurrentIndex = -1;
+                }
             }
 
             SetupBackViews(null);
@@ -710,7 +715,7 @@ namespace PanCardView
             {
                 if (!IsRecycled)
                 {
-                    return - 1;
+                    return -1;
                 }
 
                 newIndex = GetRecycledIndex(newIndex);
@@ -848,6 +853,11 @@ namespace PanCardView
                 index = GetRecycledIndex(index);
             }
 
+            if(index < 0)
+            {
+                return null;
+            }
+
             return Items[index];
         }
 
@@ -943,7 +953,7 @@ namespace PanCardView
             lock (_childLocker)
             {
                 ++_viewsChildrenCount;
-                if (index < 0)
+                if (index < 0 || !Children.Any())
                 {
                     Children.Add(view);
                     return;
@@ -1049,7 +1059,7 @@ namespace PanCardView
 
         private int GetRecycledIndex(int index)
         {
-            if(_itemsCount < 0)
+            if(_itemsCount <= 0)
             {
                 return -1;
             }
