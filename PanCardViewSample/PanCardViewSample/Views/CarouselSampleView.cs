@@ -21,11 +21,7 @@ namespace PanCardViewSample.Views
                 IsRecycled = true
             };
 
-            var indicatorsView = new IndicatorsControl
-            {
-                TranslationY = -10
-            };
-            cardsView.Children.Add(indicatorsView, new Rectangle(.5, 1, -1, -1), AbsoluteLayoutFlags.PositionProportional);
+            cardsView.Children.Add(new IndicatorsControl());
 
             var prevItem = new ToolbarItem
             {

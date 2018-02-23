@@ -24,11 +24,15 @@ namespace PanCardView.Controls
             _color = color;
             _size = size;
 
+            Spacing = 5;
             Orientation = StackOrientation.Horizontal;
             InputTransparent = true;
 
             this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
             this.SetBinding(IndicatorsCountProperty, nameof(CardsView.ItemsCount));
+
+            AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, size + 20));
+            AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
         }
 
         public IndicatorsControl(Color color) : this(color, 10)
@@ -65,35 +69,38 @@ namespace PanCardView.Controls
         }
 
         protected virtual View BuildIndicatorItem()
-        => new Button
+        => new Frame
         {
             VerticalOptions = LayoutOptions.Center,
-            HorizontalOptions = LayoutOptions.Center
+            HorizontalOptions = LayoutOptions.Center,
+            HasShadow = false,
+            Padding = 0
         };
 
-        protected virtual void ApplyStyle(View item, int recycledIndex)
+        protected virtual void ApplyStyle(View view, int recycledIndex)
         {
-            var button = item as Button;
+            var item = view as Frame;
             try
             {
-                button.BatchBegin();
+                item.BatchBegin();
 
-                button.WidthRequest = _size;
-                button.HeightRequest = _size;
-                button.BorderRadius = _size / 2;
+                item.WidthRequest = _size;
+                item.HeightRequest = _size;
+                item.CornerRadius = _size / 2;
 
                 if (Children.IndexOf(item) == recycledIndex)
                 {
                     item.BackgroundColor = _color;
                     return;
                 }
-                button.BackgroundColor = Color.Transparent;
-                button.BorderColor = _color;
-                button.BorderWidth = 1;
+                item.BackgroundColor = Device.RuntimePlatform == Device.iOS
+                    ? Color.Transparent
+                    : Color.White.MultiplyAlpha(.4);
+                item.OutlineColor = _color;
             }
             finally
             {
-                button.BatchCommit();
+                item.BatchCommit();
             }
         }
 
