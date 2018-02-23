@@ -14,7 +14,7 @@ namespace PanCardViewSample.Views
         {
             var cardsView = new CardsView
             {
-                ItemViewFactory = new CardViewItemFactory(RuleHolder.Rule),
+                DataTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9),
                 IsPanInCourse = true
             };

@@ -42,7 +42,12 @@ namespace PanCardView
             bindable.AsCardView().SetCurrentView();
         });
 
+        [Obsolete("This property is obsolete and will be removed soon. Use DataTemplateProperty instead")]
         public static readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
+            bindable.AsCardView().SetCurrentView();
+        });
+
+        public static readonly BindableProperty DataTemplateProperty = BindableProperty.Create(nameof(DataTemplate), typeof(DataTemplate), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetCurrentView();
         });
 
@@ -90,7 +95,7 @@ namespace PanCardView
 
         public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
 
-        private readonly Dictionary<CardViewFactoryRule, List<View>> _viewsPool = new Dictionary<CardViewFactoryRule, List<View>>();
+        private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
         private readonly HashSet<View> _viewsInUse = new HashSet<View>();
         private readonly Dictionary<Guid, View[]> _viewsGestureCounter = new Dictionary<Guid, View[]>();
         private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
@@ -151,10 +156,17 @@ namespace PanCardView
             set => SetValue(ItemsProperty, value);
         }
 
+        [Obsolete("This property is obsolete and will be deleted soon. Use DataTemplate instead")]
         public CardViewItemFactory ItemViewFactory 
         {
             get => GetValue(ItemViewFactoryProperty) as CardViewItemFactory;
             set => SetValue(ItemViewFactoryProperty, value);
+        }
+
+        public DataTemplate DataTemplate
+        {
+            get => GetValue(DataTemplateProperty) as DataTemplate;
+            set => SetValue(DataTemplateProperty, value);
         }
 
         public object CurrentContext
@@ -793,17 +805,14 @@ namespace PanCardView
                 return null;
             }
 
-            var rule = ItemViewFactory?.GetRule(context);
-            if (rule == null)
-            {
-                return null;
-            }
+            ChooseViewCreator(context, out object rule, out Func<View> creator);
+
             List<View> viewsList;
             if (!_viewsPool.TryGetValue(rule, out viewsList))
             {
                 viewsList = new List<View>
                 {
-                    rule.Creator.Invoke()
+                    creator.Invoke()
                 };
                 _viewsPool.Add(rule, viewsList);
             }
@@ -816,11 +825,33 @@ namespace PanCardView
 
             if (view == null)
             {
-                view = rule.Creator.Invoke();
+                view = creator.Invoke();
                 viewsList.Add(view);
             }
 
             return view;
+        }
+
+        private void ChooseViewCreator(object context, out object creatorKey, out Func<View> creator)
+        {
+            if (DataTemplate != null)
+            {
+                var template = DataTemplate;
+                if (DataTemplate is DataTemplateSelector selector)
+                {
+                    template = selector.SelectTemplate(context, this);
+                }
+                creatorKey = template;
+                creator = () => template.CreateContent() as View;
+                return;
+            }
+
+#pragma warning disable //Obsolete property
+            var rule = ItemViewFactory?.GetRule(context);
+#pragma warning restore
+
+            creatorKey = rule;
+            creator = rule.Creator;
         }
 
         private object GetContext(int index, PanItemPosition panIntemPosition)

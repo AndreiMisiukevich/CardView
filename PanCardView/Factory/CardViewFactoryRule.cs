@@ -3,6 +3,7 @@ using Xamarin.Forms;
 
 namespace PanCardView.Factory
 {
+    [Obsolete("This class is obsolete and will be removed soon. Use DataTemplate instead")]
     public sealed class CardViewFactoryRule
     {
         public CardViewFactoryRule()

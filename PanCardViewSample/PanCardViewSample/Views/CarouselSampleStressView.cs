@@ -15,7 +15,7 @@ namespace PanCardViewSample.Views
         {
             _carouselView = new CarouselView
             {
-                ItemViewFactory = new CardViewItemFactory(GetCardItem),
+                DataTemplate = new DataTemplate(GetCardItem),
                 IsRecycled = true
             };
             _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleStressViewModel.Items));

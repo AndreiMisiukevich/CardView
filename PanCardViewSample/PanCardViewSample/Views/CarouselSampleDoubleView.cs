@@ -12,7 +12,7 @@ namespace PanCardViewSample.Views
         {
             var cardsView = new CarouselView
             {
-                ItemViewFactory = new CardViewItemFactory(GetCardItem),
+                DataTemplate = new DataTemplate(GetCardItem),
                 IsRecycled = true
             };
             cardsView.SetBinding(CardsView.ItemsProperty, "Items");
