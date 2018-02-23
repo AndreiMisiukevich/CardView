@@ -10,6 +10,7 @@ using PanCardView.Factory;
 using PanCardView.Processors;
 using System.Collections;
 using PanCardView.Enums;
+using PanCardView.Controls;
 
 namespace PanCardView
 {
@@ -41,6 +42,8 @@ namespace PanCardView
             bindable.AsCardView().SetItemsCount();
             bindable.AsCardView().SetCurrentView();
         });
+
+        public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
         [Obsolete("This property is obsolete and will be removed soon. Use DataTemplateProperty instead")]
         public static readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
@@ -110,7 +113,6 @@ namespace PanCardView
 
         private INotifyCollectionChanged _currentObservableCollection;
 
-        private int _itemsCount = -1;
         private int _viewsChildrenCount;
         private int _inCoursePanDelay;
         private bool _isPanRunning;
@@ -154,6 +156,12 @@ namespace PanCardView
         {
             get => GetValue(ItemsProperty) as IList;
             set => SetValue(ItemsProperty, value);
+        }
+
+        public int ItemsCount
+        {
+            get => (int)GetValue(ItemsCountProperty);
+            private set => SetValue(ItemsCountProperty, value);
         }
 
         [Obsolete("This property is obsolete and will be deleted soon. Use DataTemplate instead")]
@@ -303,7 +311,7 @@ namespace PanCardView
 
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            if (_itemsCount < 0 && CurrentContext == null)
+            if (ItemsCount < 0 && CurrentContext == null)
             {
                 return;
             }
@@ -477,6 +485,8 @@ namespace PanCardView
             return false;
         }
 
+        protected virtual bool CheckIsProtectedView(View view) => view is IndicatorsControl;
+
         private PanItemPosition GetAutoNavigatePanPosition()
         {
             if(CurrentContext != null)
@@ -493,8 +503,8 @@ namespace PanCardView
                        : PanItemPosition.Next;
             }
 
-            var recIndex = GetRecycledIndex(CurrentIndex);
-            var oldRecIndex = GetRecycledIndex(OldIndex);
+            var recIndex = CurrentIndex.ToRecycledIndex(ItemsCount);
+            var oldRecIndex = OldIndex.ToRecycledIndex(ItemsCount);
 
             var deltaIndex = recIndex - oldRecIndex;
             if(Math.Abs(deltaIndex) == 1)
@@ -645,11 +655,13 @@ namespace PanCardView
                 }
             }
 
-            var maxChildrenCount = isProcessingNow ? MaxChildrenCount : DesiredMaxChildrenCount;
+            var maxChildrenCount = isProcessingNow 
+                ? MaxChildrenCount 
+                : DesiredMaxChildrenCount;
 
             if (_viewsChildrenCount > maxChildrenCount)
             {
-                RemoveChildren(Children.Where(c => c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray());
+                RemoveChildren(Children.Where(c => !CheckIsProtectedView(c) && c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray());
             }
 
             _inCoursePanDelay = 0;
@@ -723,14 +735,14 @@ namespace PanCardView
             }
             var newIndex = CurrentIndex + indexDelta;
 
-            if (newIndex < 0 || newIndex >= _itemsCount)
+            if (newIndex < 0 || newIndex >= ItemsCount)
             {
                 if (!IsRecycled)
                 {
                     return -1;
                 }
 
-                newIndex = GetRecycledIndex(newIndex);
+                newIndex = newIndex.ToRecycledIndex(ItemsCount);
             }
 
             return newIndex;
@@ -788,7 +800,7 @@ namespace PanCardView
             SetupLayout(view);
             if(panIntemPosition == PanItemPosition.Current)
             {
-                AddChild(view, 0);
+                AddBackChild(view);
             }
             else
             {
@@ -869,19 +881,19 @@ namespace PanCardView
                 }
             }
 
-            if (_itemsCount < 0)
+            if (ItemsCount < 0)
             {
                 return null;
             }
 
-            if (index < 0 || index >= _itemsCount)
+            if (index < 0 || index >= ItemsCount)
             {
-                if (!IsRecycled || (panIntemPosition != PanItemPosition.Current && _itemsCount < 2))
+                if (!IsRecycled || (panIntemPosition != PanItemPosition.Current && ItemsCount < 2))
                 {
                     return null;
                 }
 
-                index = GetRecycledIndex(index);
+                index = index.ToRecycledIndex(ItemsCount);
             }
 
             if(index < 0)
@@ -937,7 +949,7 @@ namespace PanCardView
 
         private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _itemsCount = Items?.Count ?? -1;
+            ItemsCount = Items?.Count ?? -1;
 
             ShouldSetIndexAfterPan = _isPanRunning;
             if(!_isPanRunning)
@@ -951,7 +963,7 @@ namespace PanCardView
             var index = 0;
             if (_currentView != null)
             {
-                for (var i = 0; i < _itemsCount; ++i)
+                for (var i = 0; i < ItemsCount; ++i)
                 {
                     if(Items[i] == _currentView.BindingContext)
                     {
@@ -974,7 +986,7 @@ namespace PanCardView
             CurrentIndex = index;
         }
 
-        private void AddChild(View view, int index = -1)
+        private void AddBackChild(View view)
         {
             if (view == null || Children.Contains(view))
             {
@@ -984,12 +996,7 @@ namespace PanCardView
             lock (_childLocker)
             {
                 ++_viewsChildrenCount;
-                if (index < 0 || !Children.Any())
-                {
-                    Children.Add(view);
-                    return;
-                }
-                Children.Insert(index, view);
+                Children.Insert(0, view);
             }
         }
 
@@ -1086,29 +1093,6 @@ namespace PanCardView
                     }
                 }
             }
-        }
-
-        private int GetRecycledIndex(int index)
-        {
-            if(_itemsCount <= 0)
-            {
-                return -1;
-            }
-
-            if(index < 0)
-            {
-                while(index < 0)
-                {
-                    index += _itemsCount;
-                }
-                return index;
-            }
-
-            while(index >= _itemsCount)
-            {
-                index -= _itemsCount;
-            }
-            return index;
         }
 
         private void FirePanStarted()

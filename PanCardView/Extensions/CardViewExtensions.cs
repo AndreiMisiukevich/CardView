@@ -1,4 +1,5 @@
 ﻿using Xamarin.Forms;
+using PanCardView.Controls;
 
 namespace PanCardView.Extensions
 {
@@ -6,5 +7,8 @@ namespace PanCardView.Extensions
     {
         internal static CardsView AsCardView(this BindableObject bindable)
         => bindable as CardsView;
+
+        internal static IndicatorsControl AsIndicatorsControl(this BindableObject bindable)
+        => bindable as IndicatorsControl;
     }
 }

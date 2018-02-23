@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using PanCardView.Processors;
 using PanCardViewSample.ViewModels;
 using PanCardViewSample.CardsFactory;
+using PanCardView.Controls;
 
 namespace PanCardViewSample.Views
 {
@@ -19,6 +20,12 @@ namespace PanCardViewSample.Views
                 IsPanInCourse = true,
                 IsRecycled = true
             };
+
+            var indicatorsView = new IndicatorsControl
+            {
+                TranslationY = -10
+            };
+            cardsView.Children.Add(indicatorsView, new Rectangle(.5, 1, -1, -1), AbsoluteLayoutFlags.PositionProportional);
 
             var prevItem = new ToolbarItem
             {
