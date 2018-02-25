@@ -40,9 +40,9 @@ cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewMod
 ```csharp
 cardsView.Children.Add(new IndicatorsControl());
 ```
--> Also you are able to customize indicators. You need to extend IndicatorsClass and override a few methods.
--> Also you can choose position for indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
--> Check source code for more info, or just ask me =)
+-> If you want to customize indicators, you need to extend IndicatorsView class and override a few methods. 
+Also you can choose position for indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
+Check source code for more info, or just ask me =)
 
 ## License
 The MIT License (MIT) see [License file](LICENSE)
