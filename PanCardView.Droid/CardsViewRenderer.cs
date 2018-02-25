@@ -28,7 +28,7 @@ namespace PanCardView.Droid
         {
             var action = e.Action;
 
-            if(_panStarted && action == MotionEventActions.Up) // action == MotionEventActions.Move && e.PointerCount > 1
+            if(_panStarted && action == MotionEventActions.Up)
             {
                 UpdatePan(false);
             }

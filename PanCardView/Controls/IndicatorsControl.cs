@@ -31,7 +31,8 @@ namespace PanCardView.Controls
             this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
             this.SetBinding(IndicatorsCountProperty, nameof(CardsView.ItemsCount));
 
-            AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, size + 20));
+            Margin = new Thickness(10, 20);
+            AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
             AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
         }
 
@@ -69,7 +70,7 @@ namespace PanCardView.Controls
         }
 
         protected virtual View BuildIndicatorItem()
-        => new Frame
+        => new IndicatorItemView
         {
             VerticalOptions = LayoutOptions.Center,
             HorizontalOptions = LayoutOptions.Center,
@@ -77,30 +78,42 @@ namespace PanCardView.Controls
             Padding = 0
         };
 
-        protected virtual void ApplyStyle(View view, int recycledIndex)
+        protected virtual void ApplySelectedStyle(View view)
         {
-            var item = view as Frame;
+            view.BackgroundColor = _color;
+        }
+
+        protected virtual void ApplyUnselectedStyle(View view)
+        {
+            var item = view as IndicatorItemView;
+            item.BackgroundColor = Color.Transparent;
+            item.OutlineColor = _color;
+        }
+
+        private void ApplyBaseStyle(View view)
+        {
+            var item = view as IndicatorItemView;
+            item.WidthRequest = _size;
+            item.HeightRequest = _size;
+            item.CornerRadius = _size / 2;
+        }
+
+        private void ApplyStyle(View view, int recycledIndex)
+        {
             try
             {
-                item.BatchBegin();
-
-                item.WidthRequest = _size;
-                item.HeightRequest = _size;
-                item.CornerRadius = _size / 2;
-
-                if (Children.IndexOf(item) == recycledIndex)
+                view.BatchBegin();
+                ApplyBaseStyle(view);
+                if (Children.IndexOf(view) == recycledIndex)
                 {
-                    item.BackgroundColor = _color;
+                    ApplySelectedStyle(view);
                     return;
                 }
-                item.BackgroundColor = Device.RuntimePlatform == Device.iOS
-                    ? Color.Transparent
-                    : Color.White.MultiplyAlpha(.4);
-                item.OutlineColor = _color;
+                ApplyUnselectedStyle(view);
             }
             finally
             {
-                item.BatchCommit();
+                view.BatchCommit();
             }
         }
 
