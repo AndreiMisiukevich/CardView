@@ -18,7 +18,7 @@ Just add nuget package into your PCL project
 ## CarouselView
 You are able to setup CarouselView control, that is based on CardsView
 
-![Sample GIF](https://media.giphy.com/media/xULW8AB7TQf3mbEi7m/giphy.gif)
+![Sample GIF](https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif)
 
 ## Samples
 The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
