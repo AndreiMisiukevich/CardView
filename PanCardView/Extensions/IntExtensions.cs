@@ -1,9 +1,9 @@
 ﻿using System;
 namespace PanCardView.Extensions
 {
-    internal static class IntExtensions
+    public static class IntExtensions
     {
-        internal static int ToRecycledIndex(this int index, int itemsCount)
+        public static int ToRecycledIndex(this int index, int itemsCount)
         {
             if (itemsCount <= 0)
             {

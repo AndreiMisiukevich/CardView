@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PanCardView.Enums;
 using Xamarin.Forms;
+
 using static System.Math;
 
 namespace PanCardView.Processors

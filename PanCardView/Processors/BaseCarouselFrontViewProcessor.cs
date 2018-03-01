@@ -40,7 +40,7 @@ namespace PanCardView.Processors
 
             if (panItemPosition == PanItemPosition.Null)
             {
-                xPos = Sign(xPos) * Min(Abs(xPos / 4), 20);
+                xPos = Sign(xPos) * Min(Abs(xPos / 4), 25);
             }
 
             view.TranslationX = xPos;

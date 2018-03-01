@@ -1,5 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using System.Threading.Tasks;
 using PanCardView.Enums;
 using static PanCardView.Processors.Constants;
@@ -32,16 +31,16 @@ namespace PanCardView.Processors
 
         public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
-            var multiplier = 0.3;
+            var multiplier = 1;
             if (panItemPosition == PanItemPosition.Null)
             {
-                xPos = Sign(xPos) * Min(Abs(xPos / 4), 20);
+                xPos = Sign(xPos) * Min(Abs(xPos / 4), 25);
                 multiplier = -multiplier;
             }
 
             view.TranslationX = xPos;
-            view.TranslationY = Abs(xPos) / 10;
-            view.Rotation = multiplier * Rad * (xPos / cardsView.Width);
+            view.TranslationY = multiplier * Abs(xPos) / 10;
+            view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Width);
         }
 
         public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
