@@ -1,5 +1,4 @@
 ﻿using PanCardView;
-using PanCardView.Factory;
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
 using PanCardViewSample.CardsFactory;

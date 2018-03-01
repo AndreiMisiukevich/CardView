@@ -1,6 +1,5 @@
 ﻿using FFImageLoading.Forms;
 using PanCardView;
-using PanCardView.Factory;
 using Xamarin.Forms;
 using PanCardView.Processors;
 using PanCardViewSample.ViewModels;

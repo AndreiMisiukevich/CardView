@@ -1,5 +1,4 @@
 ﻿using PanCardView;
-using PanCardView.Factory;
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
 using PanCardViewSample.CardsFactory;
@@ -42,7 +41,7 @@ namespace PanCardViewSample.Views
 
             var cardsView = new CarouselView
             {
-                ItemViewFactory = new CardViewItemFactory(() => {
+                DataTemplate = new DataTemplate(() => {
                     var subCard = new ContentView();
                     subCard.SetBinding(BackgroundColorProperty, "Color");
                     return subCard;

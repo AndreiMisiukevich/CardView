@@ -6,7 +6,6 @@ using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PanCardView.Extensions;
-using PanCardView.Factory;
 using PanCardView.Processors;
 using System.Collections;
 using PanCardView.Enums;
@@ -44,11 +43,6 @@ namespace PanCardView
         });
 
         public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
-
-        [Obsolete("This property is obsolete and will be removed soon. Use DataTemplateProperty instead")]
-        public static readonly BindableProperty ItemViewFactoryProperty = BindableProperty.Create(nameof(ItemViewFactory), typeof(CardViewItemFactory), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
-            bindable.AsCardView().SetCurrentView();
-        });
 
         public static readonly BindableProperty DataTemplateProperty = BindableProperty.Create(nameof(DataTemplate), typeof(DataTemplate), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetCurrentView();
@@ -162,13 +156,6 @@ namespace PanCardView
         {
             get => (int)GetValue(ItemsCountProperty);
             private set => SetValue(ItemsCountProperty, value);
-        }
-
-        [Obsolete("This property is obsolete and will be deleted soon. Use DataTemplate instead")]
-        public CardViewItemFactory ItemViewFactory 
-        {
-            get => GetValue(ItemViewFactoryProperty) as CardViewItemFactory;
-            set => SetValue(ItemViewFactoryProperty, value);
         }
 
         public DataTemplate DataTemplate
@@ -817,16 +804,20 @@ namespace PanCardView
                 return null;
             }
 
-            ChooseViewCreator(context, out object rule, out Func<View> creator);
+            var template = DataTemplate;
+            if (DataTemplate is DataTemplateSelector selector)
+            {
+                template = selector.SelectTemplate(context, this);
+            }
 
             List<View> viewsList;
-            if (!_viewsPool.TryGetValue(rule, out viewsList))
+            if (!_viewsPool.TryGetValue(template, out viewsList))
             {
                 viewsList = new List<View>
                 {
-                    creator.Invoke()
+                    template.CreateContent() as View
                 };
-                _viewsPool.Add(rule, viewsList);
+                _viewsPool.Add(template, viewsList);
             }
 
             var notUsingViews = viewsList.Where(v => !CheckUsingNow(v));
@@ -837,33 +828,11 @@ namespace PanCardView
 
             if (view == null)
             {
-                view = creator.Invoke();
+                view = template.CreateContent() as View;
                 viewsList.Add(view);
             }
 
             return view;
-        }
-
-        private void ChooseViewCreator(object context, out object creatorKey, out Func<View> creator)
-        {
-            if (DataTemplate != null)
-            {
-                var template = DataTemplate;
-                if (DataTemplate is DataTemplateSelector selector)
-                {
-                    template = selector.SelectTemplate(context, this);
-                }
-                creatorKey = template;
-                creator = () => template.CreateContent() as View;
-                return;
-            }
-
-#pragma warning disable //Obsolete property
-            var rule = ItemViewFactory?.GetRule(context);
-#pragma warning restore
-
-            creatorKey = rule;
-            creator = rule.Creator;
         }
 
         private object GetContext(int index, PanItemPosition panIntemPosition)

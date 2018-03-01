@@ -34,8 +34,6 @@
     <Compile Include="Processors\BaseCardFrontViewProcessor.cs" />
     <Compile Include="Processors\ICardProcessor.cs" />
     <Compile Include="Extensions\CardViewExtensions.cs" />
-    <Compile Include="Factory\CardViewFactoryRule.cs" />
-    <Compile Include="Factory\CardViewItemFactory.cs" />
     <Compile Include="Enums\PanItemPosition.cs" />
     <Compile Include="Processors\BaseCarouselBackViewProcessor.cs" />
     <Compile Include="Processors\BaseCarouselFrontViewProcessor.cs" />
@@ -63,7 +61,6 @@
   <ItemGroup>
     <Folder Include="Processors\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Factory\" />
     <Folder Include="Enums\" />
     <Folder Include="Controls\" />
   </ItemGroup>
