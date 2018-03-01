@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using PanCardView.Enums;
 using static PanCardView.Processors.Constants;
+using static System.Math;
 
 namespace PanCardView.Processors
 {
@@ -31,9 +32,16 @@ namespace PanCardView.Processors
 
         public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
+            var multiplier = 0.3;
+            if (panItemPosition == PanItemPosition.Null)
+            {
+                xPos = Sign(xPos) * Min(Abs(xPos / 4), 20);
+                multiplier = -multiplier;
+            }
+
             view.TranslationX = xPos;
-            view.TranslationY = Math.Abs(xPos) / 10;
-            view.Rotation = 0.3 * Math.Min(xPos / cardsView.Width, 1) * Rad;
+            view.TranslationY = Abs(xPos) / 10;
+            view.Rotation = multiplier * Rad * (xPos / cardsView.Width);
         }
 
         public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
@@ -42,7 +50,7 @@ namespace PanCardView.Processors
 
             if (!CheckIsInitialPosition(view))
             {
-                var animLength = (uint)(ResetAnimationLength * Math.Min(Math.Abs(view.TranslationX / cardsView.MoveDistance), 1.0));
+                var animLength = (uint)(ResetAnimationLength * Min(Abs(view.TranslationX / cardsView.MoveDistance), 1.0));
                 new Animation {
                     { 0, 1, new Animation (v => view.TranslationX = v, view.TranslationX, 0) },
                     { 0, 1, new Animation (v => view.TranslationY = v, view.TranslationY, 0) },

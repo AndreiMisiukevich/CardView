@@ -10,6 +10,7 @@ using PanCardView.Processors;
 using System.Collections;
 using PanCardView.Enums;
 using PanCardView.Controls;
+using static System.Math;
 
 namespace PanCardView
 {
@@ -495,7 +496,7 @@ namespace PanCardView
             var oldRecIndex = OldIndex.ToRecycledIndex(ItemsCount);
 
             var deltaIndex = recIndex - oldRecIndex;
-            if(Math.Abs(deltaIndex) == 1)
+            if(Abs(deltaIndex) == 1)
             {
                 return deltaIndex > 0
                     ? PanItemPosition.Next
@@ -549,12 +550,11 @@ namespace PanCardView
                 return;
             }
 
-            if (!TrySetSelectedBackView(diff))
+            if (TrySetSelectedBackView(diff))
             {
-                return;
+                _currentBackView.IsVisible = true;
             }
 
-            _currentBackView.IsVisible = true;
             CurrentDiff = diff;
 
             SetupDiffItems(diff);
@@ -576,7 +576,7 @@ namespace PanCardView
             var gestureId = _gestureId;
 
             _isPanEndRequested = true;
-            var absDiff = Math.Abs(CurrentDiff);
+            var absDiff = Abs(CurrentDiff);
 
             var index = CurrentIndex;
             var diff = CurrentDiff;
@@ -596,7 +596,7 @@ namespace PanCardView
 
             _timeDiffItems.Clear();
 
-            if (isNextSelected.HasValue)
+            if (isNextSelected.HasValue && _currentBackView != null)
             {
                 index = GetNewIndexFromDiff();
                 if(index < 0)
@@ -667,12 +667,12 @@ namespace PanCardView
 
             var distDiff = lastItem.Diff - firstItem.Diff;
 
-            if(Math.Sign(distDiff) != Math.Sign(lastItem.Diff))
+            if(Sign(distDiff) != Sign(lastItem.Diff))
             {
                 return null;
             }
 
-            var absDistDiff = Math.Abs(distDiff);
+            var absDistDiff = Abs(distDiff);
             var timeDiff = lastItem.Time - firstItem.Time;
 
             var acceptValue = SwipeThresholdDistance * timeDiff.TotalMilliseconds / SwipeThresholdTime.TotalMilliseconds;
@@ -716,10 +716,10 @@ namespace PanCardView
                 return 0;
             }
 
-            var indexDelta = -Math.Sign(CurrentDiff);
+            var indexDelta = -Sign(CurrentDiff);
             if (IsOnlyForwardDirection)
             {
-                indexDelta = Math.Abs(indexDelta);
+                indexDelta = Abs(indexDelta);
             }
             var newIndex = CurrentIndex + indexDelta;
 
@@ -738,20 +738,20 @@ namespace PanCardView
 
         private bool TrySetSelectedBackView(double diff)
         {
-            View invisibleView;
             if (diff > 0)
             {
-                _currentBackView = _prevView;
-                invisibleView = _nextView;
-                _currentBackPanItemPosition = PanItemPosition.Prev;
+                return SetSelectedBackView(_prevView, _nextView, PanItemPosition.Prev);
             }
-            else
-            {
-                _currentBackView = _nextView;
-                invisibleView = _prevView;
-                _currentBackPanItemPosition = PanItemPosition.Next;
-            }
+            return SetSelectedBackView(_nextView, _prevView, PanItemPosition.Next);
+        }
 
+        private bool SetSelectedBackView(View selectedView, View invisibleView, PanItemPosition panPosition)
+        {
+            _currentBackView = selectedView;
+            _currentBackPanItemPosition = _currentBackView != null
+                    ? panPosition
+                    : PanItemPosition.Null;
+            
             if (invisibleView != null && invisibleView != _currentBackView)
             {
                 invisibleView.IsVisible = false;

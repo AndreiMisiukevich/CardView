@@ -13,9 +13,7 @@ namespace PanCardViewSample.Views
             var cardsView = new CarouselView()
             {
                 DataTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
-                BackgroundColor = Color.Black.MultiplyAlpha(.9),
-                IsPanInCourse = true,
-                IsRecycled = true
+                BackgroundColor = Color.Black.MultiplyAlpha(.9)
             };
 
             cardsView.Children.Add(new IndicatorsControl());

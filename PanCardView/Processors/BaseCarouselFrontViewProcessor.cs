@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using PanCardView.Enums;
 using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView.Processors
 {
@@ -32,10 +33,16 @@ namespace PanCardView.Processors
 
         public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
-            if (Math.Abs(xPos) > cardsView.Width || (panItemPosition == PanItemPosition.Prev && xPos < 0) || (panItemPosition == PanItemPosition.Next && xPos > 0))
+            if (Abs(xPos) > cardsView.Width || (panItemPosition == PanItemPosition.Prev && xPos < 0) || (panItemPosition == PanItemPosition.Next && xPos > 0))
             {
                 return;
             }
+
+            if (panItemPosition == PanItemPosition.Null)
+            {
+                xPos = Sign(xPos) * Min(Abs(xPos / 4), 20);
+            }
+
             view.TranslationX = xPos;
         }
 
@@ -44,7 +51,7 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 var tcs = new TaskCompletionSource<bool>();
-                var animTimePercent = 1 - (cardsView.Width - Math.Abs(view.TranslationX)) / cardsView.Width;
+                var animTimePercent = 1 - (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
                 var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
                 new Animation(v => view.TranslationX = v, view.TranslationX, 0)
                     .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
@@ -58,7 +65,7 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 var tcs = new TaskCompletionSource<bool>();
-                var animTimePercent = 1 - (cardsView.Width - Math.Abs(view.TranslationX)) / cardsView.Width;
+                var animTimePercent = 1 - (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
                 var animLength = (uint)(AnimationLength * animTimePercent);
                 new Animation(v => view.TranslationX = v, view.TranslationX, 0)
                     .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));

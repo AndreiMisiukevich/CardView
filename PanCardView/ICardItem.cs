@@ -1,5 +1,5 @@
-﻿// 182(c) Andrei Misiukevich
-using System;
+﻿using System;
+
 namespace PanCardView
 {
     public interface ICardItem

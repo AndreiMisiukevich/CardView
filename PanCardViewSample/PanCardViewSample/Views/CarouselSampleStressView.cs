@@ -1,8 +1,8 @@
 ﻿using PanCardView;
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
-using PanCardViewSample.CardsFactory;
 using System;
+using static System.Math;
 
 namespace PanCardViewSample.Views
 {
@@ -79,8 +79,8 @@ namespace PanCardViewSample.Views
         {
             if(!_handled.HasValue)
             {
-                var absX = Math.Abs(totalX);
-                var absY = Math.Abs(totalY);
+                var absX = Abs(totalX);
+                var absY = Abs(totalY);
                 _handled = absY > absX;
             }
 

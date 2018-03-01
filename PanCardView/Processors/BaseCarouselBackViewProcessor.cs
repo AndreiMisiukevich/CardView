@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using PanCardView.Enums;
 using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView.Processors
 {
@@ -15,7 +16,7 @@ namespace PanCardView.Processors
         {
             if (view != null)
             {
-                view.TranslationX = Math.Sign((int)panItemPosition) * cardsView.Width;
+                view.TranslationX = Sign((int)panItemPosition) * cardsView.Width;
                 view.IsVisible = false;
             }
         }
@@ -39,8 +40,13 @@ namespace PanCardView.Processors
 
         public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
         {
-            var value = Math.Sign((int)panItemPosition) * cardsView.Width + xPos;
-            if(Math.Abs(value) > cardsView.Width || (panItemPosition == PanItemPosition.Prev && value > 0) || (panItemPosition == PanItemPosition.Next && value < 0))
+            if (panItemPosition == PanItemPosition.Null)
+            {
+                return;
+            }
+
+            var value = Sign((int)panItemPosition) * cardsView.Width + xPos;
+            if(Abs(value) > cardsView.Width || (panItemPosition == PanItemPosition.Prev && value > 0) || (panItemPosition == PanItemPosition.Next && value < 0))
             {
                 return;
             }
@@ -53,9 +59,9 @@ namespace PanCardView.Processors
             {
                 var tcs = new TaskCompletionSource<bool>();
 
-                var animTimePercent = (cardsView.Width - Math.Abs(view.TranslationX)) / cardsView.Width;
+                var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
                 var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
-                new Animation(v => view.TranslationX = v, view.TranslationX, Math.Sign((int)panItemPosition) * cardsView.Width)
+                new Animation(v => view.TranslationX = v, view.TranslationX, Sign((int)panItemPosition) * cardsView.Width)
                     .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
                 return tcs.Task;
             }
@@ -68,9 +74,9 @@ namespace PanCardView.Processors
             {
                 var tcs = new TaskCompletionSource<bool>();
 
-                var animTimePercent = (cardsView.Width - Math.Abs(view.TranslationX)) / cardsView.Width;
+                var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
                 var animLength = (uint)(AnimationLength * animTimePercent);
-                new Animation(v => view.TranslationX = v, view.TranslationX, -Math.Sign((int)panItemPosition) * cardsView.Width)
+                new Animation(v => view.TranslationX = v, view.TranslationX, -Sign((int)panItemPosition) * cardsView.Width)
                     .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
                 return tcs.Task;
             }
