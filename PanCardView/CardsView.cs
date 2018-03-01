@@ -309,7 +309,7 @@ namespace PanCardView
                     if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
                     {
                         OnTouchStarted();
-                        (_currentView as ICardItem)?.HandleTouchStarted();
+                        (_currentView as ICardItem)?.HandleTouchStarted(_gestureId);
                     }
                     return;
                 case GestureStatus.Running:
@@ -323,8 +323,9 @@ namespace PanCardView
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
                     {
+                        var gestureId = _gestureId;
                         OnTouchEnded();
-                        (_currentView as ICardItem)?.HandleTouchEnded();
+                        (_currentView as ICardItem)?.HandleTouchEnded(gestureId);
                     }
                     return;
             }
