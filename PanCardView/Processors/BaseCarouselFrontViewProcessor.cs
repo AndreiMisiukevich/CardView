@@ -12,6 +12,8 @@ namespace PanCardView.Processors
 
         public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
+        public double NoItemMaxPanDistance { get; set; } = 25;
+
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
@@ -40,7 +42,7 @@ namespace PanCardView.Processors
 
             if (panItemPosition == PanItemPosition.Null)
             {
-                xPos = Sign(xPos) * Min(Abs(xPos / 4), 25);
+                xPos = Sign(xPos) * Min(Abs(xPos / 4), NoItemMaxPanDistance);
             }
 
             view.TranslationX = xPos;

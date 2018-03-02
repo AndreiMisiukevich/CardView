@@ -16,6 +16,8 @@ namespace PanCardView.Processors
 
         public Easing AutoNavigateEasing { get; set; } = Easing.Linear;
 
+        public double NoItemMaxPanDistance { get; set; } = 25;
+
         public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         => ResetInitialState(view);
 
@@ -34,7 +36,7 @@ namespace PanCardView.Processors
             var multiplier = 1;
             if (panItemPosition == PanItemPosition.Null)
             {
-                xPos = Sign(xPos) * Min(Abs(xPos / 4), 25);
+                xPos = Sign(xPos) * Min(Abs(xPos / 4), NoItemMaxPanDistance);
                 multiplier = -multiplier;
             }
 

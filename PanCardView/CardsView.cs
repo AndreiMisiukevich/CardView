@@ -585,7 +585,7 @@ namespace PanCardView
 
             bool? isNextSelected = null;
 
-            if(IsEnabled)
+            if(IsEnabled && _currentBackPanItemPosition != PanItemPosition.Null)
             {
                 var checkSwipe = CheckSwipe();
                 if(checkSwipe.HasValue && (checkSwipe.Value || absDiff > MoveDistance))
@@ -596,7 +596,7 @@ namespace PanCardView
 
             _timeDiffItems.Clear();
 
-            if (isNextSelected.HasValue && _currentBackView != null)
+            if (isNextSelected.HasValue)
             {
                 index = GetNewIndexFromDiff();
                 if(index < 0)
