@@ -68,8 +68,7 @@ namespace PanCardViewSample.Views
                             Text = "\nasfla jlasjf lkasj flkasjf lkajslk fjasl fjlas jflkjf alk sjflkasj lkasj flkasj flkajs lfjasl kfjaslk fjlaks jflask jfslka jlkaj flkasj faskf jalks fjlkas jflkas jfasj flas jfalks fjlaf "
                         }
                     }
-                },
-                IsEnabled = false
+                }
             };
 
             Content = _scroller;
