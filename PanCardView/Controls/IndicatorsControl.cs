@@ -1,6 +1,7 @@
 ﻿using Xamarin.Forms;
 using PanCardView.Extensions;
 using System.Linq;
+using PanCardView.Behaviors;
 
 namespace PanCardView.Controls
 {
@@ -34,6 +35,8 @@ namespace PanCardView.Controls
             Margin = new Thickness(10, 20);
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
             AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
+
+            Behaviors.Add(new ProtectedControlBehavior());
         }
 
         public IndicatorsControl(Color color) : this(color, 10)

@@ -27,7 +27,6 @@ namespace PanCardViewSample.Views
 
         private View GetCardItem()
         {
-         
             var label = new Label
             {
                 TextColor = Color.White,

@@ -51,10 +51,6 @@ namespace PanCardViewSample.ViewModels
 
         public ObservableCollection<object> Items { get; } = new ObservableCollection<object>
         {
-            new 
-            {
-                Color = Color.Green
-            },
             new
             {
                 Color = Color.Yellow

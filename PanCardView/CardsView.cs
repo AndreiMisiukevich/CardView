@@ -11,6 +11,7 @@ using System.Collections;
 using PanCardView.Enums;
 using PanCardView.Controls;
 using static System.Math;
+using PanCardView.Behaviors;
 
 namespace PanCardView
 {
@@ -39,8 +40,8 @@ namespace PanCardView
         });
 
         public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
-            bindable.AsCardView().SetItemsCount();
             bindable.AsCardView().SetCurrentView();
+            bindable.AsCardView().SetItemsCount();
         });
 
         public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
@@ -64,6 +65,8 @@ namespace PanCardView
         public static readonly BindableProperty MoveWidthPercentageProperty = BindableProperty.Create(nameof(MoveWidthPercentage), typeof(double), typeof(CardsView), .325);
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
+
+        public static readonly BindableProperty IsViewCacheEnabledProperty = BindableProperty.Create(nameof(IsViewCacheEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 200);
 
@@ -261,6 +264,12 @@ namespace PanCardView
             set => SetValue(IsOnlyForwardDirectionProperty, value);
         }
 
+        public bool IsViewCacheEnabled
+        {
+            get => (bool)GetValue(IsViewCacheEnabledProperty);
+            set => SetValue(IsViewCacheEnabledProperty, value);
+        }
+
         public ICommand PanStartedCommand
         {
             get => GetValue(PanStartedCommandProperty) as ICommand;
@@ -309,13 +318,14 @@ namespace PanCardView
                 case GestureStatus.Started:
                     if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
                     {
-                        OnTouchStarted();
-                        (_currentView as ICardItem)?.HandleTouchStarted(_gestureId);
+                        if (!((_currentView as ICardItem)?.HandleTouchStarted(_gestureId) ?? false))
+                        {
+                            OnTouchStarted();
+                        }
                     }
                     return;
                 case GestureStatus.Running:
-                    var handled = (_currentView as ICardItem)?.HandeTouchChanged(e.TotalX, e.TotalY) ?? false;
-                    if (!handled)
+                    if (!((_currentView as ICardItem)?.HandeTouchChanged(e.TotalX, e.TotalY) ?? false))
                     {
                         OnTouchChanged(e.TotalX);
                     }
@@ -325,8 +335,10 @@ namespace PanCardView
                     if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
                     {
                         var gestureId = _gestureId;
-                        OnTouchEnded();
-                        (_currentView as ICardItem)?.HandleTouchEnded(gestureId);
+                        if (!((_currentView as ICardItem)?.HandleTouchEnded(gestureId) ?? false))
+                        {
+                            OnTouchEnded();
+                        }
                     }
                     return;
             }
@@ -425,9 +437,9 @@ namespace PanCardView
 
             _currentView = view;
 
+            _currentView.BindingContext = context;
             BackViewProcessor.InitView(_currentView, this, autoNavigatePanPosition);
 
-            _currentView.BindingContext = context;
             SetupLayout(_currentView);
 
             AddChild(_currentView, oldView);
@@ -474,7 +486,7 @@ namespace PanCardView
             return false;
         }
 
-        protected virtual bool CheckIsProtectedView(View view) => view is IndicatorsControl;
+        protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
 
         private PanItemPosition GetAutoNavigatePanPosition()
         {
@@ -783,8 +795,9 @@ namespace PanCardView
             {
                 return null;
             }
-            InitProcessor(view, panIntemPosition);
             view.BindingContext = context;
+            InitProcessor(view, panIntemPosition);
+
             SetupLayout(view);
             if(panIntemPosition == PanItemPosition.Current)
             {
@@ -811,12 +824,17 @@ namespace PanCardView
                 template = selector.SelectTemplate(context, this);
             }
 
+            if(!IsViewCacheEnabled)
+            {
+                return template.CreateView();
+            }
+
             List<View> viewsList;
             if (!_viewsPool.TryGetValue(template, out viewsList))
             {
                 viewsList = new List<View>
                 {
-                    template.CreateContent() as View
+                    template.CreateView()
                 };
                 _viewsPool.Add(template, viewsList);
             }
@@ -829,7 +847,7 @@ namespace PanCardView
 
             if (view == null)
             {
-                view = template.CreateContent() as View;
+                view = template.CreateView();
                 viewsList.Add(view);
             }
 

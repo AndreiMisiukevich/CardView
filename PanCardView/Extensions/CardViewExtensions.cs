@@ -10,5 +10,31 @@ namespace PanCardView.Extensions
 
         public static IndicatorsControl AsIndicatorsControl(this BindableObject bindable)
         => bindable as IndicatorsControl;
+
+        public static View CreateView(this DataTemplate template)
+        => template.CreateContent() as View;
+
+        public static int ToRecycledIndex(this int index, int itemsCount)
+        {
+            if (itemsCount <= 0)
+            {
+                return -1;
+            }
+
+            if (index < 0)
+            {
+                while (index < 0)
+                {
+                    index += itemsCount;
+                }
+                return index;
+            }
+
+            while (index >= itemsCount)
+            {
+                index -= itemsCount;
+            }
+            return index;
+        }
     }
 }

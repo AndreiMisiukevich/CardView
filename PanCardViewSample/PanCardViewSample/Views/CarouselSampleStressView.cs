@@ -104,16 +104,18 @@ namespace PanCardViewSample.Views
             return _handled.Value;
         }
 
-        public void HandleTouchEnded(Guid touchId)
+        public bool HandleTouchEnded(Guid touchId)
         {
             _handled = null;
             _prevScrollY = 0.0;
+            return false;
         }
 
-        public void HandleTouchStarted(Guid touchId)
+        public bool HandleTouchStarted(Guid touchId)
         {
             _handled = null;
             _prevScrollY = 0.0;
+            return false;
         }
     }
 }

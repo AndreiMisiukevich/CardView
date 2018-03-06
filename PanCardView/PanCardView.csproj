@@ -41,8 +41,8 @@
     <Compile Include="Processors\Constants.cs" />
     <Compile Include="ICardItem.cs" />
     <Compile Include="Controls\IndicatorsControl.cs" />
-    <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Controls\IndicatorItemView.cs" />
+    <Compile Include="Behaviors\ProtectedControlBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -63,6 +63,7 @@
     <Folder Include="Extensions\" />
     <Folder Include="Enums\" />
     <Folder Include="Controls\" />
+    <Folder Include="Behaviors\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

@@ -4,8 +4,8 @@ namespace PanCardView
 {
     public interface ICardItem
     {
-        void HandleTouchStarted(Guid touchId);
+        bool HandleTouchStarted(Guid touchId);
         bool HandeTouchChanged(double totalX, double totalY);
-        void HandleTouchEnded(Guid touchId);
+        bool HandleTouchEnded(Guid touchId);
     }
 }
