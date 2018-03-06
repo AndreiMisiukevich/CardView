@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace PanCardViewSample.ViewModels
 {
-    public class CarouselSampleStressViewModel
+    public class CarouselSampleScrollViewModel
     {
-        public CarouselSampleStressViewModel()
+        public CarouselSampleScrollViewModel()
         {
             Items = new ObservableCollection<object>(Enumerable.Range(1, 1000).Select(i => new { Number = i }).ToArray());
         }

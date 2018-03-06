@@ -30,9 +30,9 @@ namespace PanCardViewSample
                 this.Navigation.PushAsync(new CarouselSampleView());
             };
 
-            var toCarouselStressBtn = new Button { Text = "CarouselView StressTest" };
-            toCarouselStressBtn.Clicked += (sender, e) => {
-                this.Navigation.PushAsync(new CarouselSampleStressView());
+            var toCarouselScrollBtn = new Button { Text = "CarouselView scroll" };
+            toCarouselScrollBtn.Clicked += (sender, e) => {
+                this.Navigation.PushAsync(new CarouselSampleSrollView());
             };
 
             var toCarouselDoubleBtn = new Button { Text = "CarouselView DoubleView" };
@@ -46,7 +46,7 @@ namespace PanCardViewSample
                     toCardsBtn,
                     toCardsBtnCustom,
                     toCarouselBtn,
-                    toCarouselStressBtn,
+                    toCarouselScrollBtn,
                     toCarouselDoubleBtn
                 }
             };

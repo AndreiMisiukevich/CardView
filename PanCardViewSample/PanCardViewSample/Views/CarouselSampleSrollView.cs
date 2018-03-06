@@ -6,30 +6,30 @@ using static System.Math;
 
 namespace PanCardViewSample.Views
 {
-    public class CarouselSampleStressView : ContentPage
+    public class CarouselSampleSrollView : ContentPage
     {
         private readonly CarouselView _carouselView;
 
-        public CarouselSampleStressView()
+        public CarouselSampleSrollView()
         {
             _carouselView = new CarouselView
             {
                 DataTemplate = new DataTemplate(GetCardItem),
                 IsRecycled = true
             };
-            _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleStressViewModel.Items));
+            _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleScrollViewModel.Items));
 
-            Title = "CarouselView StressTest";
+            Title = "CarouselView scroll";
 
             Content = _carouselView;
-            BindingContext = new CarouselSampleStressViewModel();
+            BindingContext = new CarouselSampleScrollViewModel();
         }
 
 
         private View GetCardItem() => new CardItem();
     }
 
-    public class CardItem : ContentView, ICardItem
+    public class CardItem : ContentView
     {
         private readonly ScrollView _scroller;
 
@@ -73,49 +73,6 @@ namespace PanCardViewSample.Views
             };
 
             Content = _scroller;
-        }
-
-        public bool HandeTouchChanged(double totalX, double totalY)
-        {
-            if(!_handled.HasValue)
-            {
-                var absX = Abs(totalX);
-                var absY = Abs(totalY);
-                _handled = absY > absX;
-            }
-
-            if(_handled.Value)
-            {
-                var y = _scroller.ScrollY - totalY + _prevScrollY;
-                if(y < 0)
-                {
-                    _prevScrollY = 0;
-                    return _handled.Value;
-                }
-                if(y > _scroller.Content.Height)
-                {
-                    _prevScrollY = _scroller.Content.Height;
-                    return _handled.Value;
-                }
-                _scroller.ScrollToAsync(0, y, false);
-                _prevScrollY = totalY;
-            }
-
-            return _handled.Value;
-        }
-
-        public bool HandleTouchEnded(Guid touchId)
-        {
-            _handled = null;
-            _prevScrollY = 0.0;
-            return false;
-        }
-
-        public bool HandleTouchStarted(Guid touchId)
-        {
-            _handled = null;
-            _prevScrollY = 0.0;
-            return false;
         }
     }
 }
