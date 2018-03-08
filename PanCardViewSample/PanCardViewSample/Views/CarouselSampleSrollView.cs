@@ -1,6 +1,7 @@
 ﻿using PanCardView;
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
+using PanCardView.Controls;
 
 namespace PanCardViewSample.Views
 {
@@ -12,7 +13,10 @@ namespace PanCardViewSample.Views
         {
             _carouselView = new CarouselView
             {
-                DataTemplate = new DataTemplate(GetCardItem)
+                DataTemplate = new DataTemplate(GetCardItem),
+				Children = {
+					new CustomIndicatorsControl()
+				}
             };
             _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleScrollViewModel.Items));
 
@@ -66,4 +70,17 @@ namespace PanCardViewSample.Views
             Content = scroller;
         }
     }
+
+	public class CustomIndicatorsControl : IndicatorsControl
+	{
+		protected override void ApplySelectedStyle(View view, int index)
+		{
+			view.BackgroundColor = Color.Red.MultiplyAlpha(.7);
+		}
+
+		protected override void ApplyUnselectedStyle(View view, int index)
+		{
+			view.BackgroundColor = Color.Silver.MultiplyAlpha(.7);
+		}
+	}
 }
