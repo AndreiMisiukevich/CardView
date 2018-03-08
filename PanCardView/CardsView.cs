@@ -71,7 +71,10 @@ namespace PanCardView
 
         public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), true);
 
+		[Obsolete("This field will be removed in next releases. Please, use IsCyclicalProperty instead.")]
         public static readonly BindableProperty IsRecycledProperty = BindableProperty.Create(nameof(IsRecycled), typeof(bool), typeof(CardsView), false);
+
+		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
 
         public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource);
 
@@ -227,11 +230,18 @@ namespace PanCardView
             set => SetValue(IsPanInCourseProperty, value);
         }
 
+		[Obsolete("This property will be removed in next releases. Please, use IsCyclical instead.")]
         public bool IsRecycled
         {
-            get => (bool)GetValue(IsRecycledProperty);
-            set => SetValue(IsRecycledProperty, value);
+			get => (bool)GetValue(IsCyclicalProperty);
+			set => SetValue(IsCyclicalProperty, value);
         }
+
+		public bool IsCyclical
+		{
+			get => (bool)GetValue(IsCyclicalProperty);
+			set => SetValue(IsCyclicalProperty, value);
+		}
 
         public bool IsAutoNavigating
         {
@@ -504,7 +514,7 @@ namespace PanCardView
                        : PanItemPosition.Next;
             }
 
-            if(!IsRecycled)
+			if(!IsCyclical)
             {
                 return CurrentIndex < Items.IndexOf(_currentView.BindingContext)
                        ? PanItemPosition.Prev
@@ -744,7 +754,7 @@ namespace PanCardView
 
             if (newIndex < 0 || newIndex >= ItemsCount)
             {
-                if (!IsRecycled)
+                if (!IsCyclical)
                 {
                     return -1;
                 }
@@ -883,7 +893,7 @@ namespace PanCardView
 
             if (index < 0 || index >= ItemsCount)
             {
-                if (!IsRecycled || (panIntemPosition != PanItemPosition.Current && ItemsCount < 2))
+                if (!IsCyclical || (panIntemPosition != PanItemPosition.Current && ItemsCount < 2))
                 {
                     return null;
                 }

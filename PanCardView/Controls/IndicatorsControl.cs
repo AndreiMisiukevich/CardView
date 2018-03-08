@@ -17,13 +17,15 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
         });
 
-        private readonly Color _color;
-        private readonly int _size;
+		protected readonly Color _indicatorColor;
+		protected readonly int _indicatorSize;
+		protected readonly int _indicatorRadius;
 
         public IndicatorsControl(Color color, int size)
         {
-            _color = color;
-            _size = size;
+            _indicatorColor = color;
+            _indicatorSize = size;
+			_indicatorRadius = size / 2;
 
             Spacing = 5;
             Orientation = StackOrientation.Horizontal;
@@ -81,24 +83,24 @@ namespace PanCardView.Controls
             Padding = 0
         };
 
-        protected virtual void ApplySelectedStyle(View view)
+        protected virtual void ApplySelectedStyle(View view, int index)
         {
-            view.BackgroundColor = _color;
+            view.BackgroundColor = _indicatorColor;
         }
 
-        protected virtual void ApplyUnselectedStyle(View view)
+        protected virtual void ApplyUnselectedStyle(View view, int index)
         {
             var item = view as IndicatorItemView;
             item.BackgroundColor = Color.Transparent;
-            item.OutlineColor = _color;
+            item.OutlineColor = _indicatorColor;
         }
 
-        private void ApplyBaseStyle(View view)
+        protected virtual void ApplyBaseStyle(View view, int index)
         {
             var item = view as IndicatorItemView;
-            item.WidthRequest = _size;
-            item.HeightRequest = _size;
-            item.CornerRadius = _size / 2;
+            item.WidthRequest = _indicatorSize;
+            item.HeightRequest = _indicatorSize;
+			item.CornerRadius = _indicatorRadius;
         }
 
         private void ApplyStyle(View view, int recycledIndex)
@@ -106,13 +108,13 @@ namespace PanCardView.Controls
             try
             {
                 view.BatchBegin();
-                ApplyBaseStyle(view);
+				ApplyBaseStyle(view, recycledIndex);
                 if (Children.IndexOf(view) == recycledIndex)
                 {
-                    ApplySelectedStyle(view);
+					ApplySelectedStyle(view, recycledIndex);
                     return;
                 }
-                ApplyUnselectedStyle(view);
+                ApplyUnselectedStyle(view, recycledIndex);
             }
             finally
             {

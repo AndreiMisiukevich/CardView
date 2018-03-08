@@ -11,8 +11,7 @@ namespace PanCardViewSample.Views
         {
             var cardsView = new CarouselView
             {
-                DataTemplate = new DataTemplate(GetCardItem),
-                IsRecycled = true
+                DataTemplate = new DataTemplate(GetCardItem)
             };
             cardsView.SetBinding(CardsView.ItemsProperty, "Items");
             cardsView.SetBinding(CardsView.CurrentIndexProperty, "CurrentIndex");
@@ -44,8 +43,7 @@ namespace PanCardViewSample.Views
                     var subCard = new ContentView();
                     subCard.SetBinding(BackgroundColorProperty, "Color");
                     return subCard;
-                }),
-                IsRecycled = true
+                })
             };
             cardsView.SetBinding(CardsView.ItemsProperty, "Items");
             cardsView.SetBinding(CardsView.CurrentIndexProperty, "CurrentIndex");

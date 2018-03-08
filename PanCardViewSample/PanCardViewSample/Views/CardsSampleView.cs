@@ -15,7 +15,7 @@ namespace PanCardViewSample.Views
             {
                 DataTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9),
-                IsRecycled = true
+                IsCyclical = true
             };
 
             var prevItem = new ToolbarItem
