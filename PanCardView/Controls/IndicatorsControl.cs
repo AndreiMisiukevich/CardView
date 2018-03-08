@@ -124,45 +124,40 @@ namespace PanCardView.Controls
 
         private void ResetIndicatorsStyles()
         {
+			BatchBegin();
             var recycledIndex = CurrentIndex.ToRecycledIndex(IndicatorsCount);
             foreach (var child in Children)
             {
                 ApplyStyle(child, recycledIndex);
             }
+			BatchCommit();
         }
 
-        private void ResetIndicatorsCount(int oldValue, int newValue)
-        {
-            try
-            {
-                BatchBegin();
-                if(oldValue < 0)
-                {
-                    oldValue = 0;
-                }
+		private void ResetIndicatorsCount(int oldValue, int newValue)
+		{
+			BatchBegin();
+			if (oldValue < 0)
+			{
+				oldValue = 0;
+			}
 
-                if (oldValue > newValue)
-                {
-                    foreach(var view in Children.Where((v, i) => i >= newValue).ToArray())
-                    {
-                        Children.Remove(view);
-                    }
-                    return;
-                }
+			if (oldValue > newValue)
+			{
+				foreach (var view in Children.Where((v, i) => i >= newValue).ToArray())
+				{
+					Children.Remove(view);
+				}
+				return;
+			}
 
-                for (var i = 0; i < newValue - oldValue; ++i)
-                {
-                    var item = BuildIndicatorItem();
-                    Children.Add(item);
-                    var recycledIndex = CurrentIndex.ToRecycledIndex(newValue);
-                    ApplyStyle(item, recycledIndex);
-                }
-
-            }
-            finally
-            {
-                BatchCommit();
-            }
-        }
+			for (var i = 0; i < newValue - oldValue; ++i)
+			{
+				var item = BuildIndicatorItem();
+				Children.Add(item);
+				var recycledIndex = CurrentIndex.ToRecycledIndex(newValue);
+				ApplyStyle(item, recycledIndex);
+			}
+			BatchCommit();
+		}
     }
 }
