@@ -21,8 +21,7 @@ namespace PanCardView.Droid
         {
             base.Draw(canvas);
 
-            if (Element == null ||
-                Element.OutlineColor == Xamarin.Forms.Color.Transparent)
+            if (Element == null)
             {
                 return;
             }
@@ -36,9 +35,14 @@ namespace PanCardView.Droid
                 var rx = Android.App.Application.Context.ToPixels(Element.CornerRadius);
                 var ry = Android.App.Application.Context.ToPixels(Element.CornerRadius);
                 path.AddRoundRect(rect, rx, ry, direction);
-                paint.StrokeWidth = 4f;
-                paint.SetStyle(style);
-                paint.Color = Element.OutlineColor.ToAndroid();
+
+				var color = Element.OutlineColor;
+				if (color.A > 0)
+				{
+					paint.StrokeWidth = Context.Resources.DisplayMetrics.Density;
+					paint.SetStyle(style);
+					paint.Color = color.ToAndroid();
+				}
                 canvas.DrawPath(path, paint);
             }
         }

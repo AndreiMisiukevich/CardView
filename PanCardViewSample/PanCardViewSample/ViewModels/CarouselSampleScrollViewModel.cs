@@ -8,7 +8,7 @@ namespace PanCardViewSample.ViewModels
     {
         public CarouselSampleScrollViewModel()
         {
-            Items = new ObservableCollection<object>(Enumerable.Range(1, 1000).Select(i => new { Number = i }).ToArray());
+            Items = new ObservableCollection<object>(Enumerable.Range(1, 3).Select(i => new { Number = i }).ToArray());
         }
 
         public ObservableCollection<object> Items { get; }
