@@ -16,8 +16,7 @@ namespace PanCardViewSample.Views
                 DataTemplate = new DataTemplate(GetCardItem),
 				Children = {
 					new CustomIndicatorsControl()
-				},
-				IsCyclical = false
+				}
             };
             _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleScrollViewModel.Items));
 
