@@ -1,8 +1,6 @@
 ﻿using PanCardView;
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
-using System;
-using static System.Math;
 
 namespace PanCardViewSample.Views
 {
@@ -31,11 +29,6 @@ namespace PanCardViewSample.Views
 
     public class CardItem : ContentView
     {
-        private readonly ScrollView _scroller;
-
-        private double _prevScrollY;
-        private bool? _handled;
-
         public CardItem()
         {
             var label = new Label
@@ -50,7 +43,7 @@ namespace PanCardViewSample.Views
             };
             label.SetBinding(Label.TextProperty, "Number");
 
-            _scroller = new ScrollView
+			var scroller = new ScrollView
             {
                 WidthRequest = 280,
                 BackgroundColor = Color.Black,
@@ -71,7 +64,7 @@ namespace PanCardViewSample.Views
                 }
             };
 
-            Content = _scroller;
+            Content = scroller;
         }
     }
 }

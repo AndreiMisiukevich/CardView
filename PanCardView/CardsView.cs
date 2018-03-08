@@ -9,7 +9,6 @@ using PanCardView.Extensions;
 using PanCardView.Processors;
 using System.Collections;
 using PanCardView.Enums;
-using PanCardView.Controls;
 using static System.Math;
 using PanCardView.Behaviors;
 
@@ -127,6 +126,12 @@ namespace PanCardView
         {
             FrontViewProcessor = frontViewProcessor ?? new BaseCardFrontViewProcessor();
             BackViewProcessor = backViewProcessor ?? new BaseCardBackViewProcessor();
+
+			if(Device.RuntimePlatform == Device.Android)
+			{
+				return;
+			}
+
             var panGesture = new PanGestureRecognizer();
             panGesture.PanUpdated += OnPanUpdated;
             GestureRecognizers.Add(panGesture);
@@ -488,6 +493,8 @@ namespace PanCardView
 
         protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
 
+        protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
+
         private PanItemPosition GetAutoNavigatePanPosition()
         {
             if(CurrentContext != null)
@@ -824,7 +831,7 @@ namespace PanCardView
                 template = selector.SelectTemplate(context, this);
             }
 
-            if(!IsViewCacheEnabled)
+            if(!CheckIsCacheEnabled(template))
             {
                 return template.CreateView();
             }

@@ -5,6 +5,9 @@ using PanCardView.Droid;
 using PanCardView;
 using Android.Views;
 using Android.Runtime;
+using System;
+using static System.Math;
+using Android.Util;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
@@ -13,38 +16,76 @@ namespace PanCardView.Droid
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
         private bool _panStarted;
+		private float _startX;
+		private float _startY;
 
         public CardsViewRenderer(Context context) : base(context)
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
-        {
-            base.OnElementChanged(e);
-            _panStarted = false;
-        }
+		public override bool OnInterceptTouchEvent(MotionEvent ev)
+		{
+			var action = ev.Action;
 
-        public override bool OnTouchEvent(MotionEvent e)
-        {
-            var action = e.Action;
+			if (ev.Action == MotionEventActions.Move)
+			{
+				var xDist = Abs(GetTotalX(ev));
+				var yDist = Abs(GetTotalY(ev));
+				return xDist > yDist;
+			}
 
-            if(_panStarted && action == MotionEventActions.Up)
-            {
-                UpdatePan(false);
-            }
-            else if(action == MotionEventActions.Down)
-            {
-                UpdatePan(true);
-            }
+			if (action == MotionEventActions.Down)
+			{
+				_startX = ev.GetX();
+				_startY = ev.GetY();
+				UpdatePan(true);
+			}
 
-            return base.OnTouchEvent(e);
-        }
+			if (_panStarted && action == MotionEventActions.Up)
+			{
+				UpdatePan(false);
+			}
 
-        private void UpdatePan(bool isStarted)
+			return false;
+		}
+
+		public override bool OnTouchEvent(MotionEvent e)
+		{
+			var action = e.Action;
+
+			if (action == MotionEventActions.Move)
+			{
+				var density = Context.Resources.DisplayMetrics.Density;
+				var distXDp = GetTotalX(e) / density;
+				var distYDp = GetTotalY(e) / density;
+				var args = new PanUpdatedEventArgs(GestureStatus.Running, -1, distXDp, distYDp);
+				Element.OnPanUpdated(this, args);
+			}
+
+			if (_panStarted && action == MotionEventActions.Up)
+			{
+				UpdatePan(false);
+			}
+
+			return true;
+		}
+
+		protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
+		{
+			base.OnElementChanged(e);
+			_panStarted = false;
+		}
+
+		private void UpdatePan(bool isStarted)
         {
             _panStarted = isStarted;
             var args = new PanUpdatedEventArgs(isStarted ? GestureStatus.Started : GestureStatus.Completed, -1, 0, 0);
-            (Element as CardsView).OnPanUpdated(this, args);
+			Element.OnPanUpdated(this, args);
         }
+
+		private float GetTotalX(MotionEvent ev) => ev.GetX() - _startX;
+
+		private float GetTotalY(MotionEvent ev) => ev.GetY() - _startY;
+
     }
 }
