@@ -23,6 +23,11 @@ namespace PanCardView.Droid
 
 		public override bool OnInterceptTouchEvent(MotionEvent ev)
 		{
+			if(Element.DoubleCarouselFixEnabled)
+			{
+				return base.OnInterceptTouchEvent(ev);
+			}
+
 			var action = ev.Action;
 
 			if (ev.Action == MotionEventActions.Move)
@@ -58,6 +63,13 @@ namespace PanCardView.Droid
 				var distYDp = GetTotalY(e) / density;
 				var args = new PanUpdatedEventArgs(GestureStatus.Running, -1, distXDp, distYDp);
 				Element.OnPanUpdated(this, args);
+			}
+
+			if (action == MotionEventActions.Down)
+			{
+				_startX = e.GetX();
+				_startY = e.GetY();
+				UpdatePan(true);
 			}
 
 			if (_panStarted && action == MotionEventActions.Up)

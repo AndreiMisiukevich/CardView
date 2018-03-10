@@ -94,6 +94,10 @@ namespace PanCardView.Controls
 		protected virtual void ApplyUnselectedStyle(View view, int index)
 		=> view.Style = UnselectedIndicatorStyle;
 
+		protected virtual void AddChild(View view) => Children.Add(view);
+
+		protected virtual void RemoveChild(View view) => Children.Remove(view);
+
         private void ApplyStyle(View view, int recycledIndex)
         {
             try
@@ -141,9 +145,9 @@ namespace PanCardView.Controls
 
 				if (oldValue > newValue)
 				{
-					foreach (var view in Children.Where((v, i) => i >= newValue).ToArray())
+					foreach (var item in Children.Where((v, i) => i >= newValue).ToArray())
 					{
-						Children.Remove(view);
+						RemoveChild(item);
 					}
 					return;
 				}
@@ -151,7 +155,7 @@ namespace PanCardView.Controls
 				for (var i = 0; i < newValue - oldValue; ++i)
 				{
 					var item = ItemTemplate.CreateView();
-					Children.Add(item);
+					AddChild(item);
 					var recycledIndex = CurrentIndex.ToRecycledIndex(newValue);
 					ApplyStyle(item, recycledIndex);
 				}
