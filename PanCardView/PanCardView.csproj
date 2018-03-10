@@ -43,6 +43,7 @@
     <Compile Include="Controls\IndicatorsControl.cs" />
     <Compile Include="Controls\IndicatorItemView.cs" />
     <Compile Include="Behaviors\ProtectedControlBehavior.cs" />
+    <Compile Include="Controls\Styles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

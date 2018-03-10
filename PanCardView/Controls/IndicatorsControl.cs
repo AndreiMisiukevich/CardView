@@ -17,16 +17,19 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
         });
 
-		protected readonly Color _indicatorColor;
-		protected readonly int _indicatorSize;
-		protected readonly int _indicatorRadius;
+		public readonly BindableProperty SelectedIndicatorStyleProperty = BindableProperty.Create(nameof(SelectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
+		});
 
-        public IndicatorsControl(Color color, int size)
+		public readonly BindableProperty UnselectedIndicatorStyleProperty = BindableProperty.Create(nameof(UnselectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
+		});
+
+
+        public IndicatorsControl()
         {
-            _indicatorColor = color;
-            _indicatorSize = size;
-			_indicatorRadius = size / 2;
-
             Spacing = 5;
             Orientation = StackOrientation.Horizontal;
             InputTransparent = true;
@@ -41,18 +44,6 @@ namespace PanCardView.Controls
             Behaviors.Add(new ProtectedControlBehavior());
         }
 
-        public IndicatorsControl(Color color) : this(color, 10)
-        {
-        }
-
-        public IndicatorsControl(int size) : this(Color.White.MultiplyAlpha(.8), size)
-        {
-        }
-
-        public IndicatorsControl() : this(Color.White.MultiplyAlpha(.8), 10)
-        {
-        }
-
         public int CurrentIndex
         {
             get => (int)GetValue(CurrentIndexProperty);
@@ -65,6 +56,18 @@ namespace PanCardView.Controls
             set => SetValue(IndicatorsCountProperty, value);
         }
 
+		public Style SelectedIndicatorStyle
+		{
+			get => (GetValue(SelectedIndicatorStyleProperty) as Style) ?? Styles.DefaultSelectedIndicatorItemStyle;
+			set => SetValue(SelectedIndicatorStyleProperty, value);
+		}
+
+		public Style UnselectedIndicatorStyle
+		{
+			get => (GetValue(UnselectedIndicatorStyleProperty) as Style) ?? Styles.DefaultUnselectedIndicatorItemStyle;
+			set => SetValue(UnselectedIndicatorStyleProperty, value);
+		}
+
         protected override void OnParentSet()
         {
             base.OnParentSet();
@@ -75,40 +78,19 @@ namespace PanCardView.Controls
         }
 
         protected virtual View BuildIndicatorItem()
-        => new IndicatorItemView
-        {
-            VerticalOptions = LayoutOptions.Center,
-            HorizontalOptions = LayoutOptions.Center,
-            HasShadow = false,
-            Padding = 0
-        };
+        => new IndicatorItemView();
 
-        protected virtual void ApplySelectedStyle(View view, int index)
-        {
-            view.BackgroundColor = _indicatorColor;
-        }
+		protected virtual void ApplySelectedStyle(View view, int index)
+		=> view.Style = SelectedIndicatorStyle;
 
-        protected virtual void ApplyUnselectedStyle(View view, int index)
-        {
-            var item = view as IndicatorItemView;
-            item.BackgroundColor = Color.Transparent;
-            item.OutlineColor = _indicatorColor;
-        }
-
-        protected virtual void ApplyBaseStyle(View view, int index)
-        {
-            var item = view as IndicatorItemView;
-            item.WidthRequest = _indicatorSize;
-            item.HeightRequest = _indicatorSize;
-			item.CornerRadius = _indicatorRadius;
-        }
+		protected virtual void ApplyUnselectedStyle(View view, int index)
+		=> view.Style = UnselectedIndicatorStyle;
 
         private void ApplyStyle(View view, int recycledIndex)
         {
             try
             {
                 view.BatchBegin();
-				ApplyBaseStyle(view, recycledIndex);
                 if (Children.IndexOf(view) == recycledIndex)
                 {
 					ApplySelectedStyle(view, recycledIndex);
@@ -124,40 +106,52 @@ namespace PanCardView.Controls
 
         private void ResetIndicatorsStyles()
         {
-			BatchBegin();
-            var recycledIndex = CurrentIndex.ToRecycledIndex(IndicatorsCount);
-            foreach (var child in Children)
-            {
-                ApplyStyle(child, recycledIndex);
-            }
-			BatchCommit();
+			try
+			{
+				BatchBegin();
+				var recycledIndex = CurrentIndex.ToRecycledIndex(IndicatorsCount);
+				foreach (var child in Children)
+				{
+					ApplyStyle(child, recycledIndex);
+				}
+			}
+			finally
+			{
+				BatchCommit();
+			}
         }
 
 		private void ResetIndicatorsCount(int oldValue, int newValue)
 		{
-			BatchBegin();
-			if (oldValue < 0)
+			try
 			{
-				oldValue = 0;
-			}
-
-			if (oldValue > newValue)
-			{
-				foreach (var view in Children.Where((v, i) => i >= newValue).ToArray())
+				BatchBegin();
+				if (oldValue < 0)
 				{
-					Children.Remove(view);
+					oldValue = 0;
 				}
-				return;
-			}
 
-			for (var i = 0; i < newValue - oldValue; ++i)
-			{
-				var item = BuildIndicatorItem();
-				Children.Add(item);
-				var recycledIndex = CurrentIndex.ToRecycledIndex(newValue);
-				ApplyStyle(item, recycledIndex);
+				if (oldValue > newValue)
+				{
+					foreach (var view in Children.Where((v, i) => i >= newValue).ToArray())
+					{
+						Children.Remove(view);
+					}
+					return;
+				}
+
+				for (var i = 0; i < newValue - oldValue; ++i)
+				{
+					var item = BuildIndicatorItem();
+					Children.Add(item);
+					var recycledIndex = CurrentIndex.ToRecycledIndex(newValue);
+					ApplyStyle(item, recycledIndex);
+				}
 			}
-			BatchCommit();
+			finally
+			{
+				BatchCommit();
+			}
 		}
     }
 }

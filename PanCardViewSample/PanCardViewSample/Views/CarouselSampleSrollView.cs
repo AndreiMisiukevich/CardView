@@ -15,7 +15,7 @@ namespace PanCardViewSample.Views
             {
                 DataTemplate = new DataTemplate(GetCardItem),
 				Children = {
-					new CustomIndicatorsControl()
+					new IndicatorsControl()
 				}
             };
             _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleScrollViewModel.Items));
@@ -70,22 +70,4 @@ namespace PanCardViewSample.Views
             Content = scroller;
         }
     }
-
-	public class CustomIndicatorsControl : IndicatorsControl
-	{
-		public CustomIndicatorsControl() : base(15)
-		{
-			Spacing = 7;
-		}
-
-		protected override void ApplySelectedStyle(View view, int index)
-		{
-			view.BackgroundColor = Color.Red.MultiplyAlpha(.95);
-		}
-
-		protected override void ApplyUnselectedStyle(View view, int index)
-		{
-			view.BackgroundColor = Color.Silver.MultiplyAlpha(.95);
-		}
-	}
 }
