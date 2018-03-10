@@ -10,16 +10,16 @@ using static System.Math;
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
 {
-    [Preserve(AllMembers = true)]
-    public class CardsViewRenderer : VisualElementRenderer<CardsView>
-    {
-        private bool _panStarted;
+	[Preserve(AllMembers = true)]
+	public class CardsViewRenderer : VisualElementRenderer<CardsView>
+	{
+		private bool _panStarted;
 		private float _startX;
 		private float _startY;
 
-        public CardsViewRenderer(Context context) : base(context)
-        {
-        }
+		public CardsViewRenderer(Context context) : base(context)
+		{
+		}
 
 		public override bool OnInterceptTouchEvent(MotionEvent ev)
 		{
@@ -75,15 +75,15 @@ namespace PanCardView.Droid
 		}
 
 		private void UpdatePan(bool isStarted)
-        {
-            _panStarted = isStarted;
-            var args = new PanUpdatedEventArgs(isStarted ? GestureStatus.Started : GestureStatus.Completed, -1, 0, 0);
+		{
+			_panStarted = isStarted;
+			var args = new PanUpdatedEventArgs(isStarted ? GestureStatus.Started : GestureStatus.Completed, -1, 0, 0);
 			Element.OnPanUpdated(this, args);
-        }
+		}
 
 		private float GetTotalX(MotionEvent ev) => ev.GetX() - _startX;
 
 		private float GetTotalY(MotionEvent ev) => ev.GetY() - _startY;
 
-    }
+	}
 }
