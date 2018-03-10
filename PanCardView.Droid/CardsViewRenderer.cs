@@ -5,9 +5,7 @@ using PanCardView.Droid;
 using PanCardView;
 using Android.Views;
 using Android.Runtime;
-using System;
 using static System.Math;
-using Android.Util;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
