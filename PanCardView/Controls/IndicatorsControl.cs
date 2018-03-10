@@ -17,16 +17,21 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
         });
 
-		public readonly BindableProperty SelectedIndicatorStyleProperty = BindableProperty.Create(nameof(SelectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
+
+		public readonly BindableProperty SelectedIndicatorStyleProperty = BindableProperty.Create(nameof(SelectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), Styles.DefaultSelectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
 		});
 
-		public readonly BindableProperty UnselectedIndicatorStyleProperty = BindableProperty.Create(nameof(UnselectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+		public readonly BindableProperty UnselectedIndicatorStyleProperty = BindableProperty.Create(nameof(UnselectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), Styles.DefaultUnselectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
 		});
 
+		static IndicatorsControl()
+		{
+		}
 
         public IndicatorsControl()
         {
@@ -56,15 +61,21 @@ namespace PanCardView.Controls
             set => SetValue(IndicatorsCountProperty, value);
         }
 
+		public DataTemplate ItemTemplate
+		{
+			get => (GetValue(ItemTemplateProperty) as DataTemplate);
+			set => SetValue(ItemTemplateProperty, value);
+		}
+
 		public Style SelectedIndicatorStyle
 		{
-			get => (GetValue(SelectedIndicatorStyleProperty) as Style) ?? Styles.DefaultSelectedIndicatorItemStyle;
+			get => GetValue(SelectedIndicatorStyleProperty) as Style;
 			set => SetValue(SelectedIndicatorStyleProperty, value);
 		}
 
 		public Style UnselectedIndicatorStyle
 		{
-			get => (GetValue(UnselectedIndicatorStyleProperty) as Style) ?? Styles.DefaultUnselectedIndicatorItemStyle;
+			get => GetValue(UnselectedIndicatorStyleProperty) as Style;
 			set => SetValue(UnselectedIndicatorStyleProperty, value);
 		}
 
@@ -76,9 +87,6 @@ namespace PanCardView.Controls
                 BindingContext = Parent;
             }
         }
-
-        protected virtual View BuildIndicatorItem()
-        => new IndicatorItemView();
 
 		protected virtual void ApplySelectedStyle(View view, int index)
 		=> view.Style = SelectedIndicatorStyle;
@@ -142,7 +150,7 @@ namespace PanCardView.Controls
 
 				for (var i = 0; i < newValue - oldValue; ++i)
 				{
-					var item = BuildIndicatorItem();
+					var item = ItemTemplate.CreateView();
 					Children.Add(item);
 					var recycledIndex = CurrentIndex.ToRecycledIndex(newValue);
 					ApplyStyle(item, recycledIndex);

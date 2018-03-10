@@ -11,7 +11,7 @@ namespace PanCardViewSample.Views
         {
             var cardsView = new CarouselView
             {
-                DataTemplate = new DataTemplate(GetCardItem)
+				ItemTemplate = new DataTemplate(GetCardItem)
             };
             cardsView.SetBinding(CardsView.ItemsProperty, "Items");
             cardsView.SetBinding(CardsView.CurrentIndexProperty, "CurrentIndex");
@@ -39,7 +39,7 @@ namespace PanCardViewSample.Views
 
             var cardsView = new CarouselView
             {
-                DataTemplate = new DataTemplate(() => {
+				ItemTemplate = new DataTemplate(() => {
                     var subCard = new ContentView();
                     subCard.SetBinding(BackgroundColorProperty, "Color");
                     return subCard;

@@ -45,9 +45,14 @@ namespace PanCardView
 
         public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
+		[Obsolete("This field will be removed in next releases. Please, use ItemTemplateProperty instead.")]
         public static readonly BindableProperty DataTemplateProperty = BindableProperty.Create(nameof(DataTemplate), typeof(DataTemplate), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetCurrentView();
         });
+
+		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
+			bindable.AsCardView().SetCurrentView();
+		});
 
         public static readonly BindableProperty CurrentContextProperty = BindableProperty.Create(nameof(CurrentContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetCurrentView(true);
@@ -170,11 +175,18 @@ namespace PanCardView
             private set => SetValue(ItemsCountProperty, value);
         }
 
+		[Obsolete("This property will be removed in next releases. Please, use ItemTemplate instead.")]
         public DataTemplate DataTemplate
         {
-            get => GetValue(DataTemplateProperty) as DataTemplate;
-            set => SetValue(DataTemplateProperty, value);
+			get => GetValue(ItemTemplateProperty) as DataTemplate;
+			set => SetValue(ItemTemplateProperty, value);
         }
+
+		public DataTemplate ItemTemplate
+		{
+			get => GetValue(ItemTemplateProperty) as DataTemplate;
+			set => SetValue(ItemTemplateProperty, value);
+		}
 
         public object CurrentContext
         {
@@ -835,8 +847,8 @@ namespace PanCardView
                 return null;
             }
 
-            var template = DataTemplate;
-            if (DataTemplate is DataTemplateSelector selector)
+            var template = ItemTemplate;
+            if (template is DataTemplateSelector selector)
             {
                 template = selector.SelectTemplate(context, this);
             }

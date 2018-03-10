@@ -13,7 +13,7 @@ namespace PanCardViewSample.Views
         {
             var cardsView = new CardsView
             {
-                DataTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
+				ItemTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9),
                 IsCyclical = true
             };

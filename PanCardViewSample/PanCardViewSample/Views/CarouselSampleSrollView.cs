@@ -13,7 +13,7 @@ namespace PanCardViewSample.Views
         {
             _carouselView = new CarouselView
             {
-                DataTemplate = new DataTemplate(GetCardItem),
+				ItemTemplate = new DataTemplate(GetCardItem),
 				Children = {
 					new IndicatorsControl()
 				}
