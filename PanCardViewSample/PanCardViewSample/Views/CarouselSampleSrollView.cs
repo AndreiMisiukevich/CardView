@@ -15,7 +15,16 @@ namespace PanCardViewSample.Views
             {
 				ItemTemplate = new DataTemplate(GetCardItem),
 				Children = {
-					new IndicatorsControl()
+					new IndicatorsControl
+					{
+						SelectedIndicatorStyle = new Style(typeof(Frame))
+						{
+							BasedOn = Styles.DefaultSelectedIndicatorItemStyle,
+							Setters = {
+								new Setter { Property = BackgroundColorProperty, Value = Color.Red }
+							}
+						}
+					}
 				}
             };
             _carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleScrollViewModel.Items));
