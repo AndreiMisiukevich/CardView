@@ -11,8 +11,7 @@ namespace PanCardViewSample.Views
         {
             var cardsView = new CarouselView
             {
-				ItemTemplate = new DataTemplate(GetCardItem),
-				DoubleCarouselFixEnabled = true
+				ItemTemplate = new DataTemplate(GetCardItem)
             };
             cardsView.SetBinding(CardsView.ItemsProperty, "Items");
             cardsView.SetBinding(CardsView.CurrentIndexProperty, "CurrentIndex");

@@ -145,8 +145,6 @@ namespace PanCardView
             GestureRecognizers.Add(panGesture);
         }
 
-		public bool DoubleCarouselFixEnabled { get; set; }
-
         public double CurrentDiff { get; private set; }
 
         public int OldIndex { get; private set; } = -1;

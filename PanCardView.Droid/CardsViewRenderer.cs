@@ -13,6 +13,7 @@ namespace PanCardView.Droid
 	[Preserve(AllMembers = true)]
 	public class CardsViewRenderer : VisualElementRenderer<CardsView>
 	{
+		private static int? _lastDownEventHandlerHashCode;
 		private bool _panStarted;
 		private float _startX;
 		private float _startY;
@@ -23,40 +24,25 @@ namespace PanCardView.Droid
 
 		public override bool OnInterceptTouchEvent(MotionEvent ev)
 		{
-			if(Element.DoubleCarouselFixEnabled)
-			{
-				return base.OnInterceptTouchEvent(ev);
-			}
-
-			var action = ev.Action;
-
 			if (ev.Action == MotionEventActions.Move)
 			{
+				if(_lastDownEventHandlerHashCode.HasValue && _lastDownEventHandlerHashCode != GetHashCode())
+				{
+					return false;
+				}
 				var xDist = Abs(GetTotalX(ev));
 				var yDist = Abs(GetTotalY(ev));
 				return xDist > yDist;
 			}
 
-			if (action == MotionEventActions.Down)
-			{
-				_startX = ev.GetX();
-				_startY = ev.GetY();
-				UpdatePan(true);
-			}
-
-			if (_panStarted && action == MotionEventActions.Up)
-			{
-				UpdatePan(false);
-			}
-
+			HandleDownEvent(ev);
+			HandleUpEvent(ev);
 			return false;
 		}
 
 		public override bool OnTouchEvent(MotionEvent e)
 		{
-			var action = e.Action;
-
-			if (action == MotionEventActions.Move)
+			if (e.Action == MotionEventActions.Move)
 			{
 				var density = Context.Resources.DisplayMetrics.Density;
 				var distXDp = GetTotalX(e) / density;
@@ -65,18 +51,8 @@ namespace PanCardView.Droid
 				Element.OnPanUpdated(this, args);
 			}
 
-			if (action == MotionEventActions.Down)
-			{
-				_startX = e.GetX();
-				_startY = e.GetY();
-				UpdatePan(true);
-			}
-
-			if (_panStarted && action == MotionEventActions.Up)
-			{
-				UpdatePan(false);
-			}
-
+			HandleDownEvent(e);
+			HandleUpEvent(e);
 			return true;
 		}
 
@@ -91,6 +67,28 @@ namespace PanCardView.Droid
 			_panStarted = isStarted;
 			var args = new PanUpdatedEventArgs(isStarted ? GestureStatus.Started : GestureStatus.Completed, -1, 0, 0);
 			Element.OnPanUpdated(this, args);
+		}
+
+		private void HandleUpEvent(MotionEvent ev)
+		{
+			if(!_panStarted || ev.Action != MotionEventActions.Up)
+			{
+				return;
+			}
+			UpdatePan(false);
+			_lastDownEventHandlerHashCode = null;
+		}
+
+		private void HandleDownEvent(MotionEvent ev)
+		{
+			if(ev.Action != MotionEventActions.Down)
+			{
+				return;
+			}
+			_startX = ev.GetX();
+			_startY = ev.GetY();
+			UpdatePan(true);
+			_lastDownEventHandlerHashCode = GetHashCode();
 		}
 
 		private float GetTotalX(MotionEvent ev) => ev.GetX() - _startX;
