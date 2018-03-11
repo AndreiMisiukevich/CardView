@@ -89,7 +89,7 @@ namespace PanCardView
 
         public static readonly BindableProperty SwipeThresholdDistanceProperty = BindableProperty.Create(nameof(SwipeThresholdDistance), typeof(double), typeof(CardsView), 17.0);
 
-        public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(60));
+		public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
 
         public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -126,14 +126,14 @@ namespace PanCardView
         private Guid _gestureId;
         private DateTime _lastPanTime;
 
-        public CardsView() : this(null, null)
+		public CardsView() : this(new BaseCardFrontViewProcessor(), new BaseCardBackViewProcessor())
         {
         }
 
         public CardsView(ICardProcessor frontViewProcessor, ICardProcessor backViewProcessor)
         {
-            FrontViewProcessor = frontViewProcessor ?? new BaseCardFrontViewProcessor();
-            BackViewProcessor = backViewProcessor ?? new BaseCardBackViewProcessor();
+            FrontViewProcessor = frontViewProcessor;
+            BackViewProcessor = backViewProcessor;
 
 			if(Device.RuntimePlatform == Device.Android)
 			{
@@ -333,43 +333,37 @@ namespace PanCardView
             set => SetValue(PositionChangedCommandProperty, value);
         }
 
-        public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
-        {
-            if (ItemsCount < 0 && CurrentContext == null)
-            {
-                return;
-            }
+		public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
+		=> OnPanUpdated(e);
 
-            switch (e.StatusType)
-            {
-                case GestureStatus.Started:
-                    if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
-                    {
-                        if (!((_currentView as ICardItem)?.HandleTouchStarted(_gestureId) ?? false))
-                        {
-                            OnTouchStarted();
-                        }
-                    }
-                    return;
-                case GestureStatus.Running:
-                    if (!((_currentView as ICardItem)?.HandeTouchChanged(e.TotalX, e.TotalY) ?? false))
-                    {
-                        OnTouchChanged(e.TotalX);
-                    }
-                    return;
-                case GestureStatus.Canceled:
-                case GestureStatus.Completed:
-                    if (Device.RuntimePlatform != Device.Android || e.GestureId == -1)
-                    {
-                        var gestureId = _gestureId;
-                        if (!((_currentView as ICardItem)?.HandleTouchEnded(gestureId) ?? false))
-                        {
-                            OnTouchEnded();
-                        }
-                    }
-                    return;
-            }
-        }
+		public void OnPanUpdated(PanUpdatedEventArgs e, bool? isSwiped = null)
+		{
+			if (ItemsCount < 0 && CurrentContext == null)
+			{
+				return;
+			}
+
+			switch (e.StatusType)
+			{
+				case GestureStatus.Started:
+					OnTouchStarted();
+					return;
+				case GestureStatus.Running:
+					if (!((_currentView as ICardItem)?.HandeTouchChanged(e.TotalX, e.TotalY) ?? false))
+					{
+						OnTouchChanged(e.TotalX);
+					}
+					return;
+				case GestureStatus.Canceled:
+				case GestureStatus.Completed:
+					var gestureId = _gestureId;
+					if (!((_currentView as ICardItem)?.HandleTouchEnded(gestureId) ?? false))
+					{
+						OnTouchEnded(isSwiped);
+					}
+					return;
+			}
+		}
 
         public void AutoNavigatingStarted(View view)
         {
@@ -456,15 +450,13 @@ namespace PanCardView
             var autoNavigatePanPosition = GetAutoNavigatePanPosition();
 
             var oldView = _currentView;
-            var view = PrepareView(CurrentIndex, PanItemPosition.Current, out context);
+            var view = PrepareView(CurrentIndex, PanItemPosition.Current);
             if(view == null)
             {
                 return false;
             }
-
             _currentView = view;
 
-            _currentView.BindingContext = context;
             BackViewProcessor.InitView(_currentView, this, autoNavigatePanPosition);
 
             SetupLayout(_currentView);
@@ -606,7 +598,7 @@ namespace PanCardView
             BackViewProcessor.HandlePanChanged(_currentBackView, this, diff, _currentBackPanItemPosition);
         }
 
-        private async void OnTouchEnded()
+        private async void OnTouchEnded(bool? isSwiped)
         {
             if (_isPanEndRequested || _shouldSkipTouch)
             {
@@ -629,9 +621,17 @@ namespace PanCardView
             if(IsEnabled && _currentBackPanItemPosition != PanItemPosition.Null)
             {
                 var checkSwipe = CheckSwipe();
-                if(checkSwipe.HasValue && (checkSwipe.Value || absDiff > MoveDistance))
+                if(checkSwipe.HasValue)
                 {
-                    isNextSelected = diff < 0;
+					if (isSwiped.HasValue)
+					{
+						isNextSelected = isSwiped;
+					}
+
+					if (checkSwipe.Value || absDiff > MoveDistance)
+					{
+						isNextSelected = diff < 0;
+					}
                 }
             }
 
@@ -819,12 +819,11 @@ namespace PanCardView
 
         private View GetView(int index, PanItemPosition panIntemPosition)
         {
-            var view = PrepareView(index, panIntemPosition, out object context);
+            var view = PrepareView(index, panIntemPosition);
             if(view == null)
             {
                 return null;
             }
-            view.BindingContext = context;
             InitProcessor(view, panIntemPosition);
 
             SetupLayout(view);
@@ -839,9 +838,9 @@ namespace PanCardView
             return view;
         }
 
-        private View PrepareView(int index, PanItemPosition panIntemPosition, out object context)
+        private View PrepareView(int index, PanItemPosition panIntemPosition)
         {
-            context = GetContext(index, panIntemPosition);
+            var context = GetContext(index, panIntemPosition);
             if (context == null)
             {
                 return null;
@@ -879,6 +878,8 @@ namespace PanCardView
                 view = template.CreateView();
                 viewsList.Add(view);
             }
+
+			view.BindingContext = context;
 
             return view;
         }

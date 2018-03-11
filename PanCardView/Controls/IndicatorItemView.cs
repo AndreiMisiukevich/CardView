@@ -10,6 +10,9 @@ namespace PanCardView.Controls
 			HorizontalOptions = LayoutOptions.Center;
 			HasShadow = false;
 			Padding = 0;
+			HeightRequest = 10;
+			WidthRequest = 10;
+			CornerRadius = 5;
 		}
 	}
 }

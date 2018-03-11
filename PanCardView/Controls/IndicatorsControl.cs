@@ -13,7 +13,7 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
         });
 
-        public readonly BindableProperty IndicatorsCountProperty = BindableProperty.Create(nameof(IndicatorsCount), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
+		public readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
         });
@@ -41,7 +41,7 @@ namespace PanCardView.Controls
             InputTransparent = true;
 
             this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
-            this.SetBinding(IndicatorsCountProperty, nameof(CardsView.ItemsCount));
+            this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
 
             Margin = new Thickness(10, 20);
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
@@ -56,10 +56,10 @@ namespace PanCardView.Controls
             set => SetValue(CurrentIndexProperty, value);
         }
 
-        public int IndicatorsCount
+        public int ItemsCount
         {
-            get => (int)GetValue(IndicatorsCountProperty);
-            set => SetValue(IndicatorsCountProperty, value);
+            get => (int)GetValue(ItemsCountProperty);
+            set => SetValue(ItemsCountProperty, value);
         }
 
 		public DataTemplate ItemTemplate
@@ -108,7 +108,7 @@ namespace PanCardView.Controls
 		protected virtual void AddExtraIndicatorsItems()
 		{
 			var oldCount = Children.Count;
-			for (var i = 0; i < IndicatorsCount - oldCount; ++i)
+			for (var i = 0; i < ItemsCount - oldCount; ++i)
 			{
 				var item = ItemTemplate.CreateView();
 				Children.Add(item);
@@ -117,7 +117,7 @@ namespace PanCardView.Controls
 
 		protected virtual void RemoveRedundantIndicatorsItems()
 		{
-			foreach (var item in Children.Where((v, i) => i >= IndicatorsCount).ToArray())
+			foreach (var item in Children.Where((v, i) => i >= ItemsCount).ToArray())
 			{
 				Children.Remove(item);
 			}
@@ -143,7 +143,7 @@ namespace PanCardView.Controls
 
 		private void ResetIndicatorsStylesNonBatch()
 		{
-			var cyclingIndex = CurrentIndex.ToCyclingIndex(IndicatorsCount);
+			var cyclingIndex = CurrentIndex.ToCyclingIndex(ItemsCount);
 			OnResetIndicatorsStyles(cyclingIndex);
 		}
 

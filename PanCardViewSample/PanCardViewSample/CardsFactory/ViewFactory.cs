@@ -9,6 +9,11 @@ namespace PanCardViewSample.CardsFactory
         public static Func<View> Creator { get; } = () =>
         {
             var content = new AbsoluteLayout();
+
+			var tapGesture = new TapGestureRecognizer();
+			tapGesture.Tapped += (s, e) => Application.Current.MainPage.DisplayAlert("Tap!", null, "Ok");
+			content.GestureRecognizers.Add(tapGesture);
+
             var frame = new Frame
             {
                 Padding = 0,
