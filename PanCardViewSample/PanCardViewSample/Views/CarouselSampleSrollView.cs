@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
 using PanCardView.Controls;
+using PanCardView.Controls.Styles;
 
 namespace PanCardViewSample.Views
 {
@@ -19,7 +20,7 @@ namespace PanCardViewSample.Views
 					{
 						SelectedIndicatorStyle = new Style(typeof(Frame))
 						{
-							BasedOn = Styles.DefaultSelectedIndicatorItemStyle,
+							BasedOn = DefaultIndicatorItemStyles.DefaultSelectedIndicatorItemStyle,
 							Setters = {
 								new Setter { Property = BackgroundColorProperty, Value = Color.Red }
 							}

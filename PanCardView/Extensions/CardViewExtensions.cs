@@ -14,7 +14,7 @@ namespace PanCardView.Extensions
         public static View CreateView(this DataTemplate template)
         => template.CreateContent() as View;
 
-        public static int ToRecycledIndex(this int index, int itemsCount)
+        public static int ToCyclingIndex(this int index, int itemsCount)
         {
             if (itemsCount <= 0)
             {

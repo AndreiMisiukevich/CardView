@@ -1,14 +1,14 @@
 ﻿using System;
 using Xamarin.Forms;
-namespace PanCardView.Controls
+namespace PanCardView.Controls.Styles
 {
-	public static class Styles
+	public static class DefaultIndicatorItemStyles
 	{
 		private static Style _defaultBaseIndicatorItemStyle;
 		private static Style _defaultSelectedIndicatorItemStyle;
 		private static Style _defaultUnselectedIndicatorItemStyle;
 
-		static Styles()
+		static DefaultIndicatorItemStyles()
 		{
 		}
 

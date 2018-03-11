@@ -533,8 +533,8 @@ namespace PanCardView
                        : PanItemPosition.Next;
             }
 
-            var recIndex = CurrentIndex.ToRecycledIndex(ItemsCount);
-            var oldRecIndex = OldIndex.ToRecycledIndex(ItemsCount);
+            var recIndex = CurrentIndex.ToCyclingIndex(ItemsCount);
+            var oldRecIndex = OldIndex.ToCyclingIndex(ItemsCount);
 
             var deltaIndex = recIndex - oldRecIndex;
             if(Abs(deltaIndex) == 1)
@@ -771,7 +771,7 @@ namespace PanCardView
                     return -1;
                 }
 
-                newIndex = newIndex.ToRecycledIndex(ItemsCount);
+                newIndex = newIndex.ToCyclingIndex(ItemsCount);
             }
 
             return newIndex;
@@ -910,7 +910,7 @@ namespace PanCardView
                     return null;
                 }
 
-                index = index.ToRecycledIndex(ItemsCount);
+                index = index.ToCyclingIndex(ItemsCount);
             }
 
             if(index < 0)
