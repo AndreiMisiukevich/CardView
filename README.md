@@ -27,7 +27,7 @@ The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/
 ```csharp
 var cardsView = new CardsView
 {
-    DataTemplate = new DataTemplate(() => new ContentView()) //your template
+    ItemTemplate = new DataTemplate(() => new ContentView()) //your template
 };
 cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
 cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
