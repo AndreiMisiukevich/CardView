@@ -1,4 +1,7 @@
 ﻿using PanCardView.Processors;
+using PanCardView.Controls;
+using System.Linq;
+using System;
 
 namespace PanCardView
 {
@@ -14,5 +17,22 @@ namespace PanCardView
             IsCyclical = true;
             MoveWidthPercentage = 0.3;
         }
+
+		[Obsolete("No need use this property. Just add IndicatorsControl as child element.")]
+		public IndicatorsControl IndicatorsControl
+		{
+			set
+			{
+				var control = Children.FirstOrDefault(c => c is IndicatorsControl);
+				if (control != null)
+				{
+					Children.Remove(control);
+				}
+				if (value != null)
+				{
+					Children.Add(value);
+				}				    
+			}
+		}
     }
 }
