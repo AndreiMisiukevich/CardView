@@ -18,7 +18,7 @@ namespace PanCardView.Controls
 			Setters = {
 				new Setter { Property = VisualElement.HeightRequestProperty, Value = 10.0 },
 				new Setter { Property = VisualElement.WidthRequestProperty, Value = 10.0 },
-				new Setter { Property = Frame.CornerRadiusProperty, Value = 5.0 }
+				new Setter { Property = Frame.CornerRadiusProperty, Value = 5.0f }
 			}
 		});
 

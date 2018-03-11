@@ -32,10 +32,9 @@ namespace PanCardView.Droid
 			using (var style = Paint.Style.Stroke)
 			using (var rect = new RectF(0, 0, canvas.Width, canvas.Height))
 			{
-				var rx = Android.App.Application.Context.ToPixels(Element.CornerRadius);
-				var ry = Android.App.Application.Context.ToPixels(Element.CornerRadius);
-				path.AddRoundRect(rect, rx, ry, direction);
-				paint.StrokeWidth = Context.Resources.DisplayMetrics.Density;
+				var raduis = Android.App.Application.Context.ToPixels(Element.CornerRadius);
+				path.AddRoundRect(rect, raduis, raduis, direction);
+				paint.StrokeWidth = Context.Resources.DisplayMetrics.Density * 2;
 				paint.SetStyle(style);
 				paint.Color = Element.OutlineColor.ToAndroid();
 				canvas.DrawPath(path, paint);
