@@ -45,10 +45,6 @@ namespace PanCardView
 
         public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
-		[Obsolete("This field will be removed in next releases. Please, use ItemTemplateProperty instead.")]
-        public static readonly BindableProperty DataTemplateProperty = BindableProperty.Create(nameof(DataTemplate), typeof(DataTemplate), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
-            bindable.AsCardView().SetCurrentView();
-        });
 
 		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
 			bindable.AsCardView().SetCurrentView();
@@ -75,9 +71,6 @@ namespace PanCardView
         public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 200);
 
         public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), true);
-
-		[Obsolete("This field will be removed in next releases. Please, use IsCyclicalProperty instead.")]
-        public static readonly BindableProperty IsRecycledProperty = BindableProperty.Create(nameof(IsRecycled), typeof(bool), typeof(CardsView), false);
 
 		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
 
@@ -175,13 +168,6 @@ namespace PanCardView
             private set => SetValue(ItemsCountProperty, value);
         }
 
-		[Obsolete("This property will be removed in next releases. Please, use ItemTemplate instead.")]
-        public DataTemplate DataTemplate
-        {
-			get => GetValue(ItemTemplateProperty) as DataTemplate;
-			set => SetValue(ItemTemplateProperty, value);
-        }
-
 		public DataTemplate ItemTemplate
 		{
 			get => GetValue(ItemTemplateProperty) as DataTemplate;
@@ -240,13 +226,6 @@ namespace PanCardView
         {
             get => (bool)GetValue(IsPanInCourseProperty);
             set => SetValue(IsPanInCourseProperty, value);
-        }
-
-		[Obsolete("This property will be removed in next releases. Please, use IsCyclical instead.")]
-        public bool IsRecycled
-        {
-			get => (bool)GetValue(IsCyclicalProperty);
-			set => SetValue(IsCyclicalProperty, value);
         }
 
 		public bool IsCyclical
@@ -935,7 +914,7 @@ namespace PanCardView
             {
                 lock (_childLocker)
                 {
-                    SendChildToBack(view);
+					LowerChild(view);
                 }
             }
         }
@@ -1056,12 +1035,6 @@ namespace PanCardView
 					CleanView(view);
                 }
             }
-        }
-
-        private void SendChildToBack(View view)
-        {
-            Children.Remove(view);
-            Children.Insert(0, view);
         }
 
         private bool CheckUsingNow(View view) => _viewsInUse.Contains(view);
