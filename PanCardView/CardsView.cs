@@ -389,8 +389,7 @@ namespace PanCardView
                 lock (_viewsInUseLocker)
                 {
                     _viewsInUse.Remove(view);
-                    view.IsVisible = false;
-                    ClearBindingContext(view);
+                    CleanView(view);
                 }
             }
             IsAutoNavigating = false;
@@ -941,13 +940,14 @@ namespace PanCardView
             }
         }
 
-        private void ClearBindingContext(View view)
-        {
-            if(view != null)
-            {
-                view.BindingContext = null;
-            }
-        }
+		private void CleanView(View view)
+		{
+			if (view != null)
+			{
+				view.IsVisible = false;
+				view.BindingContext = null;
+			}
+		}
 
         private void SetItemsCount()
         {
@@ -1053,7 +1053,7 @@ namespace PanCardView
                 foreach (var view in views)
                 {
                     Children.Remove(view);
-                    ClearBindingContext(view);
+					CleanView(view);
                 }
             }
         }
@@ -1103,11 +1103,7 @@ namespace PanCardView
                 {
                     foreach (var view in views.ToArray())
                     {
-                        if (view != null)
-                        {
-                            view.IsVisible = false;
-                            ClearBindingContext(view);
-                        }
+						CleanView(view);
                     }
                 }
             }
