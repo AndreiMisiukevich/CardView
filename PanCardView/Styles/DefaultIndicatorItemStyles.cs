@@ -4,7 +4,6 @@ namespace PanCardView.Controls.Styles
 {
 	public static class DefaultIndicatorItemStyles
 	{
-		private static Style _defaultBaseIndicatorItemStyle;
 		private static Style _defaultSelectedIndicatorItemStyle;
 		private static Style _defaultUnselectedIndicatorItemStyle;
 
