@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CardsView</id>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
@@ -11,7 +11,7 @@
     <iconUrl>https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_view_carousel_48px-256.png</iconUrl>
     <description>Cards View</description>
     <summary>This package provides opportunity to create swipeable CardsView like in Tinder app has</summary>
-    <tags>xamarin, carouselview, cardsview, forms, carousel, xamarin.forms, android, card, cards, cardview, panView, pan, swipeview, swiperview, swipe, tinder swiper</tags>
+    <tags>carouselview, cardsview, carousel view, cards view, xamarin, forms, carousel, xamarin.forms, card, cards, cardview, panView, pan, swipeview, swiperview, swipe, tinder swiper</tags>
     <dependencies>
       <group>
           <dependency id="Xamarin.Forms" version="2.4" />
