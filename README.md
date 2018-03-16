@@ -35,10 +35,10 @@ cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewMod
 -> Optionaly you can create ViewModel... or not... as you wish
 
 -> Indicators bar (For CarouselView, perhaps). It's easy to add indicators
--> Just add IndicatorsControl into your view as a child view.
+-> Just add IndicatorsControl into your carouselView as a child view.
 
 ```csharp
-cardsView.Children.Add(new IndicatorsControl());
+carouselView.Children.Add(new IndicatorsControl());
 ```
 -> If you want to customize indicators, you need set SelectedStyle and/or UnselectedStyle, or you are able to extend this class and override several methods.
 Also you can customize position of indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
