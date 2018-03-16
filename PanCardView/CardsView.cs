@@ -96,19 +96,19 @@ namespace PanCardView
 
         public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
 
+		private readonly object _childLocker = new object();
+		private readonly object _viewsInUseLocker = new object();
+
         private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
+		private readonly Dictionary<Guid, View[]> _viewsGestureCounter = new Dictionary<Guid, View[]>();
+		private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
         private readonly HashSet<View> _viewsInUse = new HashSet<View>();
-        private readonly Dictionary<Guid, View[]> _viewsGestureCounter = new Dictionary<Guid, View[]>();
-        private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
-        private readonly object _childLocker = new object();
-        private readonly object _viewsInUseLocker = new object();
 
         private View _currentView;
         private View _nextView;
         private View _prevView;
         private View _currentBackView;
         private PanItemPosition _currentBackPanItemPosition;
-
         private INotifyCollectionChanged _currentObservableCollection;
 
         private int _viewsChildrenCount;
@@ -128,14 +128,12 @@ namespace PanCardView
             FrontViewProcessor = frontViewProcessor;
             BackViewProcessor = backViewProcessor;
 
-			if(Device.RuntimePlatform == Device.Android)
+			if(Device.RuntimePlatform != Device.Android)
 			{
-				return;
+				var panGesture = new PanGestureRecognizer();
+				panGesture.PanUpdated += OnPanUpdated;
+				GestureRecognizers.Add(panGesture);
 			}
-
-            var panGesture = new PanGestureRecognizer();
-            panGesture.PanUpdated += OnPanUpdated;
-            GestureRecognizers.Add(panGesture);
         }
 
         public double CurrentDiff { get; private set; }
@@ -328,18 +326,11 @@ namespace PanCardView
 					OnTouchStarted();
 					return;
 				case GestureStatus.Running:
-					if (!((_currentView as ICardItem)?.HandeTouchChanged(e.TotalX, e.TotalY) ?? false))
-					{
-						OnTouchChanged(e.TotalX);
-					}
+					OnTouchChanged(e.TotalX);
 					return;
 				case GestureStatus.Canceled:
 				case GestureStatus.Completed:
-					var gestureId = _gestureId;
-					if (!((_currentView as ICardItem)?.HandleTouchEnded(gestureId) ?? false))
-					{
-						OnTouchEnded(isSwiped);
-					}
+					OnTouchEnded(isSwiped);
 					return;
 			}
 		}
@@ -435,14 +426,14 @@ namespace PanCardView
             }
             _currentView = view;
 
-            BackViewProcessor.InitView(_currentView, this, autoNavigatePanPosition);
+            BackViewProcessor.HandleInitView(_currentView, this, autoNavigatePanPosition);
 
             SetupLayout(_currentView);
 
             AddChild(_currentView, oldView);
 
-            BackViewProcessor.AutoNavigate(oldView, this, autoNavigatePanPosition);
-            FrontViewProcessor.AutoNavigate(_currentView, this, autoNavigatePanPosition);
+            BackViewProcessor.HandleAutoNavigate(oldView, this, autoNavigatePanPosition);
+            FrontViewProcessor.HandleAutoNavigate(_currentView, this, autoNavigatePanPosition);
 
             SetupBackViews(null);
 
@@ -1059,7 +1050,7 @@ namespace PanCardView
         private void InitProcessor(View view, PanItemPosition panItemPosition)
         => (panItemPosition == PanItemPosition.Current
             ? FrontViewProcessor
-            : BackViewProcessor).InitView(view, this, panItemPosition);
+            : BackViewProcessor).HandleInitView(view, this, panItemPosition);
 
         private void RemoveRangeViewsInUse(Guid gestureId)
         {

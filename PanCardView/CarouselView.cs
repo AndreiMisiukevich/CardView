@@ -19,7 +19,7 @@ namespace PanCardView
         }
 
 		[Obsolete("No need use this property. Just add IndicatorsControl as child element.")]
-		public IndicatorsControl IndicatorsControl
+		public bool ShouldAddDefaultIndicatorsControl
 		{
 			set
 			{
@@ -28,10 +28,11 @@ namespace PanCardView
 				{
 					Children.Remove(control);
 				}
-				if (value != null)
+
+				if (value)
 				{
-					Children.Add(value);
-				}				    
+					Children.Add(new IndicatorsControl());
+				}
 			}
 		}
     }

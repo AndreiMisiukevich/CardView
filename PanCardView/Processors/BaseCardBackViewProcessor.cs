@@ -23,7 +23,7 @@ namespace PanCardView.Processors
 
         public Easing AutoNavigateEasing { get; set; } = Easing.Linear;
 
-        public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual void HandleInitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if(view != null)
             {
@@ -36,13 +36,13 @@ namespace PanCardView.Processors
             }
         }
 
-        public virtual void AutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual void HandleAutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
                 cardsView.AutoNavigatingStarted(view);
                 new Animation(v => HandleAutoAnimatingPosChanged(view, cardsView, v, panItemPosition), 0, cardsView.MoveDistance)
-                    .Commit(view, nameof(AutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, async (v, t) =>
+                    .Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, async (v, t) =>
                     {
                         await HandlePanApply(view, cardsView, panItemPosition);
                         cardsView.AutoNavigatingEnded(view);

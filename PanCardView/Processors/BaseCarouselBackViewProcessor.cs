@@ -12,7 +12,7 @@ namespace PanCardView.Processors
 
         public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
-        public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual void HandleInitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
@@ -21,7 +21,7 @@ namespace PanCardView.Processors
             }
         }
 
-        public virtual void AutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual void HandleAutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
@@ -31,7 +31,7 @@ namespace PanCardView.Processors
                 
                 cardsView.AutoNavigatingStarted(view);
                 new Animation(v => view.TranslationX = v, 0, destinationPos)
-                    .Commit(view, nameof(AutoNavigate), 16, AnimationLength, AnimEasing, (v, t) =>
+                    .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (v, t) =>
                     {
                         cardsView.AutoNavigatingEnded(view);
                     });

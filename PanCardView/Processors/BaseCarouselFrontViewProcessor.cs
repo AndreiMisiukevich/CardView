@@ -14,7 +14,7 @@ namespace PanCardView.Processors
 
         public double NoItemMaxPanDistance { get; set; } = 25;
 
-        public virtual void InitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual void HandleInitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
@@ -23,13 +23,13 @@ namespace PanCardView.Processors
             }
         }
 
-        public virtual void AutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+        public virtual void HandleAutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
         {
             if (view != null)
             {
                 view.IsVisible = true;
                 new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-                    .Commit(view, nameof(AutoNavigate), 16, AnimationLength, AnimEasing);
+                    .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
             }
         }
 
