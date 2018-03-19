@@ -29,6 +29,6 @@ namespace PanCardView.Utility
 		}
 
 		internal bool Contains(View view) 
-		=> _set.ContainsKey(view);
+		=> view != null && _set.ContainsKey(view);
 	}
 }
