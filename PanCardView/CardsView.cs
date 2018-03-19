@@ -11,6 +11,7 @@ using System.Collections;
 using PanCardView.Enums;
 using static System.Math;
 using PanCardView.Behaviors;
+using PanCardView.Utility;
 
 namespace PanCardView
 {
@@ -1114,39 +1115,4 @@ namespace PanCardView
             PositionChangedCommand?.Execute(isNextSelected);
         }
     }
-
-    internal struct TimeDiffItem
-    {
-        public DateTime Time { get; set; }
-        public double Diff { get; set; }
-    }
-
-	internal class ViewsInUseSet
-	{
-		private readonly Dictionary<View, int> _set = new Dictionary<View, int>();
-
-		internal void Add(View view)
-		{
-			_set[view] = Contains(view)
-				? _set[view] + 1
-				: 1;
-		}
-
-		internal bool Remove(View view)
-		{
-			if(!Contains(view))
-			{
-				return false;
-			}
-
-			var currentCount = _set[view] - 1;
-			if (currentCount > 0)
-			{
-				_set[view] = currentCount;
-			}
-			return true;
-		}
-
-		internal bool Contains(View view) => _set.ContainsKey(view);
-	}
 }

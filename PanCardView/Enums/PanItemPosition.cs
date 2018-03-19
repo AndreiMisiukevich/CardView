@@ -1,6 +1,4 @@
-﻿
-
-namespace PanCardView.Enums
+﻿namespace PanCardView.Enums
 {
     public enum PanItemPosition
     {
