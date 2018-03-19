@@ -10,13 +10,16 @@ namespace PanCardViewSample.Views
     {
         public CarouselSampleView()
         {
-            var cardsView = new CarouselView()
+			var carousel = new CarouselView
             {
 				ItemTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
-                BackgroundColor = Color.Black.MultiplyAlpha(.9)
+                BackgroundColor = Color.Black.MultiplyAlpha(.9),
+				IsPanInCourse = false,
+				DesiredMaxChildrenCount = 12,
+				MaxChildrenCount = 15
             };
 
-            cardsView.Children.Add(new IndicatorsControl());
+            carousel.Children.Add(new IndicatorsControl());
 
             var prevItem = new ToolbarItem
             {
@@ -37,11 +40,11 @@ namespace PanCardViewSample.Views
             ToolbarItems.Add(prevItem);
             ToolbarItems.Add(nextItem);
 
-            cardsView.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
-            cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
+            carousel.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
+            carousel.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 
             Title = "CarouselView";
-            Content = cardsView;
+            Content = carousel;
             BindingContext = new SharedSampleViewModel();
         }
     }

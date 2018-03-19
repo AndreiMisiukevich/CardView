@@ -29,18 +29,9 @@ namespace PanCardViewSample.CardsFactory
                 Aspect = Aspect.AspectFill
             };
 
+			image.SetBinding(CachedImage.SourceProperty, "Source");
+
             frame.Content = image;
-
-
-            content.BindingContextChanged += (sender, e) =>
-            {
-                if (content?.BindingContext == null)
-                {
-                    return;
-                }
-
-                image.Source = ((dynamic)content.BindingContext).Source;
-            };
 
             return content;
         };
