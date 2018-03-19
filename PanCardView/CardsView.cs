@@ -102,7 +102,7 @@ namespace PanCardView
         private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
 		private readonly Dictionary<Guid, View[]> _viewsGestureCounter = new Dictionary<Guid, View[]>();
 		private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
-        private readonly HashSet<View> _viewsInUse = new HashSet<View>();
+		private readonly ViewsInUseSet _viewsInUse = new ViewsInUseSet();
 
         private View _currentView;
         private View _nextView;
@@ -365,7 +365,7 @@ namespace PanCardView
             IsAutoNavigating = false;
         }
 
-        protected virtual void SetupBackViews(bool? isOnStart = null)
+        protected virtual void SetupBackViews()
         {
             SetupNextView();
             SetupPrevView();
@@ -399,7 +399,7 @@ namespace PanCardView
                 }
             }
 
-            SetupBackViews(null);
+            SetupBackViews();
         }
 
         protected virtual bool TryAutoNavigate()
@@ -435,7 +435,7 @@ namespace PanCardView
             BackViewProcessor.HandleAutoNavigate(oldView, this, autoNavigatePanPosition);
             FrontViewProcessor.HandleAutoNavigate(_currentView, this, autoNavigatePanPosition);
 
-            SetupBackViews(null);
+            SetupBackViews();
 
             return true;
         }
@@ -535,7 +535,7 @@ namespace PanCardView
             _isPanRunning = true;
             _isPanEndRequested = false;
 
-            SetupBackViews(true);
+            SetupBackViews();
             AddRangeViewsInUse();
 
             _timeDiffItems.Add(new TimeDiffItem
@@ -649,7 +649,7 @@ namespace PanCardView
                 }
                 if(CurrentContext == null)
                 {
-                    SetupBackViews(false);
+                    SetupBackViews();
                 }
             }
 
@@ -836,7 +836,7 @@ namespace PanCardView
                 _viewsPool.Add(template, viewsList);
             }
 
-            var notUsingViews = viewsList.Where(v => !CheckUsingNow(v));
+			var notUsingViews = viewsList.Where(v => !_viewsInUse.Contains(v));
             var currentContext = context;
             var view = notUsingViews.FirstOrDefault(v => v.BindingContext == currentContext)
                                     ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
@@ -1028,8 +1028,6 @@ namespace PanCardView
             }
         }
 
-        private bool CheckUsingNow(View view) => _viewsInUse.Contains(view);
-
         private bool CheckIsProcessingView(View view) => view == _currentView || view == _nextView || view == _prevView;
 
         private void AddRangeViewsInUse()
@@ -1058,17 +1056,14 @@ namespace PanCardView
             {
                 var views = _viewsGestureCounter[gestureId];
                 _viewsGestureCounter.Remove(gestureId);
-                foreach (var view in views.ToArray())
+
+				foreach (var view in views.ToArray())
                 {
                     _viewsInUse.Remove(view);
-                }
-
-                if(_gestureId != gestureId)
-                {
-                    foreach (var view in views.ToArray())
-                    {
+					if(_gestureId != gestureId && !_viewsInUse.Contains(view))
+					{
 						CleanView(view);
-                    }
+					}
                 }
             }
         }
@@ -1125,4 +1120,33 @@ namespace PanCardView
         public DateTime Time { get; set; }
         public double Diff { get; set; }
     }
+
+	internal class ViewsInUseSet
+	{
+		private readonly Dictionary<View, int> _set = new Dictionary<View, int>();
+
+		internal void Add(View view)
+		{
+			_set[view] = Contains(view)
+				? _set[view] + 1
+				: 1;
+		}
+
+		internal bool Remove(View view)
+		{
+			if(!Contains(view))
+			{
+				return false;
+			}
+
+			var currentCount = _set[view] - 1;
+			if (currentCount > 0)
+			{
+				_set[view] = currentCount;
+			}
+			return true;
+		}
+
+		internal bool Contains(View view) => _set.ContainsKey(view);
+	}
 }

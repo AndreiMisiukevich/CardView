@@ -13,10 +13,7 @@ namespace PanCardViewSample.Views
 			var carousel = new CarouselView
             {
 				ItemTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
-                BackgroundColor = Color.Black.MultiplyAlpha(.9),
-				IsPanInCourse = false,
-				DesiredMaxChildrenCount = 12,
-				MaxChildrenCount = 15
+                BackgroundColor = Color.Black.MultiplyAlpha(.9)
             };
 
             carousel.Children.Add(new IndicatorsControl());
