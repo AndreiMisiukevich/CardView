@@ -884,7 +884,7 @@ namespace PanCardView
                 index = index.ToCyclingIndex(ItemsCount);
             }
 
-            if(index < 0)
+            if(index < 0 || Items == null)
             {
                 return null;
             }
