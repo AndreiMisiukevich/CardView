@@ -13,11 +13,11 @@ namespace PanCardView.Utility
 			? _viewsSet[view] + 1
 			: 1;
 
-		public bool Remove(View view)
+		public int Remove(View view)
 		{
 			if (!Contains(view))
 			{
-				return false;
+				return -1;
 			}
 
 			var currentCount = _viewsSet[view] - 1;
@@ -25,7 +25,11 @@ namespace PanCardView.Utility
 			{
 				_viewsSet[view] = currentCount;
 			}
-			return true;
+			else
+			{
+				_viewsSet.Remove(view);
+			}
+			return currentCount;
 		}
 
 		public bool Contains(View view) 

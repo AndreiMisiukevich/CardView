@@ -1052,10 +1052,7 @@ namespace PanCardView
         {
             lock (_viewsInUseLocker)
             {
-                var views = _viewsGestureCounter[gestureId];
-                _viewsGestureCounter.Remove(gestureId);
-
-				foreach (var view in views.ToArray())
+				foreach (var view in _viewsGestureCounter[gestureId])
                 {
                     _viewsInUse.Remove(view);
 					if(_gestureId != gestureId && !_viewsInUse.Contains(view))
@@ -1063,6 +1060,7 @@ namespace PanCardView
 						CleanView(view);
 					}
                 }
+				_viewsGestureCounter.Remove(gestureId);
             }
         }
 
