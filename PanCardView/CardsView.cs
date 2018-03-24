@@ -660,7 +660,7 @@ namespace PanCardView
 
             if (_viewsChildrenCount > maxChildrenCount)
             {
-                RemoveChildren(Children.Where(c => !CheckIsProtectedView(c) && c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray());
+                RemoveRedundantChildren();
             }
 
             _inCoursePanDelay = 0;
@@ -894,21 +894,21 @@ namespace PanCardView
 
         private void SendChildrenToBackIfNeeded(View view, View topView)
         {
-            if(view == null || topView == null)
-            {
-                return;
-            }
+			lock (_childLocker)
+			{
+				if (view == null || topView == null)
+				{
+					return;
+				}
 
-            var currentIndex = Children.IndexOf(topView);
-            var backIndex = Children.IndexOf(view);
+				var currentIndex = Children.IndexOf(topView);
+				var backIndex = Children.IndexOf(view);
 
-            if (currentIndex < backIndex)
-            {
-                lock (_childLocker)
-                {
+				if (currentIndex < backIndex)
+				{
 					LowerChild(view);
-                }
-            }
+				}
+			}
         }
 
 		private void CleanView(View view)
@@ -977,48 +977,45 @@ namespace PanCardView
 
         private void AddBackChild(View view)
         {
-            if (view == null || Children.Contains(view))
-            {
-                return;
-            }
-
             lock (_childLocker)
             {
+				if (view == null || Children.Contains(view))
+				{
+					return;
+				}
+
                 ++_viewsChildrenCount;
                 Children.Insert(0, view);
             }
         }
 
-        private void AddChild(View view, View topView)
+		private void AddChild(View view, View topView)
+		{
+			lock (_childLocker)
+			{
+				if (view == null)
+				{
+					return;
+				}
+
+				if (Children.Contains(view))
+				{
+					SendChildrenToBackIfNeeded(view, topView);
+					return;
+				}
+
+				++_viewsChildrenCount;
+				var index = Children.IndexOf(topView);
+				Children.Insert(index, view);
+			}
+		}
+
+		private void RemoveRedundantChildren()
         {
-            if (view == null)
-            {
-                return;
-            }
-
-            if(Children.Contains(view))
-            {
-                SendChildrenToBackIfNeeded(view, topView);
-                return;
-            }
-
             lock (_childLocker)
             {
-                ++_viewsChildrenCount;
-                Children.Insert(Children.IndexOf(topView), view);
-            }
+				var views = Children.Where(c => !CheckIsProtectedView(c) && c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();
 
-        }
-
-        private void RemoveChildren(View[] views)
-        {
-            if (views == null)
-            {
-                return;
-            }
-
-            lock (_childLocker)
-            {
                 _viewsChildrenCount -= views.Length;
 
                 foreach (var view in views)
