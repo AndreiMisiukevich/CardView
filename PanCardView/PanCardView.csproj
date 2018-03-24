@@ -44,6 +44,7 @@
     <Compile Include="Behaviors\ProtectedControlBehavior.cs" />
     <Compile Include="Styles\DefaultIndicatorItemStyles.cs" />
     <Compile Include="Utility\TimeDiffItem.cs" />
+    <Compile Include="Utility\ViewsInUseSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

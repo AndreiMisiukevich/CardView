@@ -1307,7 +1307,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.String.appbar_scrolling_view_behavior = global::PanCardViewSample.Droid.Resource.String.appbar_scrolling_view_behavior;
 			global::PanCardView.Droid.Resource.String.bottom_sheet_behavior = global::PanCardViewSample.Droid.Resource.String.bottom_sheet_behavior;
 			global::PanCardView.Droid.Resource.String.character_counter_pattern = global::PanCardViewSample.Droid.Resource.String.character_counter_pattern;
-			global::PanCardView.Droid.Resource.String.library_name = global::PanCardViewSample.Droid.Resource.String.library_name;
 			global::PanCardView.Droid.Resource.String.mr_button_content_description = global::PanCardViewSample.Droid.Resource.String.mr_button_content_description;
 			global::PanCardView.Droid.Resource.String.mr_cast_button_connected = global::PanCardViewSample.Droid.Resource.String.mr_cast_button_connected;
 			global::PanCardView.Droid.Resource.String.mr_cast_button_connecting = global::PanCardViewSample.Droid.Resource.String.mr_cast_button_connecting;
@@ -6312,9 +6311,6 @@ namespace PanCardViewSample.Droid
 			
 			// aapt resource value: 0x7f090038
 			public const int character_counter_pattern = 2131296312;
-			
-			// aapt resource value: 0x7f09003e
-			public const int library_name = 2131296318;
 			
 			// aapt resource value: 0x7f090000
 			public const int mr_button_content_description = 2131296256;
