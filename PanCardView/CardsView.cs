@@ -103,7 +103,7 @@ namespace PanCardView
         private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
 		private readonly Dictionary<Guid, View[]> _viewsGestureCounter = new Dictionary<Guid, View[]>();
 		private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
-		private readonly ViewsInUseSet _viewsInUse = new ViewsInUseSet();
+		private readonly HashSet<View> _viewsInUse = new HashSet<View>();
 
         private View _currentView;
         private View _nextView;
@@ -1055,7 +1055,7 @@ namespace PanCardView
                 var views = _viewsGestureCounter[gestureId];
                 _viewsGestureCounter.Remove(gestureId);
 
-				foreach (var view in views.ToArray())
+				foreach (var view in views.Where(v => v != null))
                 {
                     _viewsInUse.Remove(view);
 					if(_gestureId != gestureId && !_viewsInUse.Contains(view))
