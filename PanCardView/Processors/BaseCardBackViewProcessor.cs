@@ -40,12 +40,13 @@ namespace PanCardView.Processors
         {
             if (view != null)
             {
-                cardsView.AutoNavigatingStarted(view);
+				var animId = Guid.NewGuid();
+                cardsView.AutoNavigatingStarted(view, animId);
                 new Animation(v => HandleAutoAnimatingPosChanged(view, cardsView, v, panItemPosition), 0, cardsView.MoveDistance)
                     .Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, async (v, t) =>
                     {
                         await HandlePanApply(view, cardsView, panItemPosition);
-                        cardsView.AutoNavigatingEnded(view);
+                        cardsView.AutoNavigatingEnded(view, animId);
                     });
             }
         }

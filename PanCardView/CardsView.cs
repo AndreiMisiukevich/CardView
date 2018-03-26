@@ -336,10 +336,11 @@ namespace PanCardView
 			}
 		}
 
-        public void AutoNavigatingStarted(View view)
+		public void AutoNavigatingStarted(View view, Guid animationId)
         {
             if (view != null)
             {
+				_gestureId = animationId;
                 IsAutoNavigating = true;
                 if(IsPanInCourse)
                 {
@@ -352,7 +353,7 @@ namespace PanCardView
             }
         }
 
-        public void AutoNavigatingEnded(View view)
+		public void AutoNavigatingEnded(View view, Guid animationId)
         {
             _inCoursePanDelay = 0;
             if(view != null)
@@ -364,6 +365,8 @@ namespace PanCardView
                 }
             }
             IsAutoNavigating = false;
+			var isProcessingNow = _gestureId != animationId;
+			RemoveRedundantChildren(isProcessingNow);
         }
 
         protected virtual void SetupBackViews()
@@ -654,14 +657,7 @@ namespace PanCardView
                 }
             }
 
-            var maxChildrenCount = isProcessingNow 
-                ? MaxChildrenCount 
-                : DesiredMaxChildrenCount;
-
-            if (_viewsChildrenCount > maxChildrenCount)
-            {
-                RemoveRedundantChildren();
-            }
+			RemoveRedundantChildren(isProcessingNow);
 
             _inCoursePanDelay = 0;
         }
@@ -1010,8 +1006,17 @@ namespace PanCardView
 			}
 		}
 
-		private void RemoveRedundantChildren()
+		private void RemoveRedundantChildren(bool isProcessingNow)
         {
+			var maxChildrenCount = isProcessingNow
+				? MaxChildrenCount
+				: DesiredMaxChildrenCount;
+
+			if (_viewsChildrenCount <= maxChildrenCount)
+			{
+				return;
+			}
+
             lock (_childLocker)
             {
 				var views = Children.Where(c => !CheckIsProtectedView(c) && c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();

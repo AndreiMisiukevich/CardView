@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using PanCardView.Enums;
 using Xamarin.Forms;
 
@@ -29,11 +30,13 @@ namespace PanCardView.Processors
                    ? cardsView.Width
                    : -cardsView.Width;
                 
-                cardsView.AutoNavigatingStarted(view);
+				var animId = Guid.NewGuid();
+
+                cardsView.AutoNavigatingStarted(view, animId);
                 new Animation(v => view.TranslationX = v, 0, destinationPos)
                     .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (v, t) =>
                     {
-                        cardsView.AutoNavigatingEnded(view);
+						cardsView.AutoNavigatingEnded(view, animId);
                     });
             }
         }
