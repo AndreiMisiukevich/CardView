@@ -20,7 +20,10 @@ namespace PanCardView.Droid
 
 		public override bool OnInterceptTouchEvent(MotionEvent ev)
 		{
-			return !IsMovementStarted && base.OnInterceptTouchEvent(ev);
+			return 
+				//!IsMovementStarted 
+				LastDownEventHandlerHashCode == null
+			&& base.OnInterceptTouchEvent(ev);
 		}
 	}
 }
