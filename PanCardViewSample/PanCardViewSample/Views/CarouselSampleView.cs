@@ -41,17 +41,7 @@ namespace PanCardViewSample.Views
             carousel.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 
             Title = "CarouselView";
-			Content = new ParentScrollView 
-			{
-				Content = new StackLayout
-				{
-					Children =
-					{
-						carousel,
-						new ContentView { HeightRequest = 2000, BackgroundColor = Color.Gray}
-					}
-				}	
-			};
+			Content = carousel;
             BindingContext = new SharedSampleViewModel();
         }
     }
