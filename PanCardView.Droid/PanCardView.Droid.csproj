@@ -120,7 +120,6 @@
     <Compile Include="CardsViewRenderer.cs" />
     <Compile Include="IndicatorItemViewRenderer.cs" />
     <Compile Include="ParentScrollViewRenderer.cs" />
-    <Compile Include="ParentListViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

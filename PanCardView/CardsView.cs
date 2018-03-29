@@ -12,6 +12,7 @@ using PanCardView.Enums;
 using static System.Math;
 using PanCardView.Behaviors;
 using PanCardView.Utility;
+using PanCardView.Controls;
 
 namespace PanCardView
 {
@@ -77,6 +78,8 @@ namespace PanCardView
 
         public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource);
 
+		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource);
+
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
         public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 6);
@@ -114,9 +117,9 @@ namespace PanCardView
 
         private int _viewsChildrenCount;
         private int _inCoursePanDelay;
-        private bool _isPanRunning;
         private bool _isPanEndRequested = true;
         private bool _shouldSkipTouch;
+		private bool? _shouldScrollParent;
         private Guid _gestureId;
         private DateTime _lastPanTime;
 
@@ -239,6 +242,12 @@ namespace PanCardView
             set => SetValue(IsAutoNavigatingProperty, value);
         }
 
+		public bool IsPanRunning
+		{
+			get => (bool)GetValue(IsPanRunningProperty);
+			set => SetValue(IsPanRunningProperty, value);
+		}
+
         public int MaxChildrenCount
         {
             get => (int)GetValue(MaxChildrenCountProperty);
@@ -327,6 +336,7 @@ namespace PanCardView
 					OnTouchStarted();
 					return;
 				case GestureStatus.Running:
+					HandleParentScroll(e);
 					OnTouchChanged(e.TotalX);
 					return;
 				case GestureStatus.Canceled:
@@ -516,6 +526,7 @@ namespace PanCardView
 
         private void OnTouchStarted()
         {
+			_shouldScrollParent = null;
             if(!_isPanEndRequested)
             {
                 return;
@@ -536,7 +547,7 @@ namespace PanCardView
 
             _gestureId = Guid.NewGuid();
             FirePanStarted();
-            _isPanRunning = true;
+            IsPanRunning = true;
             _isPanEndRequested = false;
 
             SetupBackViews();
@@ -551,7 +562,7 @@ namespace PanCardView
 
         private void OnTouchChanged(double diff)
         {
-            if(_shouldSkipTouch)
+			if(_shouldSkipTouch || (_shouldScrollParent ?? false))
             {
                 return;
             }
@@ -645,7 +656,7 @@ namespace PanCardView
             var isProcessingNow = gestureId != _gestureId;
             if (!isProcessingNow)
             {
-                _isPanRunning = false;
+                IsPanRunning = false;
                 if (ShouldSetIndexAfterPan)
                 {
                     ShouldSetIndexAfterPan = false;
@@ -936,8 +947,8 @@ namespace PanCardView
         {
             ItemsCount = Items?.Count ?? -1;
 
-            ShouldSetIndexAfterPan = _isPanRunning;
-            if(!_isPanRunning)
+            ShouldSetIndexAfterPan = IsPanRunning;
+            if(!IsPanRunning)
             {
                 SetNewIndex();
             }
@@ -1068,6 +1079,37 @@ namespace PanCardView
 				_viewsGestureCounter.Remove(gestureId);
             }
         }
+
+		private void HandleParentScroll(PanUpdatedEventArgs e)
+		{
+			if (Device.RuntimePlatform == Device.iOS)
+			{
+				var y = e.TotalY;
+				var absY = Abs(y);
+				var absX = Abs(e.TotalX);
+
+				var isFirst = false;
+				if (!_shouldScrollParent.HasValue)
+				{
+					_shouldScrollParent = absY > absX;
+					isFirst = true;
+				}
+
+				if (_shouldScrollParent.Value)
+				{
+					var parent = Parent;
+					while(parent != null)
+					{
+						if(parent is IOrdinateHandlerParentView scrollableView)
+						{
+							scrollableView.HandleOrdinateValue(y, isFirst);
+							break;
+						}
+						parent = parent.Parent;
+					}
+				}
+			}
+		}
 
         private void FirePanStarted()
         {
