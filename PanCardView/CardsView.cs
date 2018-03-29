@@ -49,9 +49,16 @@ namespace PanCardView
         public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
 
-		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) => {
-			bindable.AsCardView().SetCurrentView();
-		});
+        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView),
+            new DataTemplate(() => {
+                var view = new ContentView();
+                view.SetBinding(ContentView.ContentProperty, nameof(ContentView.Content));
+                return view;
+            }),
+            propertyChanged: (bindable, oldValue, newValue) => {
+                bindable.AsCardView().SetCurrentView();
+            }
+        );
 
         public static readonly BindableProperty CurrentContextProperty = BindableProperty.Create(nameof(CurrentContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay, propertyChanged: (bindable, oldValue, newValue) => {
             bindable.AsCardView().SetCurrentView(true);
