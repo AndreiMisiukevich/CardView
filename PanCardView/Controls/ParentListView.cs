@@ -2,8 +2,7 @@
 
 namespace PanCardView.Controls
 {
-	public class ParentScrollView : ScrollView
+	public class ParentListView : ListView
 	{
 	}
 }
-

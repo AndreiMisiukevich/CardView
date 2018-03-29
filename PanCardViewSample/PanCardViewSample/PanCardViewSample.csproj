@@ -33,13 +33,13 @@
     <Compile Include="Views\CardsSampleView.cs" />
     <Compile Include="Views\CarouselSampleView.cs" />
     <Compile Include="ViewModels\CardSampleViewModel.cs" />
-    <Compile Include="CardsFactory\ViewFactory.cs" />
     <Compile Include="Views\CardsSampleCustomView.cs" />
     <Compile Include="ViewModels\SharedSampleCustomViewModel.cs" />
     <Compile Include="Views\CarouselSampleSrollView.cs" />
     <Compile Include="ViewModels\CarouselSampleScrollViewModel.cs" />
     <Compile Include="Views\CarouselSampleDoubleView.cs" />
     <Compile Include="ViewModels\CarouselSampleDoubleViewModel.cs" />
+    <Compile Include="CardsFactory\DefaultCardItemView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">

@@ -12,7 +12,7 @@ namespace PanCardViewSample.Views
         {
 			var carousel = new CarouselView
             {
-				ItemTemplate = new DataTemplate(() => ViewFactory.Creator.Invoke()),
+				ItemTemplate = new DataTemplate(() => new DefaultCardItemView()),
                 BackgroundColor = Color.Black.MultiplyAlpha(.9)
             };
 
@@ -41,7 +41,17 @@ namespace PanCardViewSample.Views
             carousel.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 
             Title = "CarouselView";
-            Content = carousel;
+			Content = new ParentScrollView 
+			{
+				Content = new StackLayout
+				{
+					Children =
+					{
+						carousel,
+						new ContentView { HeightRequest = 2000, BackgroundColor = Color.Gray}
+					}
+				}	
+			};
             BindingContext = new SharedSampleViewModel();
         }
     }

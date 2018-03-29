@@ -7,13 +7,13 @@ using Android.Views;
 using static PanCardView.Droid.CardsViewRenderer;
 using Android.Runtime;
 
-[assembly: ExportRenderer(typeof(ParentScrollView), typeof(ParentScrollViewRenderer))]
+[assembly: ExportRenderer(typeof(ParentListView), typeof(ParentListViewRenderer))]
 namespace PanCardView.Droid
 {
 	[Preserve(AllMembers = true)]
-	public class ParentScrollViewRenderer : ScrollViewRenderer
+	public class ParentListViewRenderer : ListViewRenderer
 	{
-		public ParentScrollViewRenderer(Context context) : base(context)
+		public ParentListViewRenderer(Context context) : base(context)
 		{
 		}
 
@@ -24,4 +24,3 @@ namespace PanCardView.Droid
 		}
 	}
 }
-

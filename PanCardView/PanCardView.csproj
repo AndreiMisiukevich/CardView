@@ -46,6 +46,7 @@
     <Compile Include="Utility\TimeDiffItem.cs" />
     <Compile Include="Utility\ViewsInUseSet.cs" />
     <Compile Include="Controls\ParentScrollView.cs" />
+    <Compile Include="Controls\ParentListView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

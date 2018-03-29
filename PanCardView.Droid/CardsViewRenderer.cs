@@ -15,9 +15,10 @@ namespace PanCardView.Droid
 	public class CardsViewRenderer : VisualElementRenderer<CardsView>
 	{
 		private const int GestureId = -1;
+		private static int? _lastDownEventHandlerHashCode;
 
-		internal static int? LastDownEventHandlerHashCode { get; private set; }
-		internal static bool IsMovementStarted { get; private set; }
+		public static bool IsTouchHandled { get; private set; }
+
 
 		private bool _panStarted;
 		private float _startX;
@@ -36,13 +37,13 @@ namespace PanCardView.Droid
 		{
 			if (ev.ActionMasked == MotionEventActions.Move)
 			{
-				if(LastDownEventHandlerHashCode.HasValue && LastDownEventHandlerHashCode != GetHashCode())
+				if(_lastDownEventHandlerHashCode.HasValue && _lastDownEventHandlerHashCode != GetHashCode())
 				{
 					return false;
 				}
 				var xDist = Abs(GetTotalX(ev));
 				var yDist = Abs(GetTotalY(ev));
-				return IsMovementStarted = xDist > yDist;
+				return IsTouchHandled = xDist > yDist;
 			}
 
 			HandleDownEvent(ev);
@@ -77,13 +78,13 @@ namespace PanCardView.Droid
 
 		private void HandleUpEvent(MotionEvent ev)
 		{
-			if(!_panStarted || ev.ActionMasked != MotionEventActions.Up)
+			if (!_panStarted || (ev.ActionMasked != MotionEventActions.Up && ev.ActionMasked != MotionEventActions.Cancel))
 			{
 				return;
 			}
 			UpdatePan(false);
-			LastDownEventHandlerHashCode = null;
-			IsMovementStarted = false;
+			_lastDownEventHandlerHashCode = null;
+			IsTouchHandled = false;
 		}
 
 		private void HandleDownEvent(MotionEvent ev)
@@ -95,7 +96,7 @@ namespace PanCardView.Droid
 			_startX = ev.GetX();
 			_startY = ev.GetY();
 			UpdatePan(true);
-			LastDownEventHandlerHashCode = GetHashCode();
+			_lastDownEventHandlerHashCode = GetHashCode();
 			_isSwiped = null;
 		}
 
