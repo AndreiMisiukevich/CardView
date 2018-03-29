@@ -58,13 +58,13 @@
       <HintPath>..\packages\Xamarin.Forms.2.5.0.122203\lib\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.5\lib\portable-win+net45+wp80+win81+wpa81\FFImageLoading.dll</HintPath>
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.6\lib\portable-win+net45+wp80+win81+wpa81\FFImageLoading.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Platform">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.5\lib\portable-win+net45+wp80+win81+wpa81\FFImageLoading.Platform.dll</HintPath>
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.3.6\lib\portable-win+net45+wp80+win81+wpa81\FFImageLoading.Platform.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Forms">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.3.5\lib\portable-win+net45+wp80+win81+wpa81\FFImageLoading.Forms.dll</HintPath>
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.3.6\lib\portable-win+net45+wp80+win81+wpa81\FFImageLoading.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
