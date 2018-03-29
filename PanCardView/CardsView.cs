@@ -405,7 +405,7 @@ namespace PanCardView
 
             if (Items != null || CurrentContext != null)
             {
-                _currentView = GetView(CurrentIndex, PanItemPosition.Current);
+				_currentView = GetView(CurrentIndex, PanItemPosition.Current, FrontViewProcessor);
                 if(_currentView == null && CurrentIndex >= 0)
                 {
                     ShouldIgnoreSetCurrentView = true;
@@ -462,7 +462,7 @@ namespace PanCardView
             }
 
             var nextIndex = CurrentIndex + 1;
-            _nextView = GetView(nextIndex, PanItemPosition.Next);
+            _nextView = GetView(nextIndex, PanItemPosition.Next, BackViewProcessor);
         }
 
         protected virtual void SetupPrevView(bool canResetContext = false)
@@ -475,7 +475,7 @@ namespace PanCardView
             var prevIndex = IsOnlyForwardDirection
                 ? CurrentIndex + 1
                 : CurrentIndex - 1;
-            _prevView = GetView(prevIndex, PanItemPosition.Prev);
+            _prevView = GetView(prevIndex, PanItemPosition.Prev, BackViewProcessor);
         }
 
         protected virtual bool TryResetContext(bool canResetContext, View view, object context)
@@ -794,14 +794,15 @@ namespace PanCardView
             _nextView = _currentBackView;
         }
 
-        private View GetView(int index, PanItemPosition panIntemPosition)
+		private View GetView(int index, PanItemPosition panIntemPosition, ICardProcessor processor)
         {
             var view = PrepareView(index, panIntemPosition);
             if(view == null)
             {
                 return null;
             }
-            InitProcessor(view, panIntemPosition);
+
+			processor.HandleInitView(view, this, panIntemPosition);
 
             SetupLayout(view);
             if(panIntemPosition == PanItemPosition.Current)
@@ -1058,11 +1059,6 @@ namespace PanCardView
                 }
             }
         }
-
-        private void InitProcessor(View view, PanItemPosition panItemPosition)
-        => (panItemPosition == PanItemPosition.Current
-            ? FrontViewProcessor
-            : BackViewProcessor).HandleInitView(view, this, panItemPosition);
 
         private void RemoveRangeViewsInUse(Guid gestureId)
         {
