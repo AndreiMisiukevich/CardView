@@ -31,6 +31,7 @@ namespace PanCardView
 
         public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
+            view.FirePositionChanged(false);
             view.OldIndex = (int)oldValue;
             if(view.ShouldIgnoreSetCurrentView)
             {
