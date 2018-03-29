@@ -1141,7 +1141,7 @@ namespace PanCardView
             PanChangedCommand?.Execute(CurrentDiff);
         }
 
-        public void FirePositionChanging(bool isNextSelected)
+        private void FirePositionChanging(bool isNextSelected)
         {
             PositionChanging?.Invoke(this, isNextSelected);
             PositionChangingCommand?.Execute(isNextSelected);
