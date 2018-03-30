@@ -29,9 +29,8 @@ namespace PanCardView
         public event CardsViewPositionChangedHandler PositionChanging;
         public event CardsViewPositionChangedHandler PositionChanged;
 
-        public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
+        public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
             var view = bindable.AsCardView();
-            view.FirePositionChanged(false);
             view.OldIndex = (int)oldValue;
             if(view.ShouldIgnoreSetCurrentView)
             {
@@ -50,11 +49,6 @@ namespace PanCardView
 
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView),
-            new DataTemplate(() => {
-                var view = new ContentView();
-                view.SetBinding(ContentView.ContentProperty, nameof(ContentView.Content));
-                return view;
-            }),
             propertyChanged: (bindable, oldValue, newValue) => {
                 bindable.AsCardView().SetCurrentView();
             }
@@ -368,6 +362,7 @@ namespace PanCardView
                 {
                     _viewsInUse.Add(view);
                 }
+                FirePositionChanging(CurrentIndex > OldIndex);
             }
         }
 
@@ -385,6 +380,7 @@ namespace PanCardView
             IsAutoNavigating = false;
 			var isProcessingNow = _gestureId != animationId;
 			RemoveRedundantChildren(isProcessingNow);
+            FirePositionChanged(CurrentIndex > OldIndex);
         }
 
         protected virtual void SetupBackViews()
@@ -418,6 +414,12 @@ namespace PanCardView
                 {
                     ShouldIgnoreSetCurrentView = true;
                     CurrentIndex = -1;
+                }
+                else if (CurrentIndex != OldIndex)
+                {
+                    var isNextSelected = CurrentIndex > OldIndex;
+                    FirePositionChanging(isNextSelected);
+                    FirePositionChanged(isNextSelected);
                 }
             }
 
@@ -832,6 +834,11 @@ namespace PanCardView
             }
 
             var template = ItemTemplate;
+            if (template == null)
+            {
+                return context as View;
+            }
+
             if (template is DataTemplateSelector selector)
             {
                 template = selector.SelectTemplate(context, this);
