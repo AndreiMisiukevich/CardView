@@ -39,10 +39,15 @@ cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewMod
 ```csharp
 carouselView.Children.Add(new IndicatorsControl());
 ```
--> If you want to customize indicators, you need set SelectedStyle and/or UnselectedStyle, or you are able to extend this class and override several methods.
+-> If you want to customize indicators, you need set *SelectedIndicatorStyle* and/or *UnselectedIndicatorStyle*, or you are able to extend this class and override several methods.
 Also you can customize position of indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
 
--> If you want to put your cardsView/carouselView INTO ScrollView, you should to use ParentScrollView instead of Xamarin.Forms.ScrollView.
+This class is describing default indicators styles (each default indicator item is Frame)
+https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Styles/DefaultIndicatorItemStyles.cs
+
+## Workarounds
+
+-> If you want to put your cardsView/carouselView INTO scroll view, you should to use *ParentScrollView* instead of Xamarin.Forms.ScrollView.
 
 -> If you want to put cardsView/carouselView INTO ListView or INTO any another scrollable view you should follow these steps
 1) Create your own class and implement IOrdinateHandlerParentView interface (It's needede only for iOS, but do it into shared project)
@@ -52,7 +57,7 @@ Check these classes (I implemented it for ParentScrollView. You can use it as ex
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/ParentScrollView.cs
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
 
-Check source code for more info, or **just ask me =)**
+Check source code for more info, or ***just ask me =)***
 
 ## License
 The MIT License (MIT) see [License file](LICENSE)
