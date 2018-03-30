@@ -352,7 +352,7 @@ namespace PanCardView
 			}
 		}
 
-		public void AutoNavigatingStarted(View view, Guid animationId)
+		public void AutoNavigatingStarted(View view, Guid animationId, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -366,11 +366,11 @@ namespace PanCardView
 				{
 					_viewsInUse.Add(view);
 				}
-				FirePositionChanging(CurrentIndex > OldIndex);
+				FirePositionChanging(animationDirection != AnimationDirection.Prev);
 			}
 		}
 
-		public void AutoNavigatingEnded(View view, Guid animationId)
+		public void AutoNavigatingEnded(View view, Guid animationId, AnimationDirection animationDirection)
 		{
 			_inCoursePanDelay = 0;
 			if (view != null)
