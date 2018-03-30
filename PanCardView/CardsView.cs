@@ -118,7 +118,7 @@ namespace PanCardView
 		private View _nextView;
 		private View _prevView;
 		private View _currentBackView;
-		private PanItemPosition _currentBackPanItemPosition;
+		private AnimationDirection _currentBackAnimationDirection;
 		private INotifyCollectionChanged _currentObservableCollection;
 
 		private int _viewsChildrenCount;
@@ -384,7 +384,7 @@ namespace PanCardView
 			IsAutoNavigating = false;
 			var isProcessingNow = _gestureId != animationId;
 			RemoveRedundantChildren(isProcessingNow);
-			FirePositionChanged(CurrentIndex > OldIndex);
+			FirePositionChanged(animationDirection != AnimationDirection.Prev);
 		}
 
 		protected virtual void SetupBackViews()
@@ -413,7 +413,7 @@ namespace PanCardView
 
 			if (Items != null || CurrentContext != null)
 			{
-				_currentView = GetView(CurrentIndex, PanItemPosition.Current, FrontViewProcessor);
+				_currentView = GetView(CurrentIndex, AnimationDirection.Current, FrontViewProcessor);
 				if (_currentView == null && CurrentIndex >= 0)
 				{
 					ShouldIgnoreSetCurrentView = true;
@@ -437,17 +437,17 @@ namespace PanCardView
 				return false;
 			}
 
-			var context = GetContext(CurrentIndex, PanItemPosition.Current);
+			var context = GetContext(CurrentIndex, AnimationDirection.Current);
 
 			if (_currentView.BindingContext == context)
 			{
 				return false;
 			}
 
-			var autoNavigatePanPosition = GetAutoNavigatePanPosition();
+			var autoNavigatePanPosition = GetAutoNavigateAnimationDirection();
 
 			var oldView = _currentView;
-			var view = PrepareView(CurrentIndex, PanItemPosition.Current);
+			var view = PrepareView(CurrentIndex, AnimationDirection.Current);
 			if (view == null)
 			{
 				return false;
@@ -476,7 +476,7 @@ namespace PanCardView
 			}
 
 			var nextIndex = CurrentIndex + 1;
-			_nextView = GetView(nextIndex, PanItemPosition.Next, BackViewProcessor);
+			_nextView = GetView(nextIndex, AnimationDirection.Next, BackViewProcessor);
 		}
 
 		protected virtual void SetupPrevView(bool canResetContext = false)
@@ -489,7 +489,7 @@ namespace PanCardView
 			var prevIndex = IsOnlyForwardDirection
 				? CurrentIndex + 1
 				: CurrentIndex - 1;
-			_prevView = GetView(prevIndex, PanItemPosition.Prev, BackViewProcessor);
+			_prevView = GetView(prevIndex, AnimationDirection.Prev, BackViewProcessor);
 		}
 
 		protected virtual bool TryResetContext(bool canResetContext, View view, object context)
@@ -506,20 +506,20 @@ namespace PanCardView
 
 		protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
 
-		private PanItemPosition GetAutoNavigatePanPosition()
+		private AnimationDirection GetAutoNavigateAnimationDirection()
 		{
 			if (CurrentContext != null)
 			{
 				return CurrentContext == _prevView?.BindingContext
-					   ? PanItemPosition.Prev
-					   : PanItemPosition.Next;
+					   ? AnimationDirection.Prev
+					   : AnimationDirection.Next;
 			}
 
 			if (!IsCyclical)
 			{
 				return CurrentIndex < Items.IndexOf(_currentView.BindingContext)
-					   ? PanItemPosition.Prev
-					   : PanItemPosition.Next;
+					   ? AnimationDirection.Prev
+					   : AnimationDirection.Next;
 			}
 
 			var recIndex = CurrentIndex.ToCyclingIndex(ItemsCount);
@@ -529,13 +529,13 @@ namespace PanCardView
 			if (Abs(deltaIndex) == 1)
 			{
 				return deltaIndex > 0
-					? PanItemPosition.Next
-					 : PanItemPosition.Prev;
+					? AnimationDirection.Next
+					 : AnimationDirection.Prev;
 			}
 
 			return deltaIndex > 0
-					? PanItemPosition.Prev
-					 : PanItemPosition.Next;
+					? AnimationDirection.Prev
+					 : AnimationDirection.Next;
 		}
 
 		private void OnTouchStarted()
@@ -592,8 +592,8 @@ namespace PanCardView
 
 			FirePanChanged();
 
-			FrontViewProcessor.HandlePanChanged(_currentView, this, diff, _currentBackPanItemPosition);
-			BackViewProcessor.HandlePanChanged(_currentBackView, this, diff, _currentBackPanItemPosition);
+			FrontViewProcessor.HandlePanChanged(_currentView, this, diff, _currentBackAnimationDirection);
+			BackViewProcessor.HandlePanChanged(_currentBackView, this, diff, _currentBackAnimationDirection);
 		}
 
 		private async void OnTouchEnded(bool? isSwiped)
@@ -616,7 +616,7 @@ namespace PanCardView
 
 			bool? isNextSelected = null;
 
-			if (IsEnabled && _currentBackPanItemPosition != PanItemPosition.Null)
+			if (IsEnabled && _currentBackAnimationDirection != AnimationDirection.Null)
 			{
 				var checkSwipe = CheckSwipe();
 				if (checkSwipe.HasValue)
@@ -651,16 +651,16 @@ namespace PanCardView
 				FirePanEnding(isNextSelected, index, diff);
 
 				await Task.WhenAll(
-					FrontViewProcessor.HandlePanApply(_currentView, this, _currentBackPanItemPosition),
-					BackViewProcessor.HandlePanApply(_currentBackView, this, _currentBackPanItemPosition)
+					FrontViewProcessor.HandlePanApply(_currentView, this, _currentBackAnimationDirection),
+					BackViewProcessor.HandlePanApply(_currentBackView, this, _currentBackAnimationDirection)
 				);
 			}
 			else
 			{
 				FirePanEnding(isNextSelected, index, diff);
 				await Task.WhenAll(
-					FrontViewProcessor.HandlePanReset(_currentView, this, _currentBackPanItemPosition),
-					BackViewProcessor.HandlePanReset(_currentBackView, this, _currentBackPanItemPosition)
+					FrontViewProcessor.HandlePanReset(_currentView, this, _currentBackAnimationDirection),
+					BackViewProcessor.HandlePanReset(_currentBackView, this, _currentBackAnimationDirection)
 				);
 			}
 
@@ -772,17 +772,17 @@ namespace PanCardView
 		{
 			if (diff > 0)
 			{
-				return SetSelectedBackView(_prevView, _nextView, PanItemPosition.Prev);
+				return SetSelectedBackView(_prevView, _nextView, AnimationDirection.Prev);
 			}
-			return SetSelectedBackView(_nextView, _prevView, PanItemPosition.Next);
+			return SetSelectedBackView(_nextView, _prevView, AnimationDirection.Next);
 		}
 
-		private bool SetSelectedBackView(View selectedView, View invisibleView, PanItemPosition panPosition)
+		private bool SetSelectedBackView(View selectedView, View invisibleView, AnimationDirection animationDirection)
 		{
 			_currentBackView = selectedView;
-			_currentBackPanItemPosition = _currentBackView != null
-					? panPosition
-					: PanItemPosition.Null;
+			_currentBackAnimationDirection = _currentBackView != null
+					? animationDirection
+					: AnimationDirection.Null;
 
 			if (invisibleView != null && invisibleView != _currentBackView)
 			{
@@ -808,18 +808,18 @@ namespace PanCardView
 			_nextView = _currentBackView;
 		}
 
-		private View GetView(int index, PanItemPosition panIntemPosition, ICardProcessor processor)
+		private View GetView(int index, AnimationDirection animationDirection, ICardProcessor processor)
 		{
-			var view = PrepareView(index, panIntemPosition);
+			var view = PrepareView(index, animationDirection);
 			if (view == null)
 			{
 				return null;
 			}
 
-			processor.HandleInitView(view, this, panIntemPosition);
+			processor.HandleInitView(view, this, animationDirection);
 
 			SetupLayout(view);
-			if (panIntemPosition == PanItemPosition.Current)
+			if (animationDirection == AnimationDirection.Current)
 			{
 				AddBackChild(view);
 			}
@@ -830,9 +830,9 @@ namespace PanCardView
 			return view;
 		}
 
-		private View PrepareView(int index, PanItemPosition panIntemPosition)
+		private View PrepareView(int index, AnimationDirection animationDirection)
 		{
-			var context = GetContext(index, panIntemPosition);
+			var context = GetContext(index, animationDirection);
 			if (context == null)
 			{
 				return null;
@@ -881,17 +881,17 @@ namespace PanCardView
 			return view;
 		}
 
-		private object GetContext(int index, PanItemPosition panIntemPosition)
+		private object GetContext(int index, AnimationDirection animationDirection)
 		{
 			if (CurrentContext != null)
 			{
-				switch (panIntemPosition)
+				switch (animationDirection)
 				{
-					case PanItemPosition.Current:
+					case AnimationDirection.Current:
 						return CurrentContext;
-					case PanItemPosition.Next:
+					case AnimationDirection.Next:
 						return NextContext;
-					case PanItemPosition.Prev:
+					case AnimationDirection.Prev:
 						return PrevContext;
 				}
 			}
@@ -903,7 +903,7 @@ namespace PanCardView
 
 			if (index < 0 || index >= ItemsCount)
 			{
-				if (!IsCyclical || (panIntemPosition != PanItemPosition.Current && ItemsCount < 2))
+				if (!IsCyclical || (animationDirection != AnimationDirection.Current && ItemsCount < 2))
 				{
 					return null;
 				}

@@ -34,7 +34,7 @@
     <Compile Include="Processors\BaseCardFrontViewProcessor.cs" />
     <Compile Include="Processors\ICardProcessor.cs" />
     <Compile Include="Extensions\CardViewExtensions.cs" />
-    <Compile Include="Enums\PanItemPosition.cs" />
+    <Compile Include="Enums\AnimationDirection.cs" />
     <Compile Include="Processors\BaseCarouselBackViewProcessor.cs" />
     <Compile Include="Processors\BaseCarouselFrontViewProcessor.cs" />
     <Compile Include="CarouselView.cs" />

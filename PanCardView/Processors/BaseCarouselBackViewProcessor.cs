@@ -13,20 +13,20 @@ namespace PanCardView.Processors
 
 		public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
-		public virtual void HandleInitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
-				view.TranslationX = Sign((int)panItemPosition) * cardsView.Width;
+				view.TranslationX = Sign((int)animationDirection) * cardsView.Width;
 				view.IsVisible = false;
 			}
 		}
 
-		public virtual void HandleAutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
-				var destinationPos = panItemPosition == PanItemPosition.Prev
+				var destinationPos = animationDirection == AnimationDirection.Prev
 				   ? cardsView.Width
 				   : -cardsView.Width;
 
@@ -41,22 +41,22 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
+		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
 		{
-			if (panItemPosition == PanItemPosition.Null)
+			if (animationDirection == AnimationDirection.Null)
 			{
 				return;
 			}
 
-			var value = Sign((int)panItemPosition) * cardsView.Width + xPos;
-			if (Abs(value) > cardsView.Width || (panItemPosition == PanItemPosition.Prev && value > 0) || (panItemPosition == PanItemPosition.Next && value < 0))
+			var value = Sign((int)animationDirection) * cardsView.Width + xPos;
+			if (Abs(value) > cardsView.Width || (animationDirection == AnimationDirection.Prev && value > 0) || (animationDirection == AnimationDirection.Next && value < 0))
 			{
 				return;
 			}
 			view.TranslationX = value;
 		}
 
-		public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -64,14 +64,14 @@ namespace PanCardView.Processors
 
 				var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
 				var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
-				new Animation(v => view.TranslationX = v, view.TranslationX, Sign((int)panItemPosition) * cardsView.Width)
+				new Animation(v => view.TranslationX = v, view.TranslationX, Sign((int)animationDirection) * cardsView.Width)
 					.Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
 				return tcs.Task;
 			}
 			return Task.FromResult(true);
 		}
 
-		public virtual Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual Task HandlePanApply(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -79,7 +79,7 @@ namespace PanCardView.Processors
 
 				var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
 				var animLength = (uint)(AnimationLength * animTimePercent);
-				new Animation(v => view.TranslationX = v, view.TranslationX, -Sign((int)panItemPosition) * cardsView.Width)
+				new Animation(v => view.TranslationX = v, view.TranslationX, -Sign((int)animationDirection) * cardsView.Width)
 					.Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
 				return tcs.Task;
 			}

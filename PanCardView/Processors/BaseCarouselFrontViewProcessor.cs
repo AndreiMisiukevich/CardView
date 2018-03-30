@@ -14,7 +14,7 @@ namespace PanCardView.Processors
 
 		public double NoItemMaxPanDistance { get; set; } = 25;
 
-		public virtual void HandleInitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -23,7 +23,7 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandleAutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -33,14 +33,14 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
+		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
 		{
-			if (Abs(xPos) > cardsView.Width || (panItemPosition == PanItemPosition.Prev && xPos < 0) || (panItemPosition == PanItemPosition.Next && xPos > 0))
+			if (Abs(xPos) > cardsView.Width || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
 			{
 				return;
 			}
 
-			if (panItemPosition == PanItemPosition.Null)
+			if (animationDirection == AnimationDirection.Null)
 			{
 				xPos = Sign(xPos) * Min(Abs(xPos / 4), NoItemMaxPanDistance);
 			}
@@ -48,7 +48,7 @@ namespace PanCardView.Processors
 			view.TranslationX = xPos;
 		}
 
-		public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -62,7 +62,7 @@ namespace PanCardView.Processors
 			return Task.FromResult(true);
 		}
 
-		public virtual Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual Task HandlePanApply(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{

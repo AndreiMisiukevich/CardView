@@ -18,10 +18,10 @@ namespace PanCardView.Processors
 
 		public double NoItemMaxPanDistance { get; set; } = 25;
 
-		public virtual void HandleInitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		=> ResetInitialState(view);
 
-		public virtual void HandleAutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -31,10 +31,10 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
+		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
 		{
 			var multiplier = 1;
-			if (panItemPosition == PanItemPosition.Null)
+			if (animationDirection == AnimationDirection.Null)
 			{
 				xPos = Sign(xPos) * Min(Abs(xPos / 4), NoItemMaxPanDistance);
 				multiplier = -multiplier;
@@ -45,7 +45,7 @@ namespace PanCardView.Processors
 			view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Width);
 		}
 
-		public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			var tcs = new TaskCompletionSource<bool>();
 
@@ -66,7 +66,7 @@ namespace PanCardView.Processors
 			return tcs.Task;
 		}
 
-		public virtual Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual Task HandlePanApply(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{

@@ -23,7 +23,7 @@ namespace PanCardView.Processors
 
 		public Easing AutoNavigateEasing { get; set; } = Easing.Linear;
 
-		public virtual void HandleInitView(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -36,24 +36,24 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandleAutoNavigate(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual void HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
 				var animId = Guid.NewGuid();
 				cardsView.AutoNavigatingStarted(view, animId);
-				new Animation(v => HandleAutoAnimatingPosChanged(view, cardsView, v, panItemPosition), 0, cardsView.MoveDistance)
+				new Animation(v => HandleAutoAnimatingPosChanged(view, cardsView, v, animationDirection), 0, cardsView.MoveDistance)
 					.Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, async (v, t) =>
 					{
-						await HandlePanApply(view, cardsView, panItemPosition);
+						await HandlePanApply(view, cardsView, animationDirection);
 						cardsView.AutoNavigatingEnded(view, animId);
 					});
 			}
 		}
 
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
+		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
 		{
-			if (panItemPosition == PanItemPosition.Null)
+			if (animationDirection == AnimationDirection.Null)
 			{
 				return;
 			}
@@ -62,7 +62,7 @@ namespace PanCardView.Processors
 			view.Scale = Min(calcScale, 1);
 		}
 
-		public virtual Task HandlePanReset(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -75,7 +75,7 @@ namespace PanCardView.Processors
 			return Task.FromResult(true);
 		}
 
-		public virtual async Task HandlePanApply(View view, CardsView cardsView, PanItemPosition panItemPosition)
+		public virtual async Task HandlePanApply(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -84,9 +84,9 @@ namespace PanCardView.Processors
 			}
 		}
 
-		private void HandleAutoAnimatingPosChanged(View view, CardsView cardsView, double xPos, PanItemPosition panItemPosition)
+		private void HandleAutoAnimatingPosChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
 		{
-			if (panItemPosition == PanItemPosition.Next)
+			if (animationDirection == AnimationDirection.Next)
 			{
 				xPos = -xPos;
 			}
