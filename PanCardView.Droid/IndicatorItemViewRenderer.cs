@@ -10,12 +10,12 @@ using Android.Runtime;
 [assembly: ExportRenderer(typeof(IndicatorItemView), typeof(IndicatorItemViewRenderer))]
 namespace PanCardView.Droid
 {
-    [Preserve(AllMembers = true)]
-    public class IndicatorItemViewRenderer : XFrameRenderer
-    {
-        public IndicatorItemViewRenderer(Context context) : base(context)
-        {
-        }
+	[Preserve(AllMembers = true)]
+	public class IndicatorItemViewRenderer : XFrameRenderer
+	{
+		public IndicatorItemViewRenderer(Context context) : base(context)
+		{
+		}
 
 		public override void Draw(Canvas canvas)
 		{
@@ -40,5 +40,5 @@ namespace PanCardView.Droid
 				canvas.DrawPath(path, paint);
 			}
 		}
-    }
+	}
 }

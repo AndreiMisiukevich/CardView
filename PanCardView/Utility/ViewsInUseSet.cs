@@ -8,7 +8,7 @@ namespace PanCardView.Utility
 	{
 		private readonly Dictionary<View, int> _viewsSet = new Dictionary<View, int>();
 
-		public void Add(View view) 
+		public void Add(View view)
 		=> _viewsSet[view] = Contains(view)
 			? _viewsSet[view] + 1
 			: 1;
@@ -32,7 +32,7 @@ namespace PanCardView.Utility
 			return currentCount;
 		}
 
-		public bool Contains(View view) 
+		public bool Contains(View view)
 		=> view != null && _viewsSet.ContainsKey(view);
 	}
 }

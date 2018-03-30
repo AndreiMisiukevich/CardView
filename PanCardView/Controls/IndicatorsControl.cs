@@ -6,17 +6,17 @@ using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
 
 namespace PanCardView.Controls
 {
-    public class IndicatorsControl : StackLayout
-    {
-        public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsIndicatorsControl().ResetIndicatorsStyles();
-        });
+	public class IndicatorsControl : StackLayout
+	{
+		public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
+		});
 
 		public readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
-        });
+		{
+			bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
+		});
 
 		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
 
@@ -34,33 +34,33 @@ namespace PanCardView.Controls
 		{
 		}
 
-        public IndicatorsControl()
-        {
-            Spacing = 5;
-            Orientation = StackOrientation.Horizontal;
-            InputTransparent = true;
+		public IndicatorsControl()
+		{
+			Spacing = 5;
+			Orientation = StackOrientation.Horizontal;
+			InputTransparent = true;
 
-            this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
-            this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
+			this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
+			this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
 
-            Margin = new Thickness(10, 20);
-            AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
+			Margin = new Thickness(10, 20);
+			AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
+			AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
 
-            Behaviors.Add(new ProtectedControlBehavior());
-        }
+			Behaviors.Add(new ProtectedControlBehavior());
+		}
 
-        public int CurrentIndex
-        {
-            get => (int)GetValue(CurrentIndexProperty);
-            set => SetValue(CurrentIndexProperty, value);
-        }
+		public int CurrentIndex
+		{
+			get => (int)GetValue(CurrentIndexProperty);
+			set => SetValue(CurrentIndexProperty, value);
+		}
 
-        public int ItemsCount
-        {
-            get => (int)GetValue(ItemsCountProperty);
-            set => SetValue(ItemsCountProperty, value);
-        }
+		public int ItemsCount
+		{
+			get => (int)GetValue(ItemsCountProperty);
+			set => SetValue(ItemsCountProperty, value);
+		}
 
 		public DataTemplate ItemTemplate
 		{
@@ -80,14 +80,14 @@ namespace PanCardView.Controls
 			set => SetValue(UnselectedIndicatorStyleProperty, value);
 		}
 
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-            if(Parent is CardsView)
-            {
-                BindingContext = Parent;
-            }
-        }
+		protected override void OnParentSet()
+		{
+			base.OnParentSet();
+			if (Parent is CardsView)
+			{
+				BindingContext = Parent;
+			}
+		}
 
 		protected virtual void ApplySelectedStyle(View view, int index)
 		=> view.Style = SelectedIndicatorStyle;
@@ -124,22 +124,22 @@ namespace PanCardView.Controls
 		}
 
 		private void ApplyStyle(View view, int cyclingIndex)
-        {
-            try
-            {
-                view.BatchBegin();
-                if (IndexOf(view) == cyclingIndex)
-                {
+		{
+			try
+			{
+				view.BatchBegin();
+				if (IndexOf(view) == cyclingIndex)
+				{
 					ApplySelectedStyle(view, cyclingIndex);
-                    return;
-                }
-                ApplyUnselectedStyle(view, cyclingIndex);
-            }
-            finally
-            {
-                view.BatchCommit();
-            }
-        }
+					return;
+				}
+				ApplyUnselectedStyle(view, cyclingIndex);
+			}
+			finally
+			{
+				view.BatchCommit();
+			}
+		}
 
 		private void ResetIndicatorsStylesNonBatch()
 		{
@@ -147,8 +147,8 @@ namespace PanCardView.Controls
 			OnResetIndicatorsStyles(cyclingIndex);
 		}
 
-        private void ResetIndicatorsStyles()
-        {
+		private void ResetIndicatorsStyles()
+		{
 			try
 			{
 				BatchBegin();
@@ -158,7 +158,7 @@ namespace PanCardView.Controls
 			{
 				BatchCommit();
 			}
-        }
+		}
 
 		private void ResetIndicatorsCount(int oldValue, int newValue)
 		{
@@ -184,5 +184,5 @@ namespace PanCardView.Controls
 				BatchCommit();
 			}
 		}
-    }
+	}
 }

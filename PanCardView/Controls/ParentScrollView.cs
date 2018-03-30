@@ -8,14 +8,14 @@ namespace PanCardView.Controls
 
 		public virtual void HandleOrdinateValue(double y, bool isFirst)
 		{
-			if(isFirst)
+			if (isFirst)
 			{
 				_prevY = 0;
 			}
 
 			var newValue = ScrollY + _prevY - y;
 			_prevY = y;
-			if(newValue < 0 || newValue > (Content?.Height ?? Height))
+			if (newValue < 0 || newValue > (Content?.Height ?? Height))
 			{
 				return;
 			}

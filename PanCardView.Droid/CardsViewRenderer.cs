@@ -37,7 +37,7 @@ namespace PanCardView.Droid
 		{
 			if (ev.ActionMasked == MotionEventActions.Move)
 			{
-				if(_lastDownEventHandlerHashCode.HasValue && _lastDownEventHandlerHashCode != GetHashCode())
+				if (_lastDownEventHandlerHashCode.HasValue && _lastDownEventHandlerHashCode != GetHashCode())
 				{
 					return false;
 				}
@@ -89,7 +89,7 @@ namespace PanCardView.Droid
 
 		private void HandleDownEvent(MotionEvent ev)
 		{
-			if(ev.ActionMasked != MotionEventActions.Down)
+			if (ev.ActionMasked != MotionEventActions.Down)
 			{
 				return;
 			}
