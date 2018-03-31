@@ -158,6 +158,8 @@ namespace PanCardView
 
 		private bool ShouldSetIndexAfterPan { get; set; }
 
+		private bool IsContextMode => CurrentContext != null;
+
 		public int CurrentIndex
 		{
 			get => (int)GetValue(CurrentIndexProperty);
@@ -331,7 +333,7 @@ namespace PanCardView
 
 		public void OnPanUpdated(PanUpdatedEventArgs e, bool? isSwiped = null)
 		{
-			if (ItemsCount < 0 && CurrentContext == null)
+			if (ItemsCount < 0 && !IsContextMode)
 			{
 				return;
 			}
@@ -366,7 +368,6 @@ namespace PanCardView
 				{
 					_viewsInUse.Add(view);
 				}
-				FirePositionChanging(animationDirection != AnimationDirection.Prev);
 			}
 		}
 
@@ -384,7 +385,6 @@ namespace PanCardView
 			IsAutoNavigating = false;
 			var isProcessingNow = _gestureId != animationId;
 			RemoveRedundantChildren(isProcessingNow);
-			FirePositionChanged(animationDirection != AnimationDirection.Prev);
 		}
 
 		protected virtual void SetupBackViews()
@@ -411,7 +411,7 @@ namespace PanCardView
 				return;
 			}
 
-			if (Items != null || CurrentContext != null)
+			if (Items != null || IsContextMode)
 			{
 				_currentView = GetView(CurrentIndex, AnimationDirection.Current, FrontViewProcessor);
 				if (_currentView == null && CurrentIndex >= 0)
@@ -508,7 +508,7 @@ namespace PanCardView
 
 		private AnimationDirection GetAutoNavigateAnimationDirection()
 		{
-			if (CurrentContext != null)
+			if (IsContextMode)
 			{
 				return CurrentContext == _prevView?.BindingContext
 					   ? AnimationDirection.Prev
@@ -676,7 +676,7 @@ namespace PanCardView
 					ShouldSetIndexAfterPan = false;
 					SetNewIndex();
 				}
-				if (CurrentContext == null)
+				if (!IsContextMode)
 				{
 					SetupBackViews();
 				}
@@ -743,7 +743,7 @@ namespace PanCardView
 
 		private int GetNewIndexFromDiff()
 		{
-			if (CurrentContext != null)
+			if (IsContextMode)
 			{
 				return 0;
 			}
@@ -883,7 +883,7 @@ namespace PanCardView
 
 		private object GetContext(int index, AnimationDirection animationDirection)
 		{
-			if (CurrentContext != null)
+			if (IsContextMode)
 			{
 				switch (animationDirection)
 				{
