@@ -28,6 +28,8 @@ namespace PanCardView
 		public event CardsViewPanChangedHandler PanChanged;
 		public event CardsViewPositionChangedHandler PositionChanging;
 		public event CardsViewPositionChangedHandler PositionChanged;
+		public event CardsViewPositionChangedHandler AutoNavigationStarted;
+		public event CardsViewPositionChangedHandler AutoNavigationEnded;
 
 		public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
@@ -105,6 +107,11 @@ namespace PanCardView
 		public static readonly BindableProperty PositionChangingCommandProperty = BindableProperty.Create(nameof(PositionChangingCommand), typeof(ICommand), typeof(CardsView), null);
 
 		public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
+
+		public static readonly BindableProperty AutoNavigationStartedCommandProperty = BindableProperty.Create(nameof(AutoNavigationStartedCommand), typeof(ICommand), typeof(CardsView), null);
+
+		public static readonly BindableProperty AutoNavigationEndedCommandProperty = BindableProperty.Create(nameof(AutoNavigationEndedCommand), typeof(ICommand), typeof(CardsView), null);
+
 
 		private readonly object _childLocker = new object();
 		private readonly object _viewsInUseLocker = new object();
@@ -328,6 +335,18 @@ namespace PanCardView
 			set => SetValue(PositionChangedCommandProperty, value);
 		}
 
+		public ICommand AutoNavigationStartedCommand
+		{
+			get => GetValue(AutoNavigationStartedCommandProperty) as ICommand;
+			set => SetValue(AutoNavigationStartedCommandProperty, value);
+		}
+
+		public ICommand AutoNavigationEndedCommand
+		{
+			get => GetValue(AutoNavigationEndedCommandProperty) as ICommand;
+			set => SetValue(AutoNavigationEndedCommandProperty, value);
+		}
+
 		public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
 		=> OnPanUpdated(e);
 
@@ -354,7 +373,7 @@ namespace PanCardView
 			}
 		}
 
-		public void AutoNavigatingStarted(View view, Guid animationId, AnimationDirection animationDirection)
+		public void StartAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
 		{
 			if (view != null)
 			{
@@ -368,10 +387,11 @@ namespace PanCardView
 				{
 					_viewsInUse.Add(view);
 				}
+				FireAutoNavigationStarted(animationDirection != AnimationDirection.Prev);
 			}
 		}
 
-		public void AutoNavigatingEnded(View view, Guid animationId, AnimationDirection animationDirection)
+		public void EndAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
 		{
 			_inCoursePanDelay = 0;
 			if (view != null)
@@ -385,6 +405,7 @@ namespace PanCardView
 			IsAutoNavigating = false;
 			var isProcessingNow = _gestureId != animationId;
 			RemoveRedundantChildren(isProcessingNow);
+			FireAutoNavigationEnded(animationDirection != AnimationDirection.Prev);
 		}
 
 		protected virtual void SetupBackViews()
@@ -1128,14 +1149,14 @@ namespace PanCardView
 
 		private void FirePanStarted()
 		{
-			PanStarted?.Invoke(this, CurrentIndex, 0);
 			PanStartedCommand?.Execute(CurrentIndex);
+			PanStarted?.Invoke(this, CurrentIndex, 0);
 		}
 
 		private void FirePanEnding(bool? isNextSelected, int index, double diff)
 		{
-			PanEnding?.Invoke(this, index, diff);
 			PanEndingCommand?.Execute(index);
+			PanEnding?.Invoke(this, index, diff);
 			if (isNextSelected.HasValue)
 			{
 				FirePositionChanging(isNextSelected.GetValueOrDefault());
@@ -1146,8 +1167,8 @@ namespace PanCardView
 
 		private void FirePanEnded(bool? isNextSelected, int index, double diff)
 		{
-			PanEnded?.Invoke(this, index, diff);
 			PanEndedCommand?.Execute(index);
+			PanEnded?.Invoke(this, index, diff);
 			if (isNextSelected.HasValue)
 			{
 				FirePositionChanged(isNextSelected.GetValueOrDefault());
@@ -1156,20 +1177,32 @@ namespace PanCardView
 
 		private void FirePanChanged()
 		{
-			PanChanged?.Invoke(this, CurrentDiff);
 			PanChangedCommand?.Execute(CurrentDiff);
+			PanChanged?.Invoke(this, CurrentDiff);
 		}
 
 		private void FirePositionChanging(bool isNextSelected)
 		{
-			PositionChanging?.Invoke(this, isNextSelected);
 			PositionChangingCommand?.Execute(isNextSelected);
+			PositionChanging?.Invoke(this, isNextSelected);
 		}
 
 		private void FirePositionChanged(bool isNextSelected)
 		{
-			PositionChanged?.Invoke(this, isNextSelected);
 			PositionChangedCommand?.Execute(isNextSelected);
+			PositionChanged?.Invoke(this, isNextSelected);
+		}
+
+		private void FireAutoNavigationStarted(bool isNextSelected)
+		{
+			AutoNavigationStartedCommand?.Execute(isNextSelected);
+			AutoNavigationStarted?.Invoke(this, isNextSelected);
+		}
+
+		private void FireAutoNavigationEnded(bool isNextSelected)
+		{
+			AutoNavigationEndedCommand?.Execute(isNextSelected);
+			AutoNavigationEnded?.Invoke(this, isNextSelected);
 		}
 	}
 }
