@@ -36,7 +36,7 @@ namespace PanCardView.Processors
 				new Animation(v => view.TranslationX = v, 0, destinationPos)
 					.Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (v, t) =>
 					{
-						cardsView.AuEndAutoNavigationiew, animId, animationDirection);
+						cardsView.EndAutoNavigation(view, animId, animationDirection);
 					});
 			}
 		}
