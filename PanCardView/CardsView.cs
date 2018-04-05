@@ -860,14 +860,14 @@ namespace PanCardView
 			}
 
 			var template = ItemTemplate;
-			if (template == null)
-			{
-				return context as View;
-			}
-
 			if (template is DataTemplateSelector selector)
 			{
 				template = selector.SelectTemplate(context, this);
+			}
+
+			if (template == null)
+			{
+				return context as View;
 			}
 
 			if (!CheckIsCacheEnabled(template))
