@@ -851,6 +851,7 @@ namespace PanCardView
 		private View PrepareView(int index, AnimationDirection animationDirection)
 		{
 			var context = GetContext(index, animationDirection);
+
 			if (context == null)
 			{
 				return null;
@@ -862,11 +863,20 @@ namespace PanCardView
 				template = selector.SelectTemplate(context, this);
 			}
 
-			if (template == null)
+			var view = template != null
+				? CreateRetrieveView(context, template)
+				: context as View;
+
+			if (view != null)
 			{
-				return context as View;
+				view.BindingContext = context;
 			}
 
+			return view;
+		}
+
+		private View CreateRetrieveView(object context, DataTemplate template)
+		{
 			if (!CheckIsCacheEnabled(template))
 			{
 				return template.CreateView();
@@ -893,8 +903,6 @@ namespace PanCardView
 				view = template.CreateView();
 				viewsList.Add(view);
 			}
-
-			view.BindingContext = context;
 
 			return view;
 		}
