@@ -38,9 +38,8 @@ namespace PanCardView.Droid
 				{
 					return false;
 				}
-				var xDist = Abs(GetTotalX(ev));
-				var yDist = Abs(GetTotalY(ev));
-				return IsTouchHandled = xDist > yDist;
+
+				return SetIsTouchHandled(GetTotalX(ev), GetTotalY(ev));
 			}
 
 			HandleDownUpEvents(ev);
@@ -54,8 +53,15 @@ namespace PanCardView.Droid
 			if (e.ActionMasked == MotionEventActions.Move)
 			{
 				var density = Context.Resources.DisplayMetrics.Density;
-				var distXDp = GetTotalX(e) / density;
-				var distYDp = GetTotalY(e) / density;
+
+				var xDelta = GetTotalX(e);
+				var yDelta = GetTotalY(e);
+
+				var distXDp = xDelta / density;
+				var distYDp = yDelta / density;
+
+				SetIsTouchHandled(xDelta, yDelta);
+
 				UpdatePan(GestureStatus.Running, distXDp, distYDp);
 			}
 
@@ -72,6 +78,9 @@ namespace PanCardView.Droid
 				_elementId = Guid.NewGuid();
 			}
 		}
+
+		private bool SetIsTouchHandled(float xDelta, float yDelta)
+		=> IsTouchHandled = Abs(xDelta) > Abs(yDelta);
 
 		private void HandleDownUpEvents(MotionEvent ev)
 		{
