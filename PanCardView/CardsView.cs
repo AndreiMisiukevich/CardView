@@ -49,20 +49,17 @@ namespace PanCardView
 			bindable.AsCardView().SetItemsCount();
 		});
 
-		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
-
-
-		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView),
-			propertyChanged: (bindable, oldValue, newValue) =>
-			{
-				bindable.AsCardView().SetCurrentView();
-			}
-		);
+		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsCardView().SetCurrentView();
+		});
 
 		public static readonly BindableProperty CurrentContextProperty = BindableProperty.Create(nameof(CurrentContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsCardView().SetCurrentView(true);
 		});
+
+		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
 		public static readonly BindableProperty NextContextProperty = BindableProperty.Create(nameof(NextContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
 
@@ -179,16 +176,16 @@ namespace PanCardView
 			set => SetValue(ItemsProperty, value);
 		}
 
-		public int ItemsCount
-		{
-			get => (int)GetValue(ItemsCountProperty);
-			private set => SetValue(ItemsCountProperty, value);
-		}
-
 		public DataTemplate ItemTemplate
 		{
 			get => GetValue(ItemTemplateProperty) as DataTemplate;
 			set => SetValue(ItemTemplateProperty, value);
+		}
+
+		public int ItemsCount
+		{
+			get => (int)GetValue(ItemsCountProperty);
+			private set => SetValue(ItemsCountProperty, value);
 		}
 
 		public object CurrentContext
