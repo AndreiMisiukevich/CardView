@@ -45,6 +45,11 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CarouselSampleViewNoTemplate());
 			};
 
+			var toCarouselXamlBtn = new Button { Text = "CarouselView Xaml" };
+			toCarouselXamlBtn.Clicked += (sender, e) => {
+				this.Navigation.PushAsync(new CarouselSampleXamlView());
+			};
+
             Content = new StackLayout
             {
                 Children = {
@@ -53,7 +58,8 @@ namespace PanCardViewSample
                     toCarouselBtn,
                     toCarouselScrollBtn,
                     toCarouselDoubleBtn,
-					toCarouselNoTemplateBtn
+					toCarouselNoTemplateBtn,
+					toCarouselXamlBtn
                 }
             };
         }

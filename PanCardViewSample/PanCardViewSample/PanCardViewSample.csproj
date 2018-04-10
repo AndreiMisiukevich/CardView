@@ -41,6 +41,9 @@
     <Compile Include="ViewModels\CarouselSampleDoubleViewModel.cs" />
     <Compile Include="CardsFactory\DefaultCardItemView.cs" />
     <Compile Include="Views\CarouselSampleViewNoTemplate.cs" />
+    <Compile Include="Views\CarouselSampleXamlView.xaml.cs">
+      <DependentUpon>CarouselSampleXamlView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">
@@ -75,6 +78,12 @@
     <Folder Include="Views\" />
     <Folder Include="ViewModels\" />
     <Folder Include="CardsFactory\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CarouselSampleXamlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.1.444934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.1.444934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    x:Class="PanCardViewSample.Views.CarouselSampleXamlView"
+    BackgroundColor="Black"
+    Title="Carousel Xaml">
+
+    <ContentPage.BindingContext>
+        <viewModels:SharedSampleViewModel/>
+    </ContentPage.BindingContext>
+
+    <cards:CarouselView 
+        Items="{Binding Items}"
+        CurrentIndex="{Binding CurrentIndex}">
+        <cards:CarouselView.ItemTemplate>
+            <DataTemplate>
+                <ContentView>
+                    <Frame 
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        HeightRequest="300"
+                        WidthRequest="300"
+                        Padding="0" 
+                        HasShadow="false"
+                        IsClippedToBounds="true"
+                        CornerRadius="10"
+                        BackgroundColor="{Binding Color}">
+                        
+                        <ffimage:CachedImage Source="{Binding Source}"/> 
+                        
+                    </Frame>
+                </ContentView>
+            </DataTemplate>
+        </cards:CarouselView.ItemTemplate>
+
+        <controls:IndicatorsControl/>
+    </cards:CarouselView>
+    
+</ContentPage>
