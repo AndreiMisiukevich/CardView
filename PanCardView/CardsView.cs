@@ -971,7 +971,6 @@ namespace PanCardView
 		{
 			if (view != null)
 			{
-				view.IsVisible = false;
 				view.BindingContext = null;
 			}
 		}
@@ -1079,7 +1078,7 @@ namespace PanCardView
 
 			lock (_childLocker)
 			{
-				var views = Children.Where(c => !CheckIsProtectedView(c) && c != _prevView && c != _nextView && !c.IsVisible).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();
+				var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUse.Contains(c)).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();
 
 				_viewsChildrenCount -= views.Length;
 
