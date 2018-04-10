@@ -21,14 +21,18 @@ namespace PanCardView.Processors
 		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		=> ResetInitialState(view);
 
-		public virtual void HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
-			if (view != null)
+			if(view == null)
 			{
-				view.IsVisible = true;
-				new Animation(v => view.Scale = v, view.Scale, 1)
-					.Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing);
+				return Task.FromResult(false);
 			}
+
+			var tcs = new TaskCompletionSource<bool>();
+			view.IsVisible = true;
+			new Animation(v => view.Scale = v, view.Scale, 1)
+				.Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, (d, b) => tcs.SetResult(true));
+			return tcs.Task;
 		}
 
 		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)

@@ -370,41 +370,6 @@ namespace PanCardView
 			}
 		}
 
-		public void StartAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
-		{
-			if (view != null)
-			{
-				_gestureId = animationId;
-				IsAutoNavigating = true;
-				if (IsPanInCourse)
-				{
-					_inCoursePanDelay = int.MaxValue;
-				}
-				lock (_viewsInUseLocker)
-				{
-					_viewsInUse.Add(view);
-				}
-				FireAutoNavigationStarted(animationDirection != AnimationDirection.Prev);
-			}
-		}
-
-		public void EndAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
-		{
-			_inCoursePanDelay = 0;
-			if (view != null)
-			{
-				lock (_viewsInUseLocker)
-				{
-					_viewsInUse.Remove(view);
-					CleanView(view);
-				}
-			}
-			IsAutoNavigating = false;
-			var isProcessingNow = _gestureId != animationId;
-			RemoveRedundantChildren(isProcessingNow);
-			FireAutoNavigationEnded(animationDirection != AnimationDirection.Prev);
-		}
-
 		protected virtual void SetupBackViews()
 		{
 			SetupNextView();
@@ -417,9 +382,9 @@ namespace PanCardView
 			SetLayoutFlags(view, AbsoluteLayoutFlags.All);
 		}
 
-		protected virtual void SetCurrentView(bool canResetContext = false)
+		protected virtual async void SetCurrentView(bool canResetContext = false)
 		{
-			if (TryAutoNavigate())
+			if (await TryAutoNavigate())
 			{
 				return;
 			}
@@ -448,7 +413,7 @@ namespace PanCardView
 			SetupBackViews();
 		}
 
-		protected virtual bool TryAutoNavigate()
+		protected virtual async Task<bool> TryAutoNavigate()
 		{
 			if (_currentView == null)
 			{
@@ -462,7 +427,7 @@ namespace PanCardView
 				return false;
 			}
 
-			var autoNavigatePanPosition = GetAutoNavigateAnimationDirection();
+			var animationDirection = GetAutoNavigateAnimationDirection();
 
 			var oldView = _currentView;
 			var view = PrepareView(CurrentIndex, AnimationDirection.Current);
@@ -472,16 +437,23 @@ namespace PanCardView
 			}
 			_currentView = view;
 
-			BackViewProcessor.HandleInitView(_currentView, this, autoNavigatePanPosition);
+			BackViewProcessor.HandleInitView(_currentView, this, animationDirection);
 
 			SetupLayout(_currentView);
 
 			AddChild(_currentView, oldView);
 
-			BackViewProcessor.HandleAutoNavigate(oldView, this, autoNavigatePanPosition);
-			FrontViewProcessor.HandleAutoNavigate(_currentView, this, autoNavigatePanPosition);
+
+			var animationId = Guid.NewGuid();
+			StartAutoNavigation(oldView, animationId, animationDirection);
+			var autoNavigationTask = Task.WhenAll(
+				BackViewProcessor.HandleAutoNavigate(oldView, this, animationDirection),
+				FrontViewProcessor.HandleAutoNavigate(_currentView, this, animationDirection));
 
 			SetupBackViews();
+
+			await autoNavigationTask;
+			EndAutoNavigation(oldView, animationId, animationDirection);
 
 			return true;
 		}
@@ -523,6 +495,41 @@ namespace PanCardView
 		protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
 
 		protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
+
+		private void StartAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
+		{
+			if (view != null)
+			{
+				_gestureId = animationId;
+				IsAutoNavigating = true;
+				if (IsPanInCourse)
+				{
+					_inCoursePanDelay = int.MaxValue;
+				}
+				lock (_viewsInUseLocker)
+				{
+					_viewsInUse.Add(view);
+				}
+				FireAutoNavigationStarted(animationDirection != AnimationDirection.Prev);
+			}
+		}
+
+		private void EndAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
+		{
+			_inCoursePanDelay = 0;
+			if (view != null)
+			{
+				lock (_viewsInUseLocker)
+				{
+					_viewsInUse.Remove(view);
+					CleanView(view);
+				}
+			}
+			IsAutoNavigating = false;
+			var isProcessingNow = _gestureId != animationId;
+			RemoveRedundantChildren(isProcessingNow);
+			FireAutoNavigationEnded(animationDirection != AnimationDirection.Prev);
+		}
 
 		private AnimationDirection GetAutoNavigateAnimationDirection()
 		{

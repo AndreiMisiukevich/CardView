@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PanCardView.Enums;
 using Xamarin.Forms;
 using static System.Math;
@@ -23,14 +22,18 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
-			if (view != null)
+			if(view == null)
 			{
-				view.IsVisible = true;
-				new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-					.Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
+				return Task.FromResult(false);
 			}
+
+			var tcs = new TaskCompletionSource<bool>();
+			view.IsVisible = true;
+			new Animation(v => view.TranslationX = v, view.TranslationX, 0)
+				.Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (d, b) => tcs.SetResult(true));
+			return tcs.Task;
 		}
 
 		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
