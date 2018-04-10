@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using PanCardView.Enums;
+using PanCardView.Extensions;
 using Xamarin.Forms;
 using static System.Math;
 
@@ -24,15 +25,8 @@ namespace PanCardView.Processors
 
 		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView)
 		{
-			if (view != null)
-			{
-				view.IsVisible = true;
-			}
-
-			if (inactiveView != null)
-			{
-				inactiveView.IsVisible = false;
-			}
+			view.WithVisibility(true);
+			inactiveView.WithVisibility(false);
 
 			if (Abs(xPos) > cardsView.Width || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
 			{
