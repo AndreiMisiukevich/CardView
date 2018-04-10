@@ -606,10 +606,7 @@ namespace PanCardView
 				return;
 			}
 
-			if (TrySetSelectedBackView(diff))
-			{
-				_currentBackView.IsVisible = true;
-			}
+			var inactiveView = ResetActiveInactiveBackViews(diff);
 
 			CurrentDiff = diff;
 
@@ -618,7 +615,7 @@ namespace PanCardView
 			FirePanChanged();
 
 			FrontViewProcessor.HandlePanChanged(_currentView, this, diff, _currentBackAnimationDirection);
-			BackViewProcessor.HandlePanChanged(_currentBackView, this, diff, _currentBackAnimationDirection);
+			BackViewProcessor.HandlePanChanged(_currentBackView, this, diff, _currentBackAnimationDirection, inactiveView);
 		}
 
 		private async void OnTouchEnded(bool? isSwiped)
@@ -793,28 +790,27 @@ namespace PanCardView
 			return newIndex;
 		}
 
-		private bool TrySetSelectedBackView(double diff)
+		private View ResetActiveInactiveBackViews(double diff)
 		{
+			var activeView = _nextView;
+			var inactiveView = _prevView;
+			var animationDirection = AnimationDirection.Next;
+
 			if (diff > 0)
 			{
-				return SetSelectedBackView(_prevView, _nextView, AnimationDirection.Prev);
+				activeView = _prevView;
+				inactiveView = _nextView;
+				animationDirection = AnimationDirection.Prev;
 			}
-			return SetSelectedBackView(_nextView, _prevView, AnimationDirection.Next);
-		}
 
-		private bool SetSelectedBackView(View selectedView, View invisibleView, AnimationDirection animationDirection)
-		{
-			_currentBackView = selectedView;
+			_currentBackView = activeView;
 			_currentBackAnimationDirection = _currentBackView != null
 					? animationDirection
 					: AnimationDirection.Null;
 
-			if (invisibleView != null && invisibleView != _currentBackView)
-			{
-				invisibleView.IsVisible = false;
-			}
-
-			return _currentBackView != null;
+			return inactiveView != activeView
+				? inactiveView
+					: null;
 		}
 
 		private void SwapViews(bool isNext)

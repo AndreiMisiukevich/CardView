@@ -21,9 +21,34 @@ namespace PanCardView.Processors
 			}
 		}
 
+		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView)
+		{
+			if (view != null)
+			{
+				view.IsVisible = true;
+			}
+
+			if (inactiveView != null)
+			{
+				inactiveView.IsVisible = false;
+			}
+
+			if (animationDirection == AnimationDirection.Null)
+			{
+				return;
+			}
+
+			var value = Sign((int)animationDirection) * cardsView.Width + xPos;
+			if (Abs(value) > cardsView.Width || (animationDirection == AnimationDirection.Prev && value > 0) || (animationDirection == AnimationDirection.Next && value < 0))
+			{
+				return;
+			}
+			view.TranslationX = value;
+		}
+
 		public virtual Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
-			if(view == null)
+			if (view == null)
 			{
 				return Task.FromResult(false);
 			}
@@ -40,21 +65,6 @@ namespace PanCardView.Processors
 				});
 
 			return tcs.Task;
-		}
-
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
-		{
-			if (animationDirection == AnimationDirection.Null)
-			{
-				return;
-			}
-
-			var value = Sign((int)animationDirection) * cardsView.Width + xPos;
-			if (Abs(value) > cardsView.Width || (animationDirection == AnimationDirection.Prev && value > 0) || (animationDirection == AnimationDirection.Next && value < 0))
-			{
-				return;
-			}
-			view.TranslationX = value;
 		}
 
 		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)

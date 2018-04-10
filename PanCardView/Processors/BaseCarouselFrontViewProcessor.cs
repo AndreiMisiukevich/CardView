@@ -22,22 +22,18 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView)
 		{
-			if(view == null)
+			if (view != null)
 			{
-				return Task.FromResult(false);
+				view.IsVisible = true;
 			}
 
-			var tcs = new TaskCompletionSource<bool>();
-			view.IsVisible = true;
-			new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-				.Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (d, b) => tcs.SetResult(true));
-			return tcs.Task;
-		}
+			if (inactiveView != null)
+			{
+				inactiveView.IsVisible = false;
+			}
 
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection)
-		{
 			if (Abs(xPos) > cardsView.Width || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
 			{
 				return;
@@ -49,6 +45,20 @@ namespace PanCardView.Processors
 			}
 
 			view.TranslationX = xPos;
+		}
+
+		public virtual Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
+		{
+			if (view == null)
+			{
+				return Task.FromResult(false);
+			}
+
+			var tcs = new TaskCompletionSource<bool>();
+			view.IsVisible = true;
+			new Animation(v => view.TranslationX = v, view.TranslationX, 0)
+				.Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (d, b) => tcs.SetResult(true));
+			return tcs.Task;
 		}
 
 		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)
