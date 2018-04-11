@@ -15,7 +15,7 @@ namespace PanCardView
 		{
 			IsClippedToBounds = true;
 			IsCyclical = true;
-			MoveWidthPercentage = 0.3;
+			MoveWidthPercentage = .3;
 		}
 
 		[Obsolete("No need use this property. Just add IndicatorsControl as child element.")]

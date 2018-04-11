@@ -12,6 +12,8 @@ namespace PanCardView.Processors
 
 		public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
+		public double InitialBackPositionPercentage { get; set; } = .75;
+
 		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			if (view != null)
@@ -49,11 +51,12 @@ namespace PanCardView.Processors
 			}
 
 			var tcs = new TaskCompletionSource<bool>();
-			var width = GetInitialPosition(cardsView);
-			var destinationPos = animationDirection == AnimationDirection.Prev
-		 		? width
-				: -width;
-
+			var width =  GetInitialPosition(cardsView);
+			var destinationPos = GetInitialPosition(cardsView);
+			if (animationDirection != AnimationDirection.Prev)
+			{
+				destinationPos = -destinationPos;
+			}
 			new Animation(v => view.TranslationX = v, 0, destinationPos)
 				.Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (v, t) =>
 				{
@@ -111,6 +114,6 @@ namespace PanCardView.Processors
 		}
 
 		private double GetInitialPosition(CardsView cardsView)
-		=> cardsView.AsSceneView().InitialPosition;
+		=> cardsView.Width * InitialBackPositionPercentage;
 	}
 }
