@@ -31,7 +31,7 @@
     <Compile Include="PanCardViewSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\CardsSampleView.cs" />
-    <Compile Include="Views\CarouselSampleView.cs" />
+    <Compile Include="Views\SceneSampleView.cs" />
     <Compile Include="ViewModels\CardSampleViewModel.cs" />
     <Compile Include="Views\CardsSampleCustomView.cs" />
     <Compile Include="ViewModels\SharedSampleCustomViewModel.cs" />

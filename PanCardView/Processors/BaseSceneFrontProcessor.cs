@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using static System.Math;
 using PanCardView.Enums;
 using PanCardView.Extensions;
 using Xamarin.Forms;
-using static System.Math;
+using System.Threading.Tasks;
 
 namespace PanCardView.Processors
 {
-	public class BaseCarouselFrontViewProcessor : ICardProcessor
+	public class BaseSceneFrontProcessor : ICardProcessor
 	{
 		public uint AnimationLength { get; set; } = 300;
 
@@ -25,16 +25,17 @@ namespace PanCardView.Processors
 
 		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView)
 		{
-			if (view != null)
+			if(view != null)
 			{
 				view.IsVisible = true;
 			}
-			if (inactiveView != null)
+			if(inactiveView != null)
 			{
 				inactiveView.IsVisible = false;
 			}
 
-			if (Abs(xPos) > cardsView.Width || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
+			var width = GetInitialPosition(cardsView);
+			if (Abs(xPos) > width || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
 			{
 				return;
 			}
@@ -66,7 +67,8 @@ namespace PanCardView.Processors
 			if (view != null)
 			{
 				var tcs = new TaskCompletionSource<bool>();
-				var animTimePercent = 1 - (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
+				var width = GetInitialPosition(cardsView);
+				var animTimePercent = 1 - (width - Abs(view.TranslationX)) / width;
 				var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
 				new Animation(v => view.TranslationX = v, view.TranslationX, 0)
 					.Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
@@ -80,7 +82,8 @@ namespace PanCardView.Processors
 			if (view != null)
 			{
 				var tcs = new TaskCompletionSource<bool>();
-				var animTimePercent = 1 - (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
+				var width = GetInitialPosition(cardsView);
+				var animTimePercent = 1 - (width - Abs(view.TranslationX)) / width;
 				var animLength = (uint)(AnimationLength * animTimePercent);
 				new Animation(v => view.TranslationX = v, view.TranslationX, 0)
 					.Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
@@ -88,5 +91,8 @@ namespace PanCardView.Processors
 			}
 			return Task.FromResult(true);
 		}
+
+		private double GetInitialPosition(CardsView cardsView)
+		=> cardsView.AsSceneView().InitialPosition;
 	}
 }

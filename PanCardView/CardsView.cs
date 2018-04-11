@@ -129,6 +129,7 @@ namespace PanCardView
 		private int _inCoursePanDelay;
 		private bool _isPanEndRequested = true;
 		private bool _shouldSkipTouch;
+		private bool _isViewsInited;
 		private bool? _shouldScrollParent;
 		private Guid _gestureId;
 		private DateTime _lastPanTime;
@@ -495,6 +496,18 @@ namespace PanCardView
 		protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
 
 		protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
+
+		protected override void OnSizeAllocated(double width, double height)
+		{
+			base.OnSizeAllocated(width, height);
+			if(!_isViewsInited && width > 0 && height > 0)
+			{
+				_isViewsInited = true;
+				FrontViewProcessor.HandleInitView(_currentView, this, AnimationDirection.Current);
+				BackViewProcessor.HandleInitView(_prevView, this, AnimationDirection.Prev);
+				BackViewProcessor.HandleInitView(_nextView, this, AnimationDirection.Next);
+			}
+		}
 
 		private void StartAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
 		{

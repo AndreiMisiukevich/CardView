@@ -1,22 +1,23 @@
 ﻿using PanCardView;
 using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
-using PanCardViewSample.CardsFactory;
-using PanCardView.Controls;
 
 namespace PanCardViewSample.Views
 {
-	public class CarouselSampleView : ContentPage
+	public class SceneSampleView : ContentPage
 	{
-		public CarouselSampleView()
+		public SceneSampleView(double width)
 		{
-			var carousel = new CarouselView
+			var carousel = new SceneView
 			{
-				ItemTemplate = new DataTemplate(() => new DefaultCardItemView()),
-				BackgroundColor = Color.Black.MultiplyAlpha(.9)
+				ItemTemplate = new DataTemplate(() => {
+					var c = new ContentView();
+					c.SetBinding(BackgroundColorProperty, "Color");
+					var l = new AbsoluteLayout();
+					l.Children.Add(c, new Rectangle(.5, .5, width / 4, width / 4), AbsoluteLayoutFlags.PositionProportional);
+					return l;
+				})
 			};
-
-			carousel.Children.Add(new IndicatorsControl());
 
 			var prevItem = new ToolbarItem
 			{
@@ -40,7 +41,8 @@ namespace PanCardViewSample.Views
 			carousel.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
 			carousel.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 
-			Title = "CarouselView";
+			BackgroundColor = Color.Black;
+			Title = "SceneView";
 			Content = carousel;
 			BindingContext = new SharedSampleViewModel();
 		}

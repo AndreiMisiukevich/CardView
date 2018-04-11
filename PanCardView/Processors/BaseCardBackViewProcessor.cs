@@ -38,8 +38,14 @@ namespace PanCardView.Processors
 
 		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView)
 		{
-			view.WithVisibility(true);
-			inactiveView.WithVisibility(false);
+			if (view != null)
+			{
+				view.IsVisible = true;
+			}
+			if (inactiveView != null)
+			{
+				inactiveView.IsVisible = false;
+			}
 
 			if (animationDirection == AnimationDirection.Null)
 			{

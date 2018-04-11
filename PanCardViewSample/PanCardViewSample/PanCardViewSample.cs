@@ -25,9 +25,9 @@ namespace PanCardViewSample
                 this.Navigation.PushAsync(new CardsSampleCustomView());
             };
 
-            var toCarouselBtn = new Button { Text = "CarouselView" };
+            var toCarouselBtn = new Button { Text = "SceneView" };
             toCarouselBtn.Clicked += (sender, e) => {
-                this.Navigation.PushAsync(new CarouselSampleView());
+                this.Navigation.PushAsync(new SceneSampleView(Width));
             };
 
             var toCarouselScrollBtn = new Button { Text = "CarouselView scroll" };

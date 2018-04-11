@@ -8,6 +8,12 @@ namespace PanCardView.Extensions
 		public static CardsView AsCardView(this BindableObject bindable)
 		=> bindable as CardsView;
 
+		public static CarouselView AsCarouselView(this BindableObject bindable)
+		=> bindable as CarouselView;
+
+		public static SceneView AsSceneView(this BindableObject bindable)
+		=> bindable as SceneView;
+
 		public static IndicatorsControl AsIndicatorsControl(this BindableObject bindable)
 		=> bindable as IndicatorsControl;
 

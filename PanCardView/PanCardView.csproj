@@ -47,7 +47,9 @@
     <Compile Include="Utility\ViewsInUseSet.cs" />
     <Compile Include="Controls\ParentScrollView.cs" />
     <Compile Include="Controls\IOrdinateHandlerParentView.cs" />
-    <Compile Include="Extensions\ViewExtensions.cs" />
+    <Compile Include="SceneView.cs" />
+    <Compile Include="Processors\BaseSceneBackProcessor.cs" />
+    <Compile Include="Processors\BaseSceneFrontProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />
