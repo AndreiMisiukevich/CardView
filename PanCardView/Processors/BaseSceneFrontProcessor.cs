@@ -14,7 +14,7 @@ namespace PanCardView.Processors
 
 		public double NoItemMaxPanDistance { get; set; } = 25;
 
-		public double InitialBackPositionPercentage { get; set; } = .75;
+		public double InitialBackPositionPercentage { get; set; } = .5;
 
 		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{

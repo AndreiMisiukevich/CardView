@@ -12,7 +12,7 @@ namespace PanCardView.Processors
 
 		public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
-		public double InitialBackPositionPercentage { get; set; } = .75;
+		public double InitialBackPositionPercentage { get; set; } = .5;
 
 		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
 		{
@@ -57,6 +57,7 @@ namespace PanCardView.Processors
 			{
 				destinationPos = -destinationPos;
 			}
+
 			new Animation(v => view.TranslationX = v, 0, destinationPos)
 				.Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (v, t) =>
 				{
