@@ -1,15 +1,16 @@
 ﻿using Xamarin.Forms;
 using System.Threading.Tasks;
 using PanCardView.Enums;
+using System.Collections.Generic;
 
 namespace PanCardView.Processors
 {
 	public interface ICardProcessor
 	{
-		void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection);
-		void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView = null);
-		Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection);
-		Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection);
-		Task HandlePanApply(View view, CardsView cardsView, AnimationDirection animationDirection);
+		void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection);
+		void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews);
+		Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection);
+		Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection);
+		Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection);
 	}
 }

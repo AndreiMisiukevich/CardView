@@ -1,8 +1,9 @@
 ﻿using static System.Math;
 using PanCardView.Enums;
-using PanCardView.Extensions;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PanCardView.Processors
 {
@@ -14,8 +15,9 @@ namespace PanCardView.Processors
 
 		public double InitialBackPositionPercentage { get; set; } = .5;
 
-		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
 			if (view != null)
 			{
 				view.TranslationX = Sign((int)animationDirection) * GetInitialPosition(cardsView);
@@ -23,8 +25,11 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView)
+		public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
+			var view = views.FirstOrDefault();
+			var inactiveView = inactiveViews.FirstOrDefault();
+
 			var inactiveIntAnimationDirection = -((int)animationDirection);
 			var inactiveAnimationDirection = animationDirection == AnimationDirection.Null
 				 ? animationDirection
@@ -34,17 +39,19 @@ namespace PanCardView.Processors
 			if(view != null)
 			{
 				view.IsVisible = true;
-				handled = HandlePanChanged(view, cardsView, xPos, animationDirection);
+				handled = HandlePanChanged(views, cardsView, xPos, animationDirection);
 			}
 			if (inactiveView != null && handled)
 			{
 				inactiveView.IsVisible = true;
-				HandlePanChanged(inactiveView, cardsView, xPos, inactiveAnimationDirection, false);
+				HandlePanChanged(inactiveViews, cardsView, xPos, inactiveAnimationDirection, false);
 			}
 		}
 
-		public virtual Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
+			
 			if (view == null)
 			{
 				return Task.FromResult(false);
@@ -67,8 +74,10 @@ namespace PanCardView.Processors
 			return tcs.Task;
 		}
 
-		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
+
 			if (view != null)
 			{
 				var tcs = new TaskCompletionSource<bool>();
@@ -82,8 +91,10 @@ namespace PanCardView.Processors
 			return Task.FromResult(true);
 		}
 
-		public virtual Task HandlePanApply(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
+
 			if (view != null)
 			{
 				var tcs = new TaskCompletionSource<bool>();
@@ -98,8 +109,10 @@ namespace PanCardView.Processors
 			return Task.FromResult(true);
 		}
 
-		private bool HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, bool checkWidth = true)
+		private bool HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, bool checkWidth = true)
 		{
+			var view = views.FirstOrDefault();
+
 			if (animationDirection == AnimationDirection.Null || view == null)
 			{
 				return false;

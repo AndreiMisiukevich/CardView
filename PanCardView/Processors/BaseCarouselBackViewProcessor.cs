@@ -4,6 +4,9 @@ using PanCardView.Extensions;
 using Xamarin.Forms;
 
 using static System.Math;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
 
 namespace PanCardView.Processors
 {
@@ -13,8 +16,9 @@ namespace PanCardView.Processors
 
 		public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
-		public virtual void HandleInitView(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
 			if (view != null)
 			{
 				view.TranslationX = Sign((int)animationDirection) * cardsView.Width;
@@ -22,8 +26,11 @@ namespace PanCardView.Processors
 			}
 		}
 
-		public virtual void HandlePanChanged(View view, CardsView cardsView, double xPos, AnimationDirection animationDirection, View inactiveView)
+		public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
+			var view = views.FirstOrDefault();
+			var inactiveView = inactiveViews.FirstOrDefault();
+
 			if (view != null)
 			{
 				view.IsVisible = true;
@@ -46,8 +53,9 @@ namespace PanCardView.Processors
 			view.TranslationX = value;
 		}
 
-		public virtual Task HandleAutoNavigate(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
 			if (view == null)
 			{
 				return Task.FromResult(false);
@@ -67,8 +75,9 @@ namespace PanCardView.Processors
 			return tcs.Task;
 		}
 
-		public virtual Task HandlePanReset(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
 			if (view != null)
 			{
 				var tcs = new TaskCompletionSource<bool>();
@@ -82,8 +91,9 @@ namespace PanCardView.Processors
 			return Task.FromResult(true);
 		}
 
-		public virtual Task HandlePanApply(View view, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
+			var view = views.FirstOrDefault();
 			if (view != null)
 			{
 				var tcs = new TaskCompletionSource<bool>();
