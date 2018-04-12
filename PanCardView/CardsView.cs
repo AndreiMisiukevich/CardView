@@ -409,7 +409,7 @@ namespace PanCardView
 
 		protected virtual void SetupLayout(params View[] views)
 		{
-			foreach (var view in views)
+			foreach (var view in views.Where(v => v != null))
 			{
 				SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
 				SetLayoutFlags(view, AbsoluteLayoutFlags.All);
