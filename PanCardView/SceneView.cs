@@ -11,7 +11,9 @@ namespace PanCardView
 
 		public SceneView(ICardProcessor frontViewProcessor, ICardProcessor backViewProcessor) : base(frontViewProcessor, backViewProcessor)
 		{
-			BackViewsDepth = 2;
+			BackViewsDepth *= 2;
+			MaxChildrenCount *= 2;
+			DesiredMaxChildrenCount *= 2;
 		}
 	}
 }

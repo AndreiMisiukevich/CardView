@@ -430,7 +430,7 @@ namespace PanCardView
 
 			if (Items != null || IsContextMode)
 			{
-				CurrentView = GetView(AnimationDirection.Current, FrontViewProcessor, CurrentIndex).FirstOrDefault();
+				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, CurrentIndex).FirstOrDefault();
 				if (CurrentView == null && CurrentIndex >= 0)
 				{
 					ShouldIgnoreSetCurrentView = true;
@@ -464,7 +464,7 @@ namespace PanCardView
 			var animationDirection = GetAutoNavigateAnimationDirection();
 
 			var oldView = CurrentView;
-			var view = PrepareView(CurrentIndex, AnimationDirection.Current);
+			var view = PrepareView(CurrentIndex, AnimationDirection.Current, Enumerable.Empty<View>());
 			if (view == null)
 			{
 				return false;
@@ -505,7 +505,7 @@ namespace PanCardView
 				indeces[i] = CurrentIndex + 1 + i;
 			}
 
-			NextViews = GetView(AnimationDirection.Next, BackViewProcessor, indeces);
+			NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, indeces);
 		}
 
 		protected virtual void SetupPrevView(bool canResetContext = false)
@@ -531,7 +531,7 @@ namespace PanCardView
 				indeces[i] = CurrentIndex + incValue;
 			}
 
-			PrevViews = GetView(AnimationDirection.Prev, BackViewProcessor, indeces);
+			PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, indeces);
 		}
 
 		protected virtual bool TryResetContext(bool canResetContext, View view, object context)
@@ -893,13 +893,13 @@ namespace PanCardView
 			NextViews = CurrentBackViews;
 		}
 
-		private IEnumerable<View> GetView(AnimationDirection animationDirection, ICardProcessor processor, params int[] indeces)
+		private IEnumerable<View> GetViews(AnimationDirection animationDirection, ICardProcessor processor, params int[] indeces)
 		{
 			var views = new View[indeces.Length];
 
 			for (int i = 0; i < indeces.Length; ++i)
 			{
-				views[i] = PrepareView(indeces[i], animationDirection);
+				views[i] = PrepareView(indeces[i], animationDirection, views);
 			}
 
 			if(views.All(x => x == null))
@@ -921,7 +921,7 @@ namespace PanCardView
 			return views;
 		}
 
-		private View PrepareView(int index, AnimationDirection animationDirection)
+		private View PrepareView(int index, AnimationDirection animationDirection, IEnumerable<View> bookedViews)
 		{
 			var context = GetContext(index, animationDirection);
 
@@ -937,7 +937,7 @@ namespace PanCardView
 			}
 
 			var view = template != null
-				? CreateRetrieveView(context, template)
+				? CreateRetrieveView(context, template, bookedViews)
 				: context as View;
 
 			if (view != null)
@@ -948,7 +948,7 @@ namespace PanCardView
 			return view;
 		}
 
-		private View CreateRetrieveView(object context, DataTemplate template)
+		private View CreateRetrieveView(object context, DataTemplate template, IEnumerable<View> bookedViews)
 		{
 			if (!CheckIsCacheEnabled(template))
 			{
@@ -969,7 +969,7 @@ namespace PanCardView
 			var currentContext = context;
 			var view = notUsingViews.FirstOrDefault(v => v.BindingContext == currentContext)
 									?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
-									?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
+			                        ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v) && !bookedViews.Contains(v));
 
 			if (view == null)
 			{
