@@ -60,7 +60,7 @@ namespace PanCardView.Processors
 			view.Scale = Min(calcScale, 1);
 		}
 
-		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
 			if (view == null)
@@ -72,13 +72,13 @@ namespace PanCardView.Processors
 			new Animation(v => HandleAutoAnimatingPosChanged(view, cardsView, v, animationDirection), 0, cardsView.MoveDistance)
 				.Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, async (v, t) =>
 				{
-					await HandlePanApply(views, cardsView, animationDirection);
+					await HandlePanApply(views, cardsView, animationDirection, inactiveViews);
 					tcs.SetResult(true);
 				});
 			return tcs.Task;
 		}
 
-		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
 
@@ -93,7 +93,7 @@ namespace PanCardView.Processors
 			return Task.FromResult(true);
 		}
 
-		public virtual async Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual async Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
 			if (view != null)

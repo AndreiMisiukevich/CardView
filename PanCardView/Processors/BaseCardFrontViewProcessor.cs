@@ -48,7 +48,7 @@ namespace PanCardView.Processors
 			view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Width);
 		}
 
-		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
 			if (view == null)
@@ -63,7 +63,7 @@ namespace PanCardView.Processors
 			return tcs.Task;
 		}
 
-		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
 			var tcs = new TaskCompletionSource<bool>();
@@ -85,7 +85,7 @@ namespace PanCardView.Processors
 			return tcs.Task;
 		}
 
-		public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
 			if (view != null)

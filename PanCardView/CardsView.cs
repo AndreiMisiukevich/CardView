@@ -125,6 +125,7 @@ namespace PanCardView
 		private IEnumerable<View> _prevViews = Enumerable.Empty<View>();
 		private IEnumerable<View> _nextViews = Enumerable.Empty<View>();
 		private IEnumerable<View> _currentBackViews = Enumerable.Empty<View>();
+		private IEnumerable<View> _currentInactiveBackViews = Enumerable.Empty<View>();
 
 		private AnimationDirection _currentBackAnimationDirection;
 		private INotifyCollectionChanged _currentObservableCollection;
@@ -185,6 +186,12 @@ namespace PanCardView
 		{
 			get => _currentBackViews;
 			set => _currentBackViews = value ?? Enumerable.Empty<View>();
+		}
+
+		private IEnumerable<View> CurrentInactiveBackViews
+		{
+			get => _currentInactiveBackViews;
+			set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
 		}
 
 		private View CurrentView { get; set; }
@@ -481,8 +488,8 @@ namespace PanCardView
 			var animationId = Guid.NewGuid();
 			StartAutoNavigation(oldView, animationId, animationDirection);
 			var autoNavigationTask = Task.WhenAll(
-				BackViewProcessor.HandleAutoNavigate(Enumerable.Repeat(oldView, 1), this, animationDirection),
-				FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, animationDirection));
+				BackViewProcessor.HandleAutoNavigate(Enumerable.Repeat(oldView, 1), this, animationDirection, CurrentInactiveBackViews),
+				FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, animationDirection, Enumerable.Empty<View>()));
 
 			SetupBackViews();
 
@@ -670,7 +677,7 @@ namespace PanCardView
 				return;
 			}
 
-			var inactiveView = ResetActiveInactiveBackViews(diff);
+			ResetActiveInactiveBackViews(diff);
 
 			CurrentDiff = diff;
 
@@ -679,7 +686,7 @@ namespace PanCardView
 			FirePanChanged();
 
 			FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
-			BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, inactiveView);
+			BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
 		}
 
 		private async void OnTouchEnded(bool? isSwiped)
@@ -737,16 +744,16 @@ namespace PanCardView
 				FirePanEnding(isNextSelected, index, diff);
 
 				await Task.WhenAll(
-					FrontViewProcessor.HandlePanApply(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection),
-					BackViewProcessor.HandlePanApply(CurrentBackViews, this, _currentBackAnimationDirection)
+					FrontViewProcessor.HandlePanApply(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
+					BackViewProcessor.HandlePanApply(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews)
 				);
 			}
 			else
 			{
 				FirePanEnding(isNextSelected, index, diff);
 				await Task.WhenAll(
-					FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection),
-					BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection)
+					FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
+					BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews)
 				);
 			}
 
@@ -854,7 +861,7 @@ namespace PanCardView
 			return newIndex;
 		}
 
-		private IEnumerable<View> ResetActiveInactiveBackViews(double diff)
+		private void ResetActiveInactiveBackViews(double diff)
 		{
 			var activeViews = NextViews;
 			var inactiveViews = PrevViews;
@@ -872,9 +879,10 @@ namespace PanCardView
 					? animationDirection
 					: AnimationDirection.Null;
 
-			return !inactiveViews.SequenceEqual(activeViews)
+
+			CurrentInactiveBackViews = !inactiveViews.SequenceEqual(activeViews)
 				? inactiveViews
-				: Enumerable.Empty<View>();
+				: null;
 		}
 
 		private void SwapViews(bool isNext)
