@@ -115,6 +115,7 @@ namespace PanCardView.Processors
 
 		private bool HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, bool checkWidth = true)
 		{
+			var result = false;
 			var viewsArr = views.ToArray();
 
 			for (var i = 0; i < viewsArr.Length; ++i)
@@ -122,17 +123,18 @@ namespace PanCardView.Processors
 				var view = viewsArr[i];
 				if (animationDirection == AnimationDirection.Null || view == null)
 				{
-					return false;
+					continue;
 				}
 				var width = GetInitialPosition(cardsView, i);
 				var value = Sign((int)animationDirection) * width + xPos;
 				if (checkWidth && (Abs(value) > width || (animationDirection == AnimationDirection.Prev && value > 0) || (animationDirection == AnimationDirection.Next && value < 0)))
 				{
-					return false;
+					continue;
 				}
+				result = true;
 				view.TranslationX = value;
 			}
-			return true;
+			return result;
 		}
 
 		private double GetInitialPosition(CardsView cardsView, int index)
