@@ -33,7 +33,7 @@ namespace PanCardView
 
 		public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			var view = bindable.AsCardView();
+			var view = bindable.AsCardsView();
 			view.OldIndex = (int)oldValue;
 			if (view.ShouldIgnoreSetCurrentView)
 			{
@@ -45,23 +45,23 @@ namespace PanCardView
 
 		public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			bindable.AsCardView().SetCurrentView();
-			bindable.AsCardView().SetItemsCount();
+			bindable.AsCardsView().SetCurrentView();
+			bindable.AsCardsView().SetItemsCount();
 		});
 
 		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			bindable.AsCardView().SetCurrentView();
+			bindable.AsCardsView().SetCurrentView();
 		});
 
 		public static readonly BindableProperty CurrentContextProperty = BindableProperty.Create(nameof(CurrentContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			bindable.AsCardView().SetCurrentView(true);
+			bindable.AsCardsView().SetCurrentView(true);
 		});
 
 		public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), 1, propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			bindable.AsCardView().SetCurrentView();
+			bindable.AsCardsView().SetCurrentView();
 		});
 
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);

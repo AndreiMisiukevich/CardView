@@ -5,7 +5,7 @@ namespace PanCardView.Extensions
 {
 	public static class CardViewExtensions
 	{
-		public static CardsView AsCardView(this BindableObject bindable)
+		public static CardsView AsCardsView(this BindableObject bindable)
 		=> bindable as CardsView;
 
 		public static CarouselView AsCarouselView(this BindableObject bindable)

@@ -44,6 +44,8 @@
     <Compile Include="Views\CarouselSampleXamlView.xaml.cs">
       <DependentUpon>CarouselSampleXamlView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\CarouselSampleListViewModel.cs" />
+    <Compile Include="Views\CarouselSampleListView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">
