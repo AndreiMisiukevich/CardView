@@ -1,9 +1,7 @@
-﻿using FFImageLoading.Forms;
-using PanCardView;
-using Xamarin.Forms;
-using PanCardView.Processors;
-using PanCardViewSample.ViewModels;
+﻿using PanCardView;
 using PanCardViewSample.CardsFactory;
+using PanCardViewSample.ViewModels;
+using Xamarin.Forms;
 
 namespace PanCardViewSample.Views
 {

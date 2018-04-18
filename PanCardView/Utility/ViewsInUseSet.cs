@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace PanCardView.Utility
 {
-	public sealed class ViewsInUseSet
+    public sealed class ViewsInUseSet
 	{
 		private readonly Dictionary<View, int> _viewsSet = new Dictionary<View, int>();
 

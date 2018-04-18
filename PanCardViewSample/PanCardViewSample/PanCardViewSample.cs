@@ -1,5 +1,5 @@
-﻿using Xamarin.Forms;
-using PanCardViewSample.Views;
+﻿using PanCardViewSample.Views;
+using Xamarin.Forms;
 
 namespace PanCardViewSample
 {

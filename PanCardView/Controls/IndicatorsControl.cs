@@ -1,12 +1,12 @@
-﻿using Xamarin.Forms;
+﻿using PanCardView.Behaviors;
 using PanCardView.Extensions;
 using System.Linq;
-using PanCardView.Behaviors;
+using Xamarin.Forms;
 using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
 
 namespace PanCardView.Controls
 {
-	public class IndicatorsControl : StackLayout
+    public class IndicatorsControl : StackLayout
 	{
 		public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
 		{

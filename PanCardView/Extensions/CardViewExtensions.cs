@@ -1,9 +1,9 @@
-﻿using Xamarin.Forms;
-using PanCardView.Controls;
+﻿using PanCardView.Controls;
+using Xamarin.Forms;
 
 namespace PanCardView.Extensions
 {
-	public static class CardViewExtensions
+    public static class CardViewExtensions
 	{
 		public static CardsView AsCardView(this BindableObject bindable)
 		=> bindable as CardsView;

@@ -1,16 +1,16 @@
-﻿using Android.Graphics;
-using Xamarin.Forms.Platform.Android;
-using Android.Content;
-using XFrameRenderer = Xamarin.Forms.Platform.Android.AppCompat.FrameRenderer;
-using Xamarin.Forms;
+﻿using Android.Content;
+using Android.Graphics;
+using Android.Runtime;
 using PanCardView.Controls;
 using PanCardView.Droid;
-using Android.Runtime;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+using XFrameRenderer = Xamarin.Forms.Platform.Android.AppCompat.FrameRenderer;
 
 [assembly: ExportRenderer(typeof(IndicatorItemView), typeof(IndicatorItemViewRenderer))]
 namespace PanCardView.Droid
 {
-	[Preserve(AllMembers = true)]
+    [Preserve(AllMembers = true)]
 	public class IndicatorItemViewRenderer : XFrameRenderer
 	{
 		public IndicatorItemViewRenderer(Context context) : base(context)

@@ -1,11 +1,11 @@
-﻿using PanCardView.Processors;
-using PanCardView.Controls;
-using System.Linq;
+﻿using PanCardView.Controls;
+using PanCardView.Processors;
 using System;
+using System.Linq;
 
 namespace PanCardView
 {
-	public class CarouselView : CardsView
+    public class CarouselView : CardsView
 	{
 		public CarouselView() : this(new BaseCarouselFrontViewProcessor(), new BaseCarouselBackViewProcessor())
 		{

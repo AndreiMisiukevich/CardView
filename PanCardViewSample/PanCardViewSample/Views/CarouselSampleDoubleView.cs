@@ -1,7 +1,6 @@
 ﻿using PanCardView;
-using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
-using PanCardViewSample.CardsFactory;
+using Xamarin.Forms;
 
 namespace PanCardViewSample.Views
 {

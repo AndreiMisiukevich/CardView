@@ -1,10 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Xamarin.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Windows.Input;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace PanCardViewSample.ViewModels
 {

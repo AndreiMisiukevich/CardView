@@ -1,22 +1,22 @@
-﻿using System;
-using Xamarin.Forms;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections.Specialized;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using PanCardView.Behaviors;
+using PanCardView.Controls;
+using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Processors;
-using System.Collections;
-using PanCardView.Enums;
-using static System.Math;
-using PanCardView.Behaviors;
 using PanCardView.Utility;
-using PanCardView.Controls;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView
 {
-	public delegate void CardsViewPanStartEndHandler(CardsView view, int index, double diff);
+    public delegate void CardsViewPanStartEndHandler(CardsView view, int index, double diff);
 	public delegate void CardsViewPanChangedHandler(CardsView view, double diff);
 	public delegate void CardsViewPositionChangedHandler(CardsView view, bool isNextSelected);
 

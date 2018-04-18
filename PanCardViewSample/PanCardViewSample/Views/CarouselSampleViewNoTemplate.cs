@@ -1,10 +1,9 @@
-﻿using System;
-using Xamarin.Forms;
-using PanCardView;
+﻿using PanCardView;
 using PanCardView.Controls;
+using Xamarin.Forms;
 namespace PanCardViewSample.Views
 {
-	public class CarouselSampleViewNoTemplate : ContentPage
+    public class CarouselSampleViewNoTemplate : ContentPage
 	{
 		public CarouselSampleViewNoTemplate()
 		{

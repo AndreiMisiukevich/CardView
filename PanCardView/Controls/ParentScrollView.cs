@@ -2,7 +2,7 @@
 
 namespace PanCardView.Controls
 {
-	public class ParentScrollView : ScrollView, IOrdinateHandlerParentView
+    public class ParentScrollView : ScrollView, IOrdinateHandlerParentView
 	{
 		private double _prevY;
 
@@ -24,4 +24,3 @@ namespace PanCardView.Controls
 		}
 	}
 }
-

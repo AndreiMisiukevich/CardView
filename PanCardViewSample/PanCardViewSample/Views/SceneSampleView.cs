@@ -1,10 +1,10 @@
 ﻿using PanCardView;
-using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
+using Xamarin.Forms;
 
 namespace PanCardViewSample.Views
 {
-	public class SceneSampleView : ContentPage
+    public class SceneSampleView : ContentPage
 	{
 		public SceneSampleView(double width)
 		{

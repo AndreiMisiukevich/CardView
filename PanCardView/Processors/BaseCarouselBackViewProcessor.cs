@@ -1,16 +1,13 @@
-﻿using System.Threading.Tasks;
-using PanCardView.Enums;
-using PanCardView.Extensions;
-using Xamarin.Forms;
-
-using static System.Math;
+﻿using PanCardView.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
+using System.Threading.Tasks;
+using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView.Processors
 {
-	public class BaseCarouselBackViewProcessor : ICardProcessor
+    public class BaseCarouselBackViewProcessor : ICardProcessor
 	{
 		public uint AnimationLength { get; set; } = 300;
 

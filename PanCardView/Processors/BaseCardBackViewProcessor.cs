@@ -1,14 +1,14 @@
-﻿using Xamarin.Forms;
-using System.Threading.Tasks;
-using PanCardView.Enums;
-using static PanCardView.Processors.Constants;
-using static System.Math;
+﻿using PanCardView.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Forms;
+using static PanCardView.Processors.Constants;
+using static System.Math;
 
 namespace PanCardView.Processors
 {
-	public class BaseCardBackViewProcessor : ICardProcessor
+    public class BaseCardBackViewProcessor : ICardProcessor
 	{
 		public double InitialScale { get; set; } = 0.8;
 

@@ -1,9 +1,8 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace PanCardView.Behaviors
 {
-	public class ProtectedControlBehavior : Behavior<View>
+    public class ProtectedControlBehavior : Behavior<View>
 	{
 	}
 }
