@@ -1,4 +1,4 @@
-# CardsView and CarouselView controls for Xamarin Forms (based on Xamarin Form's AbsoluteLayout)
+# CardsView and CarouselView controls for Xamarin Forms (based on Xamarin Forms AbsoluteLayout)
 
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
