@@ -1,7 +1,8 @@
-## NuGet
-* [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
+# CardsView and CarouselView controls for Xamarin Forms (based on Xamarin Form's AbsoluteLayout)
 
-Add nuget package to your Xamarin.Forms PCL project and to your platform-specific projects.
+## Setup
+* Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
+* Add nuget package to your Xamarin.Forms PCL project and to your platform-specific projects
 
 |Platform|Version|
 | ------------------- | ------------------- |
@@ -43,6 +44,36 @@ cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewMod
 ```csharp
 carouselView.Children.Add(new IndicatorsControl());
 ```
+
+```xml
+<cards:CarouselView 
+    Items="{Binding Items}"
+    CurrentIndex="{Binding CurrentIndex}">
+    <cards:CarouselView.ItemTemplate>
+        <DataTemplate>
+            <ContentView>
+                <Frame 
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    HeightRequest="300"
+                    WidthRequest="300"
+                    Padding="0" 
+                    HasShadow="false"
+                    IsClippedToBounds="true"
+                    CornerRadius="10"
+                    BackgroundColor="{Binding Color}">
+                    
+                    <ffimage:CachedImage Source="{Binding Source}"/> 
+                    
+                </Frame>
+            </ContentView>
+        </DataTemplate>
+    </cards:CarouselView.ItemTemplate>
+
+    <controls:IndicatorsControl/>
+</cards:CarouselView>
+```
+
 -> If you want to customize indicators, you need set *SelectedIndicatorStyle* and/or *UnselectedIndicatorStyle*, or you are able to extend this class and override several methods.
 Also you can customize position of indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
 
