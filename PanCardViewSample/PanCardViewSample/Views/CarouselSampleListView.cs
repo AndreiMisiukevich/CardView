@@ -49,13 +49,23 @@ namespace PanCardViewSample.Views
 				BackgroundColor = color,
 				ItemTemplate = new DataTemplate(() =>
 				{
-					var cell = new TextCell
+					var label = new Label
 					{
 						TextColor = Color.White
 					};
-					cell.SetBinding(TextCell.TextProperty, nameof(ListItemModel.Text));
-					cell.SetBinding(TextCell.CommandProperty, nameof(ListItemModel.Command));
-					return cell;
+					label.SetBinding(Label.TextProperty, nameof(ListItemModel.Text));
+
+					var content = new ContentView();
+					content.Content = label;
+
+					var tapGesture = new TapGestureRecognizer();
+					tapGesture.SetBinding(TapGestureRecognizer.CommandProperty, nameof(ListItemModel.Command));
+					content.GestureRecognizers.Add(tapGesture);
+
+					return new ViewCell
+					{
+						View = content
+					};
 				})
 			};
 			list.SetBinding(ItemsView<Cell>.ItemsSourceProperty, nameof(ListCardModel.Items));
