@@ -28,6 +28,7 @@ https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardView/Processors
 The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
 
 **C#:**
+
 -> Create CardsView and setup it
 ```csharp
 var cardsView = new CardsView
