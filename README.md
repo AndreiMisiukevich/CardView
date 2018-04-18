@@ -27,6 +27,7 @@ https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardView/Processors
 ## Samples
 The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
 
+**C#:**
 -> Create CardsView and setup it
 ```csharp
 var cardsView = new CardsView
@@ -45,6 +46,7 @@ cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewMod
 carouselView.Children.Add(new IndicatorsControl());
 ```
 
+**XAML:**
 ```xml
 <cards:CarouselView 
     Items="{Binding Items}"
