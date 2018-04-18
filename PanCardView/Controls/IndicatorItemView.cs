@@ -2,7 +2,7 @@
 
 namespace PanCardView.Controls
 {
-    public class IndicatorItemView : Frame
+	public class IndicatorItemView : Frame
 	{
 		public IndicatorItemView()
 		{

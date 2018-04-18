@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace PanCardViewSample.CardsFactory
 {
-    public class DefaultCardItemView : AbsoluteLayout
+	public class DefaultCardItemView : AbsoluteLayout
 	{
 		public DefaultCardItemView()
 		{

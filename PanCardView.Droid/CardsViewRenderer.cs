@@ -11,7 +11,7 @@ using static System.Math;
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
 {
-    [Preserve(AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class CardsViewRenderer : VisualElementRenderer<CardsView>
 	{
 		private static readonly Random _randomGenerator = new Random();
@@ -146,7 +146,7 @@ namespace PanCardView.Droid
 
 		private readonly Action<bool> _onSwiped;
 
-		public CardsGestureListener(Action<bool> onSwiped) 
+		public CardsGestureListener(Action<bool> onSwiped)
 		=> _onSwiped = onSwiped;
 
 		public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)

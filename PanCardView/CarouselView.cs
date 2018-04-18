@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PanCardView
 {
-    public class CarouselView : CardsView
+	public class CarouselView : CardsView
 	{
 		public CarouselView() : this(new BaseCarouselFrontViewProcessor(), new BaseCarouselBackViewProcessor())
 		{

@@ -8,7 +8,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseCardBackViewProcessor : ICardProcessor
+	public class BaseCardBackViewProcessor : ICardProcessor
 	{
 		public double InitialScale { get; set; } = 0.8;
 

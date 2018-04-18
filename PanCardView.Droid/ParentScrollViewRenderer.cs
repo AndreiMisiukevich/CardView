@@ -10,7 +10,7 @@ using static PanCardView.Droid.CardsViewRenderer;
 [assembly: ExportRenderer(typeof(ParentScrollView), typeof(ParentScrollViewRenderer))]
 namespace PanCardView.Droid
 {
-    [Preserve(AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class ParentScrollViewRenderer : ScrollViewRenderer
 	{
 		public ParentScrollViewRenderer(Context context) : base(context)

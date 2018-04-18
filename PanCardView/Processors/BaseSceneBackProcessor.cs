@@ -7,7 +7,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseSceneBackProcessor : ICardProcessor
+	public class BaseSceneBackProcessor : ICardProcessor
 	{
 		public uint AnimationLength { get; set; } = 300;
 
@@ -17,7 +17,7 @@ namespace PanCardView.Processors
 
 		public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
-			if(cardsView.Width < 0)
+			if (cardsView.Width < 0)
 			{
 				return;
 			}

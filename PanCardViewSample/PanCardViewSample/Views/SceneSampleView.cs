@@ -4,13 +4,14 @@ using Xamarin.Forms;
 
 namespace PanCardViewSample.Views
 {
-    public class SceneSampleView : ContentPage
+	public class SceneSampleView : ContentPage
 	{
 		public SceneSampleView(double width)
 		{
 			var carousel = new SceneView
 			{
-				ItemTemplate = new DataTemplate(() => {
+				ItemTemplate = new DataTemplate(() =>
+				{
 					var c = new ContentView();
 					c.SetBinding(BackgroundColorProperty, "Color");
 					var l = new AbsoluteLayout();

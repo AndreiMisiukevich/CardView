@@ -3,7 +3,7 @@ using PanCardView.Controls;
 using Xamarin.Forms;
 namespace PanCardViewSample.Views
 {
-    public class CarouselSampleViewNoTemplate : ContentPage
+	public class CarouselSampleViewNoTemplate : ContentPage
 	{
 		public CarouselSampleViewNoTemplate()
 		{

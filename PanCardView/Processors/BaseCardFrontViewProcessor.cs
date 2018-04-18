@@ -8,7 +8,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseCardFrontViewProcessor : ICardProcessor
+	public class BaseCardFrontViewProcessor : ICardProcessor
 	{
 		public uint ResetAnimationLength { get; set; } = 150;
 

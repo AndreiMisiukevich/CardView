@@ -1,6 +1,6 @@
 ﻿namespace PanCardView.Enums
 {
-    public enum AnimationDirection
+	public enum AnimationDirection
 	{
 		Prev = -1,
 		Current = 0,

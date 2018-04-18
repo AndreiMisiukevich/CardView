@@ -7,7 +7,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseCarouselFrontViewProcessor : ICardProcessor
+	public class BaseCarouselFrontViewProcessor : ICardProcessor
 	{
 		public uint AnimationLength { get; set; } = 300;
 
@@ -15,7 +15,7 @@ namespace PanCardView.Processors
 
 		public double NoItemMaxPanDistance { get; set; } = 25;
 
-		public virtual void HandleInitView (IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			var view = views.FirstOrDefault();
 			if (view != null)

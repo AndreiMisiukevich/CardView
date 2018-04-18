@@ -2,7 +2,7 @@
 
 namespace PanCardView
 {
-    public class SceneView : CardsView
+	public class SceneView : CardsView
 	{
 		public SceneView() : this(new BaseSceneFrontProcessor(), new BaseSceneBackProcessor())
 		{

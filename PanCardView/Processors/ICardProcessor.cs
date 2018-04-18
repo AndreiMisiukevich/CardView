@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace PanCardView.Processors
 {
-    public interface ICardProcessor
+	public interface ICardProcessor
 	{
 		void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection);
 		void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews);

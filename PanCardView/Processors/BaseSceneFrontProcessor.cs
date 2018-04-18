@@ -7,7 +7,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseSceneFrontProcessor : ICardProcessor
+	public class BaseSceneFrontProcessor : ICardProcessor
 	{
 		public uint AnimationLength { get; set; } = 300;
 
@@ -32,11 +32,11 @@ namespace PanCardView.Processors
 			var view = views.FirstOrDefault();
 			var inactiveView = inactiveViews.FirstOrDefault();
 
-			if(view != null)
+			if (view != null)
 			{
 				view.IsVisible = true;
 			}
-			if(inactiveView != null)
+			if (inactiveView != null)
 			{
 				inactiveView.IsVisible = false;
 			}

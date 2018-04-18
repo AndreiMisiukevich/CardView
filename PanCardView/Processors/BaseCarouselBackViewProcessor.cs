@@ -7,7 +7,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseCarouselBackViewProcessor : ICardProcessor
+	public class BaseCarouselBackViewProcessor : ICardProcessor
 	{
 		public uint AnimationLength { get; set; } = 300;
 
