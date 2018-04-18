@@ -1,7 +1,7 @@
-﻿using PanCardView.Processors;
-using PanCardView.Controls;
-using System.Linq;
+﻿using PanCardView.Controls;
+using PanCardView.Processors;
 using System;
+using System.Linq;
 
 namespace PanCardView
 {

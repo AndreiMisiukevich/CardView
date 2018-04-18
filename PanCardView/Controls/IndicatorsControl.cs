@@ -1,7 +1,7 @@
-﻿using Xamarin.Forms;
+﻿using PanCardView.Behaviors;
 using PanCardView.Extensions;
 using System.Linq;
-using PanCardView.Behaviors;
+using Xamarin.Forms;
 using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
 
 namespace PanCardView.Controls

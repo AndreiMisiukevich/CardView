@@ -1,11 +1,11 @@
-﻿using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
-using Android.Content;
+﻿using Android.Content;
+using Android.Runtime;
+using Android.Views;
 using PanCardView.Controls;
 using PanCardView.Droid;
-using Android.Views;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 using static PanCardView.Droid.CardsViewRenderer;
-using Android.Runtime;
 
 [assembly: ExportRenderer(typeof(ParentScrollView), typeof(ParentScrollViewRenderer))]
 namespace PanCardView.Droid
@@ -24,4 +24,3 @@ namespace PanCardView.Droid
 		}
 	}
 }
-

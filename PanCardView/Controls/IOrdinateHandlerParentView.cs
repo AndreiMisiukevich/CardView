@@ -1,5 +1,4 @@
-﻿using System;
-namespace PanCardView.Controls
+﻿namespace PanCardView.Controls
 {
 	public interface IOrdinateHandlerParentView
 	{

@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using PanCardView.Enums;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PanCardView.Enums;
-using PanCardView.Extensions;
 using Xamarin.Forms;
 using static System.Math;
-using System.Collections;
 
 namespace PanCardView.Processors
 {
@@ -17,7 +15,7 @@ namespace PanCardView.Processors
 
 		public double NoItemMaxPanDistance { get; set; } = 25;
 
-		public virtual void HandleInitView (IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+		public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
 			var view = views.FirstOrDefault();
 			if (view != null)

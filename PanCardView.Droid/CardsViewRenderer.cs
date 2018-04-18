@@ -1,12 +1,12 @@
-﻿using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
-using Android.Content;
-using PanCardView.Droid;
-using PanCardView;
-using Android.Views;
+﻿using Android.Content;
 using Android.Runtime;
-using static System.Math;
+using Android.Views;
+using PanCardView;
+using PanCardView.Droid;
 using System;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+using static System.Math;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
@@ -146,7 +146,7 @@ namespace PanCardView.Droid
 
 		private readonly Action<bool> _onSwiped;
 
-		public CardsGestureListener(Action<bool> onSwiped) 
+		public CardsGestureListener(Action<bool> onSwiped)
 		=> _onSwiped = onSwiped;
 
 		public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)

@@ -1,7 +1,7 @@
-﻿using Xamarin.Forms;
-using System.Threading.Tasks;
-using PanCardView.Enums;
+﻿using PanCardView.Enums;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace PanCardView.Processors
 {

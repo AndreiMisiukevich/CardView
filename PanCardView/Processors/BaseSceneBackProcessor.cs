@@ -1,9 +1,9 @@
-﻿using static System.Math;
-using PanCardView.Enums;
-using Xamarin.Forms;
-using System.Threading.Tasks;
+﻿using PanCardView.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView.Processors
 {
@@ -17,7 +17,7 @@ namespace PanCardView.Processors
 
 		public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
 		{
-			if(cardsView.Width < 0)
+			if (cardsView.Width < 0)
 			{
 				return;
 			}

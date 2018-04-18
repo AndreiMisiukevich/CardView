@@ -1,6 +1,6 @@
 ﻿using PanCardView;
-using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
+using Xamarin.Forms;
 
 namespace PanCardViewSample.Views
 {
@@ -10,7 +10,8 @@ namespace PanCardViewSample.Views
 		{
 			var carousel = new SceneView
 			{
-				ItemTemplate = new DataTemplate(() => {
+				ItemTemplate = new DataTemplate(() =>
+				{
 					var c = new ContentView();
 					c.SetBinding(BackgroundColorProperty, "Color");
 					var l = new AbsoluteLayout();

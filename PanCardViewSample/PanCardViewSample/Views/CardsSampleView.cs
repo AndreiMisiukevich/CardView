@@ -1,48 +1,46 @@
-﻿using FFImageLoading.Forms;
-using PanCardView;
-using Xamarin.Forms;
-using PanCardView.Processors;
-using PanCardViewSample.ViewModels;
+﻿using PanCardView;
 using PanCardViewSample.CardsFactory;
+using PanCardViewSample.ViewModels;
+using Xamarin.Forms;
 
 namespace PanCardViewSample.Views
 {
-    public class CardsSampleView : ContentPage
-    {
-        public CardsSampleView()
-        {
-            var cardsView = new CardsView
-            {
+	public class CardsSampleView : ContentPage
+	{
+		public CardsSampleView()
+		{
+			var cardsView = new CardsView
+			{
 				ItemTemplate = new DataTemplate(() => new DefaultCardItemView()),
-                BackgroundColor = Color.Black.MultiplyAlpha(.9),
-                IsCyclical = true
-            };
+				BackgroundColor = Color.Black.MultiplyAlpha(.9),
+				IsCyclical = true
+			};
 
-            var prevItem = new ToolbarItem
-            {
-                Text = "**Prev**",
-                Icon = "prev",
-                CommandParameter = false
-            };
-            prevItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+			var prevItem = new ToolbarItem
+			{
+				Text = "**Prev**",
+				Icon = "prev",
+				CommandParameter = false
+			};
+			prevItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
 
-            var nextItem = new ToolbarItem
-            {
-                Text = "**Next**",
-                Icon = "next",
-                CommandParameter = true
-            };
-            nextItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+			var nextItem = new ToolbarItem
+			{
+				Text = "**Next**",
+				Icon = "next",
+				CommandParameter = true
+			};
+			nextItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
 
-            ToolbarItems.Add(prevItem);
-            ToolbarItems.Add(nextItem);
+			ToolbarItems.Add(prevItem);
+			ToolbarItems.Add(nextItem);
 
-            cardsView.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
-            cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
+			cardsView.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
+			cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 
-            Title = "CardsView";
-            Content = cardsView;
-            BindingContext = new SharedSampleViewModel();
-        }
-    }
+			Title = "CardsView";
+			Content = cardsView;
+			BindingContext = new SharedSampleViewModel();
+		}
+	}
 }

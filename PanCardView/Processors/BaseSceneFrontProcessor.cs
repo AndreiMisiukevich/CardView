@@ -1,10 +1,9 @@
-﻿using static System.Math;
-using PanCardView.Enums;
-using PanCardView.Extensions;
-using Xamarin.Forms;
-using System.Threading.Tasks;
+﻿using PanCardView.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView.Processors
 {
@@ -33,11 +32,11 @@ namespace PanCardView.Processors
 			var view = views.FirstOrDefault();
 			var inactiveView = inactiveViews.FirstOrDefault();
 
-			if(view != null)
+			if (view != null)
 			{
 				view.IsVisible = true;
 			}
-			if(inactiveView != null)
+			if (inactiveView != null)
 			{
 				inactiveView.IsVisible = false;
 			}

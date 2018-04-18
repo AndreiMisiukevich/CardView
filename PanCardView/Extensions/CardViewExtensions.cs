@@ -1,5 +1,5 @@
-﻿using Xamarin.Forms;
-using PanCardView.Controls;
+﻿using PanCardView.Controls;
+using Xamarin.Forms;
 
 namespace PanCardView.Extensions
 {

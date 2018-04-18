@@ -1,5 +1,4 @@
-﻿using System;
-using FFImageLoading.Forms;
+﻿using FFImageLoading.Forms;
 using Xamarin.Forms;
 
 namespace PanCardViewSample.CardsFactory

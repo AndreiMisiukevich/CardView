@@ -1,18 +1,18 @@
-﻿using System;
-using Xamarin.Forms;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections.Specialized;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using PanCardView.Behaviors;
+using PanCardView.Controls;
+using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Processors;
-using System.Collections;
-using PanCardView.Enums;
-using static System.Math;
-using PanCardView.Behaviors;
 using PanCardView.Utility;
-using PanCardView.Controls;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView
 {
@@ -59,7 +59,8 @@ namespace PanCardView
 			bindable.AsCardView().SetCurrentView(true);
 		});
 
-		public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), 1, propertyChanged: (bindable, oldValue, newValue) => {
+		public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), 1, propertyChanged: (bindable, oldValue, newValue) =>
+		{
 			bindable.AsCardView().SetCurrentView();
 		});
 
@@ -531,7 +532,7 @@ namespace PanCardView
 			for (int i = 0; i < indeces.Length; ++i)
 			{
 				var incValue = i + 1;
-				if(!IsOnlyForwardDirection)
+				if (!IsOnlyForwardDirection)
 				{
 					incValue = -incValue;
 				}
@@ -558,7 +559,7 @@ namespace PanCardView
 		protected override void OnSizeAllocated(double width, double height)
 		{
 			base.OnSizeAllocated(width, height);
-			if(!_isViewsInited && width > 0 && height > 0)
+			if (!_isViewsInited && width > 0 && height > 0)
 			{
 				_isViewsInited = true;
 				FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
@@ -910,7 +911,7 @@ namespace PanCardView
 				views[i] = PrepareView(indeces[i], animationDirection, views);
 			}
 
-			if(views.All(x => x == null))
+			if (views.All(x => x == null))
 			{
 				return Enumerable.Empty<View>();
 			}
@@ -977,7 +978,7 @@ namespace PanCardView
 			var currentContext = context;
 			var view = notUsingViews.FirstOrDefault(v => v.BindingContext == currentContext)
 									?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
-			                        ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v) && !bookedViews.Contains(v));
+									?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v) && !bookedViews.Contains(v));
 
 			if (view == null)
 			{

@@ -1,5 +1,4 @@
 ﻿using PanCardView.Processors;
-using Xamarin.Forms;
 
 namespace PanCardView
 {
