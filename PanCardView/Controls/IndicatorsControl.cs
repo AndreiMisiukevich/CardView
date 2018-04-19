@@ -118,7 +118,7 @@ namespace PanCardView.Controls
 			for (var i = 0; i < ItemsCount - oldCount; ++i)
 			{
 				var item = ItemTemplate.CreateView();
-				AddItemTapGesture(item, _itemTapGesture);
+				AddItemTapGesture(item);
 				Children.Add(item);
 			}
 		}
@@ -128,15 +128,6 @@ namespace PanCardView.Controls
 			foreach (var item in Children.Where((v, i) => i >= ItemsCount).ToArray())
 			{
 				Children.Remove(item);
-			}
-		}
-
-		protected virtual void AddItemTapGesture(View view, IGestureRecognizer tapGesture)
-		{
-			var gestures = view.GestureRecognizers;
-			if (!gestures.Contains(tapGesture))
-			{
-				view.GestureRecognizers.Add(tapGesture);
 			}
 		}
 
@@ -199,6 +190,15 @@ namespace PanCardView.Controls
 			{
 				ResetIndicatorsStylesNonBatch();
 				BatchCommit();
+			}
+		}
+
+		private void AddItemTapGesture(View view)
+		{
+			var gestures = view.GestureRecognizers;
+			if (!gestures.Contains(_itemTapGesture))
+			{
+				view.GestureRecognizers.Add(_itemTapGesture);
 			}
 		}
 	}
