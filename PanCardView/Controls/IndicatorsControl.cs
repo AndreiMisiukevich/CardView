@@ -8,7 +8,7 @@ namespace PanCardView.Controls
 {
 	public class IndicatorsControl : StackLayout
 	{
-		public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
+		public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
 		});
@@ -34,11 +34,12 @@ namespace PanCardView.Controls
 		{
 		}
 
+		private readonly TapGestureRecognizer _itemTapGesture;
+
 		public IndicatorsControl()
 		{
 			Spacing = 5;
 			Orientation = StackOrientation.Horizontal;
-			InputTransparent = true;
 
 			this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
 			this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
@@ -48,6 +49,12 @@ namespace PanCardView.Controls
 			AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
 
 			Behaviors.Add(new ProtectedControlBehavior());
+
+			_itemTapGesture = new TapGestureRecognizer();
+			_itemTapGesture.Tapped += (tapSender, tapArgs) =>
+			{
+				CurrentIndex = IndexOf(tapSender as View);
+			};
 		}
 
 		public int CurrentIndex
@@ -111,6 +118,7 @@ namespace PanCardView.Controls
 			for (var i = 0; i < ItemsCount - oldCount; ++i)
 			{
 				var item = ItemTemplate.CreateView();
+				AddItemTapGesture(item, _itemTapGesture);
 				Children.Add(item);
 			}
 		}
@@ -120,6 +128,15 @@ namespace PanCardView.Controls
 			foreach (var item in Children.Where((v, i) => i >= ItemsCount).ToArray())
 			{
 				Children.Remove(item);
+			}
+		}
+
+		protected virtual void AddItemTapGesture(View view, IGestureRecognizer tapGesture)
+		{
+			var gestures = view.GestureRecognizers;
+			if (!gestures.Contains(tapGesture))
+			{
+				view.GestureRecognizers.Add(tapGesture);
 			}
 		}
 
