@@ -1,19 +1,19 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
-using System.Linq;
 
 namespace PanCardViewSample.ViewModels
 {
-	public sealed class CardsSampleViewModel : INotifyPropertyChanged
+	public sealed class SceneSampleViewModel : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private int _currentIndex;
 		private int _ImageCount = 500;
 
-		public CardsSampleViewModel()
+		public SceneSampleViewModel()
 		{
 			Items = new ObservableCollection<object>
 			{
@@ -36,19 +36,9 @@ namespace PanCardViewSample.ViewModels
 				CurrentIndex -= 1;
 			});
 
-			RemoveCurrentItemCommand = new Command(() =>
-			{
-				if (!Items.Any())
-				{ 
-					return;
-				}
-				Items.RemoveAt(CurrentIndex);
-			});
 		}
 
 		public ICommand PanPositionChangedCommand { get; }
-
-		public ICommand RemoveCurrentItemCommand { get; }
 
 		public int CurrentIndex
 		{

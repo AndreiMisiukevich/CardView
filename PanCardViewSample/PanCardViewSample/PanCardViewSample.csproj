@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="ViewModels\CarouselSampleListViewModel.cs" />
     <Compile Include="Views\CarouselSampleListView.cs" />
+    <Compile Include="ViewModels\SceneSampleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">

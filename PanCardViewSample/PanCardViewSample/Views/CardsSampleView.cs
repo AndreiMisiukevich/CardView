@@ -24,7 +24,7 @@ namespace PanCardViewSample.Views
 				Icon = "prev",
 				CommandParameter = false
 			};
-			prevItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+			prevItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
 
 			var nextItem = new ToolbarItem
 			{
@@ -32,13 +32,13 @@ namespace PanCardViewSample.Views
 				Icon = "next",
 				CommandParameter = true
 			};
-			nextItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+			nextItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
 
 			ToolbarItems.Add(prevItem);
 			ToolbarItems.Add(nextItem);
 
-			cardsView.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
-			cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
+			cardsView.SetBinding(CardsView.ItemsProperty, nameof(CardsSampleViewModel.Items));
+			cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(CardsSampleViewModel.CurrentIndex));
 
 			Title = "Cards View";
 
@@ -52,7 +52,7 @@ namespace PanCardViewSample.Views
 				Margin = new Thickness(0, 0, 0, 10)
 			};
 
-			removeButton.SetBinding(Button.CommandProperty, nameof(SharedSampleViewModel.RemoveCurrentItemCommand));
+			removeButton.SetBinding(Button.CommandProperty, nameof(CardsSampleViewModel.RemoveCurrentItemCommand));
 
 			AbsoluteLayout.SetLayoutFlags(removeButton, AbsoluteLayoutFlags.PositionProportional);
 			AbsoluteLayout.SetLayoutBounds(removeButton, new Rectangle(.5, 1, 150, 40));
@@ -68,7 +68,7 @@ namespace PanCardViewSample.Views
 				}
 			};
 
-			BindingContext = new SharedSampleViewModel();
+			BindingContext = new CardsSampleViewModel();
 		}
 	}
 }

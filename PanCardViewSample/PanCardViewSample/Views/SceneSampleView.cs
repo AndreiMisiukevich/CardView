@@ -26,7 +26,7 @@ namespace PanCardViewSample.Views
 				Icon = "prev",
 				CommandParameter = false
 			};
-			prevItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+			prevItem.SetBinding(MenuItem.CommandProperty, nameof(SceneSampleViewModel.PanPositionChangedCommand));
 
 			var nextItem = new ToolbarItem
 			{
@@ -34,18 +34,18 @@ namespace PanCardViewSample.Views
 				Icon = "next",
 				CommandParameter = true
 			};
-			nextItem.SetBinding(MenuItem.CommandProperty, nameof(SharedSampleViewModel.PanPositionChangedCommand));
+			nextItem.SetBinding(MenuItem.CommandProperty, nameof(SceneSampleViewModel.PanPositionChangedCommand));
 
 			ToolbarItems.Add(prevItem);
 			ToolbarItems.Add(nextItem);
 
-			carousel.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
-			carousel.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
+			carousel.SetBinding(CardsView.ItemsProperty, nameof(SceneSampleViewModel.Items));
+			carousel.SetBinding(CardsView.CurrentIndexProperty, nameof(SceneSampleViewModel.CurrentIndex));
 
 			BackgroundColor = Color.Black;
 			Title = "SceneView";
 			Content = carousel;
-			BindingContext = new SharedSampleViewModel();
+			BindingContext = new SceneSampleViewModel();
 		}
 	}
 }
