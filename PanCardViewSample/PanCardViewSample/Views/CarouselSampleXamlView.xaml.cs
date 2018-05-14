@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace PanCardViewSample.Views
 {
-	public partial class CarouselSampleXamlView
-	{
-		public CarouselSampleXamlView()
-		{
-			InitializeComponent();
-		}
-	}
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class CarouselSampleXamlView : ContentPage
+    {
+        public CarouselSampleXamlView()
+        {
+            InitializeComponent();
+        }
+    }
 }

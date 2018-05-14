@@ -11,7 +11,7 @@
     Title="Carousel Xaml">
 
     <ContentPage.BindingContext>
-        <viewModels:SharedSampleViewModel/>
+        <viewModels:CardsSampleViewModel/>
     </ContentPage.BindingContext>
 
     <cards:CarouselView 
