@@ -1,4 +1,5 @@
 ﻿using PanCardView.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
+	[Obsolete("NOT FINISHED YET! IT WILL BE AVAILABLE IN NEXT RELEASES!")]
 	public class BaseSceneBackProcessor : ICardProcessor
 	{
 		public uint AnimationLength { get; set; } = 300;
