@@ -159,21 +159,4 @@ namespace PanCardView.Droid
 			return false;
 		}
 	}
-
-	public class FRenderer : CardsViewRenderer
-	{
-		public FRenderer(Context context) : base(context)
-		{
-		}
-
-		public override bool OnInterceptTouchEvent(MotionEvent ev)
-		{
-			return true;
-		}
-
-		public override bool OnTouchEvent(MotionEvent e)
-		{
-			return true;
-		}
-	}
 }
