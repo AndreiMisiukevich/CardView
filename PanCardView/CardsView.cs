@@ -1081,7 +1081,7 @@ namespace PanCardView
 			}
 		}
 
-		private void SetNewIndex()
+		private void SetNewIndex() //TODO: refactor me
 		{
 			var index = 0;
 			if (CurrentView != null)

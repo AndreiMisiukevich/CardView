@@ -15,6 +15,8 @@ namespace PanCardViewSample.Views
 				BackgroundColor = Color.Black.MultiplyAlpha(.9),
 				IsCyclical = true
 			};
+			AbsoluteLayout.SetLayoutFlags(cardsView, AbsoluteLayoutFlags.All);
+			AbsoluteLayout.SetLayoutBounds(cardsView, new Rectangle(0, 0, 1, 1));
 
 			var prevItem = new ToolbarItem
 			{
@@ -38,8 +40,34 @@ namespace PanCardViewSample.Views
 			cardsView.SetBinding(CardsView.ItemsProperty, nameof(SharedSampleViewModel.Items));
 			cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(SharedSampleViewModel.CurrentIndex));
 
-			Title = "CardsView";
-			Content = cardsView;
+			Title = "Cards View";
+
+
+			var removeButton = new Button
+			{
+				Text = "Remove current",
+				FontAttributes = FontAttributes.Bold,
+				TextColor = Color.Black,
+				BackgroundColor = Color.Yellow.MultiplyAlpha(.7),
+				Margin = new Thickness(0, 0, 0, 10)
+			};
+
+			removeButton.SetBinding(Button.CommandProperty, nameof(SharedSampleViewModel.RemoveCurrentItemCommand));
+
+			AbsoluteLayout.SetLayoutFlags(removeButton, AbsoluteLayoutFlags.PositionProportional);
+			AbsoluteLayout.SetLayoutBounds(removeButton, new Rectangle(.5, 1, 150, 40));
+
+
+
+			Content = new AbsoluteLayout()
+			{
+				Children =
+				{
+					cardsView,
+					removeButton
+				}
+			};
+
 			BindingContext = new SharedSampleViewModel();
 		}
 	}

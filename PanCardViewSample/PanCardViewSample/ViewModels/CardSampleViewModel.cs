@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace PanCardViewSample.ViewModels
 {
@@ -34,9 +35,20 @@ namespace PanCardViewSample.ViewModels
 
 				CurrentIndex -= 1;
 			});
+
+			RemoveCurrentItemCommand = new Command(() =>
+			{
+				if (!Items.Any())
+				{ 
+					return;
+				}
+				Items.RemoveAt(CurrentIndex);
+			});
 		}
 
 		public ICommand PanPositionChangedCommand { get; }
+
+		public ICommand RemoveCurrentItemCommand { get; }
 
 		public int CurrentIndex
 		{
