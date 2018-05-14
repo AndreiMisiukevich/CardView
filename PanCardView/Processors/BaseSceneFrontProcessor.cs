@@ -52,7 +52,10 @@ namespace PanCardView.Processors
 				xPos = Sign(xPos) * Min(Abs(xPos / 4), NoItemMaxPanDistance);
 			}
 
-			view.TranslationX = xPos;
+			if (view != null)
+			{
+				view.TranslationX = xPos;
+			}
 		}
 
 		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)

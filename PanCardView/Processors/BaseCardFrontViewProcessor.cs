@@ -43,9 +43,12 @@ namespace PanCardView.Processors
 				multiplier = -multiplier;
 			}
 
-			view.TranslationX = xPos;
-			view.TranslationY = multiplier * Abs(xPos) / 10;
-			view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Width);
+			if (view != null)
+			{
+				view.TranslationX = xPos;
+				view.TranslationY = multiplier * Abs(xPos) / 10;
+				view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Width);
+			}
 		}
 
 		public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)

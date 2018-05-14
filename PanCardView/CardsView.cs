@@ -473,10 +473,6 @@ namespace PanCardView
 
 			var oldView = CurrentView;
 			var view = PrepareView(CurrentIndex, AnimationDirection.Current, Enumerable.Empty<View>());
-			if (view == null)
-			{
-				return false;
-			}
 			CurrentView = view;
 
 			BackViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, animationDirection);
@@ -644,7 +640,7 @@ namespace PanCardView
 			}
 
 			var deltaTime = DateTime.Now - _lastPanTime;
-			if (!IsPanEnabled || deltaTime.TotalMilliseconds < PanDelay)
+			if (!IsPanEnabled || deltaTime.TotalMilliseconds < PanDelay || CurrentView == null)
 			{
 				_shouldSkipTouch = true;
 				return;
@@ -1081,9 +1077,17 @@ namespace PanCardView
 			}
 		}
 
-		private void SetNewIndex() //TODO: refactor me
+		private void SetNewIndex()
 		{
-			var index = 0;
+			if(ItemsCount <= 0)
+			{
+				CurrentIndex = -1;
+				return;
+			}
+
+			var index = -1;
+			var isCurrentContextPresent = false;
+
 			if (CurrentView != null)
 			{
 				for (var i = 0; i < ItemsCount; ++i)
@@ -1091,6 +1095,7 @@ namespace PanCardView
 					if (Items[i] == CurrentView.BindingContext)
 					{
 						index = i;
+						isCurrentContextPresent = true;
 						break;
 					}
 				}
@@ -1104,6 +1109,16 @@ namespace PanCardView
 			if (index < 0)
 			{
 				index = 0;
+			}
+
+			if(CurrentIndex == index)
+			{
+				if (!isCurrentContextPresent)
+				{
+					OldIndex = index;
+					SetCurrentView();
+				}
+				return;
 			}
 
 			CurrentIndex = index;
