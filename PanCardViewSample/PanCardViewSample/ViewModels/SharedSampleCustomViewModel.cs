@@ -83,7 +83,7 @@ namespace PanCardViewSample.ViewModels
 
 		private string CreateSource()
 		{
-			return $"http://lorempixel.com/300/300/animals/text{++_ImageCount}/";
+			return $"https://picsum.photos/500/500?image={++_ImageCount}/";
 		}
 
 		private Color CreateColor()

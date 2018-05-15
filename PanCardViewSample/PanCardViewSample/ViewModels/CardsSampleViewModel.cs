@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
+using FFImageLoading;
 
 namespace PanCardViewSample.ViewModels
 {
@@ -64,7 +65,8 @@ namespace PanCardViewSample.ViewModels
 
 		private string CreateSource()
 		{
-			return $"http://lorempixel.com/300/300/animals/text{_ImageCount}/";
+			var source = $"https://picsum.photos/500/500?image={_ImageCount}";
+			return source;
 		}
 	}
 }
