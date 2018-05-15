@@ -66,7 +66,7 @@ carouselView.Children.Add(new IndicatorsControl());
                     CornerRadius="10"
                     BackgroundColor="{Binding Color}">
                     
-                    <ffimage:CachedImage Source="{Binding Source}"/> 
+                    <Image Source="{Binding Source}"/> 
                     
                 </Frame>
             </ContentView>
