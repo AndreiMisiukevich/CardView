@@ -54,7 +54,7 @@ namespace PanCardViewSample.ViewModels
 
 		private string CreateSource()
 		{
-			return $"https://picsum.photos/500/500?image={_ImageCount}/";
+			return $"https://picsum.photos/500/500?image={_ImageCount}";
 		}
 	}
 }
