@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using Xamarin.Forms;
 using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
+using static System.Math;
 
 namespace PanCardView.Controls
 {
@@ -27,6 +28,10 @@ namespace PanCardView.Controls
 		public readonly BindableProperty UnselectedIndicatorStyleProperty = BindableProperty.Create(nameof(UnselectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), DefaultUnselectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
+		});
+
+		public readonly BindableProperty UseCardItemsAsIndicatorsBindingContextsProperty = BindableProperty.Create(nameof(UseCardItemsAsIndicatorsBindingContexts), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) => {
+			bindable.AsIndicatorsControl().ResetIndicatorsContexts();
 		});
 
 		public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IList), typeof(IndicatorsControl), null);
@@ -105,6 +110,12 @@ namespace PanCardView.Controls
 			set => SetValue(UseParentAsBindingContextProperty, value);
 		}
 
+		public bool UseCardItemsAsIndicatorsBindingContexts
+		{
+			get => (bool)GetValue(UseCardItemsAsIndicatorsBindingContextsProperty);
+			set => SetValue(UseCardItemsAsIndicatorsBindingContextsProperty, value);
+		}
+
 		protected override void OnParentSet()
 		{
 			base.OnParentSet();
@@ -132,12 +143,9 @@ namespace PanCardView.Controls
 
 		protected virtual void OnResetIndicatorsContexts()
 		{
-			if (IndicatorsContexts != null)
+			for (var i = 0; i < Min(Children.Count, ItemsCount); ++i)
 			{
-				for (var i = 0; i < ItemsCount; ++i)
-				{
-					Children[i].BindingContext = IndicatorsContexts[i];
-				}
+				Children[i].BindingContext = IndicatorsContexts[i];
 			}
 		}
 
@@ -215,12 +223,20 @@ namespace PanCardView.Controls
 				}
 
 				AddExtraIndicatorsItems();
-				OnResetIndicatorsContexts();
+				ResetIndicatorsContexts();
 			}
 			finally
 			{
 				ResetIndicatorsStylesNonBatch();
 				BatchCommit();
+			}
+		}
+
+		private void ResetIndicatorsContexts()
+		{
+			if (UseCardItemsAsIndicatorsBindingContexts && IndicatorsContexts != null)
+			{
+				OnResetIndicatorsContexts();
 			}
 		}
 
