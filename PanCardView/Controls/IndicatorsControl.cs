@@ -28,12 +28,12 @@ namespace PanCardView.Controls
 		{
 			bindable.AsIndicatorsControl().ResetIndicatorsStyles();
 		});
-        
-        public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IList), typeof(IndicatorsControl), null);
 
-        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
-        
-        public readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(IndicatorsControl), true);
+		public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IList), typeof(IndicatorsControl), null);
+
+		public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
+
+		public readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(IndicatorsControl), true);
 
 		static IndicatorsControl()
 		{
@@ -48,7 +48,7 @@ namespace PanCardView.Controls
 
 			this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
 			this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
-            this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.Items));
+			this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.Items));
 
 			Margin = new Thickness(10, 20);
 			AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
@@ -74,7 +74,7 @@ namespace PanCardView.Controls
 			get => (int)GetValue(ItemsCountProperty);
 			set => SetValue(ItemsCountProperty, value);
 		}
-        
+
 		public Style SelectedIndicatorStyle
 		{
 			get => GetValue(SelectedIndicatorStyleProperty) as Style;
@@ -86,33 +86,33 @@ namespace PanCardView.Controls
 			get => GetValue(UnselectedIndicatorStyleProperty) as Style;
 			set => SetValue(UnselectedIndicatorStyleProperty, value);
 		}
-        
-        public IList IndicatorsContexts
-        {
-            get => GetValue(IndicatorsContextsProperty) as IList;
-            set => SetValue(IndicatorsContextsProperty, value);
-        }
-        
-        public DataTemplate ItemTemplate
-        {
-            get => GetValue(ItemTemplateProperty) as DataTemplate;
-            set => SetValue(ItemTemplateProperty, value);
-        }
-        
-        public bool UseParentAsBindingContext
-        {
-            get => (bool)GetValue(UseParentAsBindingContextProperty);
-            set => SetValue(UseParentAsBindingContextProperty, value);
-        }
 
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-            if (UseParentAsBindingContext)
-            {
-                BindingContext = Parent;
-            }
-        }
+		public IList IndicatorsContexts
+		{
+			get => GetValue(IndicatorsContextsProperty) as IList;
+			set => SetValue(IndicatorsContextsProperty, value);
+		}
+
+		public DataTemplate ItemTemplate
+		{
+			get => GetValue(ItemTemplateProperty) as DataTemplate;
+			set => SetValue(ItemTemplateProperty, value);
+		}
+
+		public bool UseParentAsBindingContext
+		{
+			get => (bool)GetValue(UseParentAsBindingContextProperty);
+			set => SetValue(UseParentAsBindingContextProperty, value);
+		}
+
+		protected override void OnParentSet()
+		{
+			base.OnParentSet();
+			if (UseParentAsBindingContext)
+			{
+				BindingContext = Parent;
+			}
+		}
 
 		protected virtual void ApplySelectedStyle(View view, int index)
 		=> view.Style = SelectedIndicatorStyle;
@@ -129,35 +129,35 @@ namespace PanCardView.Controls
 				ApplyStyle(child, currentIndex);
 			}
 		}
-        
-        protected virtual void OnResetIndicatorsContexts()
-        {
-            if(IndicatorsContexts != null)
-            {
-                for (var i = 0; i < ItemsCount; ++i)
-                {
-                    Children[i].BindingContext = IndicatorsContexts[i];
-                }
-            }
-        }
 
-        protected virtual void AddExtraIndicatorsItems()
-        {
-            var oldCount = Children.Count;
-            for (var i = 0; i < ItemsCount - oldCount; ++i)
-            {
-                var item = ItemTemplate.CreateView();
-                AddItemTapGesture(item);
-                Children.Add(item);
-            }
-        }
+		protected virtual void OnResetIndicatorsContexts()
+		{
+			if (IndicatorsContexts != null)
+			{
+				for (var i = 0; i < ItemsCount; ++i)
+				{
+					Children[i].BindingContext = IndicatorsContexts[i];
+				}
+			}
+		}
+
+		protected virtual void AddExtraIndicatorsItems()
+		{
+			var oldCount = Children.Count;
+			for (var i = 0; i < ItemsCount - oldCount; ++i)
+			{
+				var item = ItemTemplate.CreateView();
+				AddItemTapGesture(item);
+				Children.Add(item);
+			}
+		}
 
 		protected virtual void RemoveRedundantIndicatorsItems()
 		{
 			foreach (var item in Children.Where((v, i) => i >= ItemsCount).ToArray())
 			{
 				Children.Remove(item);
-                item.BindingContext = null;
+				item.BindingContext = null;
 			}
 		}
 
@@ -215,7 +215,7 @@ namespace PanCardView.Controls
 				}
 
 				AddExtraIndicatorsItems();
-                OnResetIndicatorsContexts();
+				OnResetIndicatorsContexts();
 			}
 			finally
 			{

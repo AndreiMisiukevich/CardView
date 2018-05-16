@@ -1079,7 +1079,7 @@ namespace PanCardView
 
 		private void SetNewIndex()
 		{
-			if(ItemsCount <= 0)
+			if (ItemsCount <= 0)
 			{
 				CurrentIndex = -1;
 				return;
@@ -1111,7 +1111,7 @@ namespace PanCardView
 				index = 0;
 			}
 
-			if(CurrentIndex == index)
+			if (CurrentIndex == index)
 			{
 				if (!isCurrentContextPresent)
 				{
