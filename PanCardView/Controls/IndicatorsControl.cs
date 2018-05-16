@@ -114,10 +114,16 @@ namespace PanCardView.Controls
 
 		protected virtual void AddExtraIndicatorsItems()
 		{
+            var cardsView = BindingContext as CardsView;
+
 			var oldCount = Children.Count;
 			for (var i = 0; i < ItemsCount - oldCount; ++i)
 			{
 				var item = ItemTemplate.CreateView();
+                if(cardsView != null)
+                {
+                    item.BindingContext = cardsView.Items[i];
+                }
 				AddItemTapGesture(item);
 				Children.Add(item);
 			}
