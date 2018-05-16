@@ -2,7 +2,7 @@
 
 namespace PanCardView.Behaviors
 {
-	public class ProtectedControlBehavior : Behavior<View>
-	{
-	}
+    public class ProtectedControlBehavior : Behavior<View>
+    {
+    }
 }
