@@ -223,11 +223,11 @@ namespace PanCardView.Controls
 				}
 
 				AddExtraIndicatorsItems();
-				ResetIndicatorsContexts();
 			}
 			finally
-			{
-				ResetIndicatorsStylesNonBatch();
+            {
+                ResetIndicatorsContexts();
+                ResetIndicatorsStylesNonBatch();
 				BatchCommit();
 			}
 		}
