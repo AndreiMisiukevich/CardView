@@ -388,7 +388,7 @@ namespace PanCardView
 
 		public void OnPanUpdated(PanUpdatedEventArgs e, bool? isSwiped = null)
 		{
-			if (ItemsCount < 0 && !IsContextMode)
+			if (ItemsCount <= 0 && !IsContextMode)
 			{
 				return;
 			}
@@ -971,8 +971,7 @@ namespace PanCardView
 			}
 
 			var notUsingViews = viewsList.Where(v => !_viewsInUse.Contains(v));
-			var currentContext = context;
-			var view = notUsingViews.FirstOrDefault(v => v.BindingContext == currentContext)
+			var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context)
 									?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
 									?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v) && !bookedViews.Contains(v));
 
@@ -1000,14 +999,14 @@ namespace PanCardView
 				}
 			}
 
-			if (ItemsCount < 0)
+			if (ItemsCount <= 0)
 			{
 				return null;
 			}
 
 			if (index < 0 || index >= ItemsCount)
 			{
-				if (!IsCyclical || (animationDirection != AnimationDirection.Current && ItemsCount < 2))
+				if (!IsCyclical || (animationDirection != AnimationDirection.Current && ItemsCount <= 1))
 				{
 					return null;
 				}
