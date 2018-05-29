@@ -2,7 +2,7 @@
 
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
-* Add nuget package to your Xamarin.Forms PCL project and to your platform-specific projects
+* Add nuget package to your Xamarin.Forms .netStandard/PCL project and to your platform-specific projects
 
 |Platform|Version|
 | ------------------- | ------------------- |
