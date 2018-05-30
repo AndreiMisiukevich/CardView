@@ -77,6 +77,27 @@ carouselView.Children.Add(new IndicatorsControl());
 </cards:CarouselView>
 ```
 
+if you want to add items directly through xaml
+
+``` xml
+...
+    <cards:CarouselView.Items>
+            <x:Array Type="{x:Type View}">
+                <ContentView>
+                    <Image Source="yourImage.png"/>
+                </ContentView>
+                <RelativeLayout>
+                    <Button Text="Click" />
+                </RelativeLayout>
+                <StackLayout>
+                    <Label Text="any text"/>
+                </StackLayout>
+            </x:Array>
+    </cards:CarouselView.Items>
+...
+```
+
+
 -> If you want to customize indicators, you need set *SelectedIndicatorStyle* and/or *UnselectedIndicatorStyle*, or you are able to extend this class and override several methods.
 Also you can customize position of indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
 
