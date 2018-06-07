@@ -116,7 +116,7 @@ Check these classes (I implemented it for ParentScrollView. You can use it as ex
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/ParentScrollView.cs
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
 
-Check source code for more info, or ***just ask me =)***
+Check source code for more info, or 🇧🇾 ***just ask me =)*** 🇧🇾
 
 ## License
 The MIT License (MIT) see [License file](LICENSE)
