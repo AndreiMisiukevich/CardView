@@ -488,8 +488,11 @@ namespace PanCardView
 				BackViewProcessor.HandleAutoNavigate(Enumerable.Repeat(oldView, 1), this, animationDirection, CurrentInactiveBackViews),
 				FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, animationDirection, Enumerable.Empty<View>()));
 
-			SetupBackViews();
-
+            if (ItemTemplate != null)
+            {
+                SetupBackViews();
+            }
+            
 			await autoNavigationTask;
 			EndAutoNavigation(oldView, animationId, animationDirection);
 
