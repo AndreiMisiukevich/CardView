@@ -412,9 +412,19 @@ namespace PanCardView
 
 		protected virtual void OnOrientationChanged()
 		{
-			SetCurrentView();
+			if (CurrentView != null)
+			{
+				var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
+				currentViewPair.Value.Clear();
+				currentViewPair.Value.Add(CurrentView);
+				_viewsPool.Clear();
+				_viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
+			}
+
+			SetCurrentView(CurrentContext != null);
 			RemoveUnprocessingChildren();
-			UpdateChildrenLayout();
+
+			ForceLayout();
 		}
 
 		protected virtual void SetupBackViews()
