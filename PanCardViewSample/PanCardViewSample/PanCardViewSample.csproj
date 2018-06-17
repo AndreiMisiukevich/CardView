@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -47,6 +47,10 @@
     <Compile Include="ViewModels\CarouselSampleListViewModel.cs" />
     <Compile Include="Views\CarouselSampleListView.cs" />
     <Compile Include="ViewModels\SceneSampleViewModel.cs" />
+    <Compile Include="Controls\Xam.Plugin.TabView.cs" />
+    <Compile Include="Views\CarouselSampleEmbeddedView.xaml.cs">
+      <DependentUpon>CarouselSampleEmbeddedView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">
@@ -84,6 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\CarouselSampleXamlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CarouselSampleEmbeddedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

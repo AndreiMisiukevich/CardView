@@ -412,7 +412,7 @@ namespace PanCardView
 
 		protected virtual void OnOrientationChanged()
 		{
-			if (CurrentView != null)
+			if (CurrentView != null && ItemTemplate != null)
 			{
 				var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
 				currentViewPair.Value.Clear();
@@ -423,7 +423,6 @@ namespace PanCardView
 
 			SetCurrentView(CurrentContext != null);
 			RemoveUnprocessingChildren();
-
 			ForceLayout();
 		}
 

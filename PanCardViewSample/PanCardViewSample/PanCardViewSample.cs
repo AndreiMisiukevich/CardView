@@ -63,17 +63,27 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CarouselSampleListView());
 			};
 
-			Content = new StackLayout
+			var toCarouselEmbBtn = new Button { Text = "Carousel Embedded views" };
+			toCarouselEmbBtn.Clicked += (sender, e) =>
 			{
-				Children = {
-					toCardsBtn,
-					toCardsBtnCustom,
-					toCarouselBtn,
-					toCarouselScrollBtn,
-					toCarouselDoubleBtn,
-					toCarouselNoTemplateBtn,
-					toCarouselXamlBtn,
-					toCarouselListBtn
+				this.Navigation.PushAsync(new CarouselSampleEmbeddedView());
+			};
+
+			Content = new ScrollView
+			{
+				Content = new StackLayout
+				{
+					Children = {
+						toCardsBtn,
+						toCardsBtnCustom,
+						toCarouselBtn,
+						toCarouselScrollBtn,
+						toCarouselDoubleBtn,
+						toCarouselNoTemplateBtn,
+						toCarouselXamlBtn,
+						toCarouselListBtn,
+						toCarouselEmbBtn
+					}
 				}
 			};
 		}
