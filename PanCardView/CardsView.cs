@@ -136,6 +136,7 @@ namespace PanCardView
 		private bool _isPanEndRequested = true;
 		private bool _shouldSkipTouch;
 		private bool _isViewsInited;
+		private bool? _isPortraitOrientation;
 		private bool? _shouldScrollParent;
 		private Guid _gestureId;
 		private DateTime _lastPanTime;
@@ -409,6 +410,13 @@ namespace PanCardView
 			}
 		}
 
+		protected virtual void OnOrientationChanged()
+		{
+			SetCurrentView();
+			RemoveUnprocessingChildren();
+			UpdateChildrenLayout();
+		}
+
 		protected virtual void SetupBackViews()
 		{
 			SetupNextView();
@@ -561,9 +569,15 @@ namespace PanCardView
 			if (!_isViewsInited && width > 0 && height > 0)
 			{
 				_isViewsInited = true;
+				_isPortraitOrientation = height > width;
 				FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
 				BackViewProcessor.HandleInitView(PrevViews, this, AnimationDirection.Prev);
 				BackViewProcessor.HandleInitView(NextViews, this, AnimationDirection.Next);
+			}
+			if(_isPortraitOrientation.HasValue && _isPortraitOrientation != height > width)
+			{
+				_isPortraitOrientation = !_isPortraitOrientation;
+				OnOrientationChanged();
 			}
 		}
 
@@ -1181,14 +1195,26 @@ namespace PanCardView
 			lock (_childLocker)
 			{
 				var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUse.Contains(c)).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();
+				RemoveChildren(views);
+			}
+		}
 
-				_viewsChildrenCount -= views.Length;
+		private void RemoveUnprocessingChildren()
+		{
+			lock(_childLocker)
+			{
+				var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c)).ToArray();
+				RemoveChildren(views);
+			}
+		}
 
-				foreach (var view in views)
-				{
-					Children.Remove(view);
-					CleanView(view);
-				}
+		private void RemoveChildren(View[] views)
+		{
+			_viewsChildrenCount -= views.Length;
+			foreach (var view in views)
+			{
+				Children.Remove(view);
+				CleanView(view);
 			}
 		}
 
