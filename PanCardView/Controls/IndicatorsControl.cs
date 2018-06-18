@@ -5,6 +5,8 @@ using System.Linq;
 using Xamarin.Forms;
 using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
 using static System.Math;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace PanCardView.Controls
 {
@@ -41,11 +43,14 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(IndicatorsControl), true);
 
+        public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(IndicatorsControl), 0);
+
         static IndicatorsControl()
         {
         }
 
         private readonly TapGestureRecognizer _itemTapGesture;
+        private CancellationTokenSource _fadeAnimationTokenSource;
 
         public IndicatorsControl()
         {
@@ -104,17 +109,23 @@ namespace PanCardView.Controls
             get => GetValue(ItemTemplateProperty) as DataTemplate;
             set => SetValue(ItemTemplateProperty, value);
         }
+        
+        public bool UseCardItemsAsIndicatorsBindingContexts
+        {
+            get => (bool)GetValue(UseCardItemsAsIndicatorsBindingContextsProperty);
+            set => SetValue(UseCardItemsAsIndicatorsBindingContextsProperty, value);
+        }
 
         public bool UseParentAsBindingContext
         {
             get => (bool)GetValue(UseParentAsBindingContextProperty);
             set => SetValue(UseParentAsBindingContextProperty, value);
         }
-
-        public bool UseCardItemsAsIndicatorsBindingContexts
+        
+        public int ToFadeDuration
         {
-            get => (bool)GetValue(UseCardItemsAsIndicatorsBindingContextsProperty);
-            set => SetValue(UseCardItemsAsIndicatorsBindingContextsProperty, value);
+            get => (int)GetValue(ToFadeDurationProperty);
+            set => SetValue(ToFadeDurationProperty, value);
         }
 
         protected override void OnParentSet()
@@ -188,10 +199,35 @@ namespace PanCardView.Controls
             }
         }
 
-        private void ResetIndicatorsStylesNonBatch()
+        private async void ResetIndicatorsStylesNonBatch()
         {
             var cyclingIndex = CurrentIndex.ToCyclingIndex(ItemsCount);
             OnResetIndicatorsStyles(cyclingIndex);
+
+            if (ToFadeDuration > 0)
+            {
+                _fadeAnimationTokenSource?.Cancel();
+                _fadeAnimationTokenSource = new CancellationTokenSource();
+                var token = _fadeAnimationTokenSource.Token;
+                
+                IsVisible = true;
+                await this.FadeTo(1, 300, Easing.CubicInOut);
+                if(token.IsCancellationRequested)
+                {
+                    return;
+                }
+                await Task.Delay(ToFadeDuration);
+                if(token.IsCancellationRequested)
+                {
+                    return;
+                }
+                await this.FadeTo(0, 300, Easing.SinOut);
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+                IsVisible = false;
+            }
         }
 
         private void ResetIndicatorsStyles()
