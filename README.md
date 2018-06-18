@@ -76,6 +76,7 @@ carouselView.Children.Add(new IndicatorsControl());
     <controls:IndicatorsControl/>
 </cards:CarouselView>
 ```
+Also you are able to manage IndicatorsControl appearing/disappearing. For example if user doesn't select new page during N miliseconds, the indicators will disappear. Just set ToFadeDuration = 2000 (2 seconds delay before disappearing)
 
 if you want to add items directly through xaml
 
