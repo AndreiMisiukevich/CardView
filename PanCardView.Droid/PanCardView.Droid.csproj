@@ -41,63 +41,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="Xamarin.Android.Arch.Core.Common">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Arch.Core.Common.1.0.0\lib\MonoAndroid80\Xamarin.Android.Arch.Core.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Annotations">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Annotations.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Arch.Lifecycle.Common">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Common.1.0.3\lib\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Arch.Lifecycle.Runtime">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3\lib\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Compat">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Compat.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Compat.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Core.UI">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Core.UI.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Core.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Core.Utils">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Core.Utils.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Core.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Fragment">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Fragment.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Fragment.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Media.Compat">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Media.Compat.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Media.Compat.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Transition">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Transition.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Transition.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v4.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.v4.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.CardView">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.CardView.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.v7.CardView.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.Palette">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.Palette.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.v7.Palette.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Vector.Drawable">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Vector.Drawable.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Animated.Vector.Drawable.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Design">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Design.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\lib\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
-    </Reference>
     <Reference Include="FormsViewGroup">
       <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.2.5.1.444934\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
@@ -112,6 +55,63 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.2.5.1.444934\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Arch.Core.Common">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Arch.Core.Common.26.1.0\lib\MonoAndroid80\Xamarin.Android.Arch.Core.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Arch.Lifecycle.Common">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Common.26.1.0\lib\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Arch.Lifecycle.Runtime">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Runtime.26.1.0\lib\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Annotations">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Annotations.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Compat">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Compat.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Compat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Core.UI">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Core.UI.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Core.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Core.Utils">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Core.Utils.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Core.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Fragment">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Fragment.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Fragment.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Media.Compat">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Media.Compat.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Media.Compat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Transition">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Transition.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Transition.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v4.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.CardView">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.CardView.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.Palette">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.Palette.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.v7.Palette.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Vector.Drawable">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Vector.Drawable.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Animated.Vector.Drawable.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Design">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Design.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2.1\lib\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -135,24 +135,24 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Annotations.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Annotations.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Common.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Common.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Compat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Compat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Core.UI.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Core.UI.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Core.Utils.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Core.Utils.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Fragment.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Fragment.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Media.Compat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Media.Compat.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Media.Compat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Media.Compat.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Transition.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Transition.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Transition.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Transition.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v4.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v4.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v4.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v4.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.CardView.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.CardView.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.CardView.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.CardView.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.Palette.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.Palette.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.Palette.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.Palette.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Vector.Drawable.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Vector.Drawable.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Animated.Vector.Drawable.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Animated.Vector.Drawable.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Design.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.Design.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets')" />
   <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.2.5.1.444934\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.2.5.1.444934\build\netstandard1.0\Xamarin.Forms.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Arch.Core.Common.26.1.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Arch.Core.Common.26.1.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Common.26.1.0\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Common.26.1.0\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Runtime.26.1.0\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Arch.Lifecycle.Runtime.26.1.0\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Annotations.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Annotations.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Compat.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Compat.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Core.UI.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Core.UI.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Core.Utils.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Core.Utils.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Fragment.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Fragment.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Media.Compat.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Media.Compat.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Media.Compat.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Media.Compat.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Transition.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Transition.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Transition.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Transition.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v4.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v4.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v4.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v4.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.CardView.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.CardView.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.CardView.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.CardView.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.Palette.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.Palette.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.Palette.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.Palette.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Vector.Drawable.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Vector.Drawable.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Animated.Vector.Drawable.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Animated.Vector.Drawable.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.AppCompat.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Design.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Design.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Design.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Design.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets')" />
 </Project>
