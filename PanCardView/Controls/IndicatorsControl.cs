@@ -42,13 +42,18 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetVisibility();
         });
 
+		public static readonly BindableProperty IsAutoNavigatingRunningProperty = BindableProperty.Create(nameof(IsAutoNavigatingRunning), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsIndicatorsControl().ResetVisibility();
+		});
+
         public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IList), typeof(IndicatorsControl), null);
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(IndicatorsControl), true);
 
-        public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(IndicatorsControl), 2000);
+        public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(IndicatorsControl), 0);
 
         static IndicatorsControl()
         {
@@ -66,6 +71,7 @@ namespace PanCardView.Controls
             this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
             this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.Items));
             this.SetBinding(IsInteractionRunningProperty, nameof(CardsView.IsPanRunning));
+			this.SetBinding(IsAutoNavigatingRunningProperty, nameof(CardsView.IsAutoNavigating));
 
             Margin = new Thickness(10, 20);
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
@@ -109,6 +115,12 @@ namespace PanCardView.Controls
             get => (bool)GetValue(IsInteractionRunningProperty);
             set => SetValue(IsInteractionRunningProperty, value);
         }
+
+		public bool IsAutoNavigatingRunning
+		{
+			get => (bool)GetValue(IsAutoNavigatingRunningProperty);
+			set => SetValue(IsAutoNavigatingRunningProperty, value);
+		}
 
         public IList IndicatorsContexts
         {
@@ -193,6 +205,36 @@ namespace PanCardView.Controls
             }
         }
 
+		protected virtual async void ResetVisibility(uint? appearingTime = null, Easing appearingEasing = null, uint? dissappearingTime = null, Easing disappearingEasing = null)
+		{
+			_fadeAnimationTokenSource?.Cancel();
+
+			if (ToFadeDuration > 0)
+			{
+				if (IsInteractionRunning || IsAutoNavigatingRunning)
+				{
+					IsVisible = true;
+					await this.FadeTo(1, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
+					return;
+				}
+
+				_fadeAnimationTokenSource = new CancellationTokenSource();
+				var token = _fadeAnimationTokenSource.Token;
+
+				await Task.Delay(ToFadeDuration);
+				if (token.IsCancellationRequested)
+				{
+					return;
+				}
+				await this.FadeTo(0, dissappearingTime ?? 330, disappearingEasing ?? Easing.SinOut);
+				if (token.IsCancellationRequested)
+				{
+					return;
+				}
+				IsVisible = false;
+			}
+		}
+
         private void ApplyStyle(View view, int cyclingIndex)
         {
             try
@@ -261,36 +303,6 @@ namespace PanCardView.Controls
             if (UseCardItemsAsIndicatorsBindingContexts && IndicatorsContexts != null)
             {
                 OnResetIndicatorsContexts();
-            }
-        }
-        
-        private async void ResetVisibility()
-        {
-            _fadeAnimationTokenSource?.Cancel();
-            
-            if (ToFadeDuration > 0)
-            {   
-                if (IsInteractionRunning)
-                {
-                    IsVisible = true;
-                    await this.FadeTo(1, 300, Easing.CubicInOut);
-                    return;
-                }
-                
-                _fadeAnimationTokenSource = new CancellationTokenSource();
-                var token = _fadeAnimationTokenSource.Token;
-                
-                await Task.Delay(ToFadeDuration);
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-                await this.FadeTo(0, 300, Easing.SinOut);
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-                IsVisible = false;
             }
         }
 

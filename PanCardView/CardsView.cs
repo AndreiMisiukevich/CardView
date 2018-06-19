@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using static System.Math;
+using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace PanCardView
 {
@@ -63,6 +65,15 @@ namespace PanCardView
 			bindable.AsCardsView().SetCurrentView();
 		});
 
+		public static readonly BindableProperty SlideShowDurationProperty = BindableProperty.Create(nameof(SlideShowDuration), typeof(int), typeof(CardsView), 0, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsCardsView().AdjustSlideShow();
+		});
+
+		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) => {
+			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+		});
+
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
 		public static readonly BindableProperty NextContextProperty = BindableProperty.Create(nameof(NextContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
@@ -86,8 +97,6 @@ namespace PanCardView
 		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
 
 		public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource);
-
-		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource);
 
 		public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
@@ -113,7 +122,6 @@ namespace PanCardView
 
 		public static readonly BindableProperty AutoNavigationEndedCommandProperty = BindableProperty.Create(nameof(AutoNavigationEndedCommand), typeof(ICommand), typeof(CardsView), null);
 
-
 		private readonly object _childLocker = new object();
 		private readonly object _viewsInUseLocker = new object();
 
@@ -135,10 +143,12 @@ namespace PanCardView
 		private bool _isPanEndRequested = true;
 		private bool _shouldSkipTouch;
 		private bool _isViewsInited;
+		private bool _hasRenderer;
 		private bool? _isPortraitOrientation;
 		private bool? _shouldScrollParent;
 		private Guid _gestureId;
 		private DateTime _lastPanTime;
+		private CancellationTokenSource _slideshowTokenSource;
 
 		public CardsView() : this(new BaseCardFrontViewProcessor(), new BaseCardBackViewProcessor())
 		{
@@ -311,6 +321,12 @@ namespace PanCardView
 			set => SetValue(BackViewsDepthProperty, value);
 		}
 
+		public int SlideShowDuration
+		{
+			get => (int)GetValue(SlideShowDurationProperty);
+			set => SetValue(SlideShowDurationProperty, value);
+		}
+
 		public double SwipeThresholdDistance
 		{
 			get => (double)GetValue(SwipeThresholdDistanceProperty);
@@ -420,7 +436,7 @@ namespace PanCardView
 				_viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
 			}
 
-			SetCurrentView(CurrentContext != null);
+			SetCurrentView(IsContextMode);
 			RemoveUnprocessingChildren();
 			ForceLayout();
 		}
@@ -469,6 +485,30 @@ namespace PanCardView
 			}
 
 			SetupBackViews();
+		}
+
+		protected virtual async void AdjustSlideShow(bool isForceStop = false)
+		{
+			_slideshowTokenSource?.Cancel();
+			if(isForceStop || IsContextMode)
+			{
+				return;
+			}
+
+			if (SlideShowDuration > 0)
+			{
+				_slideshowTokenSource = new CancellationTokenSource();
+				var token = _slideshowTokenSource.Token;
+				while(true)
+				{
+					await Task.Delay(SlideShowDuration);
+					if(token.IsCancellationRequested)
+					{
+						return;
+					}
+					CurrentIndex = (CurrentIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+				}
+			}
 		}
 
 		protected virtual async Task<bool> TryAutoNavigate()
@@ -586,6 +626,19 @@ namespace PanCardView
 			{
 				_isPortraitOrientation = !_isPortraitOrientation;
 				OnOrientationChanged();
+			}
+		}
+
+		protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			base.OnPropertyChanged(propertyName);
+			if(propertyName == "Renderer")
+			{
+				_hasRenderer = !_hasRenderer;
+				if(!_hasRenderer)
+				{
+					AdjustSlideShow(true);
+				}
 			}
 		}
 
