@@ -45,7 +45,6 @@ namespace PanCardView
 
 		public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			bindable.AsCardsView().SetCurrentView();
 			bindable.AsCardsView().SetItemsCount();
 		});
 
