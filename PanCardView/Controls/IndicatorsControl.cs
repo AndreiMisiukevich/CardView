@@ -12,29 +12,34 @@ namespace PanCardView.Controls
 {
     public class IndicatorsControl : StackLayout
     {
-        public readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
         });
 
-        public readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
         });
 
-        public readonly BindableProperty SelectedIndicatorStyleProperty = BindableProperty.Create(nameof(SelectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), DefaultSelectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SelectedIndicatorStyleProperty = BindableProperty.Create(nameof(SelectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), DefaultSelectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
         });
 
-        public readonly BindableProperty UnselectedIndicatorStyleProperty = BindableProperty.Create(nameof(UnselectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), DefaultUnselectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty UnselectedIndicatorStyleProperty = BindableProperty.Create(nameof(UnselectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), DefaultUnselectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
         });
 
-        public readonly BindableProperty UseCardItemsAsIndicatorsBindingContextsProperty = BindableProperty.Create(nameof(UseCardItemsAsIndicatorsBindingContexts), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty UseCardItemsAsIndicatorsBindingContextsProperty = BindableProperty.Create(nameof(UseCardItemsAsIndicatorsBindingContexts), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsContexts();
+        });
+
+        public static readonly BindableProperty IsInteractionRunningProperty = BindableProperty.Create(nameof(IsInteractionRunning), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsIndicatorsControl().ResetVisibility();
         });
 
         public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IList), typeof(IndicatorsControl), null);
@@ -43,7 +48,7 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(IndicatorsControl), true);
 
-        public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(IndicatorsControl), 0);
+        public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(IndicatorsControl), 2000);
 
         static IndicatorsControl()
         {
@@ -60,6 +65,7 @@ namespace PanCardView.Controls
             this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
             this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
             this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.Items));
+            this.SetBinding(IsInteractionRunningProperty, nameof(CardsView.IsPanRunning));
 
             Margin = new Thickness(10, 20);
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
@@ -96,6 +102,12 @@ namespace PanCardView.Controls
         {
             get => GetValue(UnselectedIndicatorStyleProperty) as Style;
             set => SetValue(UnselectedIndicatorStyleProperty, value);
+        }
+        
+        public bool IsInteractionRunning
+        {
+            get => (bool)GetValue(IsInteractionRunningProperty);
+            set => SetValue(IsInteractionRunningProperty, value);
         }
 
         public IList IndicatorsContexts
@@ -199,35 +211,10 @@ namespace PanCardView.Controls
             }
         }
 
-        private async void ResetIndicatorsStylesNonBatch()
+        private void ResetIndicatorsStylesNonBatch()
         {
             var cyclingIndex = CurrentIndex.ToCyclingIndex(ItemsCount);
             OnResetIndicatorsStyles(cyclingIndex);
-
-            if (ToFadeDuration > 0)
-            {
-                _fadeAnimationTokenSource?.Cancel();
-                _fadeAnimationTokenSource = new CancellationTokenSource();
-                var token = _fadeAnimationTokenSource.Token;
-                
-                IsVisible = true;
-                await this.FadeTo(1, 300, Easing.CubicInOut);
-                if(token.IsCancellationRequested)
-                {
-                    return;
-                }
-                await Task.Delay(ToFadeDuration);
-                if(token.IsCancellationRequested)
-                {
-                    return;
-                }
-                await this.FadeTo(0, 300, Easing.SinOut);
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-                IsVisible = false;
-            }
         }
 
         private void ResetIndicatorsStyles()
@@ -274,6 +261,36 @@ namespace PanCardView.Controls
             if (UseCardItemsAsIndicatorsBindingContexts && IndicatorsContexts != null)
             {
                 OnResetIndicatorsContexts();
+            }
+        }
+        
+        private async void ResetVisibility()
+        {
+            _fadeAnimationTokenSource?.Cancel();
+            
+            if (ToFadeDuration > 0)
+            {   
+                if (IsInteractionRunning)
+                {
+                    IsVisible = true;
+                    await this.FadeTo(1, 300, Easing.CubicInOut);
+                    return;
+                }
+                
+                _fadeAnimationTokenSource = new CancellationTokenSource();
+                var token = _fadeAnimationTokenSource.Token;
+                
+                await Task.Delay(ToFadeDuration);
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+                await this.FadeTo(0, 300, Easing.SinOut);
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+                IsVisible = false;
             }
         }
 
