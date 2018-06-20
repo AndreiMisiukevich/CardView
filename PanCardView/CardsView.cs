@@ -170,14 +170,6 @@ namespace PanCardView
 			}
 		}
 
-		public double CurrentDiff { get; private set; }
-
-		public int OldIndex { get; private set; } = -1;
-
-		public ICardProcessor FrontViewProcessor { get; }
-
-		public ICardProcessor BackViewProcessor { get; }
-
 		private bool ShouldIgnoreSetCurrentView { get; set; }
 
 		private bool ShouldSetIndexAfterPan { get; set; }
@@ -209,6 +201,14 @@ namespace PanCardView
 		}
 
 		private View CurrentView { get; set; }
+        
+        public double CurrentDiff { get; private set; }
+
+        public int OldIndex { get; private set; } = -1;
+
+        public ICardProcessor FrontViewProcessor { get; }
+
+        public ICardProcessor BackViewProcessor { get; }
 
 		public int CurrentIndex
 		{
