@@ -74,6 +74,11 @@ namespace PanCardView
 			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
 		});
 
+        public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+        });
+
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
 		public static readonly BindableProperty NextContextProperty = BindableProperty.Create(nameof(NextContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
@@ -95,8 +100,6 @@ namespace PanCardView
 		public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), true);
 
 		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
-
-		public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource);
 
 		public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
@@ -291,17 +294,17 @@ namespace PanCardView
 			set => SetValue(IsCyclicalProperty, value);
 		}
 
-		public bool IsAutoNavigating
-		{
-			get => (bool)GetValue(IsAutoNavigatingProperty);
-			set => SetValue(IsAutoNavigatingProperty, value);
-		}
-
 		public bool IsPanRunning
 		{
 			get => (bool)GetValue(IsPanRunningProperty);
 			set => SetValue(IsPanRunningProperty, value);
 		}
+        
+        public bool IsAutoNavigating
+        {
+            get => (bool)GetValue(IsAutoNavigatingProperty);
+            set => SetValue(IsAutoNavigatingProperty, value);
+        }
 
 		public int MaxChildrenCount
 		{
