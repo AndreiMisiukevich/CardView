@@ -50,7 +50,6 @@
     <Compile Include="SceneView.cs" />
     <Compile Include="Processors\BaseSceneBackProcessor.cs" />
     <Compile Include="Processors\BaseSceneFrontProcessor.cs" />
-    <Compile Include="Controls\ArrowControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />
