@@ -70,14 +70,15 @@ namespace PanCardView
 			bindable.AsCardsView().AdjustSlideShow();
 		});
 
-		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) => {
+		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
+		{
 			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
 		});
 
-        public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsCardsView().AdjustSlideShow((bool)newValue);
-        });
+		public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+		});
 
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
@@ -201,14 +202,14 @@ namespace PanCardView
 		}
 
 		private View CurrentView { get; set; }
-        
-        public double CurrentDiff { get; private set; }
 
-        public int OldIndex { get; private set; } = -1;
+		public double CurrentDiff { get; private set; }
 
-        public ICardProcessor FrontViewProcessor { get; }
+		public int OldIndex { get; private set; } = -1;
 
-        public ICardProcessor BackViewProcessor { get; }
+		public ICardProcessor FrontViewProcessor { get; }
+
+		public ICardProcessor BackViewProcessor { get; }
 
 		public int CurrentIndex
 		{
@@ -299,12 +300,12 @@ namespace PanCardView
 			get => (bool)GetValue(IsPanRunningProperty);
 			set => SetValue(IsPanRunningProperty, value);
 		}
-        
-        public bool IsAutoNavigating
-        {
-            get => (bool)GetValue(IsAutoNavigatingProperty);
-            set => SetValue(IsAutoNavigatingProperty, value);
-        }
+
+		public bool IsAutoNavigating
+		{
+			get => (bool)GetValue(IsAutoNavigatingProperty);
+			set => SetValue(IsAutoNavigatingProperty, value);
+		}
 
 		public int MaxChildrenCount
 		{
@@ -493,7 +494,7 @@ namespace PanCardView
 		protected virtual async void AdjustSlideShow(bool isForceStop = false)
 		{
 			_slideshowTokenSource?.Cancel();
-			if(isForceStop || IsContextMode)
+			if (isForceStop || IsContextMode)
 			{
 				return;
 			}
@@ -502,10 +503,10 @@ namespace PanCardView
 			{
 				_slideshowTokenSource = new CancellationTokenSource();
 				var token = _slideshowTokenSource.Token;
-				while(true)
+				while (true)
 				{
 					await Task.Delay(SlideShowDuration);
-					if(token.IsCancellationRequested)
+					if (token.IsCancellationRequested)
 					{
 						return;
 					}
@@ -547,11 +548,11 @@ namespace PanCardView
 				BackViewProcessor.HandleAutoNavigate(Enumerable.Repeat(oldView, 1), this, animationDirection, CurrentInactiveBackViews),
 				FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, animationDirection, Enumerable.Empty<View>()));
 
-            if (ItemTemplate != null)
-            {
-                SetupBackViews();
-            }
-            
+			if (ItemTemplate != null)
+			{
+				SetupBackViews();
+			}
+
 			await autoNavigationTask;
 			EndAutoNavigation(oldView, animationId, animationDirection);
 
@@ -625,7 +626,7 @@ namespace PanCardView
 				BackViewProcessor.HandleInitView(PrevViews, this, AnimationDirection.Prev);
 				BackViewProcessor.HandleInitView(NextViews, this, AnimationDirection.Next);
 			}
-			if(_isPortraitOrientation.HasValue && _isPortraitOrientation != height > width)
+			if (_isPortraitOrientation.HasValue && _isPortraitOrientation != height > width)
 			{
 				_isPortraitOrientation = !_isPortraitOrientation;
 				OnOrientationChanged();
@@ -635,10 +636,10 @@ namespace PanCardView
 		protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			base.OnPropertyChanged(propertyName);
-			if(propertyName == "Renderer")
+			if (propertyName == "Renderer")
 			{
 				_hasRenderer = !_hasRenderer;
-				if(!_hasRenderer)
+				if (!_hasRenderer)
 				{
 					AdjustSlideShow(true);
 				}
@@ -1265,7 +1266,7 @@ namespace PanCardView
 
 		private void RemoveUnprocessingChildren()
 		{
-			lock(_childLocker)
+			lock (_childLocker)
 			{
 				var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c)).ToArray();
 				RemoveChildren(views);
