@@ -523,7 +523,7 @@ namespace PanCardView
 
 			var context = GetContext(CurrentIndex, AnimationDirection.Current);
 
-			if (CurrentView.BindingContext == context)
+			if (CurrentView.BindingContext == context || CurrentView == context)
 			{
 				return false;
 			}
@@ -1026,7 +1026,7 @@ namespace PanCardView
 				? CreateRetrieveView(context, template, bookedViews)
 				: context as View;
 
-			if (view != null)
+			if (view != null && view != context)
 			{
 				view.BindingContext = context;
 			}
