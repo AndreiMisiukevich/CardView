@@ -692,7 +692,7 @@ namespace PanCardView
 
 			if (!IsCyclical)
 			{
-				return CurrentIndex < Items.IndexOf(CurrentView.BindingContext)
+				return CurrentIndex < OldIndex
 					   ? AnimationDirection.Prev
 					   : AnimationDirection.Next;
 			}
