@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using iQ.Mobile.UI.Common.Extensions;
 using PanCardView;
 using PanCardView.Enums;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using static System.Math;
 
 namespace PanCardView.Processors.MultiProcessors
@@ -42,7 +42,6 @@ namespace PanCardView.Processors.MultiProcessors
 
         public override void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
-            views = SetupDisappearingContexts(views);
             views = SetupViews(views, InitialBackScale);
 		}
 

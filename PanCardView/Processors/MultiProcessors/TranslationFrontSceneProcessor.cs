@@ -21,8 +21,6 @@ namespace PanCardView.Processors.MultiProcessors
                 view.TranslationX = 0;
                 view.IsVisible = true;
             }
-
-            views = SetupAppearingContexts(views);
         }
 
         public override void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -89,8 +87,6 @@ namespace PanCardView.Processors.MultiProcessors
 
         public override Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
-            views = SetupAppearingContexts(views);
-
             var view = views.FirstOrDefault();
             if (view != null)
             {

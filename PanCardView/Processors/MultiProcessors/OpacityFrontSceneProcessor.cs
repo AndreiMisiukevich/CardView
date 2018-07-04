@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using iQ.Mobile.UI.Common.Extensions;
-using PanCardView;
 using PanCardView.Enums;
 using Xamarin.Forms;
 using static System.Math;
+using Xamarin.Forms.Internals;
 
 namespace PanCardView.Processors.MultiProcessors
 {
@@ -109,7 +108,7 @@ namespace PanCardView.Processors.MultiProcessors
                 opacityModifier = ConvertRange(0, 1,
                                              InitialBackOpacity, InitialFrontOpacity,
                                              opacityModifier);
-
+                
                 views = SetupViews(views, opacityModifier.Clamp(InitialBackOpacity, InitialFrontOpacity));
             }
         }

@@ -6,6 +6,7 @@ using PanCardView.Enums;
 using Xamarin.Forms;
 
 namespace PanCardView.Processors.MultiProcessors
+{
     public class MultiProcessorSceneProcessor : BaseSceneProcessor
     {
         protected BaseTranslationProcessor TranslationProcessor { get; set; }

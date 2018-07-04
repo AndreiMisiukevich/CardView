@@ -28,8 +28,6 @@ namespace PanCardView.Processors.MultiProcessors
                     view.TranslationX = Sign((int)animationDirection) * GetInitialPosition(cardsView, i);
                 }
             }
-
-            views = SetupDisappearingContexts(views);
         }
 
         public override void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)

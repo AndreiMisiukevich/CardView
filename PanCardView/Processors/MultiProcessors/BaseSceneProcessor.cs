@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BareBones.Navigation.Interfaces;
-using iQ.Mobile.UI.Common.Interfaces;
 using PanCardView;
 using PanCardView.Enums;
 using PanCardView.Processors;
