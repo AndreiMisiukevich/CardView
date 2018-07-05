@@ -734,13 +734,13 @@ namespace PanCardView
 				_inCoursePanDelay = int.MaxValue;
 			}
 
-			_gestureId = Guid.NewGuid();
+			var gestureId = _gestureId = Guid.NewGuid();
 			FirePanStarted();
 			IsPanRunning = true;
 			_isPanEndRequested = false;
 
 			SetupBackViews();
-			AddRangeViewsInUse();
+			AddRangeViewsInUse(gestureId);
 
 			_timeDiffItems.Add(new TimeDiffItem
 			{
@@ -1285,13 +1285,13 @@ namespace PanCardView
 
 		private bool CheckIsProcessingView(View view) => view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
 
-		private void AddRangeViewsInUse()
+		private void AddRangeViewsInUse(Guid gestureId)
 		{
 			lock (_viewsInUseLocker)
 			{
 				var views = NextViews.Union(PrevViews).Union(Enumerable.Repeat(CurrentView, 1));
 
-				_viewsGestureCounter[_gestureId] = views;
+				_viewsGestureCounter[gestureId] = views;
 
 				foreach (var view in views.Where(v => v != null))
 				{
@@ -1303,7 +1303,7 @@ namespace PanCardView
 		private void RemoveRangeViewsInUse(Guid gestureId)
 		{
 			lock (_viewsInUseLocker)
-			{
+			{   
 				foreach (var view in _viewsGestureCounter[gestureId])
 				{
 					_viewsInUse.Remove(view);
