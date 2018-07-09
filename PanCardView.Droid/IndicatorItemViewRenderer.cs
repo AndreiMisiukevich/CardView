@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿using System;
+using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using PanCardView.Controls;
@@ -13,6 +14,12 @@ namespace PanCardView.Droid
     [Preserve(AllMembers = true)]
 	public class IndicatorItemViewRenderer : XFrameRenderer
 	{
+
+		[Obsolete("For Forms <= 2.4")]
+		public IndicatorItemViewRenderer()
+		{
+		}
+
 		public IndicatorItemViewRenderer(Context context) : base(context)
 		{
 		}

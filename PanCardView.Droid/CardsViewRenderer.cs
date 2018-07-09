@@ -27,6 +27,12 @@ namespace PanCardView.Droid
 		private bool? _isSwiped;
 		private readonly GestureDetector _gestureDetector;
 
+		[Obsolete("For Forms <= 2.4")]
+		public CardsViewRenderer()
+		{
+
+		}
+
 		public CardsViewRenderer(Context context) : base(context)
 		=> _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
 
