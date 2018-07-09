@@ -74,6 +74,13 @@ namespace PanCardView.Processors
 			if (!CheckIsInitialPosition(view))
 			{
 				var animLength = (uint)(ResetAnimationLength * Min(Abs(view.TranslationX / cardsView.MoveDistance), 1.0));
+
+				if(animLength == 0)
+				{
+					SetInitialResult(view, tcs);
+					return tcs.Task;
+				}
+
 				new Animation {
 					{ 0, 1, new Animation (v => view.TranslationX = v, view.TranslationX, 0) },
 					{ 0, 1, new Animation (v => view.TranslationY = v, view.TranslationY, 0) },

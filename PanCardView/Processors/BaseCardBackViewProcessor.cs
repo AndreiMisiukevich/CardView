@@ -81,16 +81,19 @@ namespace PanCardView.Processors
 		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
-
-			if (view != null)
+			if(view == null)
 			{
-				var tcs = new TaskCompletionSource<bool>();
-				var animLength = (uint)(ResetAnimationLength * (view.Scale - InitialScale) / (1 - InitialScale));
-				new Animation(v => view.Scale = v, view.Scale, InitialScale)
-					.Commit(view, nameof(HandlePanReset), 16, animLength, ResetEasing, (v, t) => tcs.SetResult(true));
-				return tcs.Task;
+				return Task.FromResult(true);
 			}
-			return Task.FromResult(true);
+			var animLength = (uint)(ResetAnimationLength * (view.Scale - InitialScale) / (1 - InitialScale));
+			if(animLength == 0)
+			{
+				return Task.FromResult(true);
+			}
+			var tcs = new TaskCompletionSource<bool>();
+			new Animation(v => view.Scale = v, view.Scale, InitialScale)
+				.Commit(view, nameof(HandlePanReset), 16, animLength, ResetEasing, (v, t) => tcs.SetResult(true));
+			return tcs.Task;
 		}
 
 		public virtual async Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)

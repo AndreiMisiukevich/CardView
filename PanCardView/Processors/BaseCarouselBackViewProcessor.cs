@@ -75,33 +75,39 @@ namespace PanCardView.Processors
 		public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
-			if (view != null)
+			if (view == null)
 			{
-				var tcs = new TaskCompletionSource<bool>();
-
-				var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
-				var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
-				new Animation(v => view.TranslationX = v, view.TranslationX, Sign((int)animationDirection) * cardsView.Width)
-					.Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
-				return tcs.Task;
+				return Task.FromResult(true);
 			}
-			return Task.FromResult(true);
+			var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
+			var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
+			if (animLength == 0)
+			{
+				return Task.FromResult(true);
+			}
+			var tcs = new TaskCompletionSource<bool>();
+			new Animation(v => view.TranslationX = v, view.TranslationX, Sign((int)animationDirection) * cardsView.Width)
+				.Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
+			return tcs.Task;
 		}
 
 		public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
 		{
 			var view = views.FirstOrDefault();
-			if (view != null)
+			if (view == null)
 			{
-				var tcs = new TaskCompletionSource<bool>();
-
-				var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
-				var animLength = (uint)(AnimationLength * animTimePercent);
-				new Animation(v => view.TranslationX = v, view.TranslationX, -Sign((int)animationDirection) * cardsView.Width)
-					.Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
-				return tcs.Task;
+				return Task.FromResult(true);
 			}
-			return Task.FromResult(true);
+			var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
+			var animLength = (uint)(AnimationLength * animTimePercent);
+			if (animLength == 0)
+			{
+				return Task.FromResult(true);
+			}
+			var tcs = new TaskCompletionSource<bool>();
+			new Animation(v => view.TranslationX = v, view.TranslationX, -Sign((int)animationDirection) * cardsView.Width)
+				.Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
+			return tcs.Task;
 		}
 	}
 }
