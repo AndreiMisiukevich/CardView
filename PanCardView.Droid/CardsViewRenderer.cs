@@ -30,7 +30,7 @@ namespace PanCardView.Droid
 		[Obsolete("For Forms <= 2.4")]
 		public CardsViewRenderer()
 		{
-
+            CreateGestureDetector();
 		}
 
 		public CardsViewRenderer(Context context) : base(context)
