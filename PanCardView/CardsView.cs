@@ -510,7 +510,10 @@ namespace PanCardView
 					{
 						return;
 					}
-					CurrentIndex = (CurrentIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+                    if (ItemsCount > 0)
+                    {
+                        CurrentIndex = (CurrentIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+                    }
 				}
 			}
 		}
