@@ -25,7 +25,7 @@ namespace PanCardView.Droid
 		private float _startX;
 		private float _startY;
 		private bool? _isSwiped;
-		private readonly GestureDetector _gestureDetector;
+		private GestureDetector _gestureDetector;
 
 		[Obsolete("For Forms <= 2.4")]
 		public CardsViewRenderer()
@@ -34,7 +34,7 @@ namespace PanCardView.Droid
 		}
 
 		public CardsViewRenderer(Context context) : base(context)
-		=> _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
+        => CreateGestureDetector();
 
 		public override bool OnInterceptTouchEvent(MotionEvent ev)
 		{
@@ -54,7 +54,15 @@ namespace PanCardView.Droid
 
 		public override bool OnTouchEvent(MotionEvent e)
 		{
-			_gestureDetector.OnTouchEvent(e);
+            try
+            {
+                _gestureDetector.OnTouchEvent(e);
+            }
+            catch(ObjectDisposedException)
+            {
+                CreateGestureDetector();
+                _gestureDetector.OnTouchEvent(e);
+            }
 
 			if (e.ActionMasked == MotionEventActions.Move)
 			{
@@ -143,6 +151,8 @@ namespace PanCardView.Droid
 		private float GetTotalX(MotionEvent ev) => ev.GetX() - _startX;
 
 		private float GetTotalY(MotionEvent ev) => ev.GetY() - _startY;
+
+        private void CreateGestureDetector() => _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
 
 	}
 
