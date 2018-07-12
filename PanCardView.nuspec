@@ -24,7 +24,7 @@
     <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\netstandard1.0\PanCardView.dll" />
 
     <!--Net Standard2.0-->
-    <file src="ContextMenu\bin\Release\PanCardView.dll" target="lib\netstandard2.0\PanCardView.dll" />
+    <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\netstandard2.0\PanCardView.dll" />
 
     <!--Core PCL-->
     <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\portable-win+net45+wp80+win81+wpa81\PanCardView.dll" />
