@@ -510,10 +510,10 @@ namespace PanCardView
 					{
 						return;
 					}
-                    if (ItemsCount > 0)
-                    {
-                        CurrentIndex = (CurrentIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
-                    }
+					if (ItemsCount > 0)
+					{
+						CurrentIndex = (CurrentIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+					}
 				}
 			}
 		}
@@ -1306,7 +1306,7 @@ namespace PanCardView
 		private void RemoveRangeViewsInUse(Guid gestureId)
 		{
 			lock (_viewsInUseLocker)
-			{   
+			{
 				foreach (var view in _viewsGestureCounter[gestureId])
 				{
 					_viewsInUse.Remove(view);

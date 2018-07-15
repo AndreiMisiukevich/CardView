@@ -30,11 +30,11 @@ namespace PanCardView.Droid
 		[Obsolete("For Forms <= 2.4")]
 		public CardsViewRenderer()
 		{
-            CreateGestureDetector();
+			CreateGestureDetector();
 		}
 
 		public CardsViewRenderer(Context context) : base(context)
-        => CreateGestureDetector();
+		=> CreateGestureDetector();
 
 		public override bool OnInterceptTouchEvent(MotionEvent ev)
 		{
@@ -54,15 +54,15 @@ namespace PanCardView.Droid
 
 		public override bool OnTouchEvent(MotionEvent e)
 		{
-            try
-            {
-                _gestureDetector.OnTouchEvent(e);
-            }
-            catch(ObjectDisposedException)
-            {
-                CreateGestureDetector();
-                _gestureDetector.OnTouchEvent(e);
-            }
+			try
+			{
+				_gestureDetector.OnTouchEvent(e);
+			}
+			catch (ObjectDisposedException)
+			{
+				CreateGestureDetector();
+				_gestureDetector.OnTouchEvent(e);
+			}
 
 			if (e.ActionMasked == MotionEventActions.Move)
 			{
@@ -152,7 +152,7 @@ namespace PanCardView.Droid
 
 		private float GetTotalY(MotionEvent ev) => ev.GetY() - _startY;
 
-        private void CreateGestureDetector() => _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
+		private void CreateGestureDetector() => _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
 
 	}
 

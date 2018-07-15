@@ -11,7 +11,7 @@ using XFrameRenderer = Xamarin.Forms.Platform.Android.AppCompat.FrameRenderer;
 [assembly: ExportRenderer(typeof(IndicatorItemView), typeof(IndicatorItemViewRenderer))]
 namespace PanCardView.Droid
 {
-    [Preserve(AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class IndicatorItemViewRenderer : XFrameRenderer
 	{
 
