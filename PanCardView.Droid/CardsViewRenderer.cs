@@ -94,7 +94,12 @@ namespace PanCardView.Droid
 		}
 
 		private bool SetIsTouchHandled(float xDelta, float yDelta)
-		=> IsTouchHandled = Abs(xDelta) > Abs(yDelta);
+		{
+			var xDeltaAbs = Abs(xDelta);
+			var yDeltaAbs = Abs(yDelta);
+			return IsTouchHandled = xDeltaAbs > yDeltaAbs &&
+					xDeltaAbs > Element.MoveThresholdDistance;
+		}
 
 		private void HandleDownUpEvents(MotionEvent ev)
 		{

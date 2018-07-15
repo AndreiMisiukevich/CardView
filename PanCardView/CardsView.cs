@@ -108,6 +108,8 @@ namespace PanCardView
 
 		public static readonly BindableProperty SwipeThresholdDistanceProperty = BindableProperty.Create(nameof(SwipeThresholdDistance), typeof(double), typeof(CardsView), 17.0);
 
+		public static readonly BindableProperty MoveThresholdDistanceProperty = BindableProperty.Create(nameof(MoveThresholdDistance), typeof(double), typeof(CardsView), 0.0);
+
 		public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
 
 		public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
@@ -335,6 +337,16 @@ namespace PanCardView
 		{
 			get => (double)GetValue(SwipeThresholdDistanceProperty);
 			set => SetValue(SwipeThresholdDistanceProperty, value);
+		}
+
+		/// <summary>
+		/// Only for Android
+		/// </summary>
+		/// <value>The move threshold distance.</value>
+		public double MoveThresholdDistance
+		{
+			get => (double)GetValue(MoveThresholdDistanceProperty);
+			set => SetValue(MoveThresholdDistanceProperty, value);
 		}
 
 		public TimeSpan SwipeThresholdTime
