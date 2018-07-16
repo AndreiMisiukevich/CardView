@@ -110,7 +110,7 @@ https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Styles/Def
 -> If you want to put your cardsView/carouselView INTO scroll view, you should to use *ParentScrollView* instead of Xamarin.Forms.ScrollView.
 
 -> If you want to put cardsView/carouselView INTO ListView or INTO any another scrollable view you should follow these steps
-1) Create your own class and implement IOrdinateHandlerParentView interface (It's needede only for iOS, but do it into shared project)
+1) Create your own class and implement IOrdinateHandlerParentView interface (It's needed only for iOS, but do it into shared project)
 2) Create the renderer for this class (For Android)
 
 Check these classes (I implemented it for ParentScrollView. You can use it as example, nothing difficult :))
