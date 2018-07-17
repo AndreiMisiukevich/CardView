@@ -532,6 +532,11 @@ namespace PanCardView
 
 		protected virtual async Task<bool> TryAutoNavigate()
 		{
+			if (!_hasRenderer || Parent == null)
+			{
+				return false;
+			}
+
 			if (CurrentView == null)
 			{
 				return false;
