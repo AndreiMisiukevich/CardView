@@ -102,6 +102,8 @@ namespace PanCardView
 
 		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
 
+		public static readonly BindableProperty IsManualContextProcessingEnabledProperty = BindableProperty.Create(nameof(IsManualContextProcessingEnabled), typeof(bool), typeof(CardsView), false);
+
 		public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
 		public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 6);
@@ -176,8 +178,6 @@ namespace PanCardView
 		private bool ShouldIgnoreSetCurrentView { get; set; }
 
 		private bool ShouldSetIndexAfterPan { get; set; }
-
-		private bool IsContextMode => CurrentContext != null;
 
 		private IEnumerable<View> PrevViews
 		{
@@ -295,6 +295,12 @@ namespace PanCardView
 		{
 			get => (bool)GetValue(IsCyclicalProperty);
 			set => SetValue(IsCyclicalProperty, value);
+		}
+
+		public bool IsManualContextProcessingEnabled
+		{
+			get => (bool)GetValue(IsManualContextProcessingEnabledProperty);
+			set => SetValue(IsManualContextProcessingEnabledProperty, value);
 		}
 
 		public bool IsPanRunning
@@ -420,7 +426,7 @@ namespace PanCardView
 
 		public void OnPanUpdated(PanUpdatedEventArgs e, bool? isSwiped = null)
 		{
-			if (ItemsCount <= 0 && !IsContextMode)
+			if (ItemsCount <= 0 && !IsManualContextProcessingEnabled)
 			{
 				return;
 			}
@@ -452,7 +458,7 @@ namespace PanCardView
 				_viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
 			}
 
-			SetCurrentView(IsContextMode);
+			SetCurrentView(IsManualContextProcessingEnabled);
 			RemoveUnprocessingChildren();
 			ForceLayout();
 		}
@@ -484,7 +490,7 @@ namespace PanCardView
 				return;
 			}
 
-			if (ItemsSource != null || IsContextMode)
+			if (ItemsSource != null || IsManualContextProcessingEnabled)
 			{
 				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
 				if (CurrentView == null && SelectedIndex >= 0)
@@ -506,7 +512,7 @@ namespace PanCardView
 		protected virtual async void AdjustSlideShow(bool isForceStop = false)
 		{
 			_slideshowTokenSource?.Cancel();
-			if (isForceStop || IsContextMode)
+			if (isForceStop || IsManualContextProcessingEnabled)
 			{
 				return;
 			}
@@ -704,7 +710,7 @@ namespace PanCardView
 
 		private AnimationDirection GetAutoNavigateAnimationDirection()
 		{
-			if (IsContextMode)
+			if (IsManualContextProcessingEnabled)
 			{
 				return CurrentContext == PrevViews.FirstOrDefault()?.BindingContext
 					   ? AnimationDirection.Prev
@@ -872,7 +878,7 @@ namespace PanCardView
 					ShouldSetIndexAfterPan = false;
 					SetNewIndex();
 				}
-				if (!IsContextMode)
+				if (!IsManualContextProcessingEnabled)
 				{
 					SetupBackViews();
 				}
@@ -941,7 +947,7 @@ namespace PanCardView
 
 		private int GetNewIndexFromDiff()
 		{
-			if (IsContextMode)
+			if (IsManualContextProcessingEnabled)
 			{
 				return 0;
 			}
@@ -1094,7 +1100,7 @@ namespace PanCardView
 
 		private object GetContext(int index, AnimationDirection animationDirection)
 		{
-			if (IsContextMode)
+			if (IsManualContextProcessingEnabled)
 			{
 				switch (animationDirection)
 				{

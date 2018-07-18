@@ -13,7 +13,8 @@ namespace PanCardViewSample.Views
 			{
 				ItemTemplate = new DataTemplate(() => new DefaultCardItemView()),
 				BackgroundColor = Color.Black.MultiplyAlpha(.9),
-				IsPanInCourse = true
+				IsPanInCourse = true,
+				IsManualContextProcessingEnabled = true
 			};
 
 			var prevItem = new ToolbarItem
