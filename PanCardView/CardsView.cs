@@ -135,6 +135,7 @@ namespace PanCardView
 		private readonly Dictionary<Guid, IEnumerable<View>> _viewsGestureCounter = new Dictionary<Guid, IEnumerable<View>>();
 		private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
 		private readonly ViewsInUseSet _viewsInUse = new ViewsInUseSet();
+		private readonly InteractionQueue _interactions = new InteractionQueue();
 
 		private IEnumerable<View> _prevViews = Enumerable.Empty<View>();
 		private IEnumerable<View> _nextViews = Enumerable.Empty<View>();
@@ -152,7 +153,6 @@ namespace PanCardView
 		private bool _hasRenderer;
 		private bool? _isPortraitOrientation;
 		private bool? _shouldScrollParent;
-		private Guid _gestureId;
 		private DateTime _lastPanTime;
 		private CancellationTokenSource _slideshowTokenSource;
 
@@ -670,7 +670,7 @@ namespace PanCardView
 		{
 			if (view != null)
 			{
-				_gestureId = animationId;
+				_interactions.Add(animationId, InteractionType.Animation);
 				IsAutoNavigating = true;
 				if (IsPanInCourse)
 				{
@@ -696,9 +696,10 @@ namespace PanCardView
 				}
 			}
 			IsAutoNavigating = false;
-			var isProcessingNow = _gestureId != animationId;
+			var isProcessingNow = !_interactions.CheckLastId(animationId);
 			RemoveRedundantChildren(isProcessingNow);
 			FireAutoNavigationEnded(animationDirection != AnimationDirection.Prev);
+			_interactions.Remove(animationId);
 		}
 
 		private AnimationDirection GetAutoNavigateAnimationDirection()
@@ -754,7 +755,9 @@ namespace PanCardView
 				_inCoursePanDelay = int.MaxValue;
 			}
 
-			var gestureId = _gestureId = Guid.NewGuid();
+			var gestureId = Guid.NewGuid();
+			_interactions.Add(gestureId, InteractionType.Gesture);
+
 			FirePanStarted();
 			IsPanRunning = true;
 			_isPanEndRequested = false;
@@ -796,7 +799,7 @@ namespace PanCardView
 			}
 
 			_lastPanTime = DateTime.Now;
-			var gestureId = _gestureId;
+			var gestureId = _interactions.GetFirstId(InteractionType.Gesture);
 
 			_isPanEndRequested = true;
 			var absDiff = Abs(CurrentDiff);
@@ -858,8 +861,9 @@ namespace PanCardView
 
 			FirePanEnded(isNextSelected, index, diff);
 
-			RemoveRangeViewsInUse(gestureId);
-			var isProcessingNow = gestureId != _gestureId;
+			var isProcessingNow = !_interactions.CheckLastId(gestureId);
+			RemoveRangeViewsInUse(gestureId, isProcessingNow);
+
 			if (!isProcessingNow)
 			{
 				IsPanRunning = false;
@@ -877,6 +881,8 @@ namespace PanCardView
 			RemoveRedundantChildren(isProcessingNow);
 
 			_inCoursePanDelay = 0;
+
+			_interactions.Remove(gestureId);
 		}
 
 		private bool? CheckSwipe()
@@ -1320,14 +1326,14 @@ namespace PanCardView
 			}
 		}
 
-		private void RemoveRangeViewsInUse(Guid gestureId)
+		private void RemoveRangeViewsInUse(Guid gestureId, bool isProcessingNow)
 		{
 			lock (_viewsInUseLocker)
 			{
 				foreach (var view in _viewsGestureCounter[gestureId])
 				{
 					_viewsInUse.Remove(view);
-					if (_gestureId != gestureId && !_viewsInUse.Contains(view))
+					if (isProcessingNow && !_viewsInUse.Contains(view))
 					{
 						CleanView(view);
 					}

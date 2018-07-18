@@ -50,6 +50,9 @@
     <Compile Include="SceneView.cs" />
     <Compile Include="Processors\BaseSceneBackProcessor.cs" />
     <Compile Include="Processors\BaseSceneFrontProcessor.cs" />
+    <Compile Include="Utility\InteractionQueue.cs" />
+    <Compile Include="Enums\InteractionType.cs" />
+    <Compile Include="Utility\InteractionItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />
