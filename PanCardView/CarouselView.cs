@@ -18,7 +18,7 @@ namespace PanCardView
 			MoveWidthPercentage = .3;
 		}
 
-		[Obsolete("No need use this property. Just add IndicatorsControl as child element.")]
+		[Obsolete("No need use this property. Just add the IndicatorsControl as child element.")]
 		public IndicatorsControl IndicatorsControl
 		{
 			set
@@ -31,7 +31,7 @@ namespace PanCardView
 
 				if (value != null)
 				{
-					Children.Add(new IndicatorsControl());
+					Children.Add(value);
 				}
 			}
 		}
