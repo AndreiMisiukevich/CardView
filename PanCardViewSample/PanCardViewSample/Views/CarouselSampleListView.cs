@@ -17,7 +17,7 @@ namespace PanCardViewSample.Views
 				ItemTemplate = new ListTemplateSelector()
 			};
 
-			carousel.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleListViewModel.Cards));
+			carousel.SetBinding(CardsView.ItemsSourceProperty, nameof(CarouselSampleListViewModel.Cards));
 
 			Content = carousel;
 		}
@@ -37,7 +37,7 @@ namespace PanCardViewSample.Views
 		protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
 		{
 			var carousel = container.AsCardsView();
-			return carousel.Items[0] == item 
+			return carousel.ItemsSource[0] == item 
 				           ? RedTemplate 
 				           : GreenTemplate;
 		}

@@ -33,7 +33,7 @@ namespace PanCardView
 		public event CardsViewPositionChangedHandler AutoNavigationStarted;
 		public event CardsViewPositionChangedHandler AutoNavigationEnded;
 
-		public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			var view = bindable.AsCardsView();
 			view.OldIndex = (int)oldValue;
@@ -45,7 +45,7 @@ namespace PanCardView
 			view.SetCurrentView();
 		});
 
-		public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsCardsView().SetItemsCount();
 		});
@@ -213,16 +213,16 @@ namespace PanCardView
 
 		public ICardProcessor BackViewProcessor { get; }
 
-		public int CurrentIndex
+		public int SelectedIndex
 		{
-			get => (int)GetValue(CurrentIndexProperty);
-			set => SetValue(CurrentIndexProperty, value);
+			get => (int)GetValue(SelectedIndexProperty);
+			set => SetValue(SelectedIndexProperty, value);
 		}
 
-		public IList Items
+		public IList ItemsSource
 		{
-			get => GetValue(ItemsProperty) as IList;
-			set => SetValue(ItemsProperty, value);
+			get => GetValue(ItemsSourceProperty) as IList;
+			set => SetValue(ItemsSourceProperty, value);
 		}
 
 		public DataTemplate ItemTemplate
@@ -484,17 +484,17 @@ namespace PanCardView
 				return;
 			}
 
-			if (Items != null || IsContextMode)
+			if (ItemsSource != null || IsContextMode)
 			{
-				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, CurrentIndex).FirstOrDefault();
-				if (CurrentView == null && CurrentIndex >= 0)
+				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
+				if (CurrentView == null && SelectedIndex >= 0)
 				{
 					ShouldIgnoreSetCurrentView = true;
-					CurrentIndex = -1;
+					SelectedIndex = -1;
 				}
-				else if (CurrentIndex != OldIndex)
+				else if (SelectedIndex != OldIndex)
 				{
-					var isNextSelected = CurrentIndex > OldIndex;
+					var isNextSelected = SelectedIndex > OldIndex;
 					FirePositionChanging(isNextSelected);
 					FirePositionChanged(isNextSelected);
 				}
@@ -524,7 +524,7 @@ namespace PanCardView
 					}
 					if (ItemsCount > 0)
 					{
-						CurrentIndex = (CurrentIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+						SelectedIndex = (SelectedIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
 					}
 				}
 			}
@@ -542,7 +542,7 @@ namespace PanCardView
 				return false;
 			}
 
-			var context = GetContext(CurrentIndex, AnimationDirection.Current);
+			var context = GetContext(SelectedIndex, AnimationDirection.Current);
 
 			if (CurrentView.BindingContext == context || CurrentView == context)
 			{
@@ -552,7 +552,7 @@ namespace PanCardView
 			var animationDirection = GetAutoNavigateAnimationDirection();
 
 			var oldView = CurrentView;
-			var view = PrepareView(CurrentIndex, AnimationDirection.Current, Enumerable.Empty<View>());
+			var view = PrepareView(SelectedIndex, AnimationDirection.Current, Enumerable.Empty<View>());
 			CurrentView = view;
 
 			BackViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, animationDirection);
@@ -589,7 +589,7 @@ namespace PanCardView
 			var indeces = new int[BackViewsDepth];
 			for (int i = 0; i < indeces.Length; ++i)
 			{
-				indeces[i] = CurrentIndex + 1 + i;
+				indeces[i] = SelectedIndex + 1 + i;
 			}
 
 			NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, indeces);
@@ -603,8 +603,8 @@ namespace PanCardView
 			}
 
 			var prevIndex = IsOnlyForwardDirection
-				? CurrentIndex + 1
-				: CurrentIndex - 1;
+				? SelectedIndex + 1
+				: SelectedIndex - 1;
 
 
 			var indeces = new int[BackViewsDepth];
@@ -615,7 +615,7 @@ namespace PanCardView
 				{
 					incValue = -incValue;
 				}
-				indeces[i] = CurrentIndex + incValue;
+				indeces[i] = SelectedIndex + incValue;
 			}
 
 			PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, indeces);
@@ -713,12 +713,12 @@ namespace PanCardView
 
 			if (!IsCyclical)
 			{
-				return CurrentIndex < OldIndex
+				return SelectedIndex < OldIndex
 					   ? AnimationDirection.Prev
 					   : AnimationDirection.Next;
 			}
 
-			var recIndex = CurrentIndex.ToCyclingIndex(ItemsCount);
+			var recIndex = SelectedIndex.ToCyclingIndex(ItemsCount);
 			var oldRecIndex = OldIndex.ToCyclingIndex(ItemsCount);
 
 			var deltaIndex = recIndex - oldRecIndex;
@@ -804,7 +804,7 @@ namespace PanCardView
 			_isPanEndRequested = true;
 			var absDiff = Abs(CurrentDiff);
 
-			var index = CurrentIndex;
+			var index = SelectedIndex;
 			var diff = CurrentDiff;
 
 			CleanDiffItems();
@@ -841,7 +841,7 @@ namespace PanCardView
 				SwapViews(isNextSelected.GetValueOrDefault());
 				ShouldIgnoreSetCurrentView = true;
 
-				CurrentIndex = index;
+				SelectedIndex = index;
 
 				FirePanEnding(isNextSelected, index, diff);
 
@@ -951,7 +951,7 @@ namespace PanCardView
 			{
 				indexDelta = Abs(indexDelta);
 			}
-			var newIndex = CurrentIndex + indexDelta;
+			var newIndex = SelectedIndex + indexDelta;
 
 			if (newIndex < 0 || newIndex >= ItemsCount)
 			{
@@ -1122,12 +1122,12 @@ namespace PanCardView
 				index = index.ToCyclingIndex(ItemsCount);
 			}
 
-			if (index < 0 || Items == null)
+			if (index < 0 || ItemsSource == null)
 			{
 				return null;
 			}
 
-			return Items[index];
+			return ItemsSource[index];
 		}
 
 		private void SendChildrenToBackIfNeeded(View view, View topView)
@@ -1164,18 +1164,18 @@ namespace PanCardView
 				_currentObservableCollection.CollectionChanged -= OnObservableCollectionChanged;
 			}
 
-			if (Items is INotifyCollectionChanged observableCollection)
+			if (ItemsSource is INotifyCollectionChanged observableCollection)
 			{
 				_currentObservableCollection = observableCollection;
 				observableCollection.CollectionChanged += OnObservableCollectionChanged;
 			}
 
-			OnObservableCollectionChanged(Items, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+			OnObservableCollectionChanged(ItemsSource, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}
 
 		private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			ItemsCount = Items?.Count ?? -1;
+			ItemsCount = ItemsSource?.Count ?? -1;
 
 			ShouldSetIndexAfterPan = IsPanRunning;
 			if (!IsPanRunning)
@@ -1188,7 +1188,7 @@ namespace PanCardView
 		{
 			if (ItemsCount <= 0)
 			{
-				CurrentIndex = -1;
+				SelectedIndex = -1;
 				return;
 			}
 
@@ -1199,7 +1199,7 @@ namespace PanCardView
 			{
 				for (var i = 0; i < ItemsCount; ++i)
 				{
-					if (Items[i] == CurrentView.BindingContext)
+					if (ItemsSource[i] == CurrentView.BindingContext)
 					{
 						index = i;
 						isCurrentContextPresent = true;
@@ -1209,7 +1209,7 @@ namespace PanCardView
 
 				if (index < 0)
 				{
-					index = CurrentIndex - 1;
+					index = SelectedIndex - 1;
 				}
 			}
 
@@ -1218,7 +1218,7 @@ namespace PanCardView
 				index = 0;
 			}
 
-			if (CurrentIndex == index)
+			if (SelectedIndex == index)
 			{
 				if (!isCurrentContextPresent)
 				{
@@ -1228,7 +1228,7 @@ namespace PanCardView
 				return;
 			}
 
-			CurrentIndex = index;
+			SelectedIndex = index;
 		}
 
 		private void AddBackChild(params View[] views)
@@ -1375,8 +1375,8 @@ namespace PanCardView
 
 		private void FirePanStarted()
 		{
-			PanStartedCommand?.Execute(CurrentIndex);
-			PanStarted?.Invoke(this, CurrentIndex, 0);
+			PanStartedCommand?.Execute(SelectedIndex);
+			PanStarted?.Invoke(this, SelectedIndex, 0);
 		}
 
 		private void FirePanEnding(bool? isNextSelected, int index, double diff)
@@ -1430,5 +1430,34 @@ namespace PanCardView
 			AutoNavigationEndedCommand?.Execute(isNextSelected);
 			AutoNavigationEnded?.Invoke(this, isNextSelected);
 		}
+
+		#region Obsolete
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use SelectedIndexProperty instead", true)]
+		public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsCardsView().SelectedIndex = (int)newValue;
+		});
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemsSourceProperty instead", true)]
+		public static readonly BindableProperty ItemsProperty = BindableProperty.Create(nameof(Items), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsCardsView().ItemsSource = (IList)newValue;
+		});
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use SelectedIndex instead", true)]
+		public int CurrentIndex
+		{
+			get => (int)GetValue(CurrentIndexProperty);
+			set => SetValue(CurrentIndexProperty, value);
+		}
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemsSource instead", true)]
+		public IList Items
+		{
+			get => GetValue(ItemsProperty) as IList;
+			set => SetValue(ItemsProperty, value);
+		}
+		#endregion
 	}
 }

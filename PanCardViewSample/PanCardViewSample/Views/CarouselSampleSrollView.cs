@@ -28,7 +28,7 @@ namespace PanCardViewSample.Views
 					}
 				}
 			};
-			_carouselView.SetBinding(CardsView.ItemsProperty, nameof(CarouselSampleScrollViewModel.Items));
+			_carouselView.SetBinding(CardsView.ItemsSourceProperty, nameof(CarouselSampleScrollViewModel.Items));
 
 			Title = "CarouselView scroll";
 

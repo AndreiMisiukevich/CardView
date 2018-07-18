@@ -39,8 +39,8 @@ namespace PanCardViewSample.Views
 			ToolbarItems.Add(prevItem);
 			ToolbarItems.Add(nextItem);
 
-			carousel.SetBinding(CardsView.ItemsProperty, nameof(SceneSampleViewModel.Items));
-			carousel.SetBinding(CardsView.CurrentIndexProperty, nameof(SceneSampleViewModel.CurrentIndex));
+			carousel.SetBinding(CardsView.ItemsSourceProperty, nameof(SceneSampleViewModel.Items));
+			carousel.SetBinding(CardsView.SelectedIndexProperty, nameof(SceneSampleViewModel.CurrentIndex));
 
 			BackgroundColor = Color.Black;
 			Title = "SceneView";

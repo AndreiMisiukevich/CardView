@@ -67,9 +67,9 @@ namespace PanCardView.Controls
             Spacing = 5;
             Orientation = StackOrientation.Horizontal;
 
-            this.SetBinding(CurrentIndexProperty, nameof(CardsView.CurrentIndex));
+            this.SetBinding(CurrentIndexProperty, nameof(CardsView.SelectedIndex));
             this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
-            this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.Items));
+            this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.ItemsSource));
             this.SetBinding(IsInteractionRunningProperty, nameof(CardsView.IsPanRunning));
 			this.SetBinding(IsAutoNavigatingRunningProperty, nameof(CardsView.IsAutoNavigating));
 

@@ -37,8 +37,8 @@ namespace PanCardViewSample.Views
 			ToolbarItems.Add(prevItem);
 			ToolbarItems.Add(nextItem);
 
-			cardsView.SetBinding(CardsView.ItemsProperty, nameof(CardsSampleViewModel.Items));
-			cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(CardsSampleViewModel.CurrentIndex));
+			cardsView.SetBinding(CardsView.ItemsSourceProperty, nameof(CardsSampleViewModel.Items));
+			cardsView.SetBinding(CardsView.SelectedIndexProperty, nameof(CardsSampleViewModel.CurrentIndex));
 
 			Title = "Cards View";
 

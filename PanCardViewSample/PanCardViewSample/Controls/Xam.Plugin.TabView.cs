@@ -104,12 +104,12 @@ namespace PanCardViewSample.Controls
 		private bool _supressCarouselViewPositionChangedEvent = false;
 		private void _carouselView_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(_carouselView.CurrentIndex) && !_supressCarouselViewPositionChangedEvent)
+			if (e.PropertyName == nameof(_carouselView.SelectedIndex) && !_supressCarouselViewPositionChangedEvent)
 			{
 				var positionChangingArgs = new PositionChangingEventArgs()
 				{
 					Canceled = false,
-					NewPosition = _carouselView.CurrentIndex,
+					NewPosition = _carouselView.SelectedIndex,
 					OldPosition = _position
 				};
 
@@ -120,7 +120,7 @@ namespace PanCardViewSample.Controls
 					_supressCarouselViewPositionChangedEvent = true;
 					_carouselView.PositionChanged -= _carouselView_PositionSelected;
 					_carouselView.PropertyChanged -= _carouselView_PropertyChanged;
-					_carouselView.CurrentIndex = _position;
+					_carouselView.SelectedIndex = _position;
 					_carouselView.PositionChanged += _carouselView_PositionSelected;
 					_carouselView.PropertyChanged += _carouselView_PropertyChanged;
 					_supressCarouselViewPositionChangedEvent = false;
@@ -182,7 +182,7 @@ namespace PanCardViewSample.Controls
 
 		private void _carouselView_PositionSelected(CardsView view, bool isNextSelected)
 		{
-			SetPosition(_carouselView.CurrentIndex);
+			SetPosition(_carouselView.SelectedIndex);
 		}
 
 		private void InitTabs()
@@ -272,7 +272,7 @@ namespace PanCardViewSample.Controls
 				_headerContainerGrid.Children.Add(headerItemSL, i * 2, 0);
 			}
 
-			_carouselView.Items = ItemSource.Select(t => t.Content).ToArray();
+			_carouselView.ItemsSource = ItemSource.Select(t => t.Content).ToArray();
 		}
 
 		#region HeaderBackgroundColor
@@ -545,7 +545,7 @@ namespace PanCardViewSample.Controls
 				}
 
 				_carouselView.PositionChanged -= _carouselView_PositionSelected;
-				_carouselView.CurrentIndex = position;
+				_carouselView.SelectedIndex = position;
 				_carouselView.PositionChanged += _carouselView_PositionSelected;
 
 				_position = position;

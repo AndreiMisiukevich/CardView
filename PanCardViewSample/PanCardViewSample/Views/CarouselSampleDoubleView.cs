@@ -12,8 +12,8 @@ namespace PanCardViewSample.Views
 			{
 				ItemTemplate = new DataTemplate(GetCardItem)
 			};
-			cardsView.SetBinding(CardsView.ItemsProperty, "Items");
-			cardsView.SetBinding(CardsView.CurrentIndexProperty, "CurrentIndex");
+			cardsView.SetBinding(CardsView.ItemsSourceProperty, "Items");
+			cardsView.SetBinding(CardsView.SelectedIndexProperty, "CurrentIndex");
 
 
 			Title = "CarouselView Double Carousel";
@@ -45,8 +45,8 @@ namespace PanCardViewSample.Views
 					return subCard;
 				})
 			};
-			cardsView.SetBinding(CardsView.ItemsProperty, "Items");
-			cardsView.SetBinding(CardsView.CurrentIndexProperty, "CurrentIndex");
+			cardsView.SetBinding(CardsView.ItemsSourceProperty, "Items");
+			cardsView.SetBinding(CardsView.SelectedIndexProperty, "CurrentIndex");
 
 			AbsoluteLayout.SetLayoutFlags(cardsView, AbsoluteLayoutFlags.All);
 			AbsoluteLayout.SetLayoutBounds(cardsView, new Rectangle(.5, 0, 1, .5));
