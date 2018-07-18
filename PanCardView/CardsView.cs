@@ -37,12 +37,19 @@ namespace PanCardView
 		{
 			var view = bindable.AsCardsView();
 			view.OldIndex = (int)oldValue;
-			if (view.ShouldIgnoreSetCurrentView)
+			try
 			{
-				view.ShouldIgnoreSetCurrentView = false;
-				return;
+				if (view.ShouldIgnoreSetCurrentView)
+				{
+					view.ShouldIgnoreSetCurrentView = false;
+					return;
+				}
+				view.SetCurrentView();
 			}
-			view.SetCurrentView();
+			finally
+			{
+				view.SelectedItem = view.CurrentView?.BindingContext ?? view.CurrentView;
+			}
 		});
 
 		public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
@@ -74,6 +81,8 @@ namespace PanCardView
 		{
 			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
 		});
+
+		public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(CardsView), null, BindingMode.OneWayToSource);
 
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
@@ -278,6 +287,12 @@ namespace PanCardView
 		{
 			get => (bool)GetValue(IsAutoNavigatingProperty);
 			set => SetValue(IsAutoNavigatingProperty, value);
+		}
+
+		public object SelectedItem
+		{
+			get => GetValue(SelectedItemProperty);
+			set => SetValue(SelectedItemProperty, value);
 		}
 
 		public int MaxChildrenCount
