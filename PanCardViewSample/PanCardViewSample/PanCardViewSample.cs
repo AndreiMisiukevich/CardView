@@ -21,12 +21,6 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CardsSampleView());
 			};
 
-			var toCardsBtnCustom = new Button { Text = "CardsView CustomContexts" };
-			toCardsBtnCustom.Clicked += (sender, e) =>
-			{
-				this.Navigation.PushAsync(new CardsSampleCustomView());
-			};
-
 			var toCarouselBtn = new Button { Text = "SceneView" };
 			toCarouselBtn.Clicked += (sender, e) =>
 			{
@@ -75,7 +69,6 @@ namespace PanCardViewSample
 				{
 					Children = {
 						toCardsBtn,
-						toCardsBtnCustom,
 						toCarouselBtn,
 						toCarouselScrollBtn,
 						toCarouselDoubleBtn,

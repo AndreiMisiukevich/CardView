@@ -55,11 +55,6 @@ namespace PanCardView
 			bindable.AsCardsView().SetCurrentView();
 		});
 
-		public static readonly BindableProperty CurrentContextProperty = BindableProperty.Create(nameof(CurrentContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay, propertyChanged: (bindable, oldValue, newValue) =>
-		{
-			bindable.AsCardsView().SetCurrentView(true);
-		});
-
 		public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), 1, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsCardsView().SetCurrentView();
@@ -82,10 +77,6 @@ namespace PanCardView
 
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
-		public static readonly BindableProperty NextContextProperty = BindableProperty.Create(nameof(NextContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
-
-		public static readonly BindableProperty PrevContextProperty = BindableProperty.Create(nameof(PrevContext), typeof(object), typeof(CardsView), null, BindingMode.OneWay);
-
 		public static readonly BindableProperty IsPanEnabledProperty = BindableProperty.Create(nameof(IsPanEnabled), typeof(bool), typeof(CardsView), true);
 
 		public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
@@ -101,8 +92,6 @@ namespace PanCardView
 		public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), true);
 
 		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
-
-		public static readonly BindableProperty IsManualContextProcessingEnabledProperty = BindableProperty.Create(nameof(IsManualContextProcessingEnabled), typeof(bool), typeof(CardsView), false);
 
 		public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
@@ -237,24 +226,6 @@ namespace PanCardView
 			private set => SetValue(ItemsCountProperty, value);
 		}
 
-		public object CurrentContext
-		{
-			get => GetValue(CurrentContextProperty);
-			set => SetValue(CurrentContextProperty, value);
-		}
-
-		public object NextContext
-		{
-			get => GetValue(NextContextProperty);
-			set => SetValue(NextContextProperty, value);
-		}
-
-		public object PrevContext
-		{
-			get => GetValue(PrevContextProperty);
-			set => SetValue(PrevContextProperty, value);
-		}
-
 		public bool IsPanEnabled
 		{
 			get => (bool)GetValue(IsPanEnabledProperty);
@@ -295,12 +266,6 @@ namespace PanCardView
 		{
 			get => (bool)GetValue(IsCyclicalProperty);
 			set => SetValue(IsCyclicalProperty, value);
-		}
-
-		public bool IsManualContextProcessingEnabled
-		{
-			get => (bool)GetValue(IsManualContextProcessingEnabledProperty);
-			set => SetValue(IsManualContextProcessingEnabledProperty, value);
 		}
 
 		public bool IsPanRunning
@@ -426,7 +391,7 @@ namespace PanCardView
 
 		public void OnPanUpdated(PanUpdatedEventArgs e, bool? isSwiped = null)
 		{
-			if (ItemsCount <= 0 && !IsManualContextProcessingEnabled)
+			if (ItemsCount <= 0)
 			{
 				return;
 			}
@@ -458,7 +423,7 @@ namespace PanCardView
 				_viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
 			}
 
-			SetCurrentView(IsManualContextProcessingEnabled);
+			SetCurrentView();
 			RemoveUnprocessingChildren();
 			ForceLayout();
 		}
@@ -478,19 +443,14 @@ namespace PanCardView
 			}
 		}
 
-		protected virtual async void SetCurrentView(bool canResetContext = false)
+		protected virtual async void SetCurrentView()
 		{
 			if (await TryAutoNavigate())
 			{
 				return;
 			}
 
-			if (TryResetContext(canResetContext, CurrentView, CurrentContext))
-			{
-				return;
-			}
-
-			if (ItemsSource != null || IsManualContextProcessingEnabled)
+			if (ItemsSource != null)
 			{
 				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
 				if (CurrentView == null && SelectedIndex >= 0)
@@ -512,7 +472,7 @@ namespace PanCardView
 		protected virtual async void AdjustSlideShow(bool isForceStop = false)
 		{
 			_slideshowTokenSource?.Cancel();
-			if (isForceStop || IsManualContextProcessingEnabled)
+			if (isForceStop)
 			{
 				return;
 			}
@@ -585,13 +545,8 @@ namespace PanCardView
 			return true;
 		}
 
-		protected virtual void SetupNextView(bool canResetContext = false)
+		protected virtual void SetupNextView()
 		{
-			if (TryResetContext(canResetContext, NextViews.FirstOrDefault(), NextContext))
-			{
-				return;
-			}
-
 			var indeces = new int[BackViewsDepth];
 			for (int i = 0; i < indeces.Length; ++i)
 			{
@@ -601,13 +556,8 @@ namespace PanCardView
 			NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, indeces);
 		}
 
-		protected virtual void SetupPrevView(bool canResetContext = false)
+		protected virtual void SetupPrevView()
 		{
-			if (TryResetContext(canResetContext, PrevViews.FirstOrDefault(), PrevContext))
-			{
-				return;
-			}
-
 			var prevIndex = IsOnlyForwardDirection
 				? SelectedIndex + 1
 				: SelectedIndex - 1;
@@ -625,16 +575,6 @@ namespace PanCardView
 			}
 
 			PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, indeces);
-		}
-
-		protected virtual bool TryResetContext(bool canResetContext, View view, object context)
-		{
-			if (canResetContext && view != null)
-			{
-				view.BindingContext = context;
-				return true;
-			}
-			return false;
 		}
 
 		protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
@@ -710,13 +650,6 @@ namespace PanCardView
 
 		private AnimationDirection GetAutoNavigateAnimationDirection()
 		{
-			if (IsManualContextProcessingEnabled)
-			{
-				return CurrentContext == PrevViews.FirstOrDefault()?.BindingContext
-					   ? AnimationDirection.Prev
-					   : AnimationDirection.Next;
-			}
-
 			if (!IsCyclical)
 			{
 				return SelectedIndex < OldIndex
@@ -878,10 +811,6 @@ namespace PanCardView
 					ShouldSetIndexAfterPan = false;
 					SetNewIndex();
 				}
-				if (!IsManualContextProcessingEnabled)
-				{
-					SetupBackViews();
-				}
 			}
 
 			RemoveRedundantChildren(isProcessingNow);
@@ -947,11 +876,6 @@ namespace PanCardView
 
 		private int GetNewIndexFromDiff()
 		{
-			if (IsManualContextProcessingEnabled)
-			{
-				return 0;
-			}
-
 			var indexDelta = -Sign(CurrentDiff);
 			if (IsOnlyForwardDirection)
 			{
@@ -1100,19 +1024,6 @@ namespace PanCardView
 
 		private object GetContext(int index, AnimationDirection animationDirection)
 		{
-			if (IsManualContextProcessingEnabled)
-			{
-				switch (animationDirection)
-				{
-					case AnimationDirection.Current:
-						return CurrentContext;
-					case AnimationDirection.Next:
-						return NextContext;
-					case AnimationDirection.Prev:
-						return PrevContext;
-				}
-			}
-
 			if (ItemsCount <= 0)
 			{
 				return null;
