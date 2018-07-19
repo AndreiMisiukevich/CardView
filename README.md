@@ -82,7 +82,7 @@ if you want to add items directly through xaml
 
 ``` xml
 ...
-    <cards:CarouselView.Items>
+    <cards:CarouselView.ItemsSource>
             <x:Array Type="{x:Type View}">
                 <ContentView>
                     <Image Source="yourImage.png"/>
@@ -94,7 +94,7 @@ if you want to add items directly through xaml
                     <Label Text="any text"/>
                 </StackLayout>
             </x:Array>
-    </cards:CarouselView.Items>
+    </cards:CarouselView.ItemsSource>
 ...
 ```
 
