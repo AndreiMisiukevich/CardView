@@ -419,6 +419,8 @@ namespace PanCardView
 			{
 				var oldView = CurrentView;
 				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
+				var newView = CurrentView;
+
 				if (CurrentView == null && SelectedIndex >= 0)
 				{
 					ShouldIgnoreSetCurrentView = true;
@@ -428,7 +430,7 @@ namespace PanCardView
 				{
 					var isNextSelected = SelectedIndex > OldIndex;
 					FireItemDisappearing(InteractionType.User, isNextSelected, oldView.GetItem());
-					FireItemAppearing(InteractionType.User, isNextSelected, CurrentView.GetItem());
+					FireItemAppearing(InteractionType.User, isNextSelected, newView.GetItem());
 				}
 			}
 
@@ -501,8 +503,8 @@ namespace PanCardView
 			var animationDirection = GetAutoNavigateAnimationDirection();
 
 			var oldView = CurrentView;
-			var view = PrepareView(SelectedIndex, AnimationDirection.Current, Enumerable.Empty<View>());
-			CurrentView = view;
+			var newView = PrepareView(SelectedIndex, AnimationDirection.Current, Enumerable.Empty<View>());
+			CurrentView = newView;
 
 			BackViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, animationDirection);
 
@@ -523,7 +525,7 @@ namespace PanCardView
 			}
 
 			await autoNavigationTask;
-			EndAutoNavigation(oldView, animationId, animationDirection);
+			EndAutoNavigation(oldView, newView, animationId, animationDirection);
 
 			return true;
 		}
@@ -595,9 +597,9 @@ namespace PanCardView
 			}
 		}
 
-		private void StartAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
+		private void StartAutoNavigation(View oldView, Guid animationId, AnimationDirection animationDirection)
 		{
-			if (view != null)
+			if (oldView != null)
 			{
 				_interactions.Add(animationId, InteractionType.Auto);
 				IsAutoNavigating = true;
@@ -607,27 +609,27 @@ namespace PanCardView
 				}
 				lock (_viewsInUseLocker)
 				{
-					_viewsInUse.Add(view);
+					_viewsInUse.Add(oldView);
 				}
-				FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, view.GetItem());
+				FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, oldView.GetItem());
 			}
 		}
 
-		private void EndAutoNavigation(View view, Guid animationId, AnimationDirection animationDirection)
+		private void EndAutoNavigation(View oldView, View newView, Guid animationId, AnimationDirection animationDirection)
 		{
 			_inCoursePanDelay = 0;
-			if (view != null)
+			if (oldView != null)
 			{
 				lock (_viewsInUseLocker)
 				{
-					_viewsInUse.Remove(view);
-					CleanView(view);
+					_viewsInUse.Remove(oldView);
+					CleanView(oldView);
 				}
 			}
 			IsAutoNavigating = false;
 			var isProcessingNow = !_interactions.CheckLastId(animationId);
 			RemoveRedundantChildren(isProcessingNow);
-			FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, CurrentView.GetItem());
+			FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, newView.GetItem());
 			_interactions.Remove(animationId);
 		}
 
