@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CardsView</id>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
@@ -17,6 +17,9 @@
           <dependency id="Xamarin.Forms" version="2.4" />
       </group>
     </dependencies>
+    <releaseNotes>
+      See Changelog: https://github.com/AndreiMisiukevich/CardView/releases
+    </releaseNotes>
   </metadata>
   <files>
 
