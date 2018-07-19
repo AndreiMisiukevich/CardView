@@ -22,10 +22,6 @@ namespace PanCardView
 {
 	public class CardsView : AbsoluteLayout
 	{
-		public event CardsViewUserInteractedHandler UserInteracted;
-		public event CardsViewItemDisappearingHandler ItemDisappearing;
-		public event CardsViewItemAppearingHandler ItemAppearing;
-
 		public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			var view = bindable.AsCardsView();
@@ -64,19 +60,19 @@ namespace PanCardView
 			bindable.AsCardsView().AdjustSlideShow();
 		});
 
-		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty IsUserInteractionRunningProperty = BindableProperty.Create(nameof(IsUserInteractionRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
 		});
 
-		public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty IsAutoInteractionRunningProperty = BindableProperty.Create(nameof(IsAutoInteractionRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
 		});
 
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
-		public static readonly BindableProperty IsPanEnabledProperty = BindableProperty.Create(nameof(IsPanEnabled), typeof(bool), typeof(CardsView), true);
+		public static readonly BindableProperty IsUserInteractionEnabledProperty = BindableProperty.Create(nameof(IsUserInteractionEnabled), typeof(bool), typeof(CardsView), true);
 
 		public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
@@ -86,9 +82,9 @@ namespace PanCardView
 
 		public static readonly BindableProperty IsViewCacheEnabledProperty = BindableProperty.Create(nameof(IsViewCacheEnabled), typeof(bool), typeof(CardsView), true);
 
-		public static readonly BindableProperty PanDelayProperty = BindableProperty.Create(nameof(PanDelay), typeof(int), typeof(CardsView), 200);
+		public static readonly BindableProperty UserInteractionDelayProperty = BindableProperty.Create(nameof(UserInteractionDelay), typeof(int), typeof(CardsView), 200);
 
-		public static readonly BindableProperty IsPanInCourseProperty = BindableProperty.Create(nameof(IsPanInCourse), typeof(bool), typeof(CardsView), true);
+		public static readonly BindableProperty IsUserInteractionInCourseProperty = BindableProperty.Create(nameof(IsUserInteractionInCourse), typeof(bool), typeof(CardsView), true);
 
 		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
 
@@ -104,9 +100,13 @@ namespace PanCardView
 
 		public static readonly BindableProperty UserInteractedCommandProperty = BindableProperty.Create(nameof(UserInteractedCommand), typeof(ICommand), typeof(CardsView), null);
 
-		public static readonly BindableProperty ItemAppearingCommandProperty = BindableProperty.Create(nameof(ItemDisappearingCommand), typeof(ICommand), typeof(CardsView), null);
+		public static readonly BindableProperty ItemDisappearingCommandProperty = BindableProperty.Create(nameof(ItemDisappearingCommand), typeof(ICommand), typeof(CardsView), null);
 
-		public static readonly BindableProperty ItemAppearedCommandProperty = BindableProperty.Create(nameof(ItemAppearingCommand), typeof(ICommand), typeof(CardsView), null);
+		public static readonly BindableProperty ItemAppearingCommandProperty = BindableProperty.Create(nameof(ItemAppearingCommand), typeof(ICommand), typeof(CardsView), null);
+
+		public event CardsViewUserInteractedHandler UserInteracted;
+		public event CardsViewItemDisappearingHandler ItemDisappearing;
+		public event CardsViewItemAppearingHandler ItemAppearing;
 
 		private readonly object _childLocker = new object();
 		private readonly object _viewsInUseLocker = new object();
@@ -227,16 +227,16 @@ namespace PanCardView
 			set => SetValue(SlideShowDurationProperty, value);
 		}
 
-		public bool IsPanRunning
+		public bool IsUserInteractionRunning
 		{
-			get => (bool)GetValue(IsPanRunningProperty);
-			set => SetValue(IsPanRunningProperty, value);
+			get => (bool)GetValue(IsUserInteractionRunningProperty);
+			set => SetValue(IsUserInteractionRunningProperty, value);
 		}
 
-		public bool IsAutoNavigating
+		public bool IsAutoInteractionRunning
 		{
-			get => (bool)GetValue(IsAutoNavigatingProperty);
-			set => SetValue(IsAutoNavigatingProperty, value);
+			get => (bool)GetValue(IsAutoInteractionRunningProperty);
+			set => SetValue(IsAutoInteractionRunningProperty, value);
 		}
 
 		public int ItemsCount
@@ -245,10 +245,10 @@ namespace PanCardView
 			private set => SetValue(ItemsCountProperty, value);
 		}
 
-		public bool IsPanEnabled
+		public bool IsUserInteractionEnabled
 		{
-			get => (bool)GetValue(IsPanEnabledProperty);
-			set => SetValue(IsPanEnabledProperty, value);
+			get => (bool)GetValue(IsUserInteractionEnabledProperty);
+			set => SetValue(IsUserInteractionEnabledProperty, value);
 		}
 
 		public double MoveDistance
@@ -281,16 +281,16 @@ namespace PanCardView
 			set => SetValue(IsViewCacheEnabledProperty, value);
 		}
 
-		public int PanDelay
+		public int UserInteractionDelay
 		{
-			get => IsPanInCourse ? _inCoursePanDelay : (int)GetValue(PanDelayProperty);
-			set => SetValue(PanDelayProperty, value);
+			get => IsUserInteractionInCourse ? _inCoursePanDelay : (int)GetValue(UserInteractionDelayProperty);
+			set => SetValue(UserInteractionDelayProperty, value);
 		}
 
-		public bool IsPanInCourse
+		public bool IsUserInteractionInCourse
 		{
-			get => (bool)GetValue(IsPanInCourseProperty);
-			set => SetValue(IsPanInCourseProperty, value);
+			get => (bool)GetValue(IsUserInteractionInCourseProperty);
+			set => SetValue(IsUserInteractionInCourseProperty, value);
 		}
 
 		public bool IsCyclical
@@ -341,14 +341,14 @@ namespace PanCardView
 
 		public ICommand ItemDisappearingCommand
 		{
-			get => GetValue(ItemAppearingCommandProperty) as ICommand;
-			set => SetValue(ItemAppearingCommandProperty, value);
+			get => GetValue(ItemDisappearingCommandProperty) as ICommand;
+			set => SetValue(ItemDisappearingCommandProperty, value);
 		}
 
 		public ICommand ItemAppearingCommand
 		{
-			get => GetValue(ItemAppearedCommandProperty) as ICommand;
-			set => SetValue(ItemAppearedCommandProperty, value);
+			get => GetValue(ItemAppearingCommandProperty) as ICommand;
+			set => SetValue(ItemAppearingCommandProperty, value);
 		}
 
 		public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
@@ -602,8 +602,8 @@ namespace PanCardView
 			if (oldView != null)
 			{
 				_interactions.Add(animationId, InteractionType.Auto);
-				IsAutoNavigating = true;
-				if (IsPanInCourse)
+				IsAutoInteractionRunning = true;
+				if (IsUserInteractionInCourse)
 				{
 					_inCoursePanDelay = int.MaxValue;
 				}
@@ -626,7 +626,7 @@ namespace PanCardView
 					CleanView(oldView);
 				}
 			}
-			IsAutoNavigating = false;
+			IsAutoInteractionRunning = false;
 			var isProcessingNow = !_interactions.CheckLastId(animationId);
 			RemoveRedundantChildren(isProcessingNow);
 			FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, newView.GetItem());
@@ -667,14 +667,14 @@ namespace PanCardView
 			}
 
 			var deltaTime = DateTime.Now - _lastPanTime;
-			if (!IsPanEnabled || deltaTime.TotalMilliseconds < PanDelay || CurrentView == null)
+			if (!IsUserInteractionEnabled || deltaTime.TotalMilliseconds < UserInteractionDelay || CurrentView == null)
 			{
 				_shouldSkipTouch = true;
 				return;
 			}
 			_shouldSkipTouch = false;
 
-			if (IsPanInCourse)
+			if (IsUserInteractionInCourse)
 			{
 				_inCoursePanDelay = int.MaxValue;
 			}
@@ -683,7 +683,7 @@ namespace PanCardView
 			_interactions.Add(gestureId, InteractionType.User);
 
 			FireUserInteracted(UserInteractionStatus.Started, 0, SelectedIndex);
-			IsPanRunning = true;
+			IsUserInteractionRunning = true;
 			_isPanEndRequested = false;
 
 			SetupBackViews();
@@ -796,7 +796,7 @@ namespace PanCardView
 
 			if (!isProcessingNow)
 			{
-				IsPanRunning = false;
+				IsUserInteractionRunning = false;
 				if (ShouldSetIndexAfterPan)
 				{
 					ShouldSetIndexAfterPan = false;
@@ -1085,8 +1085,8 @@ namespace PanCardView
 		{
 			ItemsCount = ItemsSource?.Count ?? -1;
 
-			ShouldSetIndexAfterPan = IsPanRunning;
-			if (!IsPanRunning)
+			ShouldSetIndexAfterPan = IsUserInteractionRunning;
+			if (!IsUserInteractionRunning)
 			{
 				SetNewIndex();
 			}
@@ -1429,6 +1429,33 @@ namespace PanCardView
 			get => GetValue(ItemsProperty) as IList;
 			set => SetValue(ItemsProperty, value);
 		}
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use IsUserInteractionRunningProperty instead", true)]
+		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+		});
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use IsAutoInteractionRunningProperty instead", true)]
+		public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
+		{
+			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+		});
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use IsUserInteractionRunning instead", true)]
+		public bool IsPanRunning
+		{
+			get => (bool)GetValue(IsPanRunningProperty);
+			set => SetValue(IsPanRunningProperty, value);
+		}
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use IsAutoInteractionRunning instead", true)]
+		public bool IsAutoNavigating
+		{
+			get => (bool)GetValue(IsAutoNavigatingProperty);
+			set => SetValue(IsAutoNavigatingProperty, value);
+		}
+
 		#endregion
 	}
 }

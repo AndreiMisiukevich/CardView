@@ -37,12 +37,12 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetIndicatorsContexts();
         });
 
-        public static readonly BindableProperty IsInteractionRunningProperty = BindableProperty.Create(nameof(IsInteractionRunning), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty IsUserInteractionRunningProperty = BindableProperty.Create(nameof(IsUserInteractionRunning), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetVisibility();
         });
 
-		public static readonly BindableProperty IsAutoNavigatingRunningProperty = BindableProperty.Create(nameof(IsAutoNavigatingRunning), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty IsAutoInteractionRunningProperty = BindableProperty.Create(nameof(IsAutoInteractionRunning), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsIndicatorsControl().ResetVisibility();
 		});
@@ -70,8 +70,8 @@ namespace PanCardView.Controls
             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
             this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
             this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.ItemsSource));
-            this.SetBinding(IsInteractionRunningProperty, nameof(CardsView.IsPanRunning));
-			this.SetBinding(IsAutoNavigatingRunningProperty, nameof(CardsView.IsAutoNavigating));
+            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
+			this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
 
             Margin = new Thickness(10, 20);
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
@@ -116,16 +116,16 @@ namespace PanCardView.Controls
 			set => SetValue(UseCardItemsAsIndicatorsBindingContextsProperty, value);
 		}
         
-        public bool IsInteractionRunning
+        public bool IsUserInteractionRunning
         {
-            get => (bool)GetValue(IsInteractionRunningProperty);
-            set => SetValue(IsInteractionRunningProperty, value);
+            get => (bool)GetValue(IsUserInteractionRunningProperty);
+            set => SetValue(IsUserInteractionRunningProperty, value);
         }
 
-		public bool IsAutoNavigatingRunning
+		public bool IsAutoInteractionRunning
 		{
-			get => (bool)GetValue(IsAutoNavigatingRunningProperty);
-			set => SetValue(IsAutoNavigatingRunningProperty, value);
+			get => (bool)GetValue(IsAutoInteractionRunningProperty);
+			set => SetValue(IsAutoInteractionRunningProperty, value);
 		}
 
         public IList IndicatorsContexts
@@ -211,7 +211,7 @@ namespace PanCardView.Controls
 
 			if (ToFadeDuration > 0)
 			{
-				if (IsInteractionRunning || IsAutoNavigatingRunning)
+				if (IsUserInteractionRunning || IsAutoInteractionRunning)
 				{
 					IsVisible = true;
 					await this.FadeTo(1, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
