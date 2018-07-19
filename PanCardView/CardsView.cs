@@ -36,20 +36,19 @@ namespace PanCardView
 		public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			var view = bindable.AsCardsView();
+			view.SetSelectedItem();
 			view.OldIndex = (int)oldValue;
-			try
+			if (view.ShouldIgnoreSetCurrentView)
 			{
-				if (view.ShouldIgnoreSetCurrentView)
-				{
-					view.ShouldIgnoreSetCurrentView = false;
-					return;
-				}
-				view.SetCurrentView();
+				view.ShouldIgnoreSetCurrentView = false;
+				return;
 			}
-			finally
-			{
-				view.SelectedItem = view.CurrentView?.BindingContext ?? view.CurrentView;
-			}
+			view.SetCurrentView();
+		});
+
+		public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(CardsView), null, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
+			var view = bindable.AsCardsView();
+			view.SelectedIndex = view.ItemsSource?.IndexOf(newValue) ?? -1;
 		});
 
 		public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
@@ -81,8 +80,6 @@ namespace PanCardView
 		{
 			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
 		});
-
-		public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(CardsView), null, BindingMode.OneWayToSource);
 
 		public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
@@ -118,11 +115,11 @@ namespace PanCardView
 
 		public static readonly BindableProperty PanEndedCommandProperty = BindableProperty.Create(nameof(PanEndedCommand), typeof(ICommand), typeof(CardsView), null);
 
-		public static readonly BindableProperty PanChangedCommandProperty = BindableProperty.Create(nameof(PanChangedCommand), typeof(ICommand), typeof(CardsView), null);
-
 		public static readonly BindableProperty PositionChangingCommandProperty = BindableProperty.Create(nameof(PositionChangingCommand), typeof(ICommand), typeof(CardsView), null);
 
 		public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
+
+		public static readonly BindableProperty PanChangedCommandProperty = BindableProperty.Create(nameof(PanChangedCommand), typeof(ICommand), typeof(CardsView), null);
 
 		public static readonly BindableProperty AutoNavigationStartedCommandProperty = BindableProperty.Create(nameof(AutoNavigationStartedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -217,6 +214,12 @@ namespace PanCardView
 			set => SetValue(SelectedIndexProperty, value);
 		}
 
+		public object SelectedItem
+		{
+			get => GetValue(SelectedItemProperty);
+			set => SetValue(SelectedItemProperty, value);
+		}
+
 		public IList ItemsSource
 		{
 			get => GetValue(ItemsSourceProperty) as IList;
@@ -227,6 +230,30 @@ namespace PanCardView
 		{
 			get => GetValue(ItemTemplateProperty) as DataTemplate;
 			set => SetValue(ItemTemplateProperty, value);
+		}
+
+		public int BackViewsDepth
+		{
+			get => (int)GetValue(BackViewsDepthProperty);
+			set => SetValue(BackViewsDepthProperty, value);
+		}
+
+		public int SlideShowDuration
+		{
+			get => (int)GetValue(SlideShowDurationProperty);
+			set => SetValue(SlideShowDurationProperty, value);
+		}
+
+		public bool IsPanRunning
+		{
+			get => (bool)GetValue(IsPanRunningProperty);
+			set => SetValue(IsPanRunningProperty, value);
+		}
+
+		public bool IsAutoNavigating
+		{
+			get => (bool)GetValue(IsAutoNavigatingProperty);
+			set => SetValue(IsAutoNavigatingProperty, value);
 		}
 
 		public int ItemsCount
@@ -259,6 +286,18 @@ namespace PanCardView
 			set => SetValue(MoveWidthPercentageProperty, value);
 		}
 
+		public bool IsOnlyForwardDirection
+		{
+			get => (bool)GetValue(IsOnlyForwardDirectionProperty);
+			set => SetValue(IsOnlyForwardDirectionProperty, value);
+		}
+
+		public bool IsViewCacheEnabled
+		{
+			get => (bool)GetValue(IsViewCacheEnabledProperty);
+			set => SetValue(IsViewCacheEnabledProperty, value);
+		}
+
 		public int PanDelay
 		{
 			get => IsPanInCourse ? _inCoursePanDelay : (int)GetValue(PanDelayProperty);
@@ -277,24 +316,6 @@ namespace PanCardView
 			set => SetValue(IsCyclicalProperty, value);
 		}
 
-		public bool IsPanRunning
-		{
-			get => (bool)GetValue(IsPanRunningProperty);
-			set => SetValue(IsPanRunningProperty, value);
-		}
-
-		public bool IsAutoNavigating
-		{
-			get => (bool)GetValue(IsAutoNavigatingProperty);
-			set => SetValue(IsAutoNavigatingProperty, value);
-		}
-
-		public object SelectedItem
-		{
-			get => GetValue(SelectedItemProperty);
-			set => SetValue(SelectedItemProperty, value);
-		}
-
 		public int MaxChildrenCount
 		{
 			get => (int)GetValue(MaxChildrenCountProperty);
@@ -305,18 +326,6 @@ namespace PanCardView
 		{
 			get => (int)GetValue(DesiredMaxChildrenCountProperty);
 			set => SetValue(DesiredMaxChildrenCountProperty, value);
-		}
-
-		public int BackViewsDepth
-		{
-			get => (int)GetValue(BackViewsDepthProperty);
-			set => SetValue(BackViewsDepthProperty, value);
-		}
-
-		public int SlideShowDuration
-		{
-			get => (int)GetValue(SlideShowDurationProperty);
-			set => SetValue(SlideShowDurationProperty, value);
 		}
 
 		public double SwipeThresholdDistance
@@ -341,18 +350,6 @@ namespace PanCardView
 			set => SetValue(SwipeThresholdTimeProperty, value);
 		}
 
-		public bool IsOnlyForwardDirection
-		{
-			get => (bool)GetValue(IsOnlyForwardDirectionProperty);
-			set => SetValue(IsOnlyForwardDirectionProperty, value);
-		}
-
-		public bool IsViewCacheEnabled
-		{
-			get => (bool)GetValue(IsViewCacheEnabledProperty);
-			set => SetValue(IsViewCacheEnabledProperty, value);
-		}
-
 		public ICommand PanStartedCommand
 		{
 			get => GetValue(PanStartedCommandProperty) as ICommand;
@@ -371,12 +368,6 @@ namespace PanCardView
 			set => SetValue(PanEndedCommandProperty, value);
 		}
 
-		public ICommand PanChangedCommand
-		{
-			get => GetValue(PanChangedCommandProperty) as ICommand;
-			set => SetValue(PanChangedCommandProperty, value);
-		}
-
 		public ICommand PositionChangingCommand
 		{
 			get => GetValue(PositionChangingCommandProperty) as ICommand;
@@ -387,6 +378,12 @@ namespace PanCardView
 		{
 			get => GetValue(PositionChangedCommandProperty) as ICommand;
 			set => SetValue(PositionChangedCommandProperty, value);
+		}
+
+		public ICommand PanChangedCommand
+		{
+			get => GetValue(PanChangedCommandProperty) as ICommand;
+			set => SetValue(PanChangedCommandProperty, value);
 		}
 
 		public ICommand AutoNavigationStartedCommand
@@ -482,6 +479,23 @@ namespace PanCardView
 			}
 
 			SetupBackViews();
+		}
+
+		protected virtual void SetSelectedItem()
+		{
+			var index = SelectedIndex;
+			if (IsCyclical)
+			{
+				index = index.ToCyclingIndex(ItemsCount);
+			}
+
+			if(index >= ItemsCount)
+			{
+				SelectedItem = null;
+				return;
+			}
+
+			SelectedItem = ItemsSource[index];
 		}
 
 		protected virtual async void AdjustSlideShow(bool isForceStop = false)
