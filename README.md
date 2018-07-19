@@ -35,8 +35,8 @@ var cardsView = new CardsView
 {
     ItemTemplate = new DataTemplate(() => new ContentView()) //your template
 };
-cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
-cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
+cardsView.SetBinding(CardsView.ItemsSourceProperty, nameof(PanCardSampleViewModel.Items));
+cardsView.SetBinding(CardsView.SelectedIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
 ```
 -> Optionaly you can create ViewModel... or not... as you wish
 
@@ -50,8 +50,8 @@ carouselView.Children.Add(new IndicatorsControl());
 **XAML:**
 ```xml
 <cards:CarouselView 
-    Items="{Binding Items}"
-    CurrentIndex="{Binding CurrentIndex}">
+    ItemsSource="{Binding Items}"
+    SelectedIndex="{Binding CurrentIndex}">
     <cards:CarouselView.ItemTemplate>
         <DataTemplate>
             <ContentView>
