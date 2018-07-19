@@ -12,7 +12,7 @@ namespace PanCardView.Controls
 {
     public class IndicatorsControl : StackLayout
     {
-        public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
+		public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
         });
@@ -67,7 +67,7 @@ namespace PanCardView.Controls
             Spacing = 5;
             Orientation = StackOrientation.Horizontal;
 
-            this.SetBinding(CurrentIndexProperty, nameof(CardsView.SelectedIndex));
+            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
             this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
             this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.ItemsSource));
             this.SetBinding(IsInteractionRunningProperty, nameof(CardsView.IsPanRunning));
@@ -82,14 +82,14 @@ namespace PanCardView.Controls
             _itemTapGesture = new TapGestureRecognizer();
             _itemTapGesture.Tapped += (tapSender, tapArgs) =>
             {
-                CurrentIndex = IndexOf(tapSender as View);
+                SelectedIndex = IndexOf(tapSender as View);
             };
         }
 
-        public int CurrentIndex
+        public int SelectedIndex
         {
-            get => (int)GetValue(CurrentIndexProperty);
-            set => SetValue(CurrentIndexProperty, value);
+            get => (int)GetValue(SelectedIndexProperty);
+            set => SetValue(SelectedIndexProperty, value);
         }
 
         public int ItemsCount
@@ -109,6 +109,12 @@ namespace PanCardView.Controls
             get => GetValue(UnselectedIndicatorStyleProperty) as Style;
             set => SetValue(UnselectedIndicatorStyleProperty, value);
         }
+
+		public bool UseCardItemsAsIndicatorsBindingContexts
+		{
+			get => (bool)GetValue(UseCardItemsAsIndicatorsBindingContextsProperty);
+			set => SetValue(UseCardItemsAsIndicatorsBindingContextsProperty, value);
+		}
         
         public bool IsInteractionRunning
         {
@@ -132,12 +138,6 @@ namespace PanCardView.Controls
         {
             get => GetValue(ItemTemplateProperty) as DataTemplate;
             set => SetValue(ItemTemplateProperty, value);
-        }
-        
-        public bool UseCardItemsAsIndicatorsBindingContexts
-        {
-            get => (bool)GetValue(UseCardItemsAsIndicatorsBindingContextsProperty);
-            set => SetValue(UseCardItemsAsIndicatorsBindingContextsProperty, value);
         }
 
         public bool UseParentAsBindingContext
@@ -255,7 +255,7 @@ namespace PanCardView.Controls
 
         private void ResetIndicatorsStylesNonBatch()
         {
-            var cyclingIndex = CurrentIndex.ToCyclingIndex(ItemsCount);
+            var cyclingIndex = SelectedIndex.ToCyclingIndex(ItemsCount);
             OnResetIndicatorsStyles(cyclingIndex);
         }
 
