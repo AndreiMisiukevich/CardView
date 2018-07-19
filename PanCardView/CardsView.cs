@@ -15,23 +15,16 @@ using Xamarin.Forms;
 using static System.Math;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using PanCardView.EventArgs;
+using PanCardView.Delegates;
 
 namespace PanCardView
 {
-	public delegate void CardsViewPanStartEndHandler(CardsView view, int index, double diff);
-	public delegate void CardsViewPanChangedHandler(CardsView view, double diff);
-	public delegate void CardsViewPositionChangedHandler(CardsView view, bool isNextSelected);
-
 	public class CardsView : AbsoluteLayout
 	{
-		public event CardsViewPanStartEndHandler PanStarted;
-		public event CardsViewPanStartEndHandler PanEnding;
-		public event CardsViewPanStartEndHandler PanEnded;
-		public event CardsViewPanChangedHandler PanChanged;
-		public event CardsViewPositionChangedHandler PositionChanging;
-		public event CardsViewPositionChangedHandler PositionChanged;
-		public event CardsViewPositionChangedHandler AutoNavigationStarted;
-		public event CardsViewPositionChangedHandler AutoNavigationEnded;
+		public event CardsViewUserInteractedHandler UserInteracted;
+		public event CardsViewItemDisappearingHandler ItemDisappearing;
+		public event CardsViewItemAppearingHandler ItemAppearing;
 
 		public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
 		{
@@ -109,21 +102,11 @@ namespace PanCardView
 
 		public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
 
-		public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
+		public static readonly BindableProperty UserInteractedCommandProperty = BindableProperty.Create(nameof(UserInteractedCommand), typeof(ICommand), typeof(CardsView), null);
 
-		public static readonly BindableProperty PanEndingCommandProperty = BindableProperty.Create(nameof(PanEndingCommand), typeof(ICommand), typeof(CardsView), null);
+		public static readonly BindableProperty ItemAppearingCommandProperty = BindableProperty.Create(nameof(ItemDisappearingCommand), typeof(ICommand), typeof(CardsView), null);
 
-		public static readonly BindableProperty PanEndedCommandProperty = BindableProperty.Create(nameof(PanEndedCommand), typeof(ICommand), typeof(CardsView), null);
-
-		public static readonly BindableProperty PositionChangingCommandProperty = BindableProperty.Create(nameof(PositionChangingCommand), typeof(ICommand), typeof(CardsView), null);
-
-		public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
-
-		public static readonly BindableProperty PanChangedCommandProperty = BindableProperty.Create(nameof(PanChangedCommand), typeof(ICommand), typeof(CardsView), null);
-
-		public static readonly BindableProperty AutoNavigationStartedCommandProperty = BindableProperty.Create(nameof(AutoNavigationStartedCommand), typeof(ICommand), typeof(CardsView), null);
-
-		public static readonly BindableProperty AutoNavigationEndedCommandProperty = BindableProperty.Create(nameof(AutoNavigationEndedCommand), typeof(ICommand), typeof(CardsView), null);
+		public static readonly BindableProperty ItemAppearedCommandProperty = BindableProperty.Create(nameof(ItemAppearingCommand), typeof(ICommand), typeof(CardsView), null);
 
 		private readonly object _childLocker = new object();
 		private readonly object _viewsInUseLocker = new object();
@@ -350,52 +333,22 @@ namespace PanCardView
 			set => SetValue(SwipeThresholdTimeProperty, value);
 		}
 
-		public ICommand PanStartedCommand
+		public ICommand UserInteractedCommand
 		{
-			get => GetValue(PanStartedCommandProperty) as ICommand;
-			set => SetValue(PanStartedCommandProperty, value);
+			get => GetValue(UserInteractedCommandProperty) as ICommand;
+			set => SetValue(UserInteractedCommandProperty, value);
 		}
 
-		public ICommand PanEndingCommand
+		public ICommand ItemDisappearingCommand
 		{
-			get => GetValue(PanEndingCommandProperty) as ICommand;
-			set => SetValue(PanEndingCommandProperty, value);
+			get => GetValue(ItemAppearingCommandProperty) as ICommand;
+			set => SetValue(ItemAppearingCommandProperty, value);
 		}
 
-		public ICommand PanEndedCommand
+		public ICommand ItemAppearingCommand
 		{
-			get => GetValue(PanEndedCommandProperty) as ICommand;
-			set => SetValue(PanEndedCommandProperty, value);
-		}
-
-		public ICommand PositionChangingCommand
-		{
-			get => GetValue(PositionChangingCommandProperty) as ICommand;
-			set => SetValue(PositionChangingCommandProperty, value);
-		}
-
-		public ICommand PositionChangedCommand
-		{
-			get => GetValue(PositionChangedCommandProperty) as ICommand;
-			set => SetValue(PositionChangedCommandProperty, value);
-		}
-
-		public ICommand PanChangedCommand
-		{
-			get => GetValue(PanChangedCommandProperty) as ICommand;
-			set => SetValue(PanChangedCommandProperty, value);
-		}
-
-		public ICommand AutoNavigationStartedCommand
-		{
-			get => GetValue(AutoNavigationStartedCommandProperty) as ICommand;
-			set => SetValue(AutoNavigationStartedCommandProperty, value);
-		}
-
-		public ICommand AutoNavigationEndedCommand
-		{
-			get => GetValue(AutoNavigationEndedCommandProperty) as ICommand;
-			set => SetValue(AutoNavigationEndedCommandProperty, value);
+			get => GetValue(ItemAppearedCommandProperty) as ICommand;
+			set => SetValue(ItemAppearedCommandProperty, value);
 		}
 
 		public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
@@ -464,6 +417,7 @@ namespace PanCardView
 
 			if (ItemsSource != null)
 			{
+				var oldView = CurrentView;
 				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
 				if (CurrentView == null && SelectedIndex >= 0)
 				{
@@ -473,8 +427,8 @@ namespace PanCardView
 				else if (SelectedIndex != OldIndex)
 				{
 					var isNextSelected = SelectedIndex > OldIndex;
-					FirePositionChanging(isNextSelected);
-					FirePositionChanged(isNextSelected);
+					FireItemDisappearing(InteractionType.User, isNextSelected, oldView.GetItem());
+					FireItemAppearing(InteractionType.User, isNextSelected, CurrentView.GetItem());
 				}
 			}
 
@@ -645,7 +599,7 @@ namespace PanCardView
 		{
 			if (view != null)
 			{
-				_interactions.Add(animationId, InteractionType.Animation);
+				_interactions.Add(animationId, InteractionType.Auto);
 				IsAutoNavigating = true;
 				if (IsPanInCourse)
 				{
@@ -655,7 +609,7 @@ namespace PanCardView
 				{
 					_viewsInUse.Add(view);
 				}
-				FireAutoNavigationStarted(animationDirection != AnimationDirection.Prev);
+				FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, view.GetItem());
 			}
 		}
 
@@ -673,7 +627,7 @@ namespace PanCardView
 			IsAutoNavigating = false;
 			var isProcessingNow = !_interactions.CheckLastId(animationId);
 			RemoveRedundantChildren(isProcessingNow);
-			FireAutoNavigationEnded(animationDirection != AnimationDirection.Prev);
+			FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, CurrentView.GetItem());
 			_interactions.Remove(animationId);
 		}
 
@@ -724,9 +678,9 @@ namespace PanCardView
 			}
 
 			var gestureId = Guid.NewGuid();
-			_interactions.Add(gestureId, InteractionType.Gesture);
+			_interactions.Add(gestureId, InteractionType.User);
 
-			FirePanStarted();
+			FireUserInteracted(UserInteractionStatus.Started, 0, SelectedIndex);
 			IsPanRunning = true;
 			_isPanEndRequested = false;
 
@@ -753,7 +707,7 @@ namespace PanCardView
 
 			SetupDiffItems(diff);
 
-			FirePanChanged();
+			FireUserInteracted(UserInteractionStatus.Running, CurrentDiff, SelectedIndex);
 
 			FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
 			BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
@@ -767,7 +721,7 @@ namespace PanCardView
 			}
 
 			_lastPanTime = DateTime.Now;
-			var gestureId = _interactions.GetFirstId(InteractionType.Gesture);
+			var gestureId = _interactions.GetFirstId(InteractionType.User);
 
 			_isPanEndRequested = true;
 			var absDiff = Abs(CurrentDiff);
@@ -798,6 +752,7 @@ namespace PanCardView
 
 			_timeDiffItems.Clear();
 
+			Task endingTask = null;
 			if (isNextSelected.HasValue)
 			{
 				index = GetNewIndexFromDiff();
@@ -811,23 +766,28 @@ namespace PanCardView
 
 				SelectedIndex = index;
 
-				FirePanEnding(isNextSelected, index, diff);
-
-				await Task.WhenAll(
+				endingTask = Task.WhenAll(
 					FrontViewProcessor.HandlePanApply(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
 					BackViewProcessor.HandlePanApply(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews)
 				);
 			}
 			else
 			{
-				FirePanEnding(isNextSelected, index, diff);
-				await Task.WhenAll(
+				endingTask = Task.WhenAll(
 					FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
 					BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews)
 				);
 			}
 
-			FirePanEnded(isNextSelected, index, diff);
+			var oldView = CurrentBackViews.FirstOrDefault();
+			var newView = CurrentView;
+
+			FireUserInteracted(UserInteractionStatus.Ending, diff, index, isNextSelected, oldView);
+			CurrentDiff = 0;
+
+			await endingTask;
+
+			FireUserInteracted(UserInteractionStatus.Ended, diff, index, isNextSelected, newView);
 
 			var isProcessingNow = !_interactions.CheckLastId(gestureId);
 			RemoveRangeViewsInUse(gestureId, isProcessingNow);
@@ -1319,65 +1279,128 @@ namespace PanCardView
 			}
 		}
 
-		private void FirePanStarted()
+		private void FireUserInteracted(UserInteractionStatus status, double diff, int index, bool? isNextSelected = null, View view = null)
 		{
-			PanStartedCommand?.Execute(SelectedIndex);
-			PanStarted?.Invoke(this, SelectedIndex, 0);
-		}
+			var args = new UserInteractedEventArgs(index, diff, status);
+			UserInteractedCommand?.Execute(args);
+			UserInteracted?.Invoke(this, args);
 
-		private void FirePanEnding(bool? isNextSelected, int index, double diff)
-		{
-			PanEndingCommand?.Execute(index);
-			PanEnding?.Invoke(this, index, diff);
 			if (isNextSelected.HasValue)
 			{
-				FirePositionChanging(isNextSelected.GetValueOrDefault());
-			}
+				var item = view.GetItem();
+				switch (status)
+				{
+					case UserInteractionStatus.Ending:
+						FireItemDisappearing(InteractionType.User, isNextSelected.GetValueOrDefault(), item);
+						return;
 
-			CurrentDiff = 0;
-		}
-
-		private void FirePanEnded(bool? isNextSelected, int index, double diff)
-		{
-			PanEndedCommand?.Execute(index);
-			PanEnded?.Invoke(this, index, diff);
-			if (isNextSelected.HasValue)
-			{
-				FirePositionChanged(isNextSelected.GetValueOrDefault());
+					case UserInteractionStatus.Ended:
+						FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), item);
+						return;
+				}
 			}
 		}
 
-		private void FirePanChanged()
+		private void FireItemDisappearing(InteractionType type, bool isNextSelected, object item)
 		{
-			PanChangedCommand?.Execute(CurrentDiff);
-			PanChanged?.Invoke(this, CurrentDiff);
+			var args = new ItemDisappearingEventArgs(type, isNextSelected, item);
+			ItemDisappearingCommand?.Execute(args);
+			ItemDisappearing?.Invoke(this, args);
 		}
 
-		private void FirePositionChanging(bool isNextSelected)
+		private void FireItemAppearing(InteractionType type, bool isNextSelected, object item)
 		{
-			PositionChangingCommand?.Execute(isNextSelected);
-			PositionChanging?.Invoke(this, isNextSelected);
-		}
-
-		private void FirePositionChanged(bool isNextSelected)
-		{
-			PositionChangedCommand?.Execute(isNextSelected);
-			PositionChanged?.Invoke(this, isNextSelected);
-		}
-
-		private void FireAutoNavigationStarted(bool isNextSelected)
-		{
-			AutoNavigationStartedCommand?.Execute(isNextSelected);
-			AutoNavigationStarted?.Invoke(this, isNextSelected);
-		}
-
-		private void FireAutoNavigationEnded(bool isNextSelected)
-		{
-			AutoNavigationEndedCommand?.Execute(isNextSelected);
-			AutoNavigationEnded?.Invoke(this, isNextSelected);
+			var args = new ItemAppearingEventArgs(type, isNextSelected, item);
+			ItemAppearingCommand?.Execute(args);
+			ItemAppearing?.Invoke(this, args);
 		}
 
 		#region Obsolete
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommandProperty instead", true)]
+		public static readonly BindableProperty PanStartedCommandProperty = BindableProperty.Create(nameof(PanStartedCommand), typeof(ICommand), typeof(CardsView), null);
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommandProperty instead", true)]
+		public static readonly BindableProperty PanEndingCommandProperty = BindableProperty.Create(nameof(PanEndingCommand), typeof(ICommand), typeof(CardsView), null);
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommandProperty instead", true)]
+		public static readonly BindableProperty PanEndedCommandProperty = BindableProperty.Create(nameof(PanEndedCommand), typeof(ICommand), typeof(CardsView), null);
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommandProperty instead", true)]
+		public static readonly BindableProperty PanChangedCommandProperty = BindableProperty.Create(nameof(PanChangedCommand), typeof(ICommand), typeof(CardsView), null);
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearingCommandProperty instead", true)]
+		public static readonly BindableProperty PositionChangingCommandProperty = BindableProperty.Create(nameof(PositionChangingCommand), typeof(ICommand), typeof(CardsView), null);
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearedCommandProperty instead", true)]
+		public static readonly BindableProperty PositionChangedCommandProperty = BindableProperty.Create(nameof(PositionChangedCommand), typeof(ICommand), typeof(CardsView), null);
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearingCommandProperty instead", true)]
+		public static readonly BindableProperty AutoNavigationStartedCommandProperty = BindableProperty.Create(nameof(AutoNavigationStartedCommand), typeof(ICommand), typeof(CardsView), null);
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearedCommandProperty instead", true)]
+		public static readonly BindableProperty AutoNavigationEndedCommandProperty = BindableProperty.Create(nameof(AutoNavigationEndedCommand), typeof(ICommand), typeof(CardsView), null);
+
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommand instead", true)]
+		public ICommand PanStartedCommand
+		{
+			get => GetValue(PanStartedCommandProperty) as ICommand;
+			set => SetValue(PanStartedCommandProperty, value);
+		}
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommand instead", true)]
+		public ICommand PanEndingCommand
+		{
+			get => GetValue(PanEndingCommandProperty) as ICommand;
+			set => SetValue(PanEndingCommandProperty, value);
+		}
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommand instead", true)]
+		public ICommand PanEndedCommand
+		{
+			get => GetValue(PanEndedCommandProperty) as ICommand;
+			set => SetValue(PanEndedCommandProperty, value);
+		}
+		[Obsolete("This property is obsolete and will be removed in the next releases, use UserInteractedCommand instead", true)]
+		public ICommand PanChangedCommand
+		{
+			get => GetValue(PanChangedCommandProperty) as ICommand;
+			set => SetValue(PanChangedCommandProperty, value);
+		}
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearingCommand instead", true)]
+		public ICommand PositionChangingCommand
+		{
+			get => GetValue(PositionChangingCommandProperty) as ICommand;
+			set => SetValue(PositionChangingCommandProperty, value);
+		}
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearedCommand instead", true)]
+		public ICommand PositionChangedCommand
+		{
+			get => GetValue(PositionChangedCommandProperty) as ICommand;
+			set => SetValue(PositionChangedCommandProperty, value);
+		}
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearingCommand instead", true)]
+		public ICommand AutoNavigationStartedCommand
+		{
+			get => GetValue(AutoNavigationStartedCommandProperty) as ICommand;
+			set => SetValue(AutoNavigationStartedCommandProperty, value);
+		}
+		[Obsolete("This property is obsolete and will be removed in the next releases, use ItemAppearedCommand instead", true)]
+		public ICommand AutoNavigationEndedCommand
+		{
+			get => GetValue(AutoNavigationEndedCommandProperty) as ICommand;
+			set => SetValue(AutoNavigationEndedCommandProperty, value);
+		}
+
+#pragma warning disable
+		[Obsolete("This event is obsolete and will be removed in the next releases, use UserInteracted STATUS=Started instead", true)]
+		public event Action PanStarted;
+		[Obsolete("This event is obsolete and will be removed in the next releases, use UserInteracted STATUS=Running instead", true)]
+		public event Action PanChanged;
+		[Obsolete("This event is obsolete and will be removed in the next releases, use UserInteracted STATUS=Ending instead", true)]
+		public event Action PanEnding;
+		[Obsolete("This event is obsolete and will be removed in the next releases, use UserInteracted STATUS=Ended instead", true)]
+		public event Action PanEnded;
+		[Obsolete("This event is obsolete and will be removed in the next releases, use ItemAppearing TYPE=User instead", true)]
+		public event Action PositionChanging;
+		[Obsolete("This event is obsolete and will be removed in the next releases, use ItemAppeared TYPE=User instead", true)]
+		public event Action PositionChanged;
+		[Obsolete("This event is obsolete and will be removed in the next releases, use ItemAppearing TYPE=Auto instead", true)]
+		public event Action AutoNavigationStarted;
+		[Obsolete("This event is obsolete and will be removed in the next releases, use ItemAppeared TYPE=Auto instead", true)]
+		public event Action AutoNavigationEnded;
+#pragma warning restore
 
 		[Obsolete("This property is obsolete and will be removed in the next releases, use SelectedIndexProperty instead", true)]
 		public static readonly BindableProperty CurrentIndexProperty = BindableProperty.Create(nameof(CurrentIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>

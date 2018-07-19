@@ -53,6 +53,13 @@
     <Compile Include="Utility\InteractionQueue.cs" />
     <Compile Include="Enums\InteractionType.cs" />
     <Compile Include="Utility\InteractionItem.cs" />
+    <Compile Include="Enums\UserInteractionStatus.cs" />
+    <Compile Include="EventArgs\UserInteractedEventArgs.cs" />
+    <Compile Include="EventArgs\ItemDisappearingEventArgs.cs" />
+    <Compile Include="EventArgs\ItemAppearingEventArgs.cs" />
+    <Compile Include="Delegates\CardsViewUserInteractedHandler.cs" />
+    <Compile Include="Delegates\CardsViewItemDisappearingHandler.cs" />
+    <Compile Include="Delegates\CardsViewItemAppearingHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />
@@ -62,6 +69,8 @@
     <Folder Include="Behaviors\" />
     <Folder Include="Styles\" />
     <Folder Include="Utility\" />
+    <Folder Include="EventArgs\" />
+    <Folder Include="Delegates\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

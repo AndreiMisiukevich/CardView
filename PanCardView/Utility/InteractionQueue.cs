@@ -10,7 +10,7 @@ namespace PanCardView.Utility
 		private readonly List<InteractionItem> _queue = new List<InteractionItem>();
 		private readonly object _queueLocker = new object();
 
-		public Guid GetFirstId(InteractionType type = InteractionType.Gesture | InteractionType.Animation)
+		public Guid GetFirstId(InteractionType type = InteractionType.User | InteractionType.Auto)
 		{
 			lock(_queueLocker)
 			{
@@ -39,7 +39,7 @@ namespace PanCardView.Utility
 			}
 		}
 
-		public bool CheckLastId(Guid id, InteractionType type = InteractionType.Gesture | InteractionType.Animation)
+		public bool CheckLastId(Guid id, InteractionType type = InteractionType.User | InteractionType.Auto)
 		{
 			lock(_queueLocker)
 			{

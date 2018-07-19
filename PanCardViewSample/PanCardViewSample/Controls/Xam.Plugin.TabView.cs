@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using PanCardView;
 using Xamarin.Forms;
+using PanCardView.EventArgs;
 
 namespace PanCardViewSample.Controls
 {
@@ -118,10 +119,10 @@ namespace PanCardViewSample.Controls
 				if (positionChangingArgs != null && positionChangingArgs.Canceled)
 				{
 					_supressCarouselViewPositionChangedEvent = true;
-					_carouselView.PositionChanged -= _carouselView_PositionSelected;
+					_carouselView.ItemAppearing -= _carouselView_PositionSelected;
 					_carouselView.PropertyChanged -= _carouselView_PropertyChanged;
 					_carouselView.SelectedIndex = _position;
-					_carouselView.PositionChanged += _carouselView_PositionSelected;
+					_carouselView.ItemAppearing += _carouselView_PositionSelected;
 					_carouselView.PropertyChanged += _carouselView_PropertyChanged;
 					_supressCarouselViewPositionChangedEvent = false;
 				}
@@ -151,7 +152,7 @@ namespace PanCardViewSample.Controls
 					IsCyclical = false
 				};
 
-				_carouselView.PositionChanged += _carouselView_PositionSelected;
+				_carouselView.ItemAppearing += _carouselView_PositionSelected;
 
 				_mainContainerSL = new StackLayout
 				{
@@ -180,9 +181,12 @@ namespace PanCardViewSample.Controls
 			}
 		}
 
-		private void _carouselView_PositionSelected(CardsView view, bool isNextSelected)
+		private void _carouselView_PositionSelected(CardsView view, ItemAppearingEventArgs args)
 		{
-			SetPosition(_carouselView.SelectedIndex);
+			if (args.Type == PanCardView.Enums.InteractionType.User)
+			{
+				SetPosition(_carouselView.SelectedIndex);
+			}
 		}
 
 		private void InitTabs()
@@ -544,9 +548,9 @@ namespace PanCardViewSample.Controls
 					ItemSource[i].IsCurrent = i == position;
 				}
 
-				_carouselView.PositionChanged -= _carouselView_PositionSelected;
+				_carouselView.ItemAppearing -= _carouselView_PositionSelected;
 				_carouselView.SelectedIndex = position;
-				_carouselView.PositionChanged += _carouselView_PositionSelected;
+				_carouselView.ItemAppearing += _carouselView_PositionSelected;
 
 				_position = position;
 			}
