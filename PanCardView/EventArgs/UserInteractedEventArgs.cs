@@ -2,7 +2,7 @@
 
 namespace PanCardView.EventArgs
 {
-	public class UserInteractedEventArgs
+	public class UserInteractedEventArgs : System.EventArgs
 	{
 		public UserInteractedEventArgs(int index, double diff, UserInteractionStatus status)
 		{

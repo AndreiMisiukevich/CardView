@@ -60,6 +60,8 @@
     <Compile Include="Delegates\CardsViewUserInteractedHandler.cs" />
     <Compile Include="Delegates\CardsViewItemDisappearingHandler.cs" />
     <Compile Include="Delegates\CardsViewItemAppearingHandler.cs" />
+    <Compile Include="EventArgs\CardTappedEventArgs.cs" />
+    <Compile Include="Delegates\CardsViewCardTappedHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />

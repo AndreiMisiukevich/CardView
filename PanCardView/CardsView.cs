@@ -104,9 +104,12 @@ namespace PanCardView
 
 		public static readonly BindableProperty ItemAppearingCommandProperty = BindableProperty.Create(nameof(ItemAppearingCommand), typeof(ICommand), typeof(CardsView), null);
 
+		public static readonly BindableProperty ItepTappedCommandProperty = BindableProperty.Create(nameof(ItemTappedCommand), typeof(ICommand), typeof(CardsView), null);
+
 		public event CardsViewUserInteractedHandler UserInteracted;
 		public event CardsViewItemDisappearingHandler ItemDisappearing;
 		public event CardsViewItemAppearingHandler ItemAppearing;
+		public event CardsViewCardTappedHandler ItemTapped;
 
 		private readonly object _childLocker = new object();
 		private readonly object _viewsInUseLocker = new object();
@@ -116,6 +119,7 @@ namespace PanCardView
 		private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
 		private readonly ViewsInUseSet _viewsInUse = new ViewsInUseSet();
 		private readonly InteractionQueue _interactions = new InteractionQueue();
+		private readonly TapGestureRecognizer _tapGesture = new TapGestureRecognizer();
 
 		private IEnumerable<View> _prevViews = Enumerable.Empty<View>();
 		private IEnumerable<View> _nextViews = Enumerable.Empty<View>();
@@ -151,6 +155,8 @@ namespace PanCardView
 				panGesture.PanUpdated += OnPanUpdated;
 				GestureRecognizers.Add(panGesture);
 			}
+
+			_tapGesture.Tapped += OnCardTapped;
 		}
 
 		private bool ShouldIgnoreSetCurrentView { get; set; }
@@ -351,6 +357,12 @@ namespace PanCardView
 			set => SetValue(ItemAppearingCommandProperty, value);
 		}
 
+		public ICommand ItemTappedCommand
+		{
+			get => GetValue(ItepTappedCommandProperty) as ICommand;
+			set => SetValue(ItepTappedCommandProperty, value);
+		}
+
 		public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
 		=> OnPanUpdated(e);
 
@@ -405,6 +417,8 @@ namespace PanCardView
 			{
 				SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
 				SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+				view.GestureRecognizers.Remove(_tapGesture);
+				view.GestureRecognizers.Add(_tapGesture);
 			}
 		}
 
@@ -944,6 +958,7 @@ namespace PanCardView
 			processor.HandleInitView(views, this, animationDirection);
 
 			SetupLayout(views);
+
 			if (animationDirection == AnimationDirection.Current)
 			{
 				AddBackChild(views);
@@ -1281,6 +1296,13 @@ namespace PanCardView
 			}
 		}
 
+		private void OnCardTapped(object sender, System.EventArgs args)
+		{
+			var tapArgs = new CardTappedEventArgs((sender as View).GetItem());
+			ItemTappedCommand?.Execute(tapArgs);
+			ItemTapped?.Invoke(this, tapArgs);
+		}
+
 		private void FireUserInteracted(UserInteractionStatus status, double diff, int index, bool? isNextSelected = null, View view = null)
 		{
 			var args = new UserInteractedEventArgs(index, diff, status);
@@ -1433,13 +1455,13 @@ namespace PanCardView
 		[Obsolete("This property is obsolete and will be removed in the next releases, use IsUserInteractionRunningProperty instead", true)]
 		public static readonly BindableProperty IsPanRunningProperty = BindableProperty.Create(nameof(IsPanRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+			bindable.AsCardsView().IsUserInteractionRunning = (bool)newValue;
 		});
 
 		[Obsolete("This property is obsolete and will be removed in the next releases, use IsAutoInteractionRunningProperty instead", true)]
 		public static readonly BindableProperty IsAutoNavigatingProperty = BindableProperty.Create(nameof(IsAutoNavigating), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
 		{
-			bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+			bindable.AsCardsView().IsAutoInteractionRunning = (bool)newValue;
 		});
 
 		[Obsolete("This property is obsolete and will be removed in the next releases, use IsUserInteractionRunning instead", true)]

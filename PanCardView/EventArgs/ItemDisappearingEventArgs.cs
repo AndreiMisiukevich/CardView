@@ -3,7 +3,7 @@ using PanCardView.Utility;
 
 namespace PanCardView.EventArgs
 {
-	public class ItemDisappearingEventArgs
+	public class ItemDisappearingEventArgs : System.EventArgs
 	{
 		public ItemDisappearingEventArgs(InteractionType type, bool isNextSelected, object item)
 		{
