@@ -71,12 +71,9 @@ namespace PanCardView.Droid
 				var xDelta = GetTotalX(e);
 				var yDelta = GetTotalY(e);
 
-				var distXDp = xDelta / density;
-				var distYDp = yDelta / density;
-
 				SetIsTouchHandled(xDelta, yDelta);
 
-				UpdatePan(GestureStatus.Running, distXDp, distYDp);
+				UpdatePan(GestureStatus.Running, xDelta, yDelta);
 			}
 
 			HandleDownUpEvents(e);
@@ -153,9 +150,9 @@ namespace PanCardView.Droid
 		private PanUpdatedEventArgs GetPanUpdatedEventArgs(GestureStatus status, double totalX = 0, double totalY = 0)
 		=> new PanUpdatedEventArgs(status, _gestureId, totalX, totalY);
 
-		private float GetTotalX(MotionEvent ev) => ev.GetX() - _startX;
+		private float GetTotalX(MotionEvent ev) => (ev.GetX() - _startX) / Context.Resources.DisplayMetrics.Density;
 
-		private float GetTotalY(MotionEvent ev) => ev.GetY() - _startY;
+		private float GetTotalY(MotionEvent ev) => (ev.GetY() - _startY) / Context.Resources.DisplayMetrics.Density;
 
 		private void CreateGestureDetector() => _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
 
