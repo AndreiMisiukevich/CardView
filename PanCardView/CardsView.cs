@@ -35,7 +35,8 @@ namespace PanCardView
 			view.SetCurrentView();
 		});
 
-		public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(CardsView), null, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) => {
+		public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(CardsView), null, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
+		{
 			var view = bindable.AsCardsView();
 			view.SelectedIndex = view.ItemsSource?.IndexOf(newValue) ?? -1;
 		});
@@ -113,6 +114,7 @@ namespace PanCardView
 
 		private readonly object _childLocker = new object();
 		private readonly object _viewsInUseLocker = new object();
+		private readonly object _setCurrentViewLocker = new object();
 
 		private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
 		private readonly Dictionary<Guid, IEnumerable<View>> _viewsGestureCounter = new Dictionary<Guid, IEnumerable<View>>();
@@ -424,31 +426,34 @@ namespace PanCardView
 
 		protected virtual async void SetCurrentView()
 		{
-			if (await TryAutoNavigate())
+			if (!_hasRenderer || Parent == null || await TryAutoNavigate())
 			{
 				return;
 			}
 
-			if (ItemsSource != null)
+			lock (_setCurrentViewLocker)
 			{
-				var oldView = CurrentView;
-				CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
-				var newView = CurrentView;
+				if (ItemsSource != null)
+				{
+					var oldView = CurrentView;
+					CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
+					var newView = CurrentView;
 
-				if (CurrentView == null && SelectedIndex >= 0)
-				{
-					ShouldIgnoreSetCurrentView = true;
-					SelectedIndex = -1;
-				}
-				else if (SelectedIndex != OldIndex)
-				{
-					var isNextSelected = SelectedIndex > OldIndex;
-					FireItemDisappearing(InteractionType.User, isNextSelected, oldView.GetItem());
-					FireItemAppearing(InteractionType.User, isNextSelected, newView.GetItem());
+					if (CurrentView == null && SelectedIndex >= 0)
+					{
+						ShouldIgnoreSetCurrentView = true;
+						SelectedIndex = -1;
+					}
+					else if (SelectedIndex != OldIndex)
+					{
+						var isNextSelected = SelectedIndex > OldIndex;
+						FireItemDisappearing(InteractionType.User, isNextSelected, oldView.GetItem());
+						FireItemAppearing(InteractionType.User, isNextSelected, newView.GetItem());
+					}
+
+					SetupBackViews();
 				}
 			}
-
-			SetupBackViews();
 		}
 
 		protected virtual void SetSelectedItem()
@@ -497,11 +502,6 @@ namespace PanCardView
 
 		protected virtual async Task<bool> TryAutoNavigate()
 		{
-			if (!_hasRenderer || Parent == null)
-			{
-				return false;
-			}
-
 			if (CurrentView == null)
 			{
 				return false;
@@ -604,11 +604,19 @@ namespace PanCardView
 			if (propertyName == "Renderer")
 			{
 				_hasRenderer = !_hasRenderer;
-				if (!_hasRenderer)
+				if (_hasRenderer)
 				{
-					AdjustSlideShow(true);
+					SetCurrentView();
+					return;
 				}
+				AdjustSlideShow(true);
 			}
+		}
+
+		protected override void OnParentSet()
+		{
+			base.OnParentSet();
+			SetCurrentView();
 		}
 
 		private void StartAutoNavigation(View oldView, Guid animationId, AnimationDirection animationDirection)
@@ -1232,7 +1240,7 @@ namespace PanCardView
 			}
 		}
 
-		private bool CheckIsProcessingView(View view) 
+		private bool CheckIsProcessingView(View view)
 		=> view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
 
 		private bool CheckIndexValid(int index)
