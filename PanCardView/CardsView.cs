@@ -459,7 +459,7 @@ namespace PanCardView
 				index = index.ToCyclingIndex(ItemsCount);
 			}
 
-			if(index >= ItemsCount)
+			if (!CheckIndexValid(index))
 			{
 				SelectedItem = null;
 				return;
@@ -888,7 +888,7 @@ namespace PanCardView
 			}
 			var newIndex = SelectedIndex + indexDelta;
 
-			if (newIndex < 0 || newIndex >= ItemsCount)
+			if (!CheckIndexValid(newIndex))
 			{
 				if (!IsCyclical)
 				{
@@ -1035,7 +1035,7 @@ namespace PanCardView
 				return null;
 			}
 
-			if (index < 0 || index >= ItemsCount)
+			if (!CheckIndexValid(index))
 			{
 				if (!IsCyclical || (animationDirection != AnimationDirection.Current && ItemsCount <= 1))
 				{
@@ -1232,7 +1232,11 @@ namespace PanCardView
 			}
 		}
 
-		private bool CheckIsProcessingView(View view) => view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
+		private bool CheckIsProcessingView(View view) 
+		=> view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
+
+		private bool CheckIndexValid(int index)
+		=> index >= 0 && index < ItemsCount;
 
 		private void AddRangeViewsInUse(Guid gestureId)
 		{
