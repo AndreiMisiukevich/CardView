@@ -1,3 +1,7 @@
+### Setup
+
+### Properties
+
 The CarouselView is a subclass of [CardView](CardView.md) so shares alot fo the same properties. Below are the CarouselView properties:
 
 Property | Type | Description
