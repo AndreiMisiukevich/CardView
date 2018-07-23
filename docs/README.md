@@ -4,8 +4,9 @@ Here you will find detailed documentation on setting up and using the CardsView 
 
 ### Table of Contents
 * [Getting Started](GettingStarted.md)
-* [CardView](CardView.md)
+* [CardsView](CardsView.md)
 * [CarouselView](CarouselView.md)
-* [IndicatorsControl](IndicatorsControl.md)
-* [ParentScrollView](ParentScrollView.md)
 * [SceneView](SceneView.md)
+* [IndicatorsControl](IndicatorsControl.md)
+* [IndicatorItemView](IndicatorItemView.md)
+* [ParentScrollView](ParentScrollView.md)

@@ -1,5 +1,10 @@
+### CardsView
+
+This is the "Tinder" style card swiping view. This is also the base for the [CarouselView](CarouselView.md).
+
 ### Setup
 
+**TODO**
 
 ### Properties
 
