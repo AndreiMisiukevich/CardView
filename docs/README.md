@@ -1,6 +1,6 @@
 ## Documentation
 
-Here you will find detailed documentation on setting up and using the the CardView and CarouselView and other controls from this library
+Here you will find detailed documentation on setting up and using the CardsView and CarouselView controls for Xamarin Forms.
 
 ### Table of Contents
 * [Getting Started](GettingStarted.md)
