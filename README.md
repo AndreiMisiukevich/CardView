@@ -119,6 +119,10 @@ https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/Pare
 
 Check source code for more info, or 🇧🇾 ***just ask me =)*** 🇧🇾
 
+## Full documentation
+
+https://github.com/AndreiMisiukevich/CardView/tree/master/docs
+
 ## License
 The MIT License (MIT) see [License file](LICENSE)
 
