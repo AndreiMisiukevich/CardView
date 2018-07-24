@@ -18,7 +18,7 @@ IsAutoInteractionRunning | `bool` | false | Determines if the auto navigation is
 IsCyclical | `bool` | true | Determines if the control can cycle round from the last view to the first, allows for infinite swiping.
 IsOnlyForwardDirection | `bool` | false | Set to only allow the control to move forward and not have the abilitly to go back to previous cards.
 IsUserInteractionEnabled | `bool` | true | Determines if the control can be interacted with, e.g., `OnTouch` events.
-IsUserInteractionInCourse | `bool` | true | Use to show that a user interaction has started but is not finished.???
+IsUserInteractionInCourse | `bool` | true | Determines if the control should forbid to start new interaction with card before previous ending.
 IsUserInteractionRunning | `bool` | false | Determines if the UserInteration is running, e.g., This is set to true in `OnTouchStarted()` and false in `OnTouchEnded()`.
 IsViewCacheEnabled | `bool` | true | Determines wether the control should retrieve the next view from the views pool or create a new one each time.
 ItemAppearingCommand | `ICommand` | null | The command that is executed when a new item is displayed.
