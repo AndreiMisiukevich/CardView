@@ -1,54 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:tv="clr-namespace:PanCardViewSample.Controls" x:Class="PanCardViewSample.Views.CarouselSampleEmbeddedView">
     <tv:TabViewControl HeaderSelectionUnderlineColor="Red" HeaderTabTextColor="Blue">
         <tv:TabViewControl.TabItems>
-            <x:Array Type="{x:Type tv:TabItem}">
-                <tv:TabItem HeaderText="Page 1">
-                    <tv:TabItem.Content>
-                        <StackLayout BackgroundColor="Red">
-                            <Frame>
-                                <Label Text="Page 1 Item 1" />
-                            </Frame>
-                            <Frame>
-                                <Label Text="Page 1 Item 2" />
-                            </Frame>
-                            <Frame>
-                                <Label Text="Page 1 Item 3" />
-                            </Frame>
-                        </StackLayout>
-                    </tv:TabItem.Content>
-                </tv:TabItem>
-                <tv:TabItem HeaderText="Page 2">
-                    <tv:TabItem.Content>
-                        <StackLayout BackgroundColor="Green">
-                            <Frame>
-                                <Label Text="Page 2 Item 1" />
-                            </Frame>
-                            <Frame>
-                                <Label Text="Page 2 Item 2" />
-                            </Frame>
-                            <Frame>
-                                <Label Text="Page 2 Item 3" />
-                            </Frame>
-                        </StackLayout>
-                    </tv:TabItem.Content>
-                </tv:TabItem>
-                <tv:TabItem HeaderText="Page 3">
-                    <tv:TabItem.Content>
-                        <StackLayout BackgroundColor="Blue">
-                            <Frame>
-                                <Label Text="Page 3 Item 1" />
-                            </Frame>
-                            <Frame>
-                                <Label Text="Page 3 Item 2" />
-                            </Frame>
-                            <Frame>
-                                <Label Text="Page 3 Item 3" />
-                            </Frame>
-                        </StackLayout>
-                    </tv:TabItem.Content>
-                </tv:TabItem>
-            </x:Array>
+            <Binding>
+                <Binding.Source>
+                    <x:Array Type="{x:Type tv:TabItem}">
+                        <tv:TabItem HeaderText="Page 1">
+                            <tv:TabItem.Content>
+                                <StackLayout BackgroundColor="Red">
+                                    <Frame>
+                                        <Label Text="Page 1 Item 1" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="Page 1 Item 2" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="Page 1 Item 3" />
+                                    </Frame>
+                                </StackLayout>
+                            </tv:TabItem.Content>
+                        </tv:TabItem>
+                        <tv:TabItem HeaderText="Page 2">
+                            <tv:TabItem.Content>
+                                <StackLayout BackgroundColor="Green">
+                                    <Frame>
+                                        <Label Text="Page 2 Item 1" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="Page 2 Item 2" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="Page 2 Item 3" />
+                                    </Frame>
+                                </StackLayout>
+                            </tv:TabItem.Content>
+                        </tv:TabItem>
+                        <tv:TabItem HeaderText="Page 3">
+                            <tv:TabItem.Content>
+                                <StackLayout BackgroundColor="Blue">
+                                    <Frame>
+                                        <Label Text="Page 3 Item 1" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="Page 3 Item 2" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="Page 3 Item 3" />
+                                    </Frame>
+                                </StackLayout>
+                            </tv:TabItem.Content>
+                        </tv:TabItem>
+                    </x:Array>
+                </Binding.Source>
+            </Binding>
         </tv:TabViewControl.TabItems>
     </tv:TabViewControl>
 </ContentPage>
