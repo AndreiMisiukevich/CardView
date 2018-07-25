@@ -463,17 +463,17 @@ namespace PanCardViewSample.Controls
 		#endregion
 
 		#region TabItems
-		public static BindableProperty TabItemsProperty = BindableProperty.Create(nameof(TabItems), typeof(IList<TabItem>), typeof(TabViewControl), null, propertyChanged: OnTabItemsChanged);
+		public static BindableProperty TabItemsProperty = BindableProperty.Create(nameof(TabItems), typeof(IList<object>), typeof(TabViewControl), null, propertyChanged: OnTabItemsChanged);
 		private static void OnTabItemsChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			if (bindable is TabViewControl tabControl)
 			{
-				tabControl.Initialize(tabControl.TabItems);
+				tabControl.Initialize(tabControl.TabItems.Cast<TabItem>().ToList());
 			}
 		}
-		public IList<TabItem> TabItems
+		public IList<object> TabItems
 		{
-			get => (IList<TabItem>)GetValue(TabItemsProperty);
+			get => (IList<object>)GetValue(TabItemsProperty);
 			set { SetValue(TabItemsProperty, value); }
 		}
 		#endregion
