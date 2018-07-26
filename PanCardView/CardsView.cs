@@ -122,6 +122,7 @@ namespace PanCardView
 		private readonly ViewsInUseSet _viewsInUse = new ViewsInUseSet();
 		private readonly InteractionQueue _interactions = new InteractionQueue();
 		private readonly TapGestureRecognizer _tapGesture = new TapGestureRecognizer();
+		private readonly ContextAssignedBehavior _contextAssignedBehavior = new ContextAssignedBehavior();
 
 		private IEnumerable<View> _prevViews = Enumerable.Empty<View>();
 		private IEnumerable<View> _nextViews = Enumerable.Empty<View>();
@@ -1000,6 +1001,8 @@ namespace PanCardView
 			if (view != null && view != context)
 			{
 				view.BindingContext = context;
+				view.Behaviors.Remove(_contextAssignedBehavior);
+				view.Behaviors.Add(_contextAssignedBehavior);
 			}
 
 			return view;
@@ -1082,8 +1085,9 @@ namespace PanCardView
 
 		private void CleanView(View view)
 		{
-			if (view != null)
+			if (view?.Behaviors.Contains(_contextAssignedBehavior) ?? false)
 			{
+				view.Behaviors.Remove(_contextAssignedBehavior);
 				view.BindingContext = null;
 			}
 		}

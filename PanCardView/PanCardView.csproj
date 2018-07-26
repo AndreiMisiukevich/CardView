@@ -62,6 +62,7 @@
     <Compile Include="Delegates\CardsViewItemAppearingHandler.cs" />
     <Compile Include="EventArgs\CardTappedEventArgs.cs" />
     <Compile Include="Delegates\CardsViewCardTappedHandler.cs" />
+    <Compile Include="Behaviors\ContextAssignedBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />
