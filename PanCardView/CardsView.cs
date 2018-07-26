@@ -57,6 +57,11 @@ namespace PanCardView
 			bindable.AsCardsView().SetCurrentView();
 		});
 
+		public static readonly BindableProperty IsRightToLeftFlowDirectionEnabledProperty = BindableProperty.Create(nameof(IsRightToLeftFlowDirectionEnabled), typeof(bool), typeof(CardsView), false, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsCardsView().SetCurrentView();
+        });
+
 		public static readonly BindableProperty SlideShowDurationProperty = BindableProperty.Create(nameof(SlideShowDuration), typeof(int), typeof(CardsView), 0, propertyChanged: (bindable, oldValue, newValue) =>
 		{
 			bindable.AsCardsView().AdjustSlideShow();
@@ -139,7 +144,6 @@ namespace PanCardView
 		private bool _shouldSkipTouch;
 		private bool _isViewsInited;
 		private bool _hasRenderer;
-		private bool _isRtlEnabled;
 		private bool? _isPortraitOrientation;
 		private bool? _shouldScrollParent;
 		private DateTime _lastPanTime;
@@ -231,6 +235,12 @@ namespace PanCardView
 			get => (int)GetValue(BackViewsDepthProperty);
 			set => SetValue(BackViewsDepthProperty, value);
 		}
+
+		public bool IsRightToLeftFlowDirectionEnabled
+        {
+            get => (bool)GetValue(IsRightToLeftFlowDirectionEnabledProperty);
+            set => SetValue(IsRightToLeftFlowDirectionEnabledProperty, value);
+        }
 
 		public int SlideShowDuration
 		{
@@ -415,7 +425,7 @@ namespace PanCardView
 			SetupNextView();
 			SetupPrevView();
 
-            if(_isRtlEnabled)
+			if(IsRightToLeftFlowDirectionEnabled)
 			{
 				var nextViews = NextViews;
 				NextViews = PrevViews;
@@ -526,7 +536,7 @@ namespace PanCardView
 
 			var animationDirection = GetAutoNavigateAnimationDirection();
 			var realDirection = animationDirection;
-			if(_isRtlEnabled)
+			if(IsRightToLeftFlowDirectionEnabled)
 			{
 				realDirection = ((AnimationDirection)Sign(-(int)realDirection));
 			}
@@ -626,9 +636,6 @@ namespace PanCardView
                         return;
                     }
                     AdjustSlideShow(true);
-					return;
-				case "FlowDirection":
-					//var direction = GetType().GetRuntimeProperty("FlowDirection").GetValue(this);
 					return;
 			}
 		}
@@ -909,8 +916,7 @@ namespace PanCardView
 
 		private int GetNewIndexFromDiff()
 		{
-			var rtlMultiplier = _isRtlEnabled ? -1 : 1;
-			var indexDelta = - Sign(CurrentDiff) * rtlMultiplier;
+			var indexDelta = - Sign(CurrentDiff) * (IsRightToLeftFlowDirectionEnabled ? -1 : 1);
 			if (IsOnlyForwardDirection)
 			{
 				indexDelta = Abs(indexDelta);
