@@ -17,6 +17,7 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 using PanCardView.EventArgs;
 using PanCardView.Delegates;
+using System.Reflection;
 
 namespace PanCardView
 {
@@ -138,6 +139,7 @@ namespace PanCardView
 		private bool _shouldSkipTouch;
 		private bool _isViewsInited;
 		private bool _hasRenderer;
+		private bool _isRtlEnabled;
 		private bool? _isPortraitOrientation;
 		private bool? _shouldScrollParent;
 		private DateTime _lastPanTime;
@@ -412,6 +414,13 @@ namespace PanCardView
 		{
 			SetupNextView();
 			SetupPrevView();
+
+            if(_isRtlEnabled)
+			{
+				var nextViews = NextViews;
+				NextViews = PrevViews;
+				PrevViews = nextViews;
+			}
 		}
 
 		protected virtual void SetupLayout(params View[] views)
@@ -516,12 +525,17 @@ namespace PanCardView
 			}
 
 			var animationDirection = GetAutoNavigateAnimationDirection();
+			var realDirection = animationDirection;
+			if(_isRtlEnabled)
+			{
+				realDirection = ((AnimationDirection)Sign(-(int)realDirection));
+			}
 
 			var oldView = CurrentView;
 			var newView = PrepareView(SelectedIndex, AnimationDirection.Current, Enumerable.Empty<View>());
 			CurrentView = newView;
 
-			BackViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, animationDirection);
+			BackViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, realDirection);
 
 			SetupLayout(CurrentView);
 
@@ -531,8 +545,8 @@ namespace PanCardView
 			var animationId = Guid.NewGuid();
 			StartAutoNavigation(oldView, animationId, animationDirection);
 			var autoNavigationTask = Task.WhenAll(
-				BackViewProcessor.HandleAutoNavigate(Enumerable.Repeat(oldView, 1), this, animationDirection, CurrentInactiveBackViews),
-				FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, animationDirection, Enumerable.Empty<View>()));
+				BackViewProcessor.HandleAutoNavigate(Enumerable.Repeat(oldView, 1), this, realDirection, CurrentInactiveBackViews),
+				FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
 
 			if (ItemTemplate != null)
 			{
@@ -602,15 +616,20 @@ namespace PanCardView
 		protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			base.OnPropertyChanged(propertyName);
-			if (propertyName == "Renderer")
+			switch(propertyName)
 			{
-				_hasRenderer = !_hasRenderer;
-				if (_hasRenderer)
-				{
-					SetCurrentView();
+				case "Renderer":
+					_hasRenderer = !_hasRenderer;
+                    if (_hasRenderer)
+                    {
+                        SetCurrentView();
+                        return;
+                    }
+                    AdjustSlideShow(true);
 					return;
-				}
-				AdjustSlideShow(true);
+				case "FlowDirection":
+					//var direction = GetType().GetRuntimeProperty("FlowDirection").GetValue(this);
+					return;
 			}
 		}
 
@@ -890,7 +909,8 @@ namespace PanCardView
 
 		private int GetNewIndexFromDiff()
 		{
-			var indexDelta = -Sign(CurrentDiff);
+			var rtlMultiplier = _isRtlEnabled ? -1 : 1;
+			var indexDelta = - Sign(CurrentDiff) * rtlMultiplier;
 			if (IsOnlyForwardDirection)
 			{
 				indexDelta = Abs(indexDelta);
