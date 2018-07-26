@@ -58,9 +58,9 @@ namespace PanCardView
 		});
 
 		public static readonly BindableProperty IsRightToLeftFlowDirectionEnabledProperty = BindableProperty.Create(nameof(IsRightToLeftFlowDirectionEnabled), typeof(bool), typeof(CardsView), false, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsCardsView().SetCurrentView();
-        });
+		{
+			bindable.AsCardsView().SetCurrentView();
+		});
 
 		public static readonly BindableProperty SlideShowDurationProperty = BindableProperty.Create(nameof(SlideShowDuration), typeof(int), typeof(CardsView), 0, propertyChanged: (bindable, oldValue, newValue) =>
 		{
@@ -237,10 +237,10 @@ namespace PanCardView
 		}
 
 		public bool IsRightToLeftFlowDirectionEnabled
-        {
-            get => (bool)GetValue(IsRightToLeftFlowDirectionEnabledProperty);
-            set => SetValue(IsRightToLeftFlowDirectionEnabledProperty, value);
-        }
+		{
+			get => (bool)GetValue(IsRightToLeftFlowDirectionEnabledProperty);
+			set => SetValue(IsRightToLeftFlowDirectionEnabledProperty, value);
+		}
 
 		public int SlideShowDuration
 		{
@@ -425,7 +425,7 @@ namespace PanCardView
 			SetupNextView();
 			SetupPrevView();
 
-			if(IsRightToLeftFlowDirectionEnabled)
+			if (IsRightToLeftFlowDirectionEnabled)
 			{
 				var nextViews = NextViews;
 				NextViews = PrevViews;
@@ -536,7 +536,7 @@ namespace PanCardView
 
 			var animationDirection = GetAutoNavigateAnimationDirection();
 			var realDirection = animationDirection;
-			if(IsRightToLeftFlowDirectionEnabled)
+			if (IsRightToLeftFlowDirectionEnabled)
 			{
 				realDirection = ((AnimationDirection)Sign(-(int)realDirection));
 			}
@@ -626,16 +626,16 @@ namespace PanCardView
 		protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			base.OnPropertyChanged(propertyName);
-			switch(propertyName)
+			switch (propertyName)
 			{
 				case "Renderer":
 					_hasRenderer = !_hasRenderer;
-                    if (_hasRenderer)
-                    {
-                        SetCurrentView();
-                        return;
-                    }
-                    AdjustSlideShow(true);
+					if (_hasRenderer)
+					{
+						SetCurrentView();
+						return;
+					}
+					AdjustSlideShow(true);
 					return;
 			}
 		}
@@ -916,7 +916,7 @@ namespace PanCardView
 
 		private int GetNewIndexFromDiff()
 		{
-			var indexDelta = - Sign(CurrentDiff) * (IsRightToLeftFlowDirectionEnabled ? -1 : 1);
+			var indexDelta = -Sign(CurrentDiff) * (IsRightToLeftFlowDirectionEnabled ? -1 : 1);
 			if (IsOnlyForwardDirection)
 			{
 				indexDelta = Abs(indexDelta);
