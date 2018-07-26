@@ -69,7 +69,7 @@ namespace PanCardViewSample
 				{
 					Children = {
 						toCardsBtn,
-						toCarouselBtn,
+						//toCarouselBtn,
 						toCarouselScrollBtn,
 						toCarouselDoubleBtn,
 						toCarouselNoTemplateBtn,
