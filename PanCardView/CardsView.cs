@@ -650,7 +650,7 @@ namespace PanCardView
 		{
 			if (oldView != null)
 			{
-				_interactions.Add(animationId, InteractionType.Auto);
+				_interactions.Add(animationId, InteractionType.Auto, InteractionState.Removing);
 				IsAutoInteractionRunning = true;
 				if (IsUserInteractionInCourse)
 				{
@@ -772,7 +772,14 @@ namespace PanCardView
 			}
 
 			_lastPanTime = DateTime.Now;
-			var gestureId = _interactions.GetFirstId(InteractionType.User);
+			var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
+			interactionItem.State = InteractionState.Removing;
+			if(interactionItem.Id == default(Guid))
+			{
+				return;
+			}
+
+			var gestureId = interactionItem.Id;
 
 			_isPanEndRequested = true;
 			var absDiff = Abs(CurrentDiff);
@@ -1295,6 +1302,11 @@ namespace PanCardView
 		{
 			lock (_viewsInUseLocker)
 			{
+				if(!_viewsGestureCounter.ContainsKey(gestureId))
+				{
+					return;
+				}
+
 				foreach (var view in _viewsGestureCounter[gestureId])
 				{
 					_viewsInUse.Remove(view);

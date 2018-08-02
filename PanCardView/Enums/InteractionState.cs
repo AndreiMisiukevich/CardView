@@ -3,10 +3,9 @@
 namespace PanCardView.Enums
 {
 	[Flags]
-	public enum InteractionType
+	public enum InteractionState
 	{
-		User = 1,
-		Auto = 2
+		Regular = 1,
+		Removing = 2
 	}
 }
-
