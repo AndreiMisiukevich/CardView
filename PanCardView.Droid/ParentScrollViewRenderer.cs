@@ -11,22 +11,22 @@ using static PanCardView.Droid.CardsViewRenderer;
 [assembly: ExportRenderer(typeof(ParentScrollView), typeof(ParentScrollViewRenderer))]
 namespace PanCardView.Droid
 {
-	[Preserve(AllMembers = true)]
-	public class ParentScrollViewRenderer : ScrollViewRenderer
-	{
-		[Obsolete("For Forms <= 2.4")]
-		public ParentScrollViewRenderer()
-		{
-		}
+    [Preserve(AllMembers = true)]
+    public class ParentScrollViewRenderer : ScrollViewRenderer
+    {
+        [Obsolete("For Forms <= 2.4")]
+        public ParentScrollViewRenderer()
+        {
+        }
 
-		public ParentScrollViewRenderer(Context context) : base(context)
-		{
-		}
+        public ParentScrollViewRenderer(Context context) : base(context)
+        {
+        }
 
-		public override bool OnInterceptTouchEvent(MotionEvent ev)
-		{
-			return !IsTouchHandled &&
-					base.OnInterceptTouchEvent(ev);
-		}
-	}
+        public override bool OnInterceptTouchEvent(MotionEvent ev)
+        {
+            return !IsTouchHandled &&
+                    base.OnInterceptTouchEvent(ev);
+        }
+    }
 }

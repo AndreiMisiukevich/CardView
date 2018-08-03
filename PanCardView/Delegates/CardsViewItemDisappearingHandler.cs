@@ -2,5 +2,5 @@
 
 namespace PanCardView.Delegates
 {
-	public delegate void CardsViewItemDisappearingHandler(CardsView view, ItemDisappearingEventArgs args);
+    public delegate void CardsViewItemDisappearingHandler(CardsView view, ItemDisappearingEventArgs args);
 }

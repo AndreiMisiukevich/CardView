@@ -2,10 +2,10 @@
 
 namespace PanCardView.Enums
 {
-	[Flags]
-	public enum InteractionState
-	{
-		Regular = 1,
-		Removing = 2
-	}
+    [Flags]
+    public enum InteractionState
+    {
+        Regular = 1,
+        Removing = 2
+    }
 }
