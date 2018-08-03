@@ -95,6 +95,8 @@ namespace PanCardView
 
 		public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false);
 
+        public static readonly BindableProperty IsAutoNavigatingAimationEnabledProperty = BindableProperty.Create(nameof(IsAutoNavigatingAimationEnabled), typeof(bool), typeof(CardsView), true);
+
 		public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
 		public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 6);
@@ -321,6 +323,12 @@ namespace PanCardView
 			set => SetValue(IsCyclicalProperty, value);
 		}
 
+        public bool IsAutoNavigatingAimationEnabled
+        {
+            get => (bool)GetValue(IsAutoNavigatingAimationEnabledProperty);
+            set => SetValue(IsAutoNavigatingAimationEnabledProperty, value);
+        }
+
 		public int MaxChildrenCount
 		{
 			get => (int)GetValue(MaxChildrenCountProperty);
@@ -527,7 +535,7 @@ namespace PanCardView
 
 		protected virtual async Task<bool> TryAutoNavigate()
 		{
-			if (CurrentView == null)
+            if (CurrentView == null || !IsAutoNavigatingAimationEnabled)
 			{
 				return false;
 			}
@@ -555,7 +563,6 @@ namespace PanCardView
 			SetupLayout(CurrentView);
 
 			AddChild(oldView, CurrentView);
-
 
 			var animationId = Guid.NewGuid();
 			StartAutoNavigation(oldView, animationId, animationDirection);
