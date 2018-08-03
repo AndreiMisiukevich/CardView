@@ -121,6 +121,7 @@ namespace PanCardView
 		private readonly object _childLocker = new object();
 		private readonly object _viewsInUseLocker = new object();
 		private readonly object _setCurrentViewLocker = new object();
+        private readonly object _orientationChangedLocker = new object();
 
 		private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
 		private readonly Dictionary<Guid, IEnumerable<View>> _viewsGestureCounter = new Dictionary<Guid, IEnumerable<View>>();
@@ -406,21 +407,25 @@ namespace PanCardView
 
 		protected virtual void OnOrientationChanged()
 		{
-			if (CurrentView != null && ItemTemplate != null)
-			{
-				var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
-				currentViewPair.Value.Clear();
-				currentViewPair.Value.Add(CurrentView);
-				_viewsPool.Clear();
-				_viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
-			}
+            lock (_orientationChangedLocker)
+            {
+                if (CurrentView != null && ItemTemplate != null)
+                {
+                    var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
+                    currentViewPair.Value.Clear();
+                    currentViewPair.Value.Add(CurrentView);
+                    _viewsPool.Clear();
+                    _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
+                }
 
-			SetCurrentView();
-			RemoveUnprocessingChildren();
-			ForceLayout();
+                SetCurrentView();
+                RemoveUnprocessingChildren();
+                LayoutChildren(X, Y, Width, Height);
+                ForceLayout();
+            }
 		}
 
-		protected virtual void SetupBackViews()
+        protected virtual void SetupBackViews()
 		{
 			SetupNextView();
 			SetupPrevView();
