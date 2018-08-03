@@ -33,8 +33,6 @@
     <Compile Include="Views\CardsSampleView.cs" />
     <Compile Include="Views\SceneSampleView.cs" />
     <Compile Include="ViewModels\CardsSampleViewModel.cs" />
-    <Compile Include="Views\CardsSampleCustomView.cs" />
-    <Compile Include="ViewModels\SharedSampleCustomViewModel.cs" />
     <Compile Include="Views\CarouselSampleSrollView.cs" />
     <Compile Include="ViewModels\CarouselSampleScrollViewModel.cs" />
     <Compile Include="Views\CarouselSampleDoubleView.cs" />

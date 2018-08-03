@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
 using FFImageLoading;
+using PanCardView.Extensions;
 
 namespace PanCardViewSample.ViewModels
 {
@@ -43,7 +44,7 @@ namespace PanCardViewSample.ViewModels
 				{ 
 					return;
 				}
-				Items.RemoveAt(CurrentIndex);
+				Items.RemoveAt(CurrentIndex.ToCyclingIndex(Items.Count));
 			});
 		}
 

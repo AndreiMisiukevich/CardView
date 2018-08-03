@@ -63,6 +63,20 @@
     <Compile Include="Processors\MultiProcessors\SceneFrontProcessorSet.cs" />
     <Compile Include="Processors\MultiProcessors\TranslationBackSceneProcessor.cs" />
     <Compile Include="Processors\MultiProcessors\TranslationFrontSceneProcessor.cs" />
+    <Compile Include="Utility\InteractionQueue.cs" />
+    <Compile Include="Enums\InteractionType.cs" />
+    <Compile Include="Utility\InteractionItem.cs" />
+    <Compile Include="Enums\UserInteractionStatus.cs" />
+    <Compile Include="EventArgs\UserInteractedEventArgs.cs" />
+    <Compile Include="EventArgs\ItemDisappearingEventArgs.cs" />
+    <Compile Include="EventArgs\ItemAppearingEventArgs.cs" />
+    <Compile Include="Delegates\CardsViewUserInteractedHandler.cs" />
+    <Compile Include="Delegates\CardsViewItemDisappearingHandler.cs" />
+    <Compile Include="Delegates\CardsViewItemAppearingHandler.cs" />
+    <Compile Include="EventArgs\CardTappedEventArgs.cs" />
+    <Compile Include="Delegates\CardsViewCardTappedHandler.cs" />
+    <Compile Include="Behaviors\ContextAssignedBehavior.cs" />
+    <Compile Include="Enums\InteractionState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />
@@ -73,6 +87,8 @@
     <Folder Include="Styles\" />
     <Folder Include="Utility\" />
     <Folder Include="Processors\MultiProcessors\" />
+    <Folder Include="EventArgs\" />
+    <Folder Include="Delegates\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

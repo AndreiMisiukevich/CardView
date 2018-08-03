@@ -1,4 +1,5 @@
 # CardsView and CarouselView controls for Xamarin Forms (based on Xamarin Forms AbsoluteLayout)
+![Logo](https://raw.githubusercontent.com/AndreiMisiukevich/CardView/master/images/Cardsview-logotype-main.png)
 
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
@@ -35,8 +36,8 @@ var cardsView = new CardsView
 {
     ItemTemplate = new DataTemplate(() => new ContentView()) //your template
 };
-cardsView.SetBinding(CardsView.ItemsProperty, nameof(PanCardSampleViewModel.Items));
-cardsView.SetBinding(CardsView.CurrentIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
+cardsView.SetBinding(CardsView.ItemsSourceProperty, nameof(PanCardSampleViewModel.Items));
+cardsView.SetBinding(CardsView.SelectedIndexProperty, nameof(PanCardSampleViewModel.CurrentIndex));
 ```
 -> Optionaly you can create ViewModel... or not... as you wish
 
@@ -50,8 +51,8 @@ carouselView.Children.Add(new IndicatorsControl());
 **XAML:**
 ```xml
 <cards:CarouselView 
-    Items="{Binding Items}"
-    CurrentIndex="{Binding CurrentIndex}">
+    ItemsSource="{Binding Items}"
+    SelectedIndex="{Binding CurrentIndex}">
     <cards:CarouselView.ItemTemplate>
         <DataTemplate>
             <ContentView>
@@ -82,7 +83,7 @@ if you want to add items directly through xaml
 
 ``` xml
 ...
-    <cards:CarouselView.Items>
+    <cards:CarouselView.ItemsSource>
             <x:Array Type="{x:Type View}">
                 <ContentView>
                     <Image Source="yourImage.png"/>
@@ -94,7 +95,7 @@ if you want to add items directly through xaml
                     <Label Text="any text"/>
                 </StackLayout>
             </x:Array>
-    </cards:CarouselView.Items>
+    </cards:CarouselView.ItemsSource>
 ...
 ```
 
@@ -110,7 +111,7 @@ https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Styles/Def
 -> If you want to put your cardsView/carouselView INTO scroll view, you should to use *ParentScrollView* instead of Xamarin.Forms.ScrollView.
 
 -> If you want to put cardsView/carouselView INTO ListView or INTO any another scrollable view you should follow these steps
-1) Create your own class and implement IOrdinateHandlerParentView interface (It's needede only for iOS, but do it into shared project)
+1) Create your own class and implement IOrdinateHandlerParentView interface (It's needed only for iOS, but do it into shared project)
 2) Create the renderer for this class (For Android)
 
 Check these classes (I implemented it for ParentScrollView. You can use it as example, nothing difficult :))
@@ -118,6 +119,10 @@ https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/P
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
 
 Check source code for more info, or 🇧🇾 ***just ask me =)*** 🇧🇾
+
+## Full documentation
+
+https://github.com/AndreiMisiukevich/CardView/tree/master/docs
 
 ## License
 The MIT License (MIT) see [License file](LICENSE)

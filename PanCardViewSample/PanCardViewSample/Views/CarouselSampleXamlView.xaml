@@ -15,9 +15,9 @@
     </ContentPage.BindingContext>
 
     <cards:CarouselView 
-        Items="{Binding Items}"
+        ItemsSource="{Binding Items}"
         SlideShowDuration="3000"
-        CurrentIndex="{Binding CurrentIndex}">
+        SelectedIndex="{Binding CurrentIndex}">
         <cards:CarouselView.ItemTemplate>
             <DataTemplate>
                 <ContentView>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CardsView</id>
-    <version>1.4.7</version>
+    <version>1.5.6</version>
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
@@ -17,10 +17,17 @@
           <dependency id="Xamarin.Forms" version="2.4" />
       </group>
     </dependencies>
+    <releaseNotes>
+      See Changelog: https://github.com/AndreiMisiukevich/CardView/releases
+    </releaseNotes>
   </metadata>
   <files>
-    <!--Net Standard-->
+
+    <!--Net Standard1.0-->
     <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\netstandard1.0\PanCardView.dll" />
+
+    <!--Net Standard2.0-->
+    <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\netstandard2.0\PanCardView.dll" />
 
     <!--Core PCL-->
     <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\portable-win+net45+wp80+win81+wpa81\PanCardView.dll" />
