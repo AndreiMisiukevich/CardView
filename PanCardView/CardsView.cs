@@ -147,7 +147,7 @@ namespace PanCardView
         private bool _shouldSkipTouch;
         private bool _isViewsInited;
         private bool _hasRenderer;
-        private bool? _isPortraitOrientation;
+        private bool _isVerticalOrientation;
         private bool? _shouldScrollParent;
         private DateTime _lastPanTime;
         private CancellationTokenSource _slideshowTokenSource;
@@ -620,17 +620,27 @@ namespace PanCardView
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
-            if (!_isViewsInited && width > 0 && height > 0)
+
+            var parent = FindParentPage();
+            if (parent == null)
+            {
+                return;
+            }
+
+            var parerntWidth = parent.Width;
+            var parentHeight = parent.Height;
+
+            if (!_isViewsInited && parerntWidth > 0 && parentHeight > 0)
             {
                 _isViewsInited = true;
-                _isPortraitOrientation = height > width;
+                _isVerticalOrientation = parentHeight > parerntWidth;
                 FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
                 BackViewProcessor.HandleInitView(PrevViews, this, AnimationDirection.Prev);
                 BackViewProcessor.HandleInitView(NextViews, this, AnimationDirection.Next);
             }
-            if (_isPortraitOrientation.HasValue && _isPortraitOrientation != height > width)
+            if (_isViewsInited && _isVerticalOrientation != parentHeight > parerntWidth)
             {
-                _isPortraitOrientation = !_isPortraitOrientation;
+                _isVerticalOrientation = !_isVerticalOrientation;
                 OnOrientationChanged();
             }
         }
@@ -1287,6 +1297,16 @@ namespace PanCardView
                 Children.Remove(view);
                 CleanView(view);
             }
+        }
+
+        private VisualElement FindParentPage()
+        {
+            var parent = Parent;
+            while (parent != null && !(parent is Page))
+            {
+                parent = parent.Parent;
+            }
+            return parent as VisualElement;
         }
 
         private bool CheckIsProcessingView(View view)
