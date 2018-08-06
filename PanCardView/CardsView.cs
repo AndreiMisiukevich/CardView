@@ -413,22 +413,22 @@ namespace PanCardView
             }
         }
 
-		protected virtual void OnOrientationChanged()
-		{
-			if (CurrentView != null && ItemTemplate != null)
-			{
-				var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
-				currentViewPair.Value.Clear();
-				currentViewPair.Value.Add(CurrentView);
-				_viewsPool.Clear();
-				_viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
-			}
+        protected virtual void OnOrientationChanged()
+        {
+            if (CurrentView != null && ItemTemplate != null)
+            {
+                var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
+                currentViewPair.Value.Clear();
+                currentViewPair.Value.Add(CurrentView);
+                _viewsPool.Clear();
+                _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
+            }
 
-			SetCurrentView();
-			RemoveUnprocessingChildren();
-			LayoutChildren(X, Y, Width, Height);
-			ForceLayout();
-		}
+            SetCurrentView();
+            RemoveUnprocessingChildren();
+            LayoutChildren(X, Y, Width, Height);
+            ForceLayout();
+        }
 
         protected virtual void SetupBackViews()
         {
@@ -618,31 +618,31 @@ namespace PanCardView
         {
             base.OnSizeAllocated(width, height);
 
-			lock (_sizeChangedLocker)
-			{
-				var parent = FindParentPage();
-				if (parent == null)
-				{
-					return;
-				}
+            lock (_sizeChangedLocker)
+            {
+                var parent = FindParentPage();
+                if (parent == null)
+                {
+                    return;
+                }
 
-				var parerntWidth = parent.Width;
-				var parentHeight = parent.Height;
+                var parerntWidth = parent.Width;
+                var parentHeight = parent.Height;
 
-				if (!_isViewsInited && parerntWidth > 0 && parentHeight > 0)
-				{
-					_isViewsInited = true;
-					_isPortraitOrientation = parentHeight > parerntWidth;
-					FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
-					BackViewProcessor.HandleInitView(PrevViews, this, AnimationDirection.Prev);
-					BackViewProcessor.HandleInitView(NextViews, this, AnimationDirection.Next);
-				}
-				if (_isViewsInited && _isPortraitOrientation != parentHeight > parerntWidth)
-				{
-					_isPortraitOrientation = !_isPortraitOrientation;
-					OnOrientationChanged();
-				}
-			}
+                if (!_isViewsInited && parerntWidth > 0 && parentHeight > 0)
+                {
+                    _isViewsInited = true;
+                    _isPortraitOrientation = parentHeight > parerntWidth;
+                    FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
+                    BackViewProcessor.HandleInitView(PrevViews, this, AnimationDirection.Prev);
+                    BackViewProcessor.HandleInitView(NextViews, this, AnimationDirection.Next);
+                }
+                if (_isViewsInited && _isPortraitOrientation != parentHeight > parerntWidth)
+                {
+                    _isPortraitOrientation = !_isPortraitOrientation;
+                    OnOrientationChanged();
+                }
+            }
         }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)

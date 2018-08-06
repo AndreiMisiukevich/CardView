@@ -47,6 +47,11 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetVisibility();
         });
 
+        public static readonly BindableProperty IsRightToLeftFlowDirectionEnabledProperty = BindableProperty.Create(nameof(IsRightToLeftFlowDirectionEnabled), typeof(bool), typeof(IndicatorsControl), false, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsIndicatorsControl().OnFlowDirectionChanged();
+        });
+
         public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IList), typeof(IndicatorsControl), null);
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
@@ -72,6 +77,7 @@ namespace PanCardView.Controls
             this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.ItemsSource));
             this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
             this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
+            this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, nameof(CardsView.IsRightToLeftFlowDirectionEnabled));
 
             Margin = new Thickness(10, 20);
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
@@ -144,6 +150,12 @@ namespace PanCardView.Controls
         {
             get => (bool)GetValue(UseParentAsBindingContextProperty);
             set => SetValue(UseParentAsBindingContextProperty, value);
+        }
+
+        public bool IsRightToLeftFlowDirectionEnabled
+        {
+            get => (bool)GetValue(IsRightToLeftFlowDirectionEnabledProperty);
+            set => SetValue(IsRightToLeftFlowDirectionEnabledProperty, value);
         }
 
         public int ToFadeDuration
@@ -235,11 +247,17 @@ namespace PanCardView.Controls
             }
         }
 
+        protected virtual void OnFlowDirectionChanged()
+        {
+            Rotation = IsRightToLeftFlowDirectionEnabled ? 180 : 0;
+        }
+
         private void ApplyStyle(View view, int cyclingIndex)
         {
             try
             {
                 view.BatchBegin();
+                view.Rotation = 0;
                 if (IndexOf(view) == cyclingIndex)
                 {
                     ApplySelectedStyle(view, cyclingIndex);
@@ -249,6 +267,7 @@ namespace PanCardView.Controls
             }
             finally
             {
+                view.Rotation += IsRightToLeftFlowDirectionEnabled ? -180 : 0;
                 view.BatchCommit();
             }
         }
