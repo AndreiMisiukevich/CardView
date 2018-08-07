@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CardsView</id>
-    <version>1.5.7</version>
+    <version>1.5.8-pre1</version>
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
@@ -38,9 +38,11 @@
 
     <!--Xamarin.iOS-->
     <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\Xamarin.iOS10\PanCardView.dll" />
+    <file src="PanCardView.iOS\bin\Release\PanCardView.iOS.dll" target="lib\Xamarin.iOS10\PanCardView.iOS.dll" />
 
     <!--Xamarin.Mac-->
     <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\Xamarin.Mac20\PanCardView.dll" />
+    <file src="PanCardView.iOS\bin\Release\PanCardView.iOS.dll" target="lib\Xamarin.Mac20\PanCardView.iOS.dll" />
 
     <!--Windows WinUWP-->
     <file src="PanCardView\bin\Release\PanCardView.dll" target="lib\uap\PanCardView.dll" />
