@@ -23,6 +23,7 @@ IsUserInteractionEnabled | `bool` | true | Determines if the control can be inte
 IsUserInteractionInCourse | `bool` | true | Determines if the control should forbid to start new interaction with card before previous ending.
 IsUserInteractionRunning | `bool` | false | Determines if the UserInteration is running, e.g., This is set to true in `OnTouchStarted()` and false in `OnTouchEnded()`.
 IsViewCacheEnabled | `bool` | true | Determines wether the control should retrieve the next view from the views pool or create a new one each time.
+IsPanInteractionEnabled | `bool` | true | **Only used in Android and iOS** Determines wether the control should handle pan gesture events or it should handle only swipes.
 ItemAppearingCommand | `ICommand` | null | The command that is executed when a new item is displayed.
 ItemDisappearingCommand | `ICommand` | null | The command that is executed when the item is no longer the displayed item.
 ItemsCount | `int` | -1 | The count of the items in `ItemsSource`. Primarily used to work out the cyclic index.
