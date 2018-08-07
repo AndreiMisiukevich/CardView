@@ -115,6 +115,10 @@
       <Project>{38EB6700-89D2-4DB8-978E-20AFEF8766A9}</Project>
       <Name>PanCardViewSample</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PanCardView.iOS\PanCardView.iOS.csproj">
+      <Project>{00BA6657-0102-46EC-B936-1512FA8BBD92}</Project>
+      <Name>PanCardView.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />

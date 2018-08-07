@@ -77,6 +77,11 @@ namespace PanCardView
             bindable.AsCardsView().AdjustSlideShow((bool)newValue);
         });
 
+        public static readonly BindableProperty IsPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsPanInteractionEnabled), typeof(bool), typeof(CardsView), true, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsCardsView().SetPanGesture(!(bool)(newValue));
+        });
+
         public static BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
 
         public static readonly BindableProperty IsUserInteractionEnabledProperty = BindableProperty.Create(nameof(IsUserInteractionEnabled), typeof(bool), typeof(CardsView), true);
@@ -131,6 +136,7 @@ namespace PanCardView
         private readonly ViewsInUseSet _viewsInUse = new ViewsInUseSet();
         private readonly InteractionQueue _interactions = new InteractionQueue();
         private readonly TapGestureRecognizer _tapGesture = new TapGestureRecognizer();
+        private readonly PanGestureRecognizer _panGesture = new PanGestureRecognizer();
         private readonly ContextAssignedBehavior _contextAssignedBehavior = new ContextAssignedBehavior();
 
         private IEnumerable<View> _prevViews = Enumerable.Empty<View>();
@@ -160,15 +166,8 @@ namespace PanCardView
         {
             FrontViewProcessor = frontViewProcessor;
             BackViewProcessor = backViewProcessor;
-
-            if (Device.RuntimePlatform != Device.Android)
-            {
-                var panGesture = new PanGestureRecognizer();
-                panGesture.PanUpdated += OnPanUpdated;
-                GestureRecognizers.Add(panGesture);
-            }
-
             _tapGesture.Tapped += OnCardTapped;
+            SetPanGesture();
         }
 
         private bool ShouldIgnoreSetCurrentView { get; set; }
@@ -263,6 +262,16 @@ namespace PanCardView
             set => SetValue(IsAutoInteractionRunningProperty, value);
         }
 
+        /// <summary>
+        /// Only for iOS and Android
+        /// </summary>
+        /// <value>Pan interaction is enabled</value>
+        public bool IsPanInteractionEnabled
+        {
+            get => (bool)GetValue(IsPanInteractionEnabledProperty);
+            set => SetValue(IsPanInteractionEnabledProperty, value);
+        }
+
         public int ItemsCount
         {
             get => (int)GetValue(ItemsCountProperty);
@@ -350,7 +359,7 @@ namespace PanCardView
         /// <summary>
         /// Only for Android
         /// </summary>
-        /// <value>The move threshold distance.</value>
+        /// <value>Move threshold distance.</value>
         public double MoveThresholdDistance
         {
             get => (double)GetValue(MoveThresholdDistanceProperty);
@@ -390,7 +399,7 @@ namespace PanCardView
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         => OnPanUpdated(e);
 
-        public void OnPanUpdated(PanUpdatedEventArgs e, bool? isSwiped = null)
+        public void OnPanUpdated(PanUpdatedEventArgs e, bool? isLeftSwiped = null)
         {
             if (ItemsCount <= 0)
             {
@@ -408,9 +417,24 @@ namespace PanCardView
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
-                    OnTouchEnded(isSwiped);
+                    OnTouchEnded(isLeftSwiped);
                     return;
             }
+        }
+
+        public void OnSwiped(bool isLeftSwiped)
+        {
+            if (!IsUserInteractionEnabled ||
+                (isLeftSwiped && !NextViews.Any()) ||
+                ((!isLeftSwiped && !PrevViews.Any())))
+            {
+                return;
+            }
+            if (IsRightToLeftFlowDirectionEnabled)
+            {
+                isLeftSwiped = !isLeftSwiped;
+            }
+            SelectedIndex = (SelectedIndex + (isLeftSwiped ? 1 : -1)).ToCyclingIndex(ItemsCount);
         }
 
         protected virtual void OnOrientationChanged()
@@ -668,6 +692,21 @@ namespace PanCardView
             SetCurrentView();
         }
 
+        private void SetPanGesture(bool _isForceRemove = false)
+        {
+            if (Device.RuntimePlatform != Device.Android)
+            {
+                _panGesture.PanUpdated -= OnPanUpdated;
+                GestureRecognizers.Remove(_panGesture);
+                if(_isForceRemove)
+                {
+                    return;
+                }
+                _panGesture.PanUpdated += OnPanUpdated;
+                GestureRecognizers.Add(_panGesture);
+            }
+        }
+
         private void StartAutoNavigation(View oldView, Guid animationId, AnimationDirection animationDirection)
         {
             if (oldView != null)
@@ -786,7 +825,7 @@ namespace PanCardView
             BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
         }
 
-        private async void OnTouchEnded(bool? isSwiped)
+        private async void OnTouchEnded(bool? isLeftSwiped)
         {
             if (_isPanEndRequested || _shouldSkipTouch)
             {
@@ -818,9 +857,9 @@ namespace PanCardView
                 var checkSwipe = CheckSwipe();
                 if (checkSwipe.HasValue)
                 {
-                    if (isSwiped.HasValue)
+                    if (isLeftSwiped.HasValue)
                     {
-                        isNextSelected = isSwiped;
+                        isNextSelected = isLeftSwiped;
                     }
 
                     if (checkSwipe.Value || absDiff > MoveDistance)
