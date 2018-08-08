@@ -4,6 +4,7 @@ using Android.Views;
 using PanCardView;
 using PanCardView.Droid;
 using System;
+using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static System.Math;
@@ -29,16 +30,17 @@ namespace PanCardView.Droid
         [Obsolete("For Forms <= 2.4")]
         public CardsViewRenderer()
         {
-            CreateGestureDetector();
         }
 
         public CardsViewRenderer(Context context) : base(context)
-        => CreateGestureDetector();
+		{
+		}
 
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
             if(!Element.IsPanInteractionEnabled)
 			{
+				base.OnInterceptTouchEvent(ev);
 				return true;
 			}
 
@@ -60,16 +62,17 @@ namespace PanCardView.Droid
         {
 			try
 			{
-				_gestureDetector.OnTouchEvent(e);
+				_gestureDetector?.OnTouchEvent(e);
 			}
             catch (ObjectDisposedException)
             {
-                CreateGestureDetector();
-                _gestureDetector.OnTouchEvent(e);
+                SetGestureDetector();
+                _gestureDetector?.OnTouchEvent(e);
             }
 
 			if (!Element.IsPanInteractionEnabled)
             {
+				base.OnTouchEvent(e);
 				return true;
             }
 
@@ -96,6 +99,16 @@ namespace PanCardView.Droid
             {
                 _panStarted = false;
                 _elementId = Guid.NewGuid();
+				SetGestureDetector();
+            }
+        }
+
+		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if (e.PropertyName == nameof(CardsView.IsPanInteractionEnabled))
+            {
+				SetGestureDetector();
             }
         }
 
@@ -151,14 +164,7 @@ namespace PanCardView.Droid
             Element.OnPanUpdated(args);
         }
 
-        private void OnSwiped(bool isLeft)
-		{
-			if(Element.IsPanInteractionEnabled)
-			{
-				return;
-			}
-			Element.OnSwiped(isLeft);
-		}
+		private void OnSwiped(bool isLeft) => Element.OnSwiped(isLeft);
 
         private PanUpdatedEventArgs GetPanUpdatedEventArgs(GestureStatus status, double totalX = 0, double totalY = 0)
         => new PanUpdatedEventArgs(status, _gestureId, totalX, totalY);
@@ -167,7 +173,12 @@ namespace PanCardView.Droid
 
         private float GetTotalY(MotionEvent ev) => (ev.GetY() - _startY) / Context.Resources.DisplayMetrics.Density;
 
-        private void CreateGestureDetector() => _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
+		private void SetGestureDetector()
+		{
+			_gestureDetector = !Element.IsPanInteractionEnabled
+				? new GestureDetector(new CardsGestureListener(OnSwiped))
+				: null;
+		}
     }
 
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
