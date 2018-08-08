@@ -24,7 +24,6 @@ namespace PanCardView.Droid
         private bool _panStarted;
         private float _startX;
         private float _startY;
-        private bool? _isSwiped;
         private GestureDetector _gestureDetector;
 
         [Obsolete("For Forms <= 2.4")]
@@ -38,6 +37,11 @@ namespace PanCardView.Droid
 
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
+            if(!Element.IsPanInteractionEnabled)
+			{
+				return true;
+			}
+
             if (ev.ActionMasked == MotionEventActions.Move)
             {
                 if (_lastTouchHandlerId.HasValue && _lastTouchHandlerId != _elementId)
@@ -54,14 +58,19 @@ namespace PanCardView.Droid
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            try
-            {
-                _gestureDetector.OnTouchEvent(e);
-            }
+			try
+			{
+				_gestureDetector.OnTouchEvent(e);
+			}
             catch (ObjectDisposedException)
             {
                 CreateGestureDetector();
                 _gestureDetector.OnTouchEvent(e);
+            }
+
+			if (!Element.IsPanInteractionEnabled)
+            {
+				return true;
             }
 
             if (e.ActionMasked == MotionEventActions.Move)
@@ -134,18 +143,22 @@ namespace PanCardView.Droid
             UpdatePan(GestureStatus.Started);
             _panStarted = true;
             _lastTouchHandlerId = _elementId;
-
-            _isSwiped = null;
         }
 
         private void UpdatePan(GestureStatus status, double totalX = 0, double totalY = 0)
         {
             var args = GetPanUpdatedEventArgs(status, totalX, totalY);
-            Element.OnPanUpdated(args, _isSwiped);
+            Element.OnPanUpdated(args);
         }
 
         private void OnSwiped(bool isLeft)
-        => _isSwiped = isLeft;
+		{
+			if(Element.IsPanInteractionEnabled)
+			{
+				return;
+			}
+			Element.OnSwiped(isLeft);
+		}
 
         private PanUpdatedEventArgs GetPanUpdatedEventArgs(GestureStatus status, double totalX = 0, double totalY = 0)
         => new PanUpdatedEventArgs(status, _gestureId, totalX, totalY);
@@ -155,12 +168,12 @@ namespace PanCardView.Droid
         private float GetTotalY(MotionEvent ev) => (ev.GetY() - _startY) / Context.Resources.DisplayMetrics.Density;
 
         private void CreateGestureDetector() => _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
-
     }
 
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
     {
-        private const int SwipeVelocity = 800;
+		private const int SwipeThreshold = 100;
+		private const int SwipeVelocityThreshold = 100;
 
         private readonly Action<bool> _onSwiped;
 
@@ -169,11 +182,20 @@ namespace PanCardView.Droid
 
         public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-            if (Abs(velocityX) > SwipeVelocity)
-            {
-                _onSwiped.Invoke(velocityX < 0);
-                return true;
-            }
+			var diffX = (e2?.GetX() ?? 0) - (e1?.GetX() ?? 0);
+			var diffY = (e2?.GetY() ?? 0) - (e1?.GetY() ?? 0);
+
+			var absDiffX = Abs(diffX);
+			var absDiffY = Abs(diffY);
+
+			if (absDiffX > absDiffY && 
+			    absDiffX > SwipeThreshold &&
+			    Abs(velocityX) > SwipeVelocityThreshold)
+			{
+				_onSwiped?.Invoke(diffX < 0);
+				return true; 
+			}
+
             return false;
         }
     }

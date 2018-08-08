@@ -399,7 +399,7 @@ namespace PanCardView
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         => OnPanUpdated(e);
 
-        public void OnPanUpdated(PanUpdatedEventArgs e, bool? isLeftSwiped = null)
+        public void OnPanUpdated(PanUpdatedEventArgs e)
         {
             if (ItemsCount <= 0)
             {
@@ -417,7 +417,7 @@ namespace PanCardView
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
-                    OnTouchEnded(isLeftSwiped);
+                    OnTouchEnded();
                     return;
             }
         }
@@ -825,7 +825,7 @@ namespace PanCardView
             BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
         }
 
-        private async void OnTouchEnded(bool? isLeftSwiped)
+        private async void OnTouchEnded()
         {
             if (_isPanEndRequested || _shouldSkipTouch)
             {
@@ -854,14 +854,9 @@ namespace PanCardView
 
             if (IsEnabled && _currentBackAnimationDirection != AnimationDirection.Null)
             {
-                var checkSwipe = CheckSwipe();
+                var checkSwipe = CheckPanSwipe();
                 if (checkSwipe.HasValue)
                 {
-                    if (isLeftSwiped.HasValue)
-                    {
-                        isNextSelected = isLeftSwiped;
-                    }
-
                     if (checkSwipe.Value || absDiff > MoveDistance)
                     {
                         isNextSelected = diff < 0;
@@ -928,7 +923,7 @@ namespace PanCardView
             _interactions.Remove(gestureId);
         }
 
-        private bool? CheckSwipe()
+        private bool? CheckPanSwipe()
         {
             if (_timeDiffItems.Count < 2)
             {
