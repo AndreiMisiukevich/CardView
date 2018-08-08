@@ -40,8 +40,9 @@ namespace PanCardView.Droid
         {
             if(!Element.IsPanInteractionEnabled)
 			{
+				DetectEvent(ev);
 				base.OnInterceptTouchEvent(ev);
-				return true;
+				return false;
 			}
 
             if (ev.ActionMasked == MotionEventActions.Move)
@@ -59,23 +60,7 @@ namespace PanCardView.Droid
         }
 
         public override bool OnTouchEvent(MotionEvent e)
-        {
-			try
-			{
-				_gestureDetector?.OnTouchEvent(e);
-			}
-            catch (ObjectDisposedException)
-            {
-                SetGestureDetector();
-                _gestureDetector?.OnTouchEvent(e);
-            }
-
-			if (!Element.IsPanInteractionEnabled)
-            {
-				base.OnTouchEvent(e);
-				return true;
-            }
-
+		{         
             if (e.ActionMasked == MotionEventActions.Move)
             {
                 var density = Context.Resources.DisplayMetrics.Density;
@@ -99,18 +84,29 @@ namespace PanCardView.Droid
             {
                 _panStarted = false;
                 _elementId = Guid.NewGuid();
-				SetGestureDetector();
             }
         }
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == nameof(CardsView.IsPanInteractionEnabled))
+		private void DetectEvent(MotionEvent ev)
+		{
+			if (ev.PointerCount > 1)
             {
-				SetGestureDetector();
+                return;
             }
-        }
+			try
+			{
+				if(_gestureDetector == null)
+				{
+					SetGestureDetector();
+				}
+				_gestureDetector.OnTouchEvent(ev);
+			}
+			catch (ObjectDisposedException)
+			{
+				SetGestureDetector();
+				DetectEvent(ev);
+			}
+		}
 
         private bool SetIsTouchHandled(float xDelta, float yDelta)
         {
@@ -174,22 +170,20 @@ namespace PanCardView.Droid
         private float GetTotalY(MotionEvent ev) => (ev.GetY() - _startY) / Context.Resources.DisplayMetrics.Density;
 
 		private void SetGestureDetector()
-		{
-			_gestureDetector = !Element.IsPanInteractionEnabled
-				? new GestureDetector(new CardsGestureListener(OnSwiped))
-				: null;
-		}
+		=> _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
     }
-
+    
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
     {
-		private const int SwipeThreshold = 100;
-		private const int SwipeVelocityThreshold = 100;
+		public static int SwipeThreshold { get; set; } = 100;
+		public static int SwipeVelocityThreshold { get; set; } = 1200;
 
         private readonly Action<bool> _onSwiped;
 
         public CardsGestureListener(Action<bool> onSwiped)
         => _onSwiped = onSwiped;
+
+		public MotionEvent PreviousMoveEvent { private get; set; }
 
         public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
