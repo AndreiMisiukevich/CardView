@@ -118,6 +118,8 @@ Check these classes (I implemented it for ParentScrollView. You can use it as ex
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/ParentScrollView.cs
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
 
+-> If all these tricks didn't help you, you may use **IsPanInteractionEnabled = false** This trick disables pan interaction, but preserve ability to swipe cards.
+
 Check source code for more info, or 🇧🇾 ***just ask me =)*** 🇧🇾
 
 ## Full documentation
