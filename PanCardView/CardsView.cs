@@ -488,8 +488,8 @@ namespace PanCardView
                     else if (SelectedIndex != OldIndex)
                     {
                         var isNextSelected = SelectedIndex > OldIndex;
-                        FireItemDisappearing(InteractionType.User, isNextSelected, oldView.GetItem());
-                        FireItemAppearing(InteractionType.User, isNextSelected, newView.GetItem());
+                        FireItemDisappearing(InteractionType.User, isNextSelected, GetItem(oldView));
+                        FireItemAppearing(InteractionType.User, isNextSelected, GetItem(newView));
                     }
 
                     SetupBackViews();
@@ -550,7 +550,7 @@ namespace PanCardView
 
             var context = GetContext(SelectedIndex, AnimationDirection.Current);
 
-            if (CurrentView.BindingContext == context || CurrentView == context)
+            if (GetItem(CurrentView) == context)
             {
                 return false;
             }
@@ -685,7 +685,7 @@ namespace PanCardView
             {
                 _panGesture.PanUpdated -= OnPanUpdated;
                 GestureRecognizers.Remove(_panGesture);
-                if(_isForceRemove)
+                if (_isForceRemove)
                 {
                     return;
                 }
@@ -708,7 +708,7 @@ namespace PanCardView
                 {
                     _viewsInUse.Add(oldView);
                 }
-                FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, oldView.GetItem());
+                FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, GetItem(oldView));
             }
         }
 
@@ -726,7 +726,7 @@ namespace PanCardView
             IsAutoInteractionRunning = false;
             var isProcessingNow = !_interactions.CheckLastId(animationId);
             RemoveRedundantChildren(isProcessingNow);
-            FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, newView.GetItem());
+            FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, GetItem(newView));
             _interactions.Remove(animationId);
         }
 
@@ -1065,7 +1065,7 @@ namespace PanCardView
             }
 
             var template = ItemTemplate;
-            if (template is DataTemplateSelector selector)
+            while (template is DataTemplateSelector selector)
             {
                 template = selector.SelectTemplate(context, this);
             }
@@ -1102,7 +1102,7 @@ namespace PanCardView
             }
 
             var notUsingViews = viewsList.Where(v => !_viewsInUse.Contains(v));
-            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context)
+            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context || v == context)
                                     ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
                                     ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v) && !bookedViews.Contains(v));
 
@@ -1140,6 +1140,14 @@ namespace PanCardView
             return ItemsSource[index];
         }
 
+        private bool CheckContextAssigned(View view)
+        => view?.Behaviors.Contains(_contextAssignedBehavior) ?? false;
+
+        private object GetItem(View view)
+        => CheckContextAssigned(view)
+            ? view.BindingContext
+            : view;
+
         private void SendChildrenToBackIfNeeded(View view, View topView)
         {
             lock (_childLocker)
@@ -1161,7 +1169,7 @@ namespace PanCardView
 
         private void CleanView(View view)
         {
-            if (view?.Behaviors.Contains(_contextAssignedBehavior) ?? false)
+            if (CheckContextAssigned(view))
             {
                 view.Behaviors.Remove(_contextAssignedBehavior);
                 view.BindingContext = null;
@@ -1210,7 +1218,7 @@ namespace PanCardView
             {
                 for (var i = 0; i < ItemsCount; ++i)
                 {
-                    if (ItemsSource[i] == CurrentView.BindingContext)
+                    if (ItemsSource[i] == GetItem(CurrentView))
                     {
                         index = i;
                         isCurrentContextPresent = true;
@@ -1411,13 +1419,12 @@ namespace PanCardView
 
             if (isNextSelected.HasValue)
             {
-                var item = view.GetItem();
+                var item = GetItem(view);
                 switch (status)
                 {
                     case UserInteractionStatus.Ending:
                         FireItemDisappearing(InteractionType.User, isNextSelected.GetValueOrDefault(), item);
                         return;
-
                     case UserInteractionStatus.Ended:
                         FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), item);
                         return;

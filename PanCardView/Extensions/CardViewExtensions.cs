@@ -22,9 +22,6 @@ namespace PanCardView.Extensions
         public static View CreateView(this DataTemplate template)
         => template.CreateContent() as View;
 
-        public static object GetItem(this View view)
-        => view?.BindingContext ?? view;
-
         public static int ToCyclingIndex(this int index, int itemsCount)
         {
             if (itemsCount <= 0)
