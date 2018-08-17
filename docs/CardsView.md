@@ -2,9 +2,14 @@
 
 This is the "Tinder" style card swiping view. This is also the base for the [CarouselView](CarouselView.md).
 
-### Setup
+### Events
 
-**TODO**
+Event | Arguments type | Description
+--- | --- | ---
+UserInteracted | `CardsViewUserInteractedHandler` | It is raised when user interacts with any card (Start, End, Move).
+ItemDisappearing | `CardsViewItemDisappearingHandler` | It is raised when any card is disappearing.
+ItemAppearing | `CardsViewItemAppearingHandler` | It is raised when any card is appearing.
+ItemSwiped | `CardsViewItemSwipedHandler` | It is raised when user swips any card (Left, Right, Up, Down)
 
 ### Properties
 
@@ -18,6 +23,8 @@ IsAutoInteractionRunning | `bool` | false | Determines if the auto navigation is
 IsAutoNavigatingAimationEnabled | `bool` | true | Determines if the control should animate cards, if selected item/index was chagend without user interaction (e.g. from code).
 IsCyclical | `bool` | true | Determines if the control can cycle round from the last view to the first, allows for infinite swiping.
 IsOnlyForwardDirection | `bool` | false | Set to only allow the control to move forward and not have the abilitly to go back to previous cards.
+IsPanSwipeEnabled | `bool` | true | Set to allow the control to detec swipes from fast pan movements.
+VerticalSwipeThresholdDistance | `double` | 30.0 | **Only used in Android** Determines distance for recognizing movement as vertical swipe.
 IsRightToLeftFlowDirectionEnabled | `bool` | false | Set RightToLeft flow direction for current control.
 IsUserInteractionEnabled | `bool` | true | Determines if the control can be interacted with, e.g., `OnTouch` events.
 IsUserInteractionInCourse | `bool` | true | Determines if the control should forbid to start new interaction with card before previous ending.
@@ -28,7 +35,7 @@ ItemAppearingCommand | `ICommand` | null | The command that is executed when a n
 ItemDisappearingCommand | `ICommand` | null | The command that is executed when the item is no longer the displayed item.
 ItemsCount | `int` | -1 | The count of the items in `ItemsSource`. Primarily used to work out the cyclic index.
 ItemsSource | `IList` | null | Sets the items source of the control. If the source is an `ObservableCollection` the CollectionChanged events are subscribed to.
-ItemTappedCommand | `ICommand` | null | The command that is executed when the item is tapped.
+ItemSwipedCommand | `ICommand` | null | The command that is executed when the item is swiped.
 ItemTemplate | `DataTemplate` | null | Sets the data Template that the `ItemsSource` will bind too.
 MaxChildrenCount | `int` | 12 | Used to determine when to remove views from the Children stack on the control. This is used when the auto navigation animation is processing, e.g., when `isProcessingNow` is set to true.
 MoveDistance | `double` | -1 | The distance the swipe needs to move in order for a page to move to the next.
