@@ -451,13 +451,14 @@ namespace PanCardView
             {
                 var isLeftSwiped = swipeDirection == SwipeDirection.Left;
                 var haveItems = (isLeftSwiped && NextViews.Any()) || ((!isLeftSwiped && PrevViews.Any()));
+                var isAndroid = Device.RuntimePlatform == Device.Android;
 
-                if (IsPanSwipeEnabled && haveItems)
+                if (IsPanSwipeEnabled && haveItems && isAndroid)
                 {
                     return;
                 }
 
-                if (!IsPanSwipeEnabled && haveItems)
+                if ((!IsPanSwipeEnabled || !isAndroid) && haveItems)
                 {
                     if (IsRightToLeftFlowDirectionEnabled)
                     {
@@ -466,6 +467,7 @@ namespace PanCardView
                     SelectedIndex = (SelectedIndex + (isLeftSwiped ? 1 : -1)).ToCyclingIndex(ItemsCount);
                 }
             }
+
             FireItemSwiped(swipeDirection, oldIndex);
         }
 
