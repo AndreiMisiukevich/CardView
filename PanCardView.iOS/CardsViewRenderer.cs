@@ -44,23 +44,24 @@ namespace PanCardView.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
         {
             base.OnElementChanged(e);
-            if(e.NewElement != null)
+            if (e.NewElement != null)
             {
                 SetSwipeGestures();
             }
         }
 
-        private void SetSwipeGestures()
+        protected virtual void ResetSwipeGestureRecognizer(UISwipeGestureRecognizer swipeGestureRecognizer)
         {
-            RemoveGestureRecognizer(_leftSwipeGesture);
-            RemoveGestureRecognizer(_rightSwipeGesture);
-            RemoveGestureRecognizer(_upSwipeGesture);
-            RemoveGestureRecognizer(_downSwipeGesture);
+            RemoveGestureRecognizer(gestureRecognizer);
+            AddGestureRecognizer(gestureRecognizer);
+        }
 
-            AddGestureRecognizer(_leftSwipeGesture);
-            AddGestureRecognizer(_rightSwipeGesture);
-            AddGestureRecognizer(_upSwipeGesture);
-            AddGestureRecognizer(_downSwipeGesture);
+        protected void SetSwipeGestures()
+        {
+            ResetSwipeGestureRecognizer(_leftSwipeGesture);
+            ResetSwipeGestureRecognizer(_rightSwipeGesture);
+            ResetSwipeGestureRecognizer(_upSwipeGesture);
+            ResetSwipeGestureRecognizer(_downSwipeGesture);
         }
 
         private void OnSwiped(UISwipeGestureRecognizer gesture)
@@ -72,7 +73,7 @@ namespace PanCardView.iOS
                                     : gesture.Direction == UISwipeGestureRecognizerDirection.Up
                                         ? SwipeDirection.Up
                                         : SwipeDirection.Down;
-            
+
             Element.OnSwiped(swipeDirection);
         }
     }

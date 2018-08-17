@@ -111,6 +111,8 @@ namespace PanCardView
 
         public static readonly BindableProperty MoveThresholdDistanceProperty = BindableProperty.Create(nameof(MoveThresholdDistance), typeof(double), typeof(CardsView), 3.0);
 
+        public static readonly BindableProperty VerticalSwipeThresholdDistanceProperty = BindableProperty.Create(nameof(VerticalSwipeThresholdDistance), typeof(double), typeof(CardsView), 25.0);
+
         public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
 
         public static readonly BindableProperty UserInteractedCommandProperty = BindableProperty.Create(nameof(UserInteractedCommand), typeof(ICommand), typeof(CardsView), null);
@@ -371,6 +373,16 @@ namespace PanCardView
             set => SetValue(MoveThresholdDistanceProperty, value);
         }
 
+        /// <summary>
+        /// Only for Android
+        /// </summary>
+        /// <value>Move threshold distance.</value>
+        public double VerticalSwipeThresholdDistance
+        {
+            get => (double)GetValue(VerticalSwipeThresholdDistanceProperty);
+            set => SetValue(VerticalSwipeThresholdDistanceProperty, value);
+        }
+
         public TimeSpan SwipeThresholdTime
         {
             get => (TimeSpan)GetValue(SwipeThresholdTimeProperty);
@@ -429,23 +441,31 @@ namespace PanCardView
 
         public void OnSwiped(SwipeDirection swipeDirection)
         {
+            if (!IsUserInteractionEnabled)
+            {
+                return;
+            }
+
             var oldIndex = SelectedIndex;
             if ((int)swipeDirection < 2)
             {
                 var isLeftSwiped = swipeDirection == SwipeDirection.Left;
-                if (!IsUserInteractionEnabled ||
-                    (isLeftSwiped && !NextViews.Any()) ||
-                    ((!isLeftSwiped && !PrevViews.Any())))
+                var haveItems = (isLeftSwiped && NextViews.Any()) || ((!isLeftSwiped && PrevViews.Any()));
+
+                if (IsPanSwipeEnabled && haveItems)
                 {
                     return;
                 }
-                if (IsRightToLeftFlowDirectionEnabled)
-                {
-                    isLeftSwiped = !isLeftSwiped;
-                }
-                SelectedIndex = (SelectedIndex + (isLeftSwiped ? 1 : -1)).ToCyclingIndex(ItemsCount);
-            }
 
+                if (!IsPanSwipeEnabled && haveItems)
+                {
+                    if (IsRightToLeftFlowDirectionEnabled)
+                    {
+                        isLeftSwiped = !isLeftSwiped;
+                    }
+                    SelectedIndex = (SelectedIndex + (isLeftSwiped ? 1 : -1)).ToCyclingIndex(ItemsCount);
+                }
+            }
             FireItemSwiped(swipeDirection, oldIndex);
         }
 
@@ -871,6 +891,7 @@ namespace PanCardView
                     if (checkSwipe.Value || absDiff > MoveDistance)
                     {
                         isNextSelected = diff < 0;
+                        FireItemSwiped(isNextSelected.Value ? SwipeDirection.Left : SwipeDirection.Right, oldIndex);
                     }
                 }
             }

@@ -12,8 +12,7 @@ namespace PanCardViewSample.Views
 			var cardsView = new CardsView
 			{
 				ItemTemplate = new DataTemplate(() => new DefaultCardItemView()),
-				BackgroundColor = Color.Black.MultiplyAlpha(.9),
-				IsCyclical = true
+				BackgroundColor = Color.Black.MultiplyAlpha(.9)
 			};
 			AbsoluteLayout.SetLayoutFlags(cardsView, AbsoluteLayoutFlags.All);
 			AbsoluteLayout.SetLayoutBounds(cardsView, new Rectangle(0, 0, 1, 1));
