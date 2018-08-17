@@ -72,10 +72,12 @@ namespace PanCardView.Droid
 
                 var xDelta = GetTotalX(e);
                 var yDelta = GetTotalY(e);
-
                 SetIsTouchHandled(xDelta, yDelta);
 
-                UpdatePan(GestureStatus.Running, xDelta, yDelta);
+                if (Abs(yDelta) <= Abs(xDelta))
+                {
+                    UpdatePan(GestureStatus.Running, xDelta, yDelta);
+                }
             }
 
             HandleDownUpEvents(e);
@@ -117,10 +119,10 @@ namespace PanCardView.Droid
         {
             var xDeltaAbs = Abs(xDelta);
             var yDeltaAbs = Abs(yDelta);
-            return IsTouchHandled = (xDeltaAbs > yDeltaAbs &&
-                                     xDeltaAbs > Element.MoveThresholdDistance) ||
-                                    (yDeltaAbs > xDeltaAbs &&
-                                     (yDeltaAbs > Element.VerticalSwipeThresholdDistance));
+            return IsTouchHandled = (yDeltaAbs > xDeltaAbs &&
+                                     yDeltaAbs > Element.VerticalSwipeThresholdDistance) ||
+                                    (xDeltaAbs > yDeltaAbs &&
+                                     xDeltaAbs > Element.MoveThresholdDistance);
         }
 
         private void HandleDownUpEvents(MotionEvent ev)
