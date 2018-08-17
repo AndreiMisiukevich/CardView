@@ -59,10 +59,11 @@
     <Compile Include="Delegates\CardsViewUserInteractedHandler.cs" />
     <Compile Include="Delegates\CardsViewItemDisappearingHandler.cs" />
     <Compile Include="Delegates\CardsViewItemAppearingHandler.cs" />
-    <Compile Include="EventArgs\CardTappedEventArgs.cs" />
-    <Compile Include="Delegates\CardsViewCardTappedHandler.cs" />
+    <Compile Include="EventArgs\ItemSwipedEventArgs.cs" />
+    <Compile Include="Delegates\CardsViewItemSwipedHandler.cs" />
     <Compile Include="Behaviors\ContextAssignedBehavior.cs" />
     <Compile Include="Enums\InteractionState.cs" />
+    <Compile Include="Enums\SwipeDirection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />

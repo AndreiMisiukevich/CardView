@@ -4,15 +4,17 @@ namespace PanCardView.EventArgs
 {
     public class UserInteractedEventArgs : System.EventArgs
     {
-        public UserInteractedEventArgs(int index, double diff, UserInteractionStatus status)
+        public UserInteractedEventArgs(UserInteractionStatus status, double diff, int index, object item)
         {
-            Index = index;
-            Diff = diff;
             Status = status;
+            Diff = diff;
+            Index = index;
+            Item = item;
         }
 
-        public int Index { get; }
-        public double Diff { get; }
         public UserInteractionStatus Status { get; }
+        public double Diff { get; }
+        public int Index { get; }
+        public object Item { get; }
     }
 }

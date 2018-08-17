@@ -28,19 +28,19 @@ namespace PanCardView.Extensions
             {
                 return -1;
             }
-
             if (index < 0)
             {
                 while (index < 0)
                 {
                     index += itemsCount;
                 }
-                return index;
             }
-
-            while (index >= itemsCount)
+            else
             {
-                index -= itemsCount;
+                while (index >= itemsCount)
+                {
+                    index -= itemsCount;
+                }
             }
             return index;
         }

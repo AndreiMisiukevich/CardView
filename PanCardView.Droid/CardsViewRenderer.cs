@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static System.Math;
+using PanCardView.Enums;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
@@ -38,13 +39,6 @@ namespace PanCardView.Droid
 
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
-            if(!Element.IsPanInteractionEnabled)
-			{
-				DetectEvent(ev);
-				base.OnInterceptTouchEvent(ev);
-				return false;
-			}
-
             if (ev.ActionMasked == MotionEventActions.Move)
             {
                 if (_lastTouchHandlerId.HasValue && _lastTouchHandlerId != _elementId)
@@ -160,7 +154,7 @@ namespace PanCardView.Droid
             Element.OnPanUpdated(args);
         }
 
-		private void OnSwiped(bool isLeft) => Element.OnSwiped(isLeft);
+        private void OnSwiped(SwipeDirection swipeDirection) => Element.OnSwiped(swipeDirection);
 
         private PanUpdatedEventArgs GetPanUpdatedEventArgs(GestureStatus status, double totalX = 0, double totalY = 0)
         => new PanUpdatedEventArgs(status, _gestureId, totalX, totalY);
@@ -176,14 +170,13 @@ namespace PanCardView.Droid
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
     {
 		public static int SwipeThreshold { get; set; } = 100;
+
 		public static int SwipeVelocityThreshold { get; set; } = 1200;
 
-        private readonly Action<bool> _onSwiped;
+        private readonly Action<SwipeDirection> _onSwiped;
 
-        public CardsGestureListener(Action<bool> onSwiped)
+        public CardsGestureListener(Action<SwipeDirection> onSwiped)
         => _onSwiped = onSwiped;
-
-		public MotionEvent PreviousMoveEvent { private get; set; }
 
         public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
@@ -197,9 +190,17 @@ namespace PanCardView.Droid
 			    absDiffX > SwipeThreshold &&
 			    Abs(velocityX) > SwipeVelocityThreshold)
 			{
-				_onSwiped?.Invoke(diffX < 0);
+                _onSwiped?.Invoke(diffX < 0 ? SwipeDirection.Left : SwipeDirection.Right);
 				return true; 
 			}
+
+            if(absDiffY >= absDiffX &&
+               absDiffY > SwipeThreshold &&
+               Abs(velocityY) > SwipeVelocityThreshold)
+            {
+                _onSwiped?.Invoke(diffY < 0 ? SwipeDirection.Up : SwipeDirection.Down);
+                return true;
+            }
 
             return false;
         }

@@ -17,7 +17,6 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 using PanCardView.EventArgs;
 using PanCardView.Delegates;
-using System.Reflection;
 
 namespace PanCardView
 {
@@ -118,9 +117,12 @@ namespace PanCardView
 
         public static readonly BindableProperty ItemAppearingCommandProperty = BindableProperty.Create(nameof(ItemAppearingCommand), typeof(ICommand), typeof(CardsView), null);
 
+        public static readonly BindableProperty ItemSwipedCommandProperty = BindableProperty.Create(nameof(ItemSwipedCommand), typeof(ICommand), typeof(CardsView), null);
+
         public event CardsViewUserInteractedHandler UserInteracted;
         public event CardsViewItemDisappearingHandler ItemDisappearing;
         public event CardsViewItemAppearingHandler ItemAppearing;
+        public event CardsViewItemSwipedHandler ItemSwiped;
 
         private readonly object _childLocker = new object();
         private readonly object _viewsInUseLocker = new object();
@@ -385,6 +387,12 @@ namespace PanCardView
             set => SetValue(ItemAppearingCommandProperty, value);
         }
 
+        public ICommand ItemSwipedCommand
+        {
+            get => GetValue(ItemSwipedCommandProperty) as ICommand;
+            set => SetValue(ItemSwipedCommandProperty, value);
+        }
+
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         => OnPanUpdated(e);
 
@@ -411,19 +419,26 @@ namespace PanCardView
             }
         }
 
-        public void OnSwiped(bool isLeftSwiped)
+        public void OnSwiped(SwipeDirection swipeDirection)
         {
-            if (!IsUserInteractionEnabled ||
-                (isLeftSwiped && !NextViews.Any()) ||
-                ((!isLeftSwiped && !PrevViews.Any())))
+            var oldIndex = SelectedIndex;
+            if ((int)swipeDirection < 2)
             {
-                return;
+                var isLeftSwiped = swipeDirection == SwipeDirection.Left;
+                if (!IsUserInteractionEnabled ||
+                    (isLeftSwiped && !NextViews.Any()) ||
+                    ((!isLeftSwiped && !PrevViews.Any())))
+                {
+                    return;
+                }
+                if (IsRightToLeftFlowDirectionEnabled)
+                {
+                    isLeftSwiped = !isLeftSwiped;
+                }
+                SelectedIndex = (SelectedIndex + (isLeftSwiped ? 1 : -1)).ToCyclingIndex(ItemsCount);
             }
-            if (IsRightToLeftFlowDirectionEnabled)
-            {
-                isLeftSwiped = !isLeftSwiped;
-            }
-            SelectedIndex = (SelectedIndex + (isLeftSwiped ? 1 : -1)).ToCyclingIndex(ItemsCount);
+
+            FireItemSwiped(swipeDirection, oldIndex);
         }
 
         protected virtual void OnOrientationChanged()
@@ -488,8 +503,8 @@ namespace PanCardView
                     else if (SelectedIndex != OldIndex)
                     {
                         var isNextSelected = SelectedIndex > OldIndex;
-                        FireItemDisappearing(InteractionType.User, isNextSelected, GetItem(oldView));
-                        FireItemAppearing(InteractionType.User, isNextSelected, GetItem(newView));
+                        FireItemDisappearing(InteractionType.User, isNextSelected, OldIndex);
+                        FireItemAppearing(InteractionType.User, isNextSelected, SelectedIndex);
                     }
 
                     SetupBackViews();
@@ -584,7 +599,7 @@ namespace PanCardView
             }
 
             await autoNavigationTask;
-            EndAutoNavigation(oldView, newView, animationId, animationDirection);
+            EndAutoNavigation(oldView, animationId, animationDirection);
 
             return true;
         }
@@ -708,11 +723,11 @@ namespace PanCardView
                 {
                     _viewsInUse.Add(oldView);
                 }
-                FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, GetItem(oldView));
+                FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, OldIndex);
             }
         }
 
-        private void EndAutoNavigation(View oldView, View newView, Guid animationId, AnimationDirection animationDirection)
+        private void EndAutoNavigation(View oldView, Guid animationId, AnimationDirection animationDirection)
         {
             _inCoursePanDelay = 0;
             if (oldView != null)
@@ -726,7 +741,7 @@ namespace PanCardView
             IsAutoInteractionRunning = false;
             var isProcessingNow = !_interactions.CheckLastId(animationId);
             RemoveRedundantChildren(isProcessingNow);
-            FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, GetItem(newView));
+            FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
             _interactions.Remove(animationId);
         }
 
@@ -779,7 +794,7 @@ namespace PanCardView
             var gestureId = Guid.NewGuid();
             _interactions.Add(gestureId, InteractionType.User);
 
-            FireUserInteracted(UserInteractionStatus.Started, 0, SelectedIndex);
+            FireUserInteracted(UserInteractionStatus.Started, CurrentDiff, SelectedIndex);
             IsUserInteractionRunning = true;
             _isPanEndRequested = false;
 
@@ -832,7 +847,8 @@ namespace PanCardView
             _isPanEndRequested = true;
             var absDiff = Abs(CurrentDiff);
 
-            var index = SelectedIndex;
+            var oldIndex = SelectedIndex;
+            var index = oldIndex;
             var diff = CurrentDiff;
 
             CleanDiffItems();
@@ -883,12 +899,20 @@ namespace PanCardView
             var oldView = CurrentBackViews.FirstOrDefault();
             var newView = CurrentView;
 
-            FireUserInteracted(UserInteractionStatus.Ending, diff, index, isNextSelected, oldView);
+            FireUserInteracted(UserInteractionStatus.Ending, diff, oldIndex);
+            if (isNextSelected.HasValue)
+            {
+                FireItemDisappearing(InteractionType.User, isNextSelected.GetValueOrDefault(), oldIndex);
+            }
             CurrentDiff = 0;
 
             await endingTask;
 
-            FireUserInteracted(UserInteractionStatus.Ended, diff, index, isNextSelected, newView);
+            FireUserInteracted(UserInteractionStatus.Ended, diff, oldIndex);
+            if (isNextSelected.HasValue)
+            {
+                FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
+            }
 
             var isProcessingNow = !_interactions.CheckLastId(gestureId);
             RemoveRangeViewsInUse(gestureId, isProcessingNow);
@@ -1147,6 +1171,17 @@ namespace PanCardView
         => CheckContextAssigned(view)
             ? view.BindingContext
             : view;
+
+        private object GetItem(int index)
+        {
+            if (IsCyclical)
+            {
+                index = index.ToCyclingIndex(ItemsCount);
+            }
+            return index >= 0 && index < ItemsCount
+                ? ItemsSource[index]
+                    : null;
+        }
 
         private void SendChildrenToBackIfNeeded(View view, View topView)
         {
@@ -1411,39 +1446,36 @@ namespace PanCardView
             }
         }
 
-        private void FireUserInteracted(UserInteractionStatus status, double diff, int index, bool? isNextSelected = null, View view = null)
+        private void FireUserInteracted(UserInteractionStatus status, double diff, int index)
         {
-            var args = new UserInteractedEventArgs(index, diff, status);
+            var item = GetItem(index);
+            var args = new UserInteractedEventArgs(status, diff, index, item);
             UserInteractedCommand?.Execute(args);
             UserInteracted?.Invoke(this, args);
-
-            if (isNextSelected.HasValue)
-            {
-                var item = GetItem(view);
-                switch (status)
-                {
-                    case UserInteractionStatus.Ending:
-                        FireItemDisappearing(InteractionType.User, isNextSelected.GetValueOrDefault(), item);
-                        return;
-                    case UserInteractionStatus.Ended:
-                        FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), item);
-                        return;
-                }
-            }
         }
 
-        private void FireItemDisappearing(InteractionType type, bool isNextSelected, object item)
+        private void FireItemDisappearing(InteractionType type, bool isNextSelected, int index)
         {
-            var args = new ItemDisappearingEventArgs(type, isNextSelected, item);
+            var item = GetItem(index);
+            var args = new ItemDisappearingEventArgs(type, isNextSelected, index, item);
             ItemDisappearingCommand?.Execute(args);
             ItemDisappearing?.Invoke(this, args);
         }
 
-        private void FireItemAppearing(InteractionType type, bool isNextSelected, object item)
+        private void FireItemAppearing(InteractionType type, bool isNextSelected, int index)
         {
-            var args = new ItemAppearingEventArgs(type, isNextSelected, item);
+            var item = GetItem(index);
+            var args = new ItemAppearingEventArgs(type, isNextSelected, index, item);
             ItemAppearingCommand?.Execute(args);
             ItemAppearing?.Invoke(this, args);
+        }
+
+        private void FireItemSwiped(SwipeDirection swipeDirection, int index)
+        {
+            var item = GetItem(index);
+            var args = new ItemSwipedEventArgs(swipeDirection, index, item);
+            ItemSwipedCommand?.Execute(args);
+            ItemSwiped?.Invoke(this, args);
         }
     }
 }
