@@ -52,8 +52,8 @@ namespace PanCardView.iOS
 
         protected virtual void ResetSwipeGestureRecognizer(UISwipeGestureRecognizer swipeGestureRecognizer)
         {
-            RemoveGestureRecognizer(gestureRecognizer);
-            AddGestureRecognizer(gestureRecognizer);
+            RemoveGestureRecognizer(swipeGestureRecognizer);
+            AddGestureRecognizer(swipeGestureRecognizer);
         }
 
         protected void SetSwipeGestures()
