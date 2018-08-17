@@ -20,6 +20,8 @@ namespace PanCardView.Droid
         private static Guid? _lastTouchHandlerId;
 
         public static bool IsTouchHandled { get; private set; }
+        public static int SwipeThreshold { get; set; } = 100;
+        public static int SwipeVelocityThreshold { get; set; } = 1200;
 
         private int _gestureId;
         private Guid _elementId;
@@ -169,10 +171,6 @@ namespace PanCardView.Droid
     
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
     {
-		public static int SwipeThreshold { get; set; } = 100;
-
-		public static int SwipeVelocityThreshold { get; set; } = 1200;
-
         private readonly Action<SwipeDirection> _onSwiped;
 
         public CardsGestureListener(Action<SwipeDirection> onSwiped)
@@ -187,16 +185,16 @@ namespace PanCardView.Droid
 			var absDiffY = Abs(diffY);
 
 			if (absDiffX > absDiffY && 
-			    absDiffX > SwipeThreshold &&
-			    Abs(velocityX) > SwipeVelocityThreshold)
+                absDiffX > CardsViewRenderer.SwipeThreshold &&
+                Abs(velocityX) > CardsViewRenderer.SwipeVelocityThreshold)
 			{
                 _onSwiped?.Invoke(diffX < 0 ? SwipeDirection.Left : SwipeDirection.Right);
 				return true; 
 			}
 
             if(absDiffY >= absDiffX &&
-               absDiffY > SwipeThreshold &&
-               Abs(velocityY) > SwipeVelocityThreshold)
+               absDiffY > CardsViewRenderer.SwipeThreshold &&
+               Abs(velocityY) > CardsViewRenderer.SwipeVelocityThreshold)
             {
                 _onSwiped?.Invoke(diffY < 0 ? SwipeDirection.Up : SwipeDirection.Down);
                 return true;
