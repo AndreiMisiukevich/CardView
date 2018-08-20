@@ -120,6 +120,8 @@ https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/Pare
 
 -> If all these tricks didn't help you, you may use **IsPanInteractionEnabled = false** This trick disables pan interaction, but preserve ability to swipe cards.
 
+-> If you get **crashes** during ItemsSource update, try to add/set items in Main Thread (Device.BeginInvokeInMainThread)
+
 Check source code for more info, or 🇧🇾 ***just ask me =)*** 🇧🇾
 
 ## Full documentation
