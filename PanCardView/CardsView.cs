@@ -1333,7 +1333,17 @@ namespace PanCardView
                     }
 
                     ++_viewsChildrenCount;
-                    Children.Insert(0, view);
+                    try
+                    {
+                        Children.Insert(0, view);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Children.Insert(0, view);
+                        });
+                    }
                 }
             }
         }
@@ -1352,12 +1362,23 @@ namespace PanCardView
                     if (Children.Contains(view))
                     {
                         SendChildrenToBackIfNeeded(view, topView);
-                        return;
+                        continue;
                     }
 
                     ++_viewsChildrenCount;
                     var index = Children.IndexOf(topView);
-                    Children.Insert(index, view);
+
+                    try
+                    {
+                        Children.Insert(index, view);
+                    }
+                    catch(InvalidOperationException)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Children.Insert(index, view);
+                        });
+                    }
                 }
             }
         }
