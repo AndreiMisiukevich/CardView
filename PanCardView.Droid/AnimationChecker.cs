@@ -7,9 +7,9 @@ namespace PanCardView.Droid
 {
     public class AnimationChecker : IAnimationsChecker
     {
-        public bool AnimationsAreDisabled()
+        public bool AnimationsAreDisabled
         {
-            return Settings.Global.GetFloat(Application.Context.ContentResolver, Settings.Global.AnimatorDurationScale, 1) <= 0;
+            get => Settings.Global.GetFloat(Application.Context.ContentResolver, Settings.Global.AnimatorDurationScale, 1) <= 0;
         }
     }
 }

@@ -3,6 +3,6 @@ namespace PanCardView.Utility
 {
     public interface IAnimationsChecker
     {
-        bool AnimationsAreDisabled();
+        bool AnimationsAreDisabled { get; }
     }
 }
