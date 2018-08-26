@@ -103,6 +103,8 @@ namespace PanCardView
 
         public static readonly BindableProperty IsPanSwipeEnabledProperty = BindableProperty.Create(nameof(IsPanSwipeEnabled), typeof(bool), typeof(CardsView), true);
 
+        public static readonly BindableProperty AreAnimationsEnabledProperty = BindableProperty.Create(nameof(AreAnimationsEnabled), typeof(bool), typeof(CardsView), true);
+
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
 
         public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 6);
@@ -337,6 +339,12 @@ namespace PanCardView
         {
             get => (bool)GetValue(IsAutoNavigatingAimationEnabledProperty);
             set => SetValue(IsAutoNavigatingAimationEnabledProperty, value);
+        }
+
+        public bool AreAnimationsEnabled
+        {
+            get => (bool)GetValue(AreAnimationsEnabledProperty);
+            set => SetValue(AreAnimationsEnabledProperty, value);
         }
 
         public bool IsPanSwipeEnabled

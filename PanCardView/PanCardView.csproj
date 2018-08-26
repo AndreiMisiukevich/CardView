@@ -64,6 +64,7 @@
     <Compile Include="Behaviors\ContextAssignedBehavior.cs" />
     <Compile Include="Enums\InteractionState.cs" />
     <Compile Include="Enums\SwipeDirection.cs" />
+    <Compile Include="Utility\IAnimationsChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />
