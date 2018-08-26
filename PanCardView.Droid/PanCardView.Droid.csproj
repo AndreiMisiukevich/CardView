@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>PanCardView.Droid</RootNamespace>
     <AssemblyName>PanCardView.Droid</AssemblyName>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
@@ -123,7 +123,7 @@
     <Compile Include="CardsViewRenderer.cs" />
     <Compile Include="IndicatorItemViewRenderer.cs" />
     <Compile Include="ParentScrollViewRenderer.cs" />
-    <Compile Include="AnimationChecker.cs" />
+    <Compile Include="AnimationsChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
