@@ -1384,7 +1384,13 @@ namespace PanCardView
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
-                            Children.Insert(index, view);
+                            try
+                            {
+                                Children.Insert(index, view);
+                            }
+                            catch (InvalidOperationException)
+                            {
+                            }
                         });
                     }
                 }
@@ -1423,7 +1429,24 @@ namespace PanCardView
             _viewsChildrenCount -= views.Length;
             foreach (var view in views)
             {
-                Children.Remove(view);
+                try
+                {
+                    Children.Remove(view);
+                }
+                catch (InvalidOperationException)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        try
+                        {
+                            Children.Remove(view);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                        }
+                    });
+                }
+
                 CleanView(view);
             }
         }
