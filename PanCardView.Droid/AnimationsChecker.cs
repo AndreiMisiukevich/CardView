@@ -2,10 +2,12 @@
 using Android.Provider;
 using Android.App;
 using PanCardView.Droid;
+using Android.Runtime;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AnimationsChecker))]
 namespace PanCardView.Droid
 {
+    [Preserve(AllMembers = true)]
     public class AnimationsChecker : IAnimationsChecker
     {
         public bool AreAnimationsEnabled 

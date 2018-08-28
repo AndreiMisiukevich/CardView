@@ -1,4 +1,5 @@
 ﻿using PanCardView.Enums;
+using PanCardView.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,11 +64,9 @@ namespace PanCardView.Processors
                 return Task.FromResult(false);
             }
 
-            var tcs = new TaskCompletionSource<bool>();
             view.IsVisible = true;
-            new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-                .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (d, b) => tcs.SetResult(true));
-            return tcs.Task;
+            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+                .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }
 
         public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -83,10 +82,8 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var tcs = new TaskCompletionSource<bool>();
-            new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-                .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
-            return tcs.Task;
+            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+                .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
 
         public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -102,10 +99,8 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var tcs = new TaskCompletionSource<bool>();
-            new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-                .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
-            return tcs.Task;
+            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+                .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
     }
 }

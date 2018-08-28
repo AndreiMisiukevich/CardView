@@ -975,7 +975,7 @@ namespace PanCardView
 
         private bool? CheckPanSwipe()
         {
-            if(!IsPanSwipeEnabled)
+            if (!IsPanSwipeEnabled)
             {
                 return null;
             }
@@ -1380,7 +1380,7 @@ namespace PanCardView
                     {
                         Children.Insert(index, view);
                     }
-                    catch(InvalidOperationException)
+                    catch (InvalidOperationException)
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {

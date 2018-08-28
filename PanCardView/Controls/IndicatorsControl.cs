@@ -7,6 +7,7 @@ using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
 using static System.Math;
 using System.Threading.Tasks;
 using System.Threading;
+using PanCardView.Utility;
 
 namespace PanCardView.Controls
 {
@@ -226,7 +227,9 @@ namespace PanCardView.Controls
                 if (IsUserInteractionRunning || IsAutoInteractionRunning)
                 {
                     IsVisible = true;
-                    await this.FadeTo(1, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
+
+                    await new AnimationWrapper(v => Opacity = v, Opacity, 1)
+                        .Commit(this, nameof(ResetVisibility), 16, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
                     return;
                 }
 
@@ -238,7 +241,10 @@ namespace PanCardView.Controls
                 {
                     return;
                 }
-                await this.FadeTo(0, dissappearingTime ?? 330, disappearingEasing ?? Easing.SinOut);
+
+                await new AnimationWrapper(v => Opacity = v, Opacity, 0)
+                    .Commit(this, nameof(ResetVisibility), 16, dissappearingTime ?? 330, disappearingEasing ?? Easing.SinOut);
+
                 if (token.IsCancellationRequested)
                 {
                     return;

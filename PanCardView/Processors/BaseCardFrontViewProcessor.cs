@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using static PanCardView.Processors.Constants;
 using static System.Math;
+using PanCardView.Utility;
 
 namespace PanCardView.Processors
 {
@@ -59,14 +60,12 @@ namespace PanCardView.Processors
                 return Task.FromResult(false);
             }
 
-            var tcs = new TaskCompletionSource<bool>();
             view.IsVisible = true;
-            new Animation(v => view.Scale = v, view.Scale, 1)
-                .Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing, (d, b) => tcs.SetResult(true));
-            return tcs.Task;
+            return new AnimationWrapper(v => view.Scale = v, view.Scale, 1)
+                .Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing);
         }
 
-        public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
+        public virtual async Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
             var view = views.FirstOrDefault();
             var tcs = new TaskCompletionSource<bool>();
@@ -77,22 +76,18 @@ namespace PanCardView.Processors
 
                 if (animLength == 0)
                 {
-                    SetInitialResult(view, tcs);
-                    return tcs.Task;
+                    ResetInitialState(view);
+                    return;
                 }
 
-                new Animation {
-                    { 0, 1, new Animation (v => view.TranslationX = v, view.TranslationX, 0) },
-                    { 0, 1, new Animation (v => view.TranslationY = v, view.TranslationY, 0) },
-                    { 0, 1, new Animation (v => view.Rotation = v, view.Rotation, 0) }
-                }.Commit(view, nameof(HandlePanReset), 16, animLength, ResetEasing, (v, c) => SetInitialResult(view, tcs));
-            }
-            else
-            {
-                SetInitialResult(view, tcs);
+                await new AnimationWrapper {
+                    { 0, 1, new AnimationWrapper (v => view.TranslationX = v, view.TranslationX, 0) },
+                    { 0, 1, new AnimationWrapper (v => view.TranslationY = v, view.TranslationY, 0) },
+                    { 0, 1, new AnimationWrapper (v => view.Rotation = v, view.Rotation, 0) }
+                }.Commit(view, nameof(HandlePanReset), 16, animLength, ResetEasing);
             }
 
-            return tcs.Task;
+            ResetInitialState(view);
         }
 
         public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -120,11 +115,5 @@ namespace PanCardView.Processors
 
         private bool CheckIsInitialPosition(View view)
         => (int)view.TranslationX == 0 && (int)view.TranslationY == 0 && (int)view.Rotation == 0;
-
-        private void SetInitialResult(View view, TaskCompletionSource<bool> tcs)
-        {
-            ResetInitialState(view);
-            tcs.SetResult(true);
-        }
     }
 }

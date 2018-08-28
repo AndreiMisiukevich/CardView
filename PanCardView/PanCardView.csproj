@@ -65,6 +65,7 @@
     <Compile Include="Enums\InteractionState.cs" />
     <Compile Include="Enums\SwipeDirection.cs" />
     <Compile Include="Utility\IAnimationsChecker.cs" />
+    <Compile Include="Utility\AnimationWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Processors\" />

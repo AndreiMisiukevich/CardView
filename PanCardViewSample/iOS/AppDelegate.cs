@@ -1,7 +1,7 @@
-﻿using FFImageLoading.Forms.Touch;
-using Foundation;
+﻿using Foundation;
 using UIKit;
 using PanCardView.iOS;
+using FFImageLoading.Forms.Platform;
 
 namespace PanCardViewSample.iOS
 {

@@ -1,4 +1,5 @@
 ﻿using PanCardView.Enums;
+using PanCardView.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,9 +71,8 @@ namespace PanCardView.Processors
 
             var tcs = new TaskCompletionSource<bool>();
             view.IsVisible = true;
-            new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-                .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing, (d, b) => tcs.SetResult(true));
-            return tcs.Task;
+            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+                .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }
 
         public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -80,13 +80,11 @@ namespace PanCardView.Processors
             var view = views.FirstOrDefault();
             if (view != null)
             {
-                var tcs = new TaskCompletionSource<bool>();
                 var width = GetInitialPosition(cardsView);
                 var animTimePercent = 1 - (width - Abs(view.TranslationX)) / width;
                 var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
-                new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-                    .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
-                return tcs.Task;
+                return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+                    .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
             }
             return Task.FromResult(true);
         }
@@ -96,13 +94,11 @@ namespace PanCardView.Processors
             var view = views.FirstOrDefault();
             if (view != null)
             {
-                var tcs = new TaskCompletionSource<bool>();
                 var width = GetInitialPosition(cardsView);
                 var animTimePercent = 1 - (width - Abs(view.TranslationX)) / width;
                 var animLength = (uint)(AnimationLength * animTimePercent);
-                new Animation(v => view.TranslationX = v, view.TranslationX, 0)
-                    .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing, (v, t) => tcs.SetResult(true));
-                return tcs.Task;
+                return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+                    .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
             }
             return Task.FromResult(true);
         }
