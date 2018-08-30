@@ -1376,23 +1376,7 @@ namespace PanCardView
                     ++_viewsChildrenCount;
                     var index = Children.IndexOf(topView);
 
-                    try
-                    {
-                        Children.Insert(index, view);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            try
-                            {
-                                Children.Insert(index, view);
-                            }
-                            catch (InvalidOperationException)
-                            {
-                            }
-                        });
-                    }
+                    ExecutePreventInvalidOperationException(() => Children.Insert(index, view));
                 }
             }
         }
@@ -1429,25 +1413,30 @@ namespace PanCardView
             _viewsChildrenCount -= views.Length;
             foreach (var view in views)
             {
-                try
-                {
-                    Children.Remove(view);
-                }
-                catch (InvalidOperationException)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        try
-                        {
-                            Children.Remove(view);
-                        }
-                        catch (InvalidOperationException)
-                        {
-                        }
-                    });
-                }
+                ExecutePreventInvalidOperationException(() => Children.Remove(view));
 
                 CleanView(view);
+            }
+        }
+
+        private void ExecutePreventInvalidOperationException(Action action)
+        {
+            try
+            {
+                action?.Invoke();
+            }
+            catch (InvalidOperationException)
+            {
+                Device.BeginInvokeOnMainThread(() => {
+                    try
+                    {
+                        action?.Invoke();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Couldn't handle InvalidOperationException");
+                    }
+                });
             }
         }
 
