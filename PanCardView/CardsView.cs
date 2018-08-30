@@ -1341,17 +1341,8 @@ namespace PanCardView
                     }
 
                     ++_viewsChildrenCount;
-                    try
-                    {
-                        Children.Insert(0, view);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            Children.Insert(0, view);
-                        });
-                    }
+
+                    ExecutePreventInvalidOperationException(() => Children.Insert(0, view));
                 }
             }
         }
