@@ -292,7 +292,7 @@ namespace PanCardViewSample.Controls
 				tabControl._headerContainerGrid.BackgroundColor = (Color)newValue;
 			}
 		}
-		public readonly BindableProperty HeaderBackgroundColorProperty = BindableProperty.Create(nameof(HeaderBackgroundColor), typeof(Color), typeof(TabViewControl), Color.Transparent, BindingMode.Default, null, HeaderBackgroundColorChanged);
+		public static readonly BindableProperty HeaderBackgroundColorProperty = BindableProperty.Create(nameof(HeaderBackgroundColor), typeof(Color), typeof(TabViewControl), Color.Transparent, BindingMode.Default, null, HeaderBackgroundColorChanged);
 		#endregion
 
 		#region BodyBackgroundColor
