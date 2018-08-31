@@ -179,7 +179,7 @@ namespace PanCardView.Droid
         private float GetTotalY(MotionEvent ev) => (ev.GetY() - _startY.GetValueOrDefault()) / Context.Resources.DisplayMetrics.Density;
 
 		private void SetGestureDetector()
-		=> _gestureDetector = new GestureDetector(new CardsGestureListener(OnSwiped));
+		=> _gestureDetector = new GestureDetector(Context, new CardsGestureListener(OnSwiped));
     }
     
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
