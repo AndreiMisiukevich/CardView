@@ -118,7 +118,7 @@ Check these classes (I implemented it for ParentScrollView. You can use it as ex
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/ParentScrollView.cs
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
 
--> If you don't want to handle vertival swipes or they interrupt your scrolling, you can set **VerticalSwipeThresholdDistance = "2000"** This property responds for vertival swipe detecting threshold
+-> If you don't want to handle vertical swipes or they interrupt your scrolling, you can set **VerticalSwipeThresholdDistance = "2000"** This property responds for vertical swipe detecting threshold
 
 -> If all these tricks didn't help you, you may use **IsPanInteractionEnabled = false** This trick disables pan interaction, but preserve ability to swipe cards.
 
