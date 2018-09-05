@@ -74,7 +74,7 @@ namespace PanCardView.iOS
                                         ? SwipeDirection.Up
                                         : SwipeDirection.Down;
 
-            Element.OnSwiped(swipeDirection);
+            Element?.OnSwiped(swipeDirection);
         }
     }
 }
