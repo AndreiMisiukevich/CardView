@@ -10,19 +10,29 @@ namespace PanCardView.Droid
     [Preserve(AllMembers = true)]
     public class AnimationsChecker : IAnimationsChecker
     {
-        public bool AreAnimationsEnabled 
+        public bool AreAnimationsEnabled
         {
             get
             {
+                var resolver = Application.Context.ContentResolver;
                 try
                 {
-                    var resolver = Application.Context.ContentResolver;
                     var scale = Settings.Global.AnimatorDurationScale;
                     return Settings.Global.GetFloat(resolver, scale, 1) > 0;
                 }
                 catch
                 {
-                    return true;
+                    try
+                    {
+#pragma warning disable
+                        var scale = Settings.System.AnimatorDurationScale;
+#pragma warning restore
+                        return Settings.System.GetFloat(resolver, scale, 1) > 0;
+                    }
+                    catch
+                    {
+                        return true;
+                    }
                 }
             }
         }
