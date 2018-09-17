@@ -21,10 +21,10 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CardsSampleView());
 			};
 
-			var toCarouselBtn = new Button { Text = "SceneView" };
-			toCarouselBtn.Clicked += (sender, e) =>
+			var toCoverFlowBtn = new Button { Text = "CoverFlow" };
+            toCoverFlowBtn.Clicked += (sender, e) =>
 			{
-				this.Navigation.PushAsync(new SceneSampleView(Width));
+                this.Navigation.PushAsync(new CoverFlowView(Width));
 			};
 
 			var toCarouselScrollBtn = new Button { Text = "CarouselView scroll" };
@@ -69,7 +69,7 @@ namespace PanCardViewSample
 				{
 					Children = {
 						toCardsBtn,
-						//toCarouselBtn,
+                        toCoverFlowBtn,
 						toCarouselScrollBtn,
 						toCarouselDoubleBtn,
 						toCarouselNoTemplateBtn,
