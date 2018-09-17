@@ -28,10 +28,10 @@ namespace PanCardViewSample.ViewModels
                 new { Source = CreateSource(), Ind = _ImageCount++, Text = days[0] , Color = Color.Red },
                 new { Source = CreateSource(), Ind = _ImageCount++, Text = days[1] , Color = Color.Green },
                 new { Source = CreateSource(), Ind = _ImageCount++, Text = days[2] , Color = Color.Gold },
-                new { Source = CreateSource(), Ind = _ImageCount++, Text = days[3] , Color = Color.Silver },
-                new { Source = CreateSource(), Ind = _ImageCount++, Text = days[4] , Color = Color.Blue },
-                new { Source = CreateSource(), Ind = _ImageCount++, Text = days[5] , Color = Color.Violet },
-                new { Source = CreateSource(), Ind = _ImageCount++, Text = days[6] , Color = Color.SkyBlue }
+                new { Source = string.Empty, Ind = _ImageCount++, Text = days[3] , Color = Color.Silver },
+                new { Source = string.Empty, Ind = _ImageCount++, Text = days[4] , Color = Color.Blue },
+                new { Source = string.Empty, Ind = _ImageCount++, Text = days[5] , Color = Color.Violet },
+                new { Source = string.Empty, Ind = _ImageCount++, Text = days[6] , Color = Color.SkyBlue }
             };
         }
 

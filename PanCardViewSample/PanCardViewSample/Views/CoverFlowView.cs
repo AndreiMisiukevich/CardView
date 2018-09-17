@@ -1,4 +1,5 @@
 ﻿using System;
+using FFImageLoading.Forms;
 using PanCardView;
 using PanCardViewSample.ViewModels;
 using Xamarin.Forms;
@@ -13,11 +14,24 @@ namespace PanCardViewSample.Views
             {
                 ItemTemplate = new DataTemplate(() =>
                 {
-                    var c = new Frame()
+                    var layout = new AbsoluteLayout();
+                    var fLabel = new Frame()
                     {
-                        CornerRadius = 20
+                        CornerRadius = 5,
+                        Padding = 0
                     };
-                    c.SetBinding(BackgroundColorProperty, "Color");
+                    var frame = new Frame()
+                    {
+                        Padding = 0,
+                        HasShadow = false,
+                        CornerRadius = 10,
+                        IsClippedToBounds = true
+                    };
+                    layout.Children.Add(frame, new Rectangle(.5, .5, width / 3, width / 3), AbsoluteLayoutFlags.PositionProportional);
+                    layout.Children.Add(fLabel, new Rectangle(.5, .6, width / 8, width / 12), AbsoluteLayoutFlags.PositionProportional);
+
+                    fLabel.SetBinding(BackgroundColorProperty, "Color");
+                    frame.SetBinding(BackgroundColorProperty, "Color");
                     var label = new Label
                     {
                         TextColor = Color.White,
@@ -29,10 +43,16 @@ namespace PanCardViewSample.Views
                         FontSize = 16
                     };
                     label.SetBinding(Label.TextProperty, "Text");
-                    c.Content = label;
-                    var l = new AbsoluteLayout();
-                    l.Children.Add(c, new Rectangle(.5, .5, width / 4, width / 4), AbsoluteLayoutFlags.PositionProportional);
-                    return l;
+                    fLabel.Content = label;
+
+                    var image = new CachedImage
+                    {
+                        Aspect = Aspect.AspectFill,
+                    };
+                    image.SetBinding(CachedImage.SourceProperty, "Source");
+                    frame.Content = image;
+
+                    return layout;
                 })
             };
 

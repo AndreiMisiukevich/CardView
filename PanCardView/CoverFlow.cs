@@ -172,14 +172,15 @@ namespace PanCardView
 
         public void RecyclerRightToLeft(ContentView v)
         {
+            //use Somthing else than BindingContext for ItemIndex.
             var ItemIndex = (int)v.BindingContext - DisplayedViews.Count;
             if (ItemIndex < 0)
             {
                 ItemIndex += ItemsSource.Count;
             }
 
-            //Debug recycler from Sample ItemTemplate
-            if (v.Content is AbsoluteLayout layout && layout.Children[0] is Frame frame && frame.Content is Label label)
+            //For Debug Part recycler from Sample ItemTemplate
+            if (v.Content is AbsoluteLayout layout && layout.Children[1] is Frame frame && frame.Content is Label label)
             {
                 var type = ItemsSource[ItemIndex].GetType();
                 PropertyInfo numberPropertyInfo = type.GetProperty("Text");
@@ -200,8 +201,8 @@ namespace PanCardView
                 ItemIndex -= ItemsSource.Count;
             }
 
-            //Debug recycler from Sample ItemTemplate
-            if (v.Content is AbsoluteLayout layout && layout.Children[0] is Frame frame && frame.Content is Label label)
+            //For Debug Part recycler from Sample ItemTemplate
+            if (v.Content is AbsoluteLayout layout && layout.Children[1] is Frame frame && frame.Content is Label label)
             {
                 var type = ItemsSource[ItemIndex].GetType();
                 PropertyInfo numberPropertyInfo = type.GetProperty("Text");
@@ -257,7 +258,7 @@ namespace PanCardView
 
                 if (dragX > 0) // Movement --> right
                 {
-                    Console.WriteLine("Move: -->");
+                    //Console.WriteLine("Move: -->");
                     if (translate > MaxGraphicAxis)
                     {
                         translate = translate - (2 * MaxGraphicAxis);
@@ -270,7 +271,7 @@ namespace PanCardView
                 }
                 else if (dragX < 0) // Movement <-- Left
                 {
-                    Console.WriteLine("Move: <--");
+                    //Console.WriteLine("Move: <--");
                     if (translate < -MaxGraphicAxis)
                     {
                         translate = translate + (2 * MaxGraphicAxis);
