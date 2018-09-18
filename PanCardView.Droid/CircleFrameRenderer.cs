@@ -8,19 +8,19 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using XFrameRenderer = Xamarin.Forms.Platform.Android.AppCompat.FrameRenderer;
 
-[assembly: ExportRenderer(typeof(IndicatorItemView), typeof(IndicatorItemViewRenderer))]
+[assembly: ExportRenderer(typeof(CircleFrame), typeof(CircleFrameRenderer))]
 namespace PanCardView.Droid
 {
     [Preserve(AllMembers = true)]
-    public class IndicatorItemViewRenderer : XFrameRenderer
+    public class CircleFrameRenderer : XFrameRenderer
     {
 
         [Obsolete("For Forms <= 2.4")]
-        public IndicatorItemViewRenderer()
+        public CircleFrameRenderer()
         {
         }
 
-        public IndicatorItemViewRenderer(Context context) : base(context)
+        public CircleFrameRenderer(Context context) : base(context)
         {
         }
 

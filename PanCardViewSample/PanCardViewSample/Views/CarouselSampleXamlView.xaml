@@ -16,7 +16,7 @@
 
     <cards:CarouselView 
         ItemsSource="{Binding Items}"
-        SlideShowDuration="3000"
+        SlideShowDuration="3500"
         SelectedIndex="{Binding CurrentIndex}">
         <cards:CarouselView.ItemTemplate>
             <DataTemplate>
@@ -38,8 +38,10 @@
                 </ContentView>
             </DataTemplate>
         </cards:CarouselView.ItemTemplate>
-
+        
         <controls:IndicatorsControl ToFadeDuration="1500"/>
+        <controls:LeftArrowControl ToFadeDuration="2500"/>
+        <controls:RightArrowControl ToFadeDuration="2500"/>
     </cards:CarouselView>
     
 </ContentPage>
