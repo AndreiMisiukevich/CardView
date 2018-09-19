@@ -74,10 +74,13 @@ carouselView.Children.Add(new IndicatorsControl());
         </DataTemplate>
     </cards:CarouselView.ItemTemplate>
 
+    <controls:LeftArrowControl/>
+    <controls:RightArrowControl/>
     <controls:IndicatorsControl/>
 </cards:CarouselView>
 ```
-Also you are able to manage IndicatorsControl appearing/disappearing. For example if user doesn't select new page during N miliseconds, the indicators will disappear. Just set ToFadeDuration = 2000 (2 seconds delay before disappearing)
+Also you are able to manage **IndicatorsControl** appearing/disappearing. For example if user doesn't select new page during N miliseconds, the indicators will disappear. Just set ToFadeDuration = 2000 (2 seconds delay before disappearing)
+Yoy manage **LeftArrowControl** and **RightArrowControl** as well as IndicatorsControl (ToFadeDuration is presented too).
 
 if you want to add items directly through xaml
 
