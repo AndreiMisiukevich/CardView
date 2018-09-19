@@ -176,9 +176,9 @@ namespace PanCardView.Controls
             IsVisible = false;
         }
 
-        private void OnTapped()
+        protected virtual void OnTapped()
         {
-            if(IsUserInteractionRunning || IsAutoInteractionRunning)
+            if (IsUserInteractionRunning)
             {
                 return;
             }
