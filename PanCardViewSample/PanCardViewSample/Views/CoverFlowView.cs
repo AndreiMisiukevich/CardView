@@ -49,8 +49,8 @@ namespace PanCardViewSample.Views
                     {
                         Aspect = Aspect.AspectFill,
                     };
-                    image.SetBinding(CachedImage.SourceProperty, "Source");
-                    frame.Content = image;
+                    //image.SetBinding(CachedImage.SourceProperty, "Source");
+                    //frame.Content = image;
 
                     return layout;
                 })

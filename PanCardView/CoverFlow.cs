@@ -34,6 +34,15 @@ namespace PanCardView
             bindable.AsCoverView().SetupLayout();
         });
 
+        /// <summary>
+        /// The number of displayed views property.
+        /// </summary>
+        public static readonly BindableProperty NumberOfViewsProperty = BindableProperty.Create(nameof(NumberOfViews), typeof(int), typeof(CoverFlow), 3, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsCoverView().GenerateCoverList(bindable);
+            bindable.AsCoverView().SetupLayout();
+        });
+
         public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CoverFlow), false);
 
         /// <summary>
@@ -56,6 +65,16 @@ namespace PanCardView
             set => SetValue(ItemTemplateProperty, value);
         }
 
+        /// <summary>
+        /// Gets or set number of displayed views.
+        /// </summary>
+        /// <value>The number of displayed views.</value>
+        public int NumberOfViews
+        {
+            get => (int)GetValue(NumberOfViewsProperty);
+            set => SetValue(NumberOfViewsProperty, value);
+        }
+
         public bool IsCyclical
         {
             get => (bool)GetValue(IsCyclicalProperty);
@@ -64,18 +83,24 @@ namespace PanCardView
 
         //Just Five For Now.
         List<ContentView> DisplayedViews;
+        //Just One at first.
+        List<ContentView> RecycledViews;
 
         public ICardProcessor ViewProcessor { get; }
         private PanGestureRecognizer _panGesture;
         public int MiddleIndex;
         private double TmpTotalX = 0;
-        private int ItemLeft;
-        private int ItemRight;
+        private int ItemMaxOnAxis;
+        private int ItemMinOnAxis;
+        bool SizeAllocated = false;
         double MaxGraphicAxis = 0;
+        double MarginBorder = 0;
+        double Space = 0;
 
         public CoverFlow()
         {
             DisplayedViews = new List<ContentView>();
+            RecycledViews = new List<ContentView>();
 
             SetPanGesture();
         }
@@ -86,6 +111,7 @@ namespace PanCardView
         {
             if (DisplayedViews.Any())
             {
+                // Centered
                 foreach (var view in DisplayedViews.Where(v => v != null))
                 {
                     SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
@@ -98,22 +124,103 @@ namespace PanCardView
         {
             base.OnSizeAllocated(width, height);
 
-            if (width < 0 || height < 0)
+            if (width < 0 || height < 0 || SizeAllocated)
                 return;
+            SizeAllocated = true;
 
-            MaxGraphicAxis = width; // Set width/2 to see all views
+            MaxGraphicAxis = width / 2; // Set width/2 to see all views
 
             // the larger width * 2
-            var space = MaxGraphicAxis * 2 / DisplayedViews.Count();
+            Space = MaxGraphicAxis * 2 / DisplayedViews.Count();
+            MarginBorder = Space / 2;
             var index = 0;
             foreach (var view in DisplayedViews)
             {
-                var translate = space * index++;
+                var translate = Space * index++;
                 if (translate > MaxGraphicAxis)
                 {
                     translate += -(2 * MaxGraphicAxis);
                 }
                 view.TranslationX = translate;
+            }
+
+            // Positive Views
+            var positiveViews = DisplayedViews.Where(v => v.TranslationX >= 0).OrderBy(v => v.TranslationX);
+            index = 0;
+            ItemMinOnAxis = index;
+            foreach (var v in positiveViews)
+            {
+                v.Content.BindingContext = ItemsSource[index];
+                v.BindingContext = index;
+                IsVisible = true;
+                ++index;
+            }
+            ItemMaxOnAxis = index -1;
+
+            // Negative Views
+            var negativeViews = DisplayedViews.Where(v => v.TranslationX < 0).OrderBy(v => v.TranslationX);
+            if (IsCyclical)
+            {
+                index = ItemsSource.Count - negativeViews.Count();
+                ItemMinOnAxis = index;
+                foreach (var v in negativeViews)
+                {
+                    v.Content.BindingContext = ItemsSource[index];
+                    v.BindingContext = index;
+                    ++index;
+                }
+            }
+            else // put negative View in Recycler View
+            {
+                foreach (var v in negativeViews)
+                {
+                    Children.Remove(v);
+                    DisplayedViews.Remove(v);
+                    RecycledViews.Add(v);
+                }
+            }
+        }
+
+        public void GenerateCoverList(object bindable)
+        {
+            if (bindable is CoverFlow CoverFlow && CoverFlow.ItemTemplate is DataTemplate itemTemplate && CoverFlow.ItemsSource is IList itemsSource)
+            {
+                //DataTemplate!...
+                var indexItem = 0;
+                var half = NumberOfViews / 2;
+                for (int i = 0; i < NumberOfViews; ++i)
+                {
+                    if (indexItem == half + 1) // for setting Backed Items
+                    {
+                        indexItem = ItemsSource.Count - half;
+                    }
+
+                    // Use Something else for ItemIndex (Item Left & Item Right)
+                    var newView = new ContentView()
+                    {
+                        HorizontalOptions = LayoutOptions.Fill,
+                        VerticalOptions = LayoutOptions.Fill,
+                        BindingContext = -1,
+                        IsVisible = true,
+                        Content = GenerateView(null),
+                    };
+                    DisplayedViews.Add(newView);
+                    this.Children.Add(newView);
+                    indexItem++;
+                }
+
+                var firstRecycledView = new ContentView()
+                {
+                    BindingContext = -1,
+                    Content = GenerateView(null),
+                };
+                var secondRecycledView = new ContentView()
+                {
+                    BindingContext = -1,
+                    Content = GenerateView(null),
+                };
+                RecycledViews.Add(firstRecycledView);
+                RecycledViews.Add(secondRecycledView);
             }
         }
 
@@ -138,82 +245,92 @@ namespace PanCardView
             return view;
         }
 
-        public void GenerateCoverList(object bindable)
-        {
-            if (bindable is CoverFlow CoverFlow && CoverFlow.ItemTemplate is DataTemplate itemTemplate && CoverFlow.ItemsSource is IList itemsSource)
-            {
-                //DataTemplate!...
-                var indexItem = 0;
-                for (int i = 0; i < 5; ++i)
-                {
-                    if (indexItem == 3) // for setting Backed Items
-                    {
-                        indexItem = ItemsSource.Count - 2;
-                    }
-
-                    // Use Something else for ItemIndex (Item Left & Item Right)
-                    var newView = new ContentView()
-                    {
-                        BindingContext = indexItem,
-                        Content = GenerateView(ItemsSource[indexItem])
-                    };
-                    DisplayedViews.Add(newView);
-                    this.Children.Add(newView);
-                    indexItem++;
-                }
-            }
-        }
-
         public int GetMiddleIndex()
         {
-            var CloseToMiddle = DisplayedViews.OrderBy(v => Math.Abs((v.TranslationX)));
+            var CloseToMiddle = DisplayedViews.Where(v => v.IsVisible == true).OrderBy(v => Math.Abs((v.TranslationX)));
             return DisplayedViews.IndexOf(CloseToMiddle.First());
+        }
+
+        public int VerifyIndex(int index)
+        {
+            if (IsCyclical)
+            {
+                if (index < 0)
+                    index += ItemsSource.Count;
+                else if (index >= ItemsSource.Count)
+                    index -= ItemsSource.Count;
+            }
+            else
+                if (index >= ItemsSource.Count)
+                index = -1;
+            else if (index < 0)
+                index = -1;
+            return index;
         }
 
         public void RecyclerRightToLeft(ContentView v)
         {
             //use Somthing else than BindingContext for ItemIndex.
-            var ItemIndex = (int)v.BindingContext - DisplayedViews.Count;
-            if (ItemIndex < 0)
-            {
-                ItemIndex += ItemsSource.Count;
-            }
+            var ItemIndex = VerifyIndex(ItemMinOnAxis - 1);
+            ItemMaxOnAxis = VerifyIndex(ItemMaxOnAxis - 1);
 
-            //For Debug Part recycler from Sample ItemTemplate
-            if (v.Content is AbsoluteLayout layout && layout.Children[1] is Frame frame && frame.Content is Label label)
+            if (ItemIndex != ItemMinOnAxis)
             {
-                var type = ItemsSource[ItemIndex].GetType();
-                PropertyInfo numberPropertyInfo = type.GetProperty("Text");
-                string value = (string)numberPropertyInfo.GetValue(ItemsSource[ItemIndex], null);
-                Console.WriteLine($"{label.Text} wants to become {value}");
+                //For Debug Part recycler from Sample ItemTemplate
+                if (v.Content is AbsoluteLayout layout && layout.Children[1] is Frame frame && frame.Content is Label label )
+                {
+                    var type = ItemsSource[ItemIndex].GetType();
+                    PropertyInfo numberPropertyInfo = type.GetProperty("Text");
+                    string value = (string)numberPropertyInfo.GetValue(ItemsSource[ItemIndex], null);
+                    Console.WriteLine($"{label.Text} wants to become {value}");
+                }
+                v.Content.BindingContext = ItemsSource[ItemIndex];
+                v.BindingContext = ItemIndex;
+                ItemMinOnAxis = ItemIndex;
             }
-
-            v.Content.BindingContext = ItemsSource[ItemIndex];
-            v.BindingContext = ItemIndex;
+            else
+            {
+                v.Content.BindingContext = null;
+                v.BindingContext = -1;
+            }
         }
 
         public void RecyclerLeftToRight(ContentView v)
         {
+            /*
             //use Somthing else than BindingContext for ItemIndex.
             var ItemIndex = (int)v.BindingContext + DisplayedViews.Count;
             if (ItemIndex >= ItemsSource.Count)
             {
                 ItemIndex -= ItemsSource.Count;
             }
+            */
 
-            //For Debug Part recycler from Sample ItemTemplate
-            if (v.Content is AbsoluteLayout layout && layout.Children[1] is Frame frame && frame.Content is Label label)
+            //use Somthing else than BindingContext for ItemIndex.
+            var ItemIndex = VerifyIndex(ItemMaxOnAxis + 1);
+            ItemMinOnAxis = VerifyIndex(ItemMinOnAxis + 1);
+
+            if (ItemIndex != ItemMaxOnAxis)
             {
-                var type = ItemsSource[ItemIndex].GetType();
-                PropertyInfo numberPropertyInfo = type.GetProperty("Text");
-                string value = (string)numberPropertyInfo.GetValue(ItemsSource[ItemIndex], null);
-                Console.WriteLine($"{label.Text} wants to become {value}");
+                //For Debug Part recycler from Sample ItemTemplate
+                if (v.Content is AbsoluteLayout layout && layout.Children[1] is Frame frame && frame.Content is Label label)
+                {
+                    var type = ItemsSource[ItemIndex].GetType();
+                    PropertyInfo numberPropertyInfo = type.GetProperty("Text");
+                    string value = (string)numberPropertyInfo.GetValue(ItemsSource[ItemIndex], null);
+                    Console.WriteLine($"{label.Text} wants to become {value}");
+                }
+
+                v.Content.BindingContext = ItemsSource[ItemIndex];
+                v.BindingContext = ItemIndex;
+                ItemMaxOnAxis = ItemIndex;
             }
-
-            v.Content.BindingContext = ItemsSource[ItemIndex];
-            v.BindingContext = ItemIndex;
+            else
+            {
+                v.Content.BindingContext = null;
+                v.BindingContext = -1;
+            }
         }
-
 
         void SetPanGesture()
         {
@@ -252,43 +369,99 @@ namespace PanCardView
 
         private void OnDragging(double dragX)
         {
-            foreach (var v in DisplayedViews)
+            if (dragX > 0) // Movement --> right
             {
-                var translate = v.TranslationX + dragX;
-
-                if (dragX > 0) // Movement --> right
+                foreach (var v in DisplayedViews)
                 {
-                    //Console.WriteLine("Move: -->");
-                    if (translate > MaxGraphicAxis)
+                    var translate = v.TranslationX + dragX;
+                    if (v.TranslationX > 0 && translate > MaxGraphicAxis + MarginBorder && DisplayedViews.Count() > 1) // verify the second condition
                     {
-                        translate = translate - (2 * MaxGraphicAxis);
+                        //RecyclerRightToLeft(v);
+                        ItemMaxOnAxis = VerifyIndex(ItemMaxOnAxis - 1);
+                        RecycledViews.Add(v);
+                        v.IsVisible = false;
                     }
-                    if (v.TranslationX > 0 && translate < 0)
+                    v.TranslationX = translate;
+                }
+                if (DisplayedViews.Any())
+                {
+                    var MinViewonAxis = DisplayedViews.Min(v => v.TranslationX);
+                    if (Math.Abs(MinViewonAxis + MaxGraphicAxis) > MarginBorder)
                     {
+                        var index = VerifyIndex(ItemMinOnAxis - 1);
+                        if (RecycledViews.Any() && index != -1)
+                        {
+                            var view = RecycledViews[0];
+                            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
+                            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+                            view.TranslationX = MinViewonAxis - Space;
 
-                        RecyclerRightToLeft(v);
+                            ItemMinOnAxis = index;
+                            view.BindingContext = index;
+                            view.Content.BindingContext = ItemsSource[index];
+
+                            DisplayedViews.Add(view);
+                            Children.Add(view);
+                            RecycledViews.Remove(view);
+                            view.IsVisible = true;
+                        }
                     }
                 }
-                else if (dragX < 0) // Movement <-- Left
+            }
+            else if (dragX < 0) // Movement <-- Left
+            {
+                foreach (var v in DisplayedViews)
                 {
-                    //Console.WriteLine("Move: <--");
-                    if (translate < -MaxGraphicAxis)
+                    var translate = v.TranslationX + dragX;
+                    if (v.TranslationX < 0 && translate < -MaxGraphicAxis - MarginBorder && DisplayedViews.Count() > 1) // verify the second condition
                     {
-                        translate = translate + (2 * MaxGraphicAxis);
+                        //RecyclerLeftToRight(v);
+                        ItemMinOnAxis = VerifyIndex(ItemMinOnAxis + 1);
+                        RecycledViews.Add(v);
+                        v.IsVisible = false;
                     }
-                    if (v.TranslationX < 0 && translate > 0)
+                    v.TranslationX = translate;
+                }
+                if (DisplayedViews.Any())
+                {
+                    var MaxViewonAxis = DisplayedViews.Max(v => v.TranslationX);
+                    if (Math.Abs(MaxViewonAxis - MaxGraphicAxis) > MarginBorder)
                     {
-                        RecyclerLeftToRight(v);
+                        var index = VerifyIndex(ItemMaxOnAxis + 1);
+                        if (RecycledViews.Any() && index != -1)
+                        {
+                            var view = RecycledViews[0];
+                            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
+                            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+                            view.TranslationX = MaxViewonAxis + Space;
+
+                            ItemMaxOnAxis = index;
+                            view.BindingContext = index;
+                            view.Content.BindingContext = ItemsSource[index];
+
+                            DisplayedViews.Add(view);
+                            Children.Add(view);
+                            RecycledViews.Remove(view);
+                            view.IsVisible = true;
+                        }
                     }
                 }
+            }
 
-                v.TranslationX = translate;
+            // remove Undisplayed View
+            foreach (var v in RecycledViews)
+            {
+                if (DisplayedViews.Contains(v))
+                {
+                    DisplayedViews.Remove(v);
+                    Children.Remove(v);
+                }
             }
         }
 
         private void OnDragEnd()
         {
-            CenterView();
+            //CenterView();
         }
 
 
@@ -311,7 +484,7 @@ namespace PanCardView
                 if (dragX > 0) // Movement --> right
                 {
                     //Console.WriteLine("Move: -->");
-                    if (translate > MaxGraphicAxis)
+                    if (translate > MaxGraphicAxis + MarginBorder)
                     {
                         translate = translate - (2 * MaxGraphicAxis);
                     }
@@ -328,7 +501,7 @@ namespace PanCardView
                 else if (dragX < 0) // Movement <-- Left
                 {
                     //Console.WriteLine("Move: <--");
-                    if (translate < -MaxGraphicAxis)
+                    if (translate < -MaxGraphicAxis - MarginBorder)
                     {
                         translate = translate + (2 * MaxGraphicAxis);
                     }
