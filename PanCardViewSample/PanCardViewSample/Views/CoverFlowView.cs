@@ -14,7 +14,10 @@ namespace PanCardViewSample.Views
             {
                 ItemTemplate = new DataTemplate(() =>
                 {
-                    var layout = new AbsoluteLayout();
+                    var layout = new AbsoluteLayout()
+                    {
+                        WidthRequest = width / 3,
+                    };
                     var fLabel = new Frame()
                     {
                         CornerRadius = 5,
