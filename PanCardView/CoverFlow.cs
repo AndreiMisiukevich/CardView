@@ -11,6 +11,7 @@ using PanCardView.Extensions;
 using PanCardView.Processors;
 using PanCardView.Enums;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace PanCardView
 {
@@ -105,19 +106,36 @@ namespace PanCardView
         List<View> DisplayedViews;
         // Just Two at first. but one for each template at the end.
         List<View> RecycledViews;
+        // Processor
+        BaseCoverFlowProcessor ViewProcessor { get; }
 
-        public ICardProcessor ViewProcessor { get; }
-        private PanGestureRecognizer _panGesture;
+        public double MaxGraphicAxis = 0;
+        public double Space = 0;
+        public double MarginBorder = 0;
+
+        public int ItemMaxOnAxis;
+        public int ItemMinOnAxis;
         public int MiddleIndex;
+        private PanGestureRecognizer _panGesture;
         private double TmpTotalX = 0;
-        private int ItemMaxOnAxis;
-        private int ItemMinOnAxis;
-        bool SizeAllocated = false;
-        double MaxGraphicAxis = 0;
-        double MarginBorder = 0;
-        double Space = 0;
+        bool _isViewsInited = false;
+        bool AnimationRunning;
+        double xtest = 0;
+
+        public CoverFlow(BaseCoverFlowProcessor baseCoverFlowProcessor)
+        {
+            this.ViewProcessor = baseCoverFlowProcessor;
+            this.ViewProcessor.CoverFlow = this;
+            _constructor();
+        }
 
         public CoverFlow()
+        {
+            this.ViewProcessor = new BaseCoverFlowProcessor(this);
+            _constructor();
+        }
+
+        void _constructor()
         {
             this.IsClippedToBounds = true;
             DisplayedViews = new List<View>();
@@ -130,7 +148,6 @@ namespace PanCardView
         {
             if (DisplayedViews.Any())
             {
-                // Centered
                 foreach (var view in DisplayedViews.Where(v => v != null))
                 {
                     SetupBoundsView(view);
@@ -148,25 +165,15 @@ namespace PanCardView
         {
             base.OnSizeAllocated(width, height);
 
-            if (width < 0 || height < 0 || SizeAllocated && DisplayedViews.Any())
+            if (width < 0 || height < 0 || _isViewsInited && DisplayedViews.Any())
                 return;
-            SizeAllocated = true;
 
             Space = Width / NumberOfViews;
             MaxGraphicAxis = width / 2 + Space / 2;
             MarginBorder = Space / 2;
-            var index = 0;
-            foreach (var view in DisplayedViews)
-            {
-                var translate = Space * index++;
-                if (translate > MaxGraphicAxis)
-                {
-                    translate += -(2 * MaxGraphicAxis);
-                }
-                view.TranslationX = translate;
-            }
-
+            ViewProcessor.HandleInitViews(DisplayedViews);
             BindingItemsToViews();
+            _isViewsInited = true;
         }
 
         public void BindingItemsToViews()
@@ -182,7 +189,6 @@ namespace PanCardView
 
         public void BindingPositiveViews(IEnumerable<View> positiveViews)
         {
-            // Positive Views
             var index = 0;
             ItemMinOnAxis = index;
             foreach (var v in positiveViews)
@@ -206,7 +212,7 @@ namespace PanCardView
                     ++index;
                 }
             }
-            else // put negative View in Recycler View
+            else // put negative View in RecycleViews
             {
                 foreach (var v in negativeViews)
                 {
@@ -221,18 +227,12 @@ namespace PanCardView
         {
             if (bindable is CoverFlow CoverFlow && CoverFlow.ItemTemplate is DataTemplate itemTemplate && CoverFlow.ItemsSource is IList itemsSource)
             {
-                //DataTemplate Selector?!...
+                //DataTemplate Selector?!... Need refacto
                 for (int i = 0; i < NumberOfViews + 1; ++i) // +2 if Paire?
                 {
-                    var newView =  GenerateView(null);
+                    var newView = GenerateView(null);
                     DisplayedViews.Add(newView);
                     this.Children.Add(newView);
-                }
-
-                for (int i = 0; i < 2; ++i)
-                {
-                    var recycleView = GenerateView(null);
-                    RecycledViews.Add(recycleView);
                 }
 
                 SetupLayout();
@@ -292,6 +292,7 @@ namespace PanCardView
 
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
+            xtest = Math.Max(xtest, Math.Abs(TmpTotalX));
             if (ItemsSource.Count > 0)
             {
                 switch (e.StatusType)
@@ -306,7 +307,7 @@ namespace PanCardView
                         return;
                     case GestureStatus.Canceled:
                     case GestureStatus.Completed:
-                        OnDragEnd();
+                        OnDragEndAsync(TmpTotalX);
                         return;
                 }
             }
@@ -320,82 +321,33 @@ namespace PanCardView
 
         private void OnDragging(double dragX)
         {
-            if (dragX > 0) // Movement --> right
+            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
+            if (DisplayedViews.Any())
             {
-                foreach (var v in DisplayedViews)
-                {
-                    var translate = v.TranslationX + dragX;
-                    if (v.TranslationX > 0 && translate > MaxGraphicAxis + MarginBorder && DisplayedViews.Count() > 1) // verify the second condition
-                    {
-                        //RecyclerRightToLeft(v);
-                        ItemMaxOnAxis = VerifyIndex(ItemMaxOnAxis - 1);
-                        RecycledViews.Add(v);
-                        v.IsVisible = false;
-                    }
-                    v.TranslationX = translate;
-                }
-                if (DisplayedViews.Any())
-                {
-                    var MinViewonAxis = DisplayedViews.Min(v => v.TranslationX);
-                    if (Math.Abs(MinViewonAxis + MaxGraphicAxis) > MarginBorder)
-                    {
-                        var index = VerifyIndex(ItemMinOnAxis - 1);
-                        if (RecycledViews.Any() && index != -1)
-                        {
-                            var view = RecycledViews[0];
-                            SetupBoundsView(view);
-                            view.TranslationX = MinViewonAxis - Space;
+                ViewProcessor.HandlePanChanged(DisplayedViews, dragX, direction, RecycledViews);
 
-                            ItemMinOnAxis = index;
-                            view.BindingContext = ItemsSource[index];
+                //Remove unseen views that have been added to recycled List
+                RemoveUnDisplayedViews();
 
-                            DisplayedViews.Add(view);
-                            Children.Add(view);
-                            RecycledViews.Remove(view);
-                            view.IsVisible = true;
-                        }
-                    }
-                }
+                //Recycler View to Display new Item
+                RecyclerView(direction);
             }
-            else if (dragX < 0) // Movement <-- Left
-            {
-                foreach (var v in DisplayedViews)
-                {
-                    var translate = v.TranslationX + dragX;
-                    if (v.TranslationX < 0 && translate < -MaxGraphicAxis - MarginBorder && DisplayedViews.Count() > 1) // verify the second condition
-                    {
-                        //RecyclerLeftToRight(v);
-                        ItemMinOnAxis = VerifyIndex(ItemMinOnAxis + 1);
-                        RecycledViews.Add(v);
-                        v.IsVisible = false;
-                    }
-                    v.TranslationX = translate;
-                }
-                if (DisplayedViews.Any())
-                {
-                    var MaxViewonAxis = DisplayedViews.Max(v => v.TranslationX);
-                    if (Math.Abs(MaxViewonAxis - MaxGraphicAxis) > MarginBorder)
-                    {
-                        var index = VerifyIndex(ItemMaxOnAxis + 1);
-                        if (RecycledViews.Any() && index != -1)
-                        {
-                            var view = RecycledViews[0];
-                            SetupBoundsView(view);
-                            view.TranslationX = MaxViewonAxis + Space;
+        }
 
-                            ItemMaxOnAxis = index;
-                            view.BindingContext = ItemsSource[index];
+        private async Task OnDragEndAsync(double dragX)
+        {
+            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
 
-                            DisplayedViews.Add(view);
-                            Children.Add(view);
-                            RecycledViews.Remove(view);
-                            view.IsVisible = true;
-                        }
-                    }
-                }
-            }
+            //ViewProcessor.HandlePanApply(DisplayedViews, dragX, direction, RecycledViews);
 
-            // remove Undisplayed View
+            /*
+            List<Task> tasks = new List<Task>();
+            await Task.WhenAll(tasks);
+            */
+        }
+
+        public void RemoveUnDisplayedViews()
+        {
             foreach (var v in RecycledViews)
             {
                 if (DisplayedViews.Contains(v))
@@ -406,65 +358,52 @@ namespace PanCardView
             }
         }
 
-        private void OnDragEnd()
+        public View RecyclerView(AnimationDirection direction)
         {
-            //CenterView();
-        }
-
-
-        // Passing from -x to x is not animated correctly
-        // Also Got an issue when animation is not fisnish when we start a new drag gesture,
-        // the ContentView is recycled for a side, but still on the other.
-        public void CenterView()
-        {
-            MiddleIndex = GetMiddleIndex();
-            var dragX = -DisplayedViews[MiddleIndex].TranslationX;
-            int index = 0;
-
-            Animation a = new Animation();
-            foreach (var v in DisplayedViews)
+            var index = -1;
+            var translate = 0.0;
+            View view = null;
+            if (direction == AnimationDirection.Prev)
             {
-                var translate = v.TranslationX + dragX;
-                var tmpTranslate = v.TranslationX + dragX;
-
-
-                if (dragX > 0) // Movement --> right
+                var MinViewonAxis = DisplayedViews.Min(v => v.TranslationX);
+                if (Math.Abs(MinViewonAxis + MaxGraphicAxis) > MarginBorder)
                 {
-                    //Console.WriteLine("Move: -->");
-                    if (translate > MaxGraphicAxis + MarginBorder)
-                    {
-                        translate = translate - (2 * MaxGraphicAxis);
-                    }
-                    if (v.TranslationX > 0 && translate < 0)
-                    {
-
-                        //RecyclerRightToLeft(v);
-                        a.Add(0, 0.5, new Animation(f => v.TranslationX = f, v.TranslationX, MaxGraphicAxis, Easing.Linear, null));
-                        a.Add(0.4, 0.8, new Animation(f => v.TranslationX = f, -MaxGraphicAxis, translate, Easing.SinOut, null));
-                    }
-                    else
-                        a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.SinOut, null));
+                    index = VerifyIndex(ItemMinOnAxis - 1);
+                    ItemMinOnAxis = (index != -1) ? index : ItemMinOnAxis;
+                    translate = MinViewonAxis + (int)direction * Space;
                 }
-                else if (dragX < 0) // Movement <-- Left
-                {
-                    //Console.WriteLine("Move: <--");
-                    if (translate < -MaxGraphicAxis - MarginBorder)
-                    {
-                        translate = translate + (2 * MaxGraphicAxis);
-                    }
-                    if (v.TranslationX < 0 && translate > 0)
-                    {
-                        //RecyclerLeftToRight(v);
-                        a.Add(0, 0.5, new Animation(f => v.TranslationX = f, v.TranslationX, -MaxGraphicAxis, Easing.Linear, null));
-                        a.Add(0.4, 0.8, new Animation(f => v.TranslationX = f, MaxGraphicAxis, translate, Easing.SinOut, null));
-                    }
-                    else
-                        a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.SinOut, null));
-                }
-
-                index++;
             }
-            a.Commit(this, "SimpleAnimation", 60, 400);
+            else if (direction == AnimationDirection.Next)
+            {
+                var MaxViewonAxis = DisplayedViews.Max(v => v.TranslationX);
+                if (Math.Abs(MaxViewonAxis - MaxGraphicAxis) > MarginBorder)
+                {
+                    index = VerifyIndex(ItemMaxOnAxis + 1);
+                    ItemMaxOnAxis = (index != -1) ? index : ItemMaxOnAxis;
+                    translate = MaxViewonAxis + (int)direction * Space;
+                }
+            }
+            if (index != -1)
+            {
+                if (RecycledViews.Any()) //Check for Template will be Here !!!!!!!
+                {
+                    view = RecycledViews[0]; // Use OldOne !!!
+                    view.BindingContext = ItemsSource[index];
+                    RecycledViews.Remove(view);
+                }
+                else
+                {
+                    view = GenerateView(ItemsSource[index]); //create new One !!!!
+                    SetupBoundsView(view);
+                }
+                view.TranslationX = translate;
+
+                DisplayedViews.Add(view);
+                Children.Add(view);
+
+                view.IsVisible = true;
+            }
+            return view;
         }
     }
 }
