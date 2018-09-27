@@ -37,10 +37,15 @@ namespace PanCardView
         /// <summary>
         /// The number of displayed views property.
         /// </summary>
-        public static readonly BindableProperty NumberOfViewsProperty = BindableProperty.Create(nameof(NumberOfViews), typeof(int), typeof(CoverFlow), 3, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty NumberOfCenteredViewsProperty = BindableProperty.Create(nameof(NumberOfCenteredViews), typeof(int), typeof(CoverFlow), 3, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsCoverView().GenerateCoverList(bindable);
         });
+
+        /// <summary>
+        /// The Spacing between items property.
+        /// </summary>
+        public static readonly BindableProperty SpacingProperty = BindableProperty.Create(nameof(Spacing), typeof(double), typeof(CoverFlow), 20.0);
 
         /// <summary>
         /// The Cyclical property.
@@ -76,10 +81,20 @@ namespace PanCardView
         /// Gets or set number of displayed views.
         /// </summary>
         /// <value>The number of displayed views.</value>
-        public int NumberOfViews
+        public int NumberOfCenteredViews
         {
-            get => (int)GetValue(NumberOfViewsProperty);
-            set => SetValue(NumberOfViewsProperty, value);
+            get => (int)GetValue(NumberOfCenteredViewsProperty);
+            set => SetValue(NumberOfCenteredViewsProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or set the space between Items.
+        /// </summary>
+        /// <value>The Spacing value.</value>
+        public double Spacing
+        {
+            get => (double)GetValue(SpacingProperty);
+            set => SetValue(SpacingProperty, value);
         }
 
         /// <summary>
@@ -102,10 +117,11 @@ namespace PanCardView
             set => SetValue(FirstItemPositionProperty, value);
         }
 
-        // Like this.Children
-        List<View> DisplayedViews;
-        // Just Two at first. but one for each template at the end.
+        IAbsoluteList<View> DisplayedViews => this.Children;
+
+        // Just a Unique Template. but will be available for each template at the end.
         List<View> RecycledViews;
+
         // Processor
         BaseCoverFlowProcessor ViewProcessor { get; }
 
@@ -119,8 +135,6 @@ namespace PanCardView
         private PanGestureRecognizer _panGesture;
         private double TmpTotalX = 0;
         bool _isViewsInited = false;
-        bool AnimationRunning;
-        double xtest = 0;
 
         public CoverFlow(BaseCoverFlowProcessor baseCoverFlowProcessor)
         {
@@ -138,13 +152,12 @@ namespace PanCardView
         void _constructor()
         {
             this.IsClippedToBounds = true;
-            DisplayedViews = new List<View>();
             RecycledViews = new List<View>();
 
             SetPanGesture();
         }
 
-        private void SetupLayout()
+        void SetupLayout()
         {
             if (DisplayedViews.Any())
             {
@@ -155,7 +168,7 @@ namespace PanCardView
             }
         }
 
-        private void SetupBoundsView(View view)
+        void SetupBoundsView(View view)
         {
             SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
@@ -168,8 +181,8 @@ namespace PanCardView
             if (width < 0 || height < 0 || _isViewsInited && DisplayedViews.Any())
                 return;
 
-            Space = Width / NumberOfViews;
-            MaxGraphicAxis = width / 2 + Space / 2;
+            Space = (Width / NumberOfCenteredViews) + Spacing;
+            MaxGraphicAxis = (width + Space) / 2;
             MarginBorder = Space / 2;
             ViewProcessor.HandleInitViews(DisplayedViews);
             BindingItemsToViews();
@@ -193,7 +206,7 @@ namespace PanCardView
             ItemMinOnAxis = index;
             foreach (var v in positiveViews)
             {
-                v.BindingContext = ItemsSource[index];
+                v.BindingContext = ItemsSource[VerifyIndex(index)];
                 IsVisible = true;
                 ++index;
             }
@@ -208,7 +221,7 @@ namespace PanCardView
                 ItemMinOnAxis = index;
                 foreach (var v in negativeViews)
                 {
-                    v.BindingContext = ItemsSource[index];
+                    v.BindingContext = ItemsSource[VerifyIndex(index)];
                     ++index;
                 }
             }
@@ -216,7 +229,6 @@ namespace PanCardView
             {
                 foreach (var v in negativeViews)
                 {
-                    Children.Remove(v);
                     DisplayedViews.Remove(v);
                     RecycledViews.Add(v);
                 }
@@ -228,11 +240,11 @@ namespace PanCardView
             if (bindable is CoverFlow CoverFlow && CoverFlow.ItemTemplate is DataTemplate itemTemplate && CoverFlow.ItemsSource is IList itemsSource)
             {
                 //DataTemplate Selector?!... Need refacto
-                for (int i = 0; i < NumberOfViews + 1; ++i) // +2 if Paire?
+                //And Binding
+                for (int i = 0; i < NumberOfCenteredViews; ++i)
                 {
                     var newView = GenerateView(null);
                     DisplayedViews.Add(newView);
-                    this.Children.Add(newView);
                 }
 
                 SetupLayout();
@@ -242,9 +254,11 @@ namespace PanCardView
         public View GenerateView(object context)
         {
             var template = ItemTemplate;
-            while (template is DataTemplateSelector selector)
+            if (template is DataTemplateSelector selector)
             {
-                template = selector.SelectTemplate(context, this);
+                Console.WriteLine("DataTemplateSelector is not supported");
+                throw new NotImplementedException("DataTemplateSelector is not supported");
+                //template = selector.SelectTemplate(context, this);
             }
 
             var view = template != null
@@ -292,7 +306,6 @@ namespace PanCardView
 
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            xtest = Math.Max(xtest, Math.Abs(TmpTotalX));
             if (ItemsSource.Count > 0)
             {
                 switch (e.StatusType)
@@ -338,6 +351,9 @@ namespace PanCardView
         {
             var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
 
+            //Uncomment this line
+            //                |
+            //                ▼
             //ViewProcessor.HandlePanApply(DisplayedViews, dragX, direction, RecycledViews);
 
             /*
@@ -353,7 +369,6 @@ namespace PanCardView
                 if (DisplayedViews.Contains(v))
                 {
                     DisplayedViews.Remove(v);
-                    Children.Remove(v);
                 }
             }
         }
@@ -399,7 +414,6 @@ namespace PanCardView
                 view.TranslationX = translate;
 
                 DisplayedViews.Add(view);
-                Children.Add(view);
 
                 view.IsVisible = true;
             }

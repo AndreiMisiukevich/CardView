@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PanCardView.Enums;
 using PanCardView.Utility;
 using Xamarin.Forms;
+using static Xamarin.Forms.AbsoluteLayout;
 
 namespace PanCardView.Processors
 {
@@ -25,17 +26,19 @@ namespace PanCardView.Processors
         {
         }
 
-        public void HandleInitViews(List<View> displayedViews)
+        public void HandleInitViews(IAbsoluteList<View> displayedViews)
         {
-            var index = 0;
+            var PreviousItemtranslation = 0.0;
+            var translate = 0.0;
             foreach (var view in displayedViews)
             {
-                var translate = CoverFlow.Space * index++;
                 if (translate > CoverFlow.MaxGraphicAxis)
                 {
-                    translate += -(2 * CoverFlow.MaxGraphicAxis);
+                    translate = -PreviousItemtranslation;
                 }
                 view.TranslationX = translate;
+                PreviousItemtranslation = translate;
+                translate = translate + CoverFlow.Space;
             }
         }
 
@@ -44,7 +47,7 @@ namespace PanCardView.Processors
             throw new NotImplementedException();
         }
 
-        public void HandlePanApply(List<View> displayedViews, double dragX, AnimationDirection direction, List<View> recycledViews)
+        public void HandlePanApply(IAbsoluteList<View> displayedViews, double dragX, AnimationDirection direction, List<View> recycledViews)
         {
             var maxTranslate = CoverFlow.MaxGraphicAxis + CoverFlow.MarginBorder;
 
@@ -66,10 +69,14 @@ namespace PanCardView.Processors
                         v.IsVisible = false;
                         recycledViews.Add(v);
 
-                        /*Unworking code here
+                        /* Unworking code here but have to be done
+                        // Remove Views from displayed List
                         CoverFlow.RemoveUnDisplayedViews();
 
+                        // RecyclerView
                         var recycledView = CoverFlow.RecyclerView(direction);
+
+                        // Add animation at runtime
                         a.Add((diff / dragX), 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.Linear, null));
                         */
                     }));
@@ -80,7 +87,7 @@ namespace PanCardView.Processors
             a.Commit(CoverFlow, "SimpleAnimation", 60, 800, Easing.Linear, finished: (d,b) => CoverFlow.RemoveUnDisplayedViews());
         }
 
-        public void HandlePanChanged(List<View> displayedViews, double dragX, AnimationDirection direction, List<View> recycledViews)
+        public void HandlePanChanged(IAbsoluteList<View> displayedViews, double dragX, AnimationDirection direction, List<View> recycledViews)
         {
             var maxTranslate = CoverFlow.MaxGraphicAxis + CoverFlow.MarginBorder;
             foreach (var v in displayedViews)
