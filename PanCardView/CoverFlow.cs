@@ -329,6 +329,7 @@ namespace PanCardView
 
         private void OnDragStarted()
         {
+            this.AbortAnimation("CenterViews");
             TmpTotalX = 0;
         }
 
@@ -349,6 +350,8 @@ namespace PanCardView
 
         private async Task OnDragEndAsync(double dragX)
         {
+            CenterViews();
+
             var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
 
             //Uncomment this line
@@ -418,6 +421,36 @@ namespace PanCardView
                 view.IsVisible = true;
             }
             return view;
+        }
+
+        public void CenterViews()
+        {
+            MiddleIndex = GetMiddleIndex();
+            var dragX = -DisplayedViews[MiddleIndex].TranslationX;
+            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
+
+            Animation a = new Animation();
+
+            var maxTranslate = MaxGraphicAxis + MarginBorder;
+            foreach (var v in DisplayedViews)
+            {
+                var translate = v.TranslationX + dragX;
+                if (Math.Abs(translate) > maxTranslate
+                    && DisplayedViews.Count() > 1)
+                {
+                    if (direction == AnimationDirection.Prev) // Movement --> right
+                        ItemMaxOnAxis = VerifyIndex(ItemMaxOnAxis - 1);
+                    else if (direction == AnimationDirection.Next)  // Movement <-- Left
+                        ItemMinOnAxis = VerifyIndex(ItemMinOnAxis + 1);
+                    RecycledViews.Add(v);
+                    v.IsVisible = false;
+                }
+                else
+                {
+                    a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.SinOut, null));
+                }
+            }
+            a.Commit(this, "CenterViews", 60, 400);
         }
     }
 }
