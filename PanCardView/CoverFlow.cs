@@ -232,6 +232,28 @@ namespace PanCardView
             }
         }
 
+        /*
+         * For Debug Only
+         * 
+         * Use this OnSizeAllocated to see the logic on Horizontal Orientation
+         * After inition on Vertical Orientation.
+         * 
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+
+            if (width < 0 || height < 0 || IsViewsInited && DisplayedViews.Any())
+                return;
+
+            Space = (Width / NumberOfViews) + Spacing;
+            MaxGraphicAxis = (width + Space) / 2;
+            MarginBorder = Space / 2;
+            ViewProcessor.HandleInitViews(DisplayedViews, ViewPosition);
+            BindingItemsToViews();
+            IsViewsInited = true;
+        }
+        */
+
         public void OnOrientationChanged(double w, double h)
         {
             var coefWidth = w / width;
