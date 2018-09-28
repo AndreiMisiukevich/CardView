@@ -31,6 +31,7 @@ namespace PanCardView.Processors
             var PreviousItemtranslation = 0.0;
             var translate = (CoverFlow.Width/2 - CoverFlow.MarginBorder) * (int)viewPosition;
             var count = displayedViews.Count();
+
             foreach (var view in displayedViews)
             {
                 if (translate > CoverFlow.Width / 2)

@@ -77,7 +77,7 @@ namespace PanCardViewSample.Views
             {
                 ItemTemplate = itemTemplate,
                 ViewPosition = Position.Left,
-                FirstItemPosition = Position.Center,
+                FirstItemPosition = Position.Left,
                 Spacing = 20,
                 IsCyclical = true
             };

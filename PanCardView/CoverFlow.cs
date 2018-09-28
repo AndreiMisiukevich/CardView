@@ -151,12 +151,16 @@ namespace PanCardView
         public double Space = 0;
         public double MarginBorder = 0;
 
+                private bool _isPortraitOrientation;
         public int ItemMaxOnAxis;
         public int ItemMinOnAxis;
         public int MiddleIndex;
         private PanGestureRecognizer _panGesture;
+        private double width = -1;
+        private double height = -1;
         private double TmpTotalX = 0;
-        bool _isViewsInited = false;
+        bool _isOrientationChanged = false;
+        public bool IsViewsInited = false;
 
         public CoverFlow(BaseCoverFlowProcessor baseCoverFlowProcessor)
         {
@@ -196,19 +200,46 @@ namespace PanCardView
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
         }
 
-        protected override void OnSizeAllocated(double width, double height)
+        protected override void OnSizeAllocated(double w, double h)
         {
             base.OnSizeAllocated(width, height);
 
-            if (width < 0 || height < 0 || _isViewsInited && DisplayedViews.Any())
+            if (Math.Abs(width - w) > 0.1 || Math.Abs(height - h) > 0.1)
+            {
+                _isOrientationChanged = true;
+            }
+
+            if (w < 0 || h < 0 || !DisplayedViews.Any())
                 return;
 
-            Space = (Width / NumberOfViews) + Spacing;
-            MaxGraphicAxis = (width + Space) / 2;
-            MarginBorder = Space / 2;
-            ViewProcessor.HandleInitViews(DisplayedViews, ViewPosition);
-            BindingItemsToViews();
-            _isViewsInited = true;
+            if (_isOrientationChanged)
+            {
+                Space = (Width / NumberOfViews) + Spacing;
+                MaxGraphicAxis = (width + Space) / 2;
+                MarginBorder = Space / 2;
+                OnOrientationChanged(w, h);
+                _isOrientationChanged = false;
+            }
+
+            this.width = w;
+            this.height = h;
+
+            if (!IsViewsInited)
+            {
+                ViewProcessor.HandleInitViews(DisplayedViews, ViewPosition);
+                BindingItemsToViews();
+                IsViewsInited = true;
+            }
+        }
+
+        public void OnOrientationChanged(double w, double h)
+        {
+            var coefWidth = w / width;
+            var coefHeight = h / height;
+            foreach (var v in DisplayedViews)
+            {
+                v.TranslationX *= coefWidth;
+            }
         }
 
         public void BindingItemsToViews()
