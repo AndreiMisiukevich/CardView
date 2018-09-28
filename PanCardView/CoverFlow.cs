@@ -300,6 +300,13 @@ namespace PanCardView
             return DisplayedViews.IndexOf(CloseToMiddle.First());
         }
 
+        public int GetIndexCloseToPos(Position viewPosition)
+        {
+            var position = (Width / 2 - MarginBorder) * (int)viewPosition;
+            var CloseToPositionView = DisplayedViews.Where(v => v.IsVisible == true).OrderBy(v => Math.Abs((v.TranslationX - position)));
+            return DisplayedViews.IndexOf(CloseToPositionView.First());
+        }
+
         public int VerifyIndex(int index)
         {
             if (IsCyclical)
@@ -370,7 +377,24 @@ namespace PanCardView
 
         private void OnDragEnd()
         {
-            CenterViews();
+            var position = ViewPosition;
+            if (!IsCyclical && ViewPosition != Position.Center && TmpTotalX < 0 && ItemMaxOnAxis == ItemsSource.Count - 1)
+                position = Position.Right;
+            if (!IsCyclical && ViewPosition != Position.Center && TmpTotalX > 0 && ItemMinOnAxis == 0)
+                position = Position.Left;
+
+            double border = (Width / 2 - MarginBorder) * (int)position;
+            int indexCloseToPos = GetIndexCloseToPos(position);
+            var dragX = border - DisplayedViews[indexCloseToPos].TranslationX;
+
+            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
+
+            //Forced Recycler View to Display Item before animation running <-- Need refacto without forcing
+            for (var i = Math.Abs(dragX) / Space; i > 1; --i)
+                RecyclerView(direction, true);
+
+            ViewProcessor.HandlePanApply(DisplayedViews, dragX, position, RecycledViews);
+
         }
 
         public void RemoveUnDisplayedViews()
@@ -429,36 +453,6 @@ namespace PanCardView
                 view.IsVisible = true;
             }
             return view;
-        }
-
-        public void CenterViews()
-        {
-            var MiddleIndex = GetMiddleIndex();
-            var dragX = -DisplayedViews[MiddleIndex].TranslationX;
-            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
-
-            Animation a = new Animation();
-
-            var maxTranslate = MaxGraphicAxis + MarginBorder;
-            foreach (var v in DisplayedViews)
-            {
-                var translate = v.TranslationX + dragX;
-                if (Math.Abs(translate) > maxTranslate
-                    && DisplayedViews.Count() > 1)
-                {
-                    if (direction == AnimationDirection.Prev) // Movement --> right
-                        ItemMaxOnAxis = VerifyIndex(ItemMaxOnAxis - 1);
-                    else if (direction == AnimationDirection.Next)  // Movement <-- Left
-                        ItemMinOnAxis = VerifyIndex(ItemMinOnAxis + 1);
-                    RecycledViews.Add(v);
-                    v.IsVisible = false;
-                }
-                else
-                {
-                    a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.SinOut, null));
-                }
-            }
-            a.Commit(this, "CenterViews", 60, 400);
         }
     }
 }

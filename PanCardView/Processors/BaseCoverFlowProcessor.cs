@@ -26,16 +26,19 @@ namespace PanCardView.Processors
         {
         }
 
-        public void HandleInitViews(IAbsoluteList<View> displayedViews)
+        public void HandleInitViews(IAbsoluteList<View> displayedViews, Position viewPosition)
         {
             var PreviousItemtranslation = 0.0;
-            var translate = 0.0;
+            var translate = (CoverFlow.Width/2 - CoverFlow.MarginBorder) * (int)viewPosition;
+            var count = displayedViews.Count();
             foreach (var view in displayedViews)
             {
-                if (translate > CoverFlow.MaxGraphicAxis)
+                if (translate > CoverFlow.Width / 2)
                 {
-                    translate = -PreviousItemtranslation;
+                    var position = (count + displayedViews.IndexOf(view) - 1) * CoverFlow.Space;
+                    translate = PreviousItemtranslation - position;
                 }
+                --count;
                 view.TranslationX = translate;
                 PreviousItemtranslation = translate;
                 translate = translate + CoverFlow.Space;
@@ -47,21 +50,26 @@ namespace PanCardView.Processors
             throw new NotImplementedException();
         }
 
-        public void HandlePanApply(IAbsoluteList<View> displayedViews, double dragX, AnimationDirection direction, List<View> recycledViews)
+        /*
+         * HandlePanApply doesn't managed Recycled Views
+         * Seems to work but not correctly
+         */
+        public void HandlePanApply(IAbsoluteList<View> displayedViews, double dragX, Position position, List<View> recycledViews)
         {
-            var maxTranslate = CoverFlow.MaxGraphicAxis + CoverFlow.MarginBorder;
-
             Animation a = new Animation();
 
+            var maxTranslate = CoverFlow.MaxGraphicAxis + CoverFlow.MarginBorder;
             foreach (var v in displayedViews)
             {
                 var translate = v.TranslationX + dragX;
-                if (Math.Abs(translate) > maxTranslate)
+                if (Math.Abs(translate) > maxTranslate
+                    && displayedViews.Count() > 1)
                 {
                     var diff = Math.Abs(translate) - maxTranslate;
-                    var coef = 1 - (diff / Math.Abs(dragX));
-                    a.Add(0, coef, new Animation(f => v.TranslationX = f, v.TranslationX, -(int)direction * maxTranslate, Easing.Linear, () => 
+                    var coef = 1 - diff / Math.Abs(dragX);
+                    a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.SinOut, () =>
                     {
+                        /* Unworking code here but have to be done
                         if (direction == AnimationDirection.Prev) // Movement --> right
                             CoverFlow.ItemMaxOnAxis = CoverFlow.VerifyIndex(CoverFlow.ItemMaxOnAxis - 1);
                         else if (direction == AnimationDirection.Next)  // Movement <-- Left
@@ -69,7 +77,7 @@ namespace PanCardView.Processors
                         v.IsVisible = false;
                         recycledViews.Add(v);
 
-                        /* Unworking code here but have to be done
+
                         // Remove Views from displayed List
                         CoverFlow.RemoveUnDisplayedViews();
 
@@ -82,9 +90,14 @@ namespace PanCardView.Processors
                     }));
                 }
                 else
-                    a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.Linear, null));
+                {
+                    a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.SinOut, null));
+                }
             }
-            a.Commit(CoverFlow, "SimpleAnimation", 60, 800, Easing.Linear, finished: (d,b) => CoverFlow.RemoveUnDisplayedViews());
+            a.Commit(CoverFlow, "CenterViews", 60, 400, Easing.Linear, (double arg1, bool arg2) =>
+            {
+                // Console.WriteLine("Test");
+            });
         }
 
         public void HandlePanChanged(IAbsoluteList<View> displayedViews, double dragX, AnimationDirection direction, List<View> recycledViews)
