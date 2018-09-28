@@ -53,6 +53,7 @@ namespace PanCardView.Processors
         /*
          * HandlePanApply doesn't managed Recycled Views
          * Seems to work but not correctly
+         * 
          */
         public void HandlePanApply(IAbsoluteList<View> displayedViews, double dragX, Position position, List<View> recycledViews)
         {

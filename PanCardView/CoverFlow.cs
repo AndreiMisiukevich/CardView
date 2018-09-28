@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace PanCardView
 {
-    [Obsolete("NOT FINISHED YET! IT WILL BE AVAILABLE IN NEXT RELEASES!")]
+    [Obsolete("NOT FINISHED YET! Any Property could be different in the futur !")]
     public class CoverFlow : AbsoluteLayout
     {
         /// <summary>
@@ -122,7 +122,7 @@ namespace PanCardView
         /// <summary>
         /// Gets or set the first item position.
         /// </summary>
-        /// <value>The first item position.</value>
+        /// <value>The first item position useful when is Cyclical.</value>
         public Position FirstItemPosition
         {
             get => (Position)GetValue(FirstItemPositionProperty);
@@ -375,6 +375,14 @@ namespace PanCardView
             }
         }
 
+        /* OnDragEnd is not well developped
+         * 
+         * The Idea would be at runtime(during animation)
+         * To add old View to recycledList when they are far away(Math.Abs(translate) > maxTranslate)
+         * And recycler a view and display it at the other side.
+         * And give at this new display view the end of the animatiom(just the end :))
+         * 
+         */
         private void OnDragEnd()
         {
             var position = ViewPosition;
@@ -393,6 +401,7 @@ namespace PanCardView
             for (var i = Math.Abs(dragX) / Space; i > 1; --i)
                 RecyclerView(direction, true);
 
+            //The animation need refacto Too
             ViewProcessor.HandlePanApply(DisplayedViews, dragX, position, RecycledViews);
 
         }
