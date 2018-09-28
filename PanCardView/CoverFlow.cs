@@ -37,15 +37,20 @@ namespace PanCardView
         /// <summary>
         /// The number of displayed views property.
         /// </summary>
-        public static readonly BindableProperty NumberOfCenteredViewsProperty = BindableProperty.Create(nameof(NumberOfCenteredViews), typeof(int), typeof(CoverFlow), 3, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty NumberOfViewsProperty = BindableProperty.Create(nameof(NumberOfViews), typeof(int), typeof(CoverFlow), 3, propertyChanged: (bindable, oldValue, newValue) =>
         {
+            if ((double)newValue <= 0)
+            {
+                Console.WriteLine("Automation Number Of Views is not supported yet");
+                throw new NotImplementedException("Automation Number Of Views is not supported yet");
+            }
             bindable.AsCoverView().GenerateCoverList(bindable);
         });
 
         /// <summary>
         /// The Spacing between items property.
         /// </summary>
-        public static readonly BindableProperty SpacingProperty = BindableProperty.Create(nameof(Spacing), typeof(double), typeof(CoverFlow), 20.0);
+        public static readonly BindableProperty SpacingProperty = BindableProperty.Create(nameof(Spacing), typeof(double), typeof(CoverFlow), 0.0);
 
         /// <summary>
         /// The Cyclical property.
@@ -53,9 +58,16 @@ namespace PanCardView
         public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CoverFlow), true);
 
         /// <summary>
-        /// The Cyclical property.
+        /// The First Item position property.
         /// </summary>
-        public static readonly BindableProperty FirstItemPositionProperty = BindableProperty.Create(nameof(FirstItemPosition), typeof(ItemPosition), typeof(CoverFlow), ItemPosition.Left);
+        public static readonly BindableProperty FirstItemPositionProperty = BindableProperty.Create(nameof(FirstItemPosition), typeof(Position), typeof(CoverFlow), Position.Left);
+
+
+        /// <summary>
+        /// The view position property.
+        /// </summary>
+        public static readonly BindableProperty ViewPositionProperty = BindableProperty.Create(nameof(ViewPosition), typeof(Position), typeof(CoverFlow), Position.Center);
+
 
         /// <summary>
         /// Gets or set the cover list items source.
@@ -81,10 +93,10 @@ namespace PanCardView
         /// Gets or set number of displayed views.
         /// </summary>
         /// <value>The number of displayed views.</value>
-        public int NumberOfCenteredViews
+        public int NumberOfViews
         {
-            get => (int)GetValue(NumberOfCenteredViewsProperty);
-            set => SetValue(NumberOfCenteredViewsProperty, value);
+            get => (int)GetValue(NumberOfViewsProperty);
+            set => SetValue(NumberOfViewsProperty, value);
         }
 
         /// <summary>
@@ -111,10 +123,20 @@ namespace PanCardView
         /// Gets or set the first item position.
         /// </summary>
         /// <value>The first item position.</value>
-        public ItemPosition FirstItemPosition
+        public Position FirstItemPosition
         {
-            get => (ItemPosition)GetValue(FirstItemPositionProperty);
+            get => (Position)GetValue(FirstItemPositionProperty);
             set => SetValue(FirstItemPositionProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or set the view position.
+        /// </summary>
+        /// <value>The first view position.</value>
+        public Position ViewPosition
+        {
+            get => (Position)GetValue(ViewPositionProperty);
+            set => SetValue(ViewPositionProperty, value);
         }
 
         IAbsoluteList<View> DisplayedViews => this.Children;
@@ -181,10 +203,10 @@ namespace PanCardView
             if (width < 0 || height < 0 || _isViewsInited && DisplayedViews.Any())
                 return;
 
-            Space = (Width / NumberOfCenteredViews) + Spacing;
+            Space = (Width / NumberOfViews) + Spacing;
             MaxGraphicAxis = (width + Space) / 2;
             MarginBorder = Space / 2;
-            ViewProcessor.HandleInitViews(DisplayedViews);
+            ViewProcessor.HandleInitViews(DisplayedViews, ViewPosition);
             BindingItemsToViews();
             _isViewsInited = true;
         }
@@ -192,11 +214,11 @@ namespace PanCardView
         public void BindingItemsToViews()
         {
             // Positive Views
-            var positiveViews = DisplayedViews.Where(v => v.TranslationX >= (int)FirstItemPosition * Width / 2 - MarginBorder).OrderBy(v => v.TranslationX);
+            var positiveViews = DisplayedViews.Where(v => v.TranslationX >= (int)FirstItemPosition * (Width / 2 - MarginBorder)).OrderBy(v => v.TranslationX);
             BindingPositiveViews(positiveViews);
 
             // Negative Views
-            var negativeViews = DisplayedViews.Where(v => v.TranslationX < (int)FirstItemPosition * Width / 2 - MarginBorder).OrderBy(v => v.TranslationX);
+            var negativeViews = DisplayedViews.Where(v => v.TranslationX < (int)FirstItemPosition * (Width / 2 - MarginBorder)).OrderBy(v => v.TranslationX);
             BindingNegativeViews(negativeViews);
         }
 
@@ -221,17 +243,15 @@ namespace PanCardView
                 ItemMinOnAxis = index;
                 foreach (var v in negativeViews)
                 {
+                    v.IsVisible = true;
                     v.BindingContext = ItemsSource[VerifyIndex(index)];
                     ++index;
                 }
             }
-            else // put negative View in RecycleViews
+            else
             {
                 foreach (var v in negativeViews)
-                {
-                    DisplayedViews.Remove(v);
-                    RecycledViews.Add(v);
-                }
+                    v.IsVisible = false;
             }
         }
 
@@ -241,7 +261,7 @@ namespace PanCardView
             {
                 //DataTemplate Selector?!... Need refacto
                 //And Binding
-                for (int i = 0; i < NumberOfCenteredViews; ++i)
+                for (int i = 0; i < NumberOfViews; ++i)
                 {
                     var newView = GenerateView(null);
                     DisplayedViews.Add(newView);
@@ -256,8 +276,8 @@ namespace PanCardView
             var template = ItemTemplate;
             if (template is DataTemplateSelector selector)
             {
-                Console.WriteLine("DataTemplateSelector is not supported");
-                throw new NotImplementedException("DataTemplateSelector is not supported");
+                Console.WriteLine("DataTemplateSelector is not supported yet");
+                throw new NotImplementedException("DataTemplateSelector is not supported yet");
                 //template = selector.SelectTemplate(context, this);
             }
 
@@ -320,7 +340,7 @@ namespace PanCardView
                         return;
                     case GestureStatus.Canceled:
                     case GestureStatus.Completed:
-                        OnDragEndAsync(TmpTotalX);
+                        OnDragEnd();
                         return;
                 }
             }
@@ -348,21 +368,9 @@ namespace PanCardView
             }
         }
 
-        private async Task OnDragEndAsync(double dragX)
+        private void OnDragEnd()
         {
             CenterViews();
-
-            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
-
-            //Uncomment this line
-            //                |
-            //                ▼
-            //ViewProcessor.HandlePanApply(DisplayedViews, dragX, direction, RecycledViews);
-
-            /*
-            List<Task> tasks = new List<Task>();
-            await Task.WhenAll(tasks);
-            */
         }
 
         public void RemoveUnDisplayedViews()
@@ -376,7 +384,7 @@ namespace PanCardView
             }
         }
 
-        public View RecyclerView(AnimationDirection direction)
+        public View RecyclerView(AnimationDirection direction, bool force = false)
         {
             var index = -1;
             var translate = 0.0;
@@ -384,7 +392,7 @@ namespace PanCardView
             if (direction == AnimationDirection.Prev)
             {
                 var MinViewonAxis = DisplayedViews.Min(v => v.TranslationX);
-                if (Math.Abs(MinViewonAxis + MaxGraphicAxis) > MarginBorder)
+                if (Math.Abs(MinViewonAxis + MaxGraphicAxis) > MarginBorder || force)
                 {
                     index = VerifyIndex(ItemMinOnAxis - 1);
                     ItemMinOnAxis = (index != -1) ? index : ItemMinOnAxis;
@@ -394,7 +402,7 @@ namespace PanCardView
             else if (direction == AnimationDirection.Next)
             {
                 var MaxViewonAxis = DisplayedViews.Max(v => v.TranslationX);
-                if (Math.Abs(MaxViewonAxis - MaxGraphicAxis) > MarginBorder)
+                if (Math.Abs(MaxViewonAxis - MaxGraphicAxis) > MarginBorder || force)
                 {
                     index = VerifyIndex(ItemMaxOnAxis + 1);
                     ItemMaxOnAxis = (index != -1) ? index : ItemMaxOnAxis;
@@ -403,9 +411,9 @@ namespace PanCardView
             }
             if (index != -1)
             {
-                if (RecycledViews.Any()) //Check for Template will be Here !!!!!!!
+                if (RecycledViews.Any()) //Check for Type Template will be Here !
                 {
-                    view = RecycledViews[0]; // Use OldOne !!!
+                    view = RecycledViews[0]; // Recycle old one !!!
                     view.BindingContext = ItemsSource[index];
                     RecycledViews.Remove(view);
                 }
@@ -425,7 +433,7 @@ namespace PanCardView
 
         public void CenterViews()
         {
-            MiddleIndex = GetMiddleIndex();
+            var MiddleIndex = GetMiddleIndex();
             var dragX = -DisplayedViews[MiddleIndex].TranslationX;
             var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
 
