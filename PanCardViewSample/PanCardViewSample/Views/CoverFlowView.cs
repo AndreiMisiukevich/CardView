@@ -88,13 +88,31 @@ namespace PanCardViewSample.Views
 
             BackgroundColor = Color.Black;
             Title = "CoverFlowView";
-            var stack = new StackLayout();
 
+            var scrollView = new ScrollView()
+            {
+                Orientation = ScrollOrientation.Vertical,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+            };
+            var stack = new StackLayout
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                Spacing = 5,
+            };
+
+
+            stack.Children.Add(new Label() {Text = "Simple List positionned on Left", TextColor = Color.White });
             stack.Children.Add(coverFlowLeft);
+            stack.Children.Add(new Label() { Text = "Circular List positionned on Center", TextColor = Color.White });
             stack.Children.Add(coverFlowCentered);
+            stack.Children.Add(new Label() { Text = "Cicular List positionned on Left", TextColor = Color.White});
             stack.Children.Add(coverFlowRight);
 
-            Content = stack;
+            scrollView.Content = stack;
+
+            Content = scrollView;
             BindingContext = new CoverFlowViewModel();
         }
     }

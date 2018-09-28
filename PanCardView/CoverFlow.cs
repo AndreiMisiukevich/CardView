@@ -200,6 +200,7 @@ namespace PanCardView
             SetLayoutFlags(view, AbsoluteLayoutFlags.All);
         }
 
+
         protected override void OnSizeAllocated(double w, double h)
         {
             base.OnSizeAllocated(width, height);
@@ -215,7 +216,7 @@ namespace PanCardView
             if (_isOrientationChanged)
             {
                 Space = (Width / NumberOfViews) + Spacing;
-                MaxGraphicAxis = (width + Space) / 2;
+                MaxGraphicAxis = (Width + Space) / 2;
                 MarginBorder = Space / 2;
                 OnOrientationChanged(w, h);
                 _isOrientationChanged = false;
