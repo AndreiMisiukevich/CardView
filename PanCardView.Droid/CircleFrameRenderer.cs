@@ -7,6 +7,7 @@ using PanCardView.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using XFrameRenderer = Xamarin.Forms.Platform.Android.AppCompat.FrameRenderer;
+using static PanCardView.Controls.CircleFrame;
 
 [assembly: ExportRenderer(typeof(CircleFrame), typeof(CircleFrameRenderer))]
 namespace PanCardView.Droid
@@ -28,7 +29,7 @@ namespace PanCardView.Droid
         {
             base.Draw(canvas);
 
-            if (Element == null || Element.OutlineColor.A <= 0)
+            if (!FixFrameForOldFormsVersions || Element == null || Element.OutlineColor.A <= 0)
             {
                 return;
             }

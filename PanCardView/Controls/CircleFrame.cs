@@ -10,6 +10,8 @@ namespace PanCardView.Controls
             bindable.AsCircleFrame().OnSizeUpdated();
         });
 
+        public static bool FixFrameForOldFormsVersions { get; set; }
+
         public CircleFrame()
         {
             HasShadow = false;
