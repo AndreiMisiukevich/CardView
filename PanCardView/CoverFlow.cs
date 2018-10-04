@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using PanCardView.Controls;
 using PanCardView.Extensions;
 using PanCardView.Processors;
 using PanCardView.Enums;
 using Xamarin.Forms;
-using System.Threading.Tasks;
 
 namespace PanCardView
 {
-    [Obsolete("NOT FINISHED YET! Any Property could be different in the futur !")]
     public class CoverFlow : AbsoluteLayout
     {
         /// <summary>
@@ -151,7 +144,7 @@ namespace PanCardView
         public double Space = 0;
         public double MarginBorder = 0;
 
-                private bool _isPortraitOrientation;
+        private bool _isPortraitOrientation;
         public int ItemMaxOnAxis;
         public int ItemMinOnAxis;
         public int MiddleIndex;
