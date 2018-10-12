@@ -9,57 +9,57 @@ using Xamarin.Forms;
 
 namespace PanCardView
 {
-    public class CoverFlow : AbsoluteLayout
+    public class CoverFlowView : AbsoluteLayout
     {
         /// <summary>
         /// CoverFlow items source property.
         /// </summary>
-        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(CoverFlow), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(CoverFlowView), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCoverView().GenerateCoverList(bindable);
+            bindable.AsCoverFlowView().GenerateCoverList(bindable);
         });
 
         /// <summary>
         /// The item template property.
         /// </summary>
-        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CoverFlow), propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CoverFlowView), propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCoverView().GenerateCoverList(bindable);
+            bindable.AsCoverFlowView().GenerateCoverList(bindable);
         });
 
         /// <summary>
         /// The number of displayed views property.
         /// </summary>
-        public static readonly BindableProperty NumberOfViewsProperty = BindableProperty.Create(nameof(NumberOfViews), typeof(int), typeof(CoverFlow), 3, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty NumberOfViewsProperty = BindableProperty.Create(nameof(NumberOfViews), typeof(int), typeof(CoverFlowView), 3, propertyChanged: (bindable, oldValue, newValue) =>
         {
             if ((double)newValue <= 0)
             {
                 Console.WriteLine("Automation Number Of Views is not supported yet");
                 throw new NotImplementedException("Automation Number Of Views is not supported yet");
             }
-            bindable.AsCoverView().GenerateCoverList(bindable);
+            bindable.AsCoverFlowView().GenerateCoverList(bindable);
         });
 
         /// <summary>
         /// The Spacing between items property.
         /// </summary>
-        public static readonly BindableProperty SpacingProperty = BindableProperty.Create(nameof(Spacing), typeof(double), typeof(CoverFlow), 0.0);
+        public static readonly BindableProperty SpacingProperty = BindableProperty.Create(nameof(Spacing), typeof(double), typeof(CoverFlowView), 0.0);
 
         /// <summary>
         /// The Cyclical property.
         /// </summary>
-        public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CoverFlow), true);
+        public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CoverFlowView), true);
 
         /// <summary>
         /// The First Item position property.
         /// </summary>
-        public static readonly BindableProperty FirstItemPositionProperty = BindableProperty.Create(nameof(FirstItemPosition), typeof(Position), typeof(CoverFlow), Position.Left);
+        public static readonly BindableProperty FirstItemPositionProperty = BindableProperty.Create(nameof(FirstItemPosition), typeof(CoverItemPosition), typeof(CoverFlowView), CoverItemPosition.Left);
 
 
         /// <summary>
         /// The view position property.
         /// </summary>
-        public static readonly BindableProperty ViewPositionProperty = BindableProperty.Create(nameof(ViewPosition), typeof(Position), typeof(CoverFlow), Position.Center);
+        public static readonly BindableProperty ViewPositionProperty = BindableProperty.Create(nameof(ViewPosition), typeof(CoverItemPosition), typeof(CoverFlowView), CoverItemPosition.Center);
 
 
         /// <summary>
@@ -116,9 +116,9 @@ namespace PanCardView
         /// Gets or set the first item position.
         /// </summary>
         /// <value>The first item position useful when is Cyclical.</value>
-        public Position FirstItemPosition
+        public CoverItemPosition FirstItemPosition
         {
-            get => (Position)GetValue(FirstItemPositionProperty);
+            get => (CoverItemPosition)GetValue(FirstItemPositionProperty);
             set => SetValue(FirstItemPositionProperty, value);
         }
 
@@ -126,104 +126,46 @@ namespace PanCardView
         /// Gets or set the view position.
         /// </summary>
         /// <value>The first view position.</value>
-        public Position ViewPosition
+        public CoverItemPosition ViewPosition
         {
-            get => (Position)GetValue(ViewPositionProperty);
+            get => (CoverItemPosition)GetValue(ViewPositionProperty);
             set => SetValue(ViewPositionProperty, value);
         }
 
-        IAbsoluteList<View> DisplayedViews => this.Children;
+        private IAbsoluteList<View> DisplayedViews => this.Children;
 
         // Just a Unique Template. but will be available for each template at the end.
-        List<View> RecycledViews;
+        private readonly List<View> RecycledViews;
 
         // Processor
-        BaseCoverFlowProcessor ViewProcessor { get; }
+        private BaseCoverFlowProcessor ViewProcessor { get; }
 
-        public double MaxGraphicAxis = 0;
-        public double Space = 0;
-        public double MarginBorder = 0;
+        public double MaxGraphicAxis { get; set; }
+        public double Space { get; set; }
+        public double MarginBorder { get; set; }
+        public int ItemMaxOnAxis { get; set; }
+        public int ItemMinOnAxis { get; set; }
+        public int MiddleIndex { get; set; }
 
-        private bool _isPortraitOrientation;
-        public int ItemMaxOnAxis;
-        public int ItemMinOnAxis;
-        public int MiddleIndex;
         private PanGestureRecognizer _panGesture;
         private double width = -1;
         private double height = -1;
-        private double TmpTotalX = 0;
-        bool _isOrientationChanged = false;
-        public bool IsViewsInited = false;
+        private double _tmpTotalX;
+        private bool _isOrientationChanged;
+        public bool _isViewsInited;
 
-        public CoverFlow(BaseCoverFlowProcessor baseCoverFlowProcessor)
+        public CoverFlowView(BaseCoverFlowProcessor baseCoverFlowProcessor)
         {
-            this.ViewProcessor = baseCoverFlowProcessor;
-            this.ViewProcessor.CoverFlow = this;
-            _constructor();
-        }
-
-        public CoverFlow()
-        {
-            this.ViewProcessor = new BaseCoverFlowProcessor(this);
-            _constructor();
-        }
-
-        void _constructor()
-        {
-            this.IsClippedToBounds = true;
+            ViewProcessor = baseCoverFlowProcessor;
+            ViewProcessor.CoverFlow = this;
             RecycledViews = new List<View>();
-
             SetPanGesture();
+
+            IsClippedToBounds = true;
         }
 
-        void SetupLayout()
+        public CoverFlowView() : this(new BaseCoverFlowProcessor())
         {
-            if (DisplayedViews.Any())
-            {
-                foreach (var view in DisplayedViews.Where(v => v != null))
-                {
-                    SetupBoundsView(view);
-                }
-            }
-        }
-
-        void SetupBoundsView(View view)
-        {
-            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
-            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
-        }
-
-
-        protected override void OnSizeAllocated(double w, double h)
-        {
-            base.OnSizeAllocated(width, height);
-
-            if (Math.Abs(width - w) > 0.1 || Math.Abs(height - h) > 0.1)
-            {
-                _isOrientationChanged = true;
-            }
-
-            if (w < 0 || h < 0 || !DisplayedViews.Any())
-                return;
-
-            if (_isOrientationChanged)
-            {
-                Space = (Width / NumberOfViews) + Spacing;
-                MaxGraphicAxis = (Width + Space) / 2;
-                MarginBorder = Space / 2;
-                OnOrientationChanged(w, h);
-                _isOrientationChanged = false;
-            }
-
-            this.width = w;
-            this.height = h;
-
-            if (!IsViewsInited)
-            {
-                ViewProcessor.HandleInitViews(DisplayedViews, ViewPosition);
-                BindingItemsToViews();
-                IsViewsInited = true;
-            }
         }
 
         /*
@@ -304,7 +246,7 @@ namespace PanCardView
 
         public void GenerateCoverList(object bindable)
         {
-            if (bindable is CoverFlow CoverFlow && CoverFlow.ItemTemplate is DataTemplate itemTemplate && CoverFlow.ItemsSource is IList itemsSource)
+            if (bindable is CoverFlowView CoverFlow && CoverFlow.ItemTemplate is DataTemplate itemTemplate && CoverFlow.ItemsSource is IList itemsSource)
             {
                 //DataTemplate Selector?!... Need refacto
                 //And Binding
@@ -347,7 +289,7 @@ namespace PanCardView
             return DisplayedViews.IndexOf(CloseToMiddle.First());
         }
 
-        public int GetIndexCloseToPos(Position viewPosition)
+        public int GetIndexCloseToPos(CoverItemPosition viewPosition)
         {
             var position = (Width / 2 - MarginBorder) * (int)viewPosition;
             var CloseToPositionView = DisplayedViews.Where(v => v.IsVisible == true).OrderBy(v => Math.Abs((v.TranslationX - position)));
@@ -371,13 +313,6 @@ namespace PanCardView
             return index;
         }
 
-        void SetPanGesture()
-        {
-            _panGesture = new PanGestureRecognizer();
-            _panGesture.PanUpdated += OnPanUpdated;
-            this.GestureRecognizers.Add(_panGesture);
-        }
-
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
             if (ItemsSource.Count > 0)
@@ -388,9 +323,9 @@ namespace PanCardView
                         OnDragStarted();
                         return;
                     case GestureStatus.Running:
-                        var dragX = e.TotalX - TmpTotalX;
+                        var dragX = e.TotalX - _tmpTotalX;
                         OnDragging(dragX);
-                        TmpTotalX = e.TotalX;
+                        _tmpTotalX = e.TotalX;
                         return;
                     case GestureStatus.Canceled:
                     case GestureStatus.Completed:
@@ -399,58 +334,6 @@ namespace PanCardView
                 }
             }
             return;
-        }
-
-        private void OnDragStarted()
-        {
-            this.AbortAnimation("CenterViews");
-            TmpTotalX = 0;
-        }
-
-        private void OnDragging(double dragX)
-        {
-            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
-            if (DisplayedViews.Any())
-            {
-                ViewProcessor.HandlePanChanged(DisplayedViews, dragX, direction, RecycledViews);
-
-                //Remove unseen views that have been added to recycled List
-                RemoveUnDisplayedViews();
-
-                //Recycler View to Display new Item
-                RecyclerView(direction);
-            }
-        }
-
-        /* OnDragEnd is not well developped
-         * 
-         * The Idea would be at runtime(during animation)
-         * To add old View to recycledList when they are far away(Math.Abs(translate) > maxTranslate)
-         * And recycler a view and display it at the other side.
-         * And give at this new display view the end of the animatiom(just the end :))
-         * 
-         */
-        private void OnDragEnd()
-        {
-            var position = ViewPosition;
-            if (!IsCyclical && ViewPosition != Position.Center && TmpTotalX < 0 && ItemMaxOnAxis == ItemsSource.Count - 1)
-                position = Position.Right;
-            if (!IsCyclical && ViewPosition != Position.Center && TmpTotalX > 0 && ItemMinOnAxis == 0)
-                position = Position.Left;
-
-            double border = (Width / 2 - MarginBorder) * (int)position;
-            int indexCloseToPos = GetIndexCloseToPos(position);
-            var dragX = border - DisplayedViews[indexCloseToPos].TranslationX;
-
-            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
-
-            //Forced Recycler View to Display Item before animation running <-- Need refacto without forcing
-            for (var i = Math.Abs(dragX) / Space; i > 1; --i)
-                RecyclerView(direction, true);
-
-            //The animation need refacto Too
-            ViewProcessor.HandlePanApply(DisplayedViews, dragX, position, RecycledViews);
-
         }
 
         public void RemoveUnDisplayedViews()
@@ -509,6 +392,114 @@ namespace PanCardView
                 view.IsVisible = true;
             }
             return view;
+        }
+
+        protected override void OnSizeAllocated(double w, double h)
+        {
+            base.OnSizeAllocated(width, height);
+
+            if (Math.Abs(width - w) > 0.1 || Math.Abs(height - h) > 0.1)
+            {
+                _isOrientationChanged = true;
+            }
+
+            if (w < 0 || h < 0 || !DisplayedViews.Any())
+                return;
+
+            if (_isOrientationChanged)
+            {
+                Space = (Width / NumberOfViews) + Spacing;
+                MaxGraphicAxis = (Width + Space) / 2;
+                MarginBorder = Space / 2;
+                OnOrientationChanged(w, h);
+                _isOrientationChanged = false;
+            }
+
+            this.width = w;
+            this.height = h;
+
+            if (!_isViewsInited)
+            {
+                ViewProcessor.HandleInitViews(DisplayedViews, ViewPosition);
+                BindingItemsToViews();
+                _isViewsInited = true;
+            }
+        }
+
+        private void SetupLayout()
+        {
+            if (DisplayedViews.Any())
+            {
+                foreach (var view in DisplayedViews.Where(v => v != null))
+                {
+                    SetupBoundsView(view);
+                }
+            }
+        }
+
+        private void SetupBoundsView(View view)
+        {
+            SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
+            SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+        }
+
+        private void SetPanGesture()
+        {
+            _panGesture = new PanGestureRecognizer();
+            _panGesture.PanUpdated += OnPanUpdated;
+            this.GestureRecognizers.Add(_panGesture);
+        }
+
+        private void OnDragStarted()
+        {
+            this.AbortAnimation("CenterViews");
+            _tmpTotalX = 0;
+        }
+
+        private void OnDragging(double dragX)
+        {
+            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
+            if (DisplayedViews.Any())
+            {
+                ViewProcessor.HandlePanChanged(DisplayedViews, dragX, direction, RecycledViews);
+
+                //Remove unseen views that have been added to recycled List
+                RemoveUnDisplayedViews();
+
+                //Recycler View to Display new Item
+                RecyclerView(direction);
+            }
+        }
+
+        /* OnDragEnd is not well developped
+         * 
+         * The Idea would be at runtime(during animation)
+         * To add old View to recycledList when they are far away(Math.Abs(translate) > maxTranslate)
+         * And recycler a view and display it at the other side.
+         * And give at this new display view the end of the animatiom(just the end :))
+         * 
+         */
+        private void OnDragEnd()
+        {
+            var position = ViewPosition;
+            if (!IsCyclical && ViewPosition != CoverItemPosition.Center && _tmpTotalX < 0 && ItemMaxOnAxis == ItemsSource.Count - 1)
+                position = CoverItemPosition.Right;
+            if (!IsCyclical && ViewPosition != CoverItemPosition.Center && _tmpTotalX > 0 && ItemMinOnAxis == 0)
+                position = CoverItemPosition.Left;
+
+            double border = (Width / 2 - MarginBorder) * (int)position;
+            int indexCloseToPos = GetIndexCloseToPos(position);
+            var dragX = border - DisplayedViews[indexCloseToPos].TranslationX;
+
+            var direction = (dragX > 0) ? AnimationDirection.Prev : AnimationDirection.Next;
+
+            //Forced Recycler View to Display Item before animation running <-- Need refacto without forcing
+            for (var i = Math.Abs(dragX) / Space; i > 1; --i)
+                RecyclerView(direction, true);
+
+            //The animation need refacto Too
+            ViewProcessor.HandlePanApply(DisplayedViews, dragX, position, RecycledViews);
+
         }
     }
 }

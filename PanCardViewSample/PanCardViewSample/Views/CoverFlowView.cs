@@ -57,34 +57,34 @@ namespace PanCardViewSample.Views
                 return layout;
             });
 
-            var coverFlowLeft = new CoverFlow
+            var coverFlowLeft = new PanCardView.CoverFlowView
             {
                 ItemTemplate = itemTemplate,
-                ViewPosition = Position.Left,
-                FirstItemPosition = Position.Left,
+                ViewPosition = CoverItemPosition.Left,
+                FirstItemPosition = CoverItemPosition.Left,
                 Spacing = 20,
                 IsCyclical = false
             };
-            var coverFlowCentered = new CoverFlow
+            var coverFlowCentered = new PanCardView.CoverFlowView
             {
                 ItemTemplate = itemTemplate,
-                ViewPosition = Position.Center,
-                FirstItemPosition = Position.Center,
+                ViewPosition = CoverItemPosition.Center,
+                FirstItemPosition = CoverItemPosition.Center,
                 Spacing = 20,
                 IsCyclical = true
             };
-            var coverFlowRight = new CoverFlow
+            var coverFlowRight = new PanCardView.CoverFlowView
             {
                 ItemTemplate = itemTemplate,
-                ViewPosition = Position.Left,
-                FirstItemPosition = Position.Left,
+                ViewPosition = CoverItemPosition.Left,
+                FirstItemPosition = CoverItemPosition.Left,
                 Spacing = 20,
                 IsCyclical = true
             };
 
-            coverFlowLeft.SetBinding(CoverFlow.ItemsSourceProperty, nameof(CoverFlowViewModel.Items));
-            coverFlowCentered.SetBinding(CoverFlow.ItemsSourceProperty, nameof(CoverFlowViewModel.Items));
-            coverFlowRight.SetBinding(CoverFlow.ItemsSourceProperty, nameof(CoverFlowViewModel.Items));
+            coverFlowLeft.SetBinding(PanCardView.CoverFlowView.ItemsSourceProperty, nameof(CoverFlowViewModel.Items));
+            coverFlowCentered.SetBinding(PanCardView.CoverFlowView.ItemsSourceProperty, nameof(CoverFlowViewModel.Items));
+            coverFlowRight.SetBinding(PanCardView.CoverFlowView.ItemsSourceProperty, nameof(CoverFlowViewModel.Items));
 
             BackgroundColor = Color.Black;
             Title = "CoverFlowView";

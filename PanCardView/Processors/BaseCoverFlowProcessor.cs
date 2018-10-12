@@ -10,12 +10,7 @@ namespace PanCardView.Processors
 {
     public class BaseCoverFlowProcessor
     {
-        public CoverFlow CoverFlow;
-        public uint AnimationLength { get; set; } = 300;
-
-        public Easing AnimEasing { get; set; } = Easing.CubicOut;
-
-        public BaseCoverFlowProcessor(CoverFlow coverFlow)
+        public BaseCoverFlowProcessor(CoverFlowView coverFlow)
         {
             CoverFlow = coverFlow;
         }
@@ -24,7 +19,11 @@ namespace PanCardView.Processors
         {
         }
 
-        public void HandleInitViews(IAbsoluteList<View> displayedViews, Position viewPosition)
+        public uint AnimationLength { get; set; } = 300;
+        public Easing AnimEasing { get; set; } = Easing.CubicOut;
+        public CoverFlowView CoverFlow { get; set; }
+
+        public void HandleInitViews(IAbsoluteList<View> displayedViews, CoverItemPosition viewPosition)
         {
             var PreviousItemtranslation = 0.0;
             var translate = (CoverFlow.Width/2 - CoverFlow.MarginBorder) * (int)viewPosition;
@@ -54,7 +53,7 @@ namespace PanCardView.Processors
          * Seems to work but not correctly
          * 
          */
-        public void HandlePanApply(IAbsoluteList<View> displayedViews, double dragX, Position position, List<View> recycledViews)
+        public void HandlePanApply(IAbsoluteList<View> displayedViews, double dragX, CoverItemPosition position, List<View> recycledViews)
         {
             Animation a = new Animation();
 

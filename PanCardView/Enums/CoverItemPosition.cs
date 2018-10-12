@@ -1,6 +1,6 @@
 ﻿namespace PanCardView.Enums
 {
-    public enum Position
+    public enum CoverItemPosition
     {
         Top = -1,
         Left = -1,
