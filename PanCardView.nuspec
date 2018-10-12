@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CardsView</id>
-    <version>1.6.3</version>
+    <version>1.6.4-pre</version>
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
