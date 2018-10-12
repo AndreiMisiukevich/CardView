@@ -9,6 +9,7 @@ using Xamarin.Forms;
 
 namespace PanCardView
 {
+    [Obsolete("ISN'T FINISHED YET. CAN BE CHANGED.")]
     public class CoverFlowView : AbsoluteLayout
     {
         /// <summary>
