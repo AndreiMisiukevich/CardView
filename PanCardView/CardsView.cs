@@ -153,11 +153,12 @@ namespace PanCardView
 
         private int _viewsChildrenCount;
         private int _inCoursePanDelay;
+        private double _parentWidth;
+        private double _parentHeight;
         private bool _isPanEndRequested = true;
         private bool _shouldSkipTouch;
         private bool _isViewsInited;
         private bool _hasRenderer;
-        private bool _isPortraitOrientation;
         private bool? _shouldScrollParent;
         private DateTime _lastPanTime;
         private CancellationTokenSource _slideshowTokenSource;
@@ -479,7 +480,7 @@ namespace PanCardView
             FireItemSwiped(swipeDirection, oldIndex);
         }
 
-        protected virtual void OnOrientationChanged()
+        protected virtual void OnSizeChanged()
         {
             if (CurrentView != null && ItemTemplate != null)
             {
@@ -692,19 +693,23 @@ namespace PanCardView
 
                 var parerntWidth = parent.Width;
                 var parentHeight = parent.Height;
+                var isValidParentSize = parerntWidth > 0 && parentHeight > 0;
 
-                if (!_isViewsInited && parerntWidth > 0 && parentHeight > 0)
+                if (!_isViewsInited && isValidParentSize)
                 {
                     _isViewsInited = true;
-                    _isPortraitOrientation = parentHeight > parerntWidth;
+                    StoreParentSize(parerntWidth, parentHeight);
                     FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
                     BackViewProcessor.HandleInitView(PrevViews, this, AnimationDirection.Prev);
                     BackViewProcessor.HandleInitView(NextViews, this, AnimationDirection.Next);
                 }
-                if (_isViewsInited && _isPortraitOrientation != parentHeight > parerntWidth)
+                if (_isViewsInited &&
+                    isValidParentSize &&
+                    Abs(_parentWidth - parerntWidth) > double.Epsilon &&
+                    Abs(_parentHeight - parentHeight) > double.Epsilon)
                 {
-                    _isPortraitOrientation = !_isPortraitOrientation;
-                    OnOrientationChanged();
+                    StoreParentSize(parerntWidth, parentHeight);
+                    OnSizeChanged();
                 }
             }
         }
@@ -730,6 +735,12 @@ namespace PanCardView
         {
             base.OnParentSet();
             SetCurrentView();
+        }
+
+        private void StoreParentSize(double width, double height)
+        {
+            _parentWidth = width;
+            _parentHeight = height;
         }
 
         private void SetPanGesture(bool _isForceRemove = false)
@@ -1431,14 +1442,14 @@ namespace PanCardView
             }
         }
 
-        private VisualElement FindParentPage()
+        private Page FindParentPage()
         {
             var parent = Parent;
             while (parent != null && !(parent is Page))
             {
                 parent = parent.Parent;
             }
-            return parent as VisualElement;
+            return parent as Page;
         }
 
         private bool CheckIsProcessingView(View view)
