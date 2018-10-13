@@ -21,10 +21,10 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CardsSampleView());
 			};
 
-			var toCoverFlowBtn = new Button { Text = "CoverFlow" };
+			var toCoverFlowBtn = new Button { Text = "CoverFlowView" };
             toCoverFlowBtn.Clicked += (sender, e) =>
 			{
-                this.Navigation.PushAsync(new CoverFlowView(Width));
+                this.Navigation.PushAsync(new CoverFlowSampleView(Width));
 			};
 
 			var toCarouselScrollBtn = new Button { Text = "CarouselView scroll" };

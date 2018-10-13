@@ -52,6 +52,10 @@ namespace PanCardView.Processors
          * HandlePanApply doesn't managed Recycled Views
          * Seems to work but not correctly
          * 
+         * The Idea would be at runtime(during animation)
+         * To add old View to recycledList when they are far away(Math.Abs(translate) > maxTranslate)
+         * And recycle a view and display it at the other side.
+         * And give at this new display view the end of the animatiom(just the end :))
          */
         public void HandlePanApply(IAbsoluteList<View> displayedViews, double dragX, CoverItemPosition position, List<View> recycledViews)
         {
@@ -93,7 +97,7 @@ namespace PanCardView.Processors
                     a.Add(0, 1, new Animation(f => v.TranslationX = f, v.TranslationX, translate, Easing.SinOut, null));
                 }
             }
-            a.Commit(CoverFlow, "CenterViews", 60, 400, Easing.Linear, (double arg1, bool arg2) =>
+            a.Commit(CoverFlow, "AlignViews", 60, 400, Easing.Linear, (double arg1, bool arg2) =>
             {
                 // Console.WriteLine("Test");
             });
@@ -109,9 +113,13 @@ namespace PanCardView.Processors
                     && displayedViews.Count() > 1)
                 {
                     if (direction == AnimationDirection.Prev) // Movement --> right
+                    {
                         CoverFlow.ItemMaxOnAxis = CoverFlow.VerifyIndex(CoverFlow.ItemMaxOnAxis - 1);
+                    }
                     else if (direction == AnimationDirection.Next)  // Movement <-- Left
+                    {
                         CoverFlow.ItemMinOnAxis = CoverFlow.VerifyIndex(CoverFlow.ItemMinOnAxis + 1);
+                    }
                     recycledViews.Add(v);
                     v.IsVisible = false;
                 }
