@@ -7,9 +7,9 @@ using Xamarin.Forms;
 
 namespace PanCardViewSample.Views
 {
-    public class CoverFlowView : ContentPage
+    public class CoverFlowSampleView : ContentPage
     {
-        public CoverFlowView(double width)
+        public CoverFlowSampleView(double width)
         {
             var itemTemplate = new DataTemplate(() =>
             {
@@ -60,7 +60,7 @@ namespace PanCardViewSample.Views
             var coverFlowLeft = new PanCardView.CoverFlowView
             {
                 ItemTemplate = itemTemplate,
-                ViewPosition = CoverItemPosition.Left,
+                ViewAlignment = CoverItemPosition.Left,
                 FirstItemPosition = CoverItemPosition.Left,
                 Spacing = 20,
                 IsCyclical = false
@@ -68,7 +68,7 @@ namespace PanCardViewSample.Views
             var coverFlowCentered = new PanCardView.CoverFlowView
             {
                 ItemTemplate = itemTemplate,
-                ViewPosition = CoverItemPosition.Center,
+                ViewAlignment = CoverItemPosition.Center,
                 FirstItemPosition = CoverItemPosition.Center,
                 Spacing = 20,
                 IsCyclical = true
@@ -76,7 +76,7 @@ namespace PanCardViewSample.Views
             var coverFlowRight = new PanCardView.CoverFlowView
             {
                 ItemTemplate = itemTemplate,
-                ViewPosition = CoverItemPosition.Left,
+                ViewAlignment = CoverItemPosition.Left,
                 FirstItemPosition = CoverItemPosition.Left,
                 Spacing = 20,
                 IsCyclical = true
@@ -87,7 +87,7 @@ namespace PanCardViewSample.Views
             coverFlowRight.SetBinding(PanCardView.CoverFlowView.ItemsSourceProperty, nameof(CoverFlowViewModel.Items));
 
             BackgroundColor = Color.Black;
-            Title = "CoverFlowView";
+            Title = "CoverFlowSampleView";
 
             var scrollView = new ScrollView()
             {
@@ -103,11 +103,11 @@ namespace PanCardViewSample.Views
             };
 
 
-            stack.Children.Add(new Label() {Text = "Simple List positionned on Left", TextColor = Color.White });
+            stack.Children.Add(new Label() {Text = "Simple List aligned on Left", TextColor = Color.White });
             stack.Children.Add(coverFlowLeft);
-            stack.Children.Add(new Label() { Text = "Circular List positionned on Center", TextColor = Color.White });
+            stack.Children.Add(new Label() { Text = "Circular List aligned on Center", TextColor = Color.White });
             stack.Children.Add(coverFlowCentered);
-            stack.Children.Add(new Label() { Text = "Cicular List positionned on Left", TextColor = Color.White});
+            stack.Children.Add(new Label() { Text = "Cicular List aligned on Left", TextColor = Color.White});
             stack.Children.Add(coverFlowRight);
 
             scrollView.Content = stack;
