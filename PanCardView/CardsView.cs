@@ -202,7 +202,7 @@ namespace PanCardView
             set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
         }
 
-        private View CurrentView { get; set; }
+        public View CurrentView { get; private set; }
 
         public double CurrentDiff { get; private set; }
 
