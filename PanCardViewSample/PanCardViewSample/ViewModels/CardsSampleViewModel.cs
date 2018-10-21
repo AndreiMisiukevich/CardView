@@ -28,14 +28,11 @@ namespace PanCardViewSample.ViewModels
 
 			PanPositionChangedCommand = new Command(v =>
 			{
-				var val = (bool)v;
-				if (val)
-				{
-					CurrentIndex += 1;
-					return;
-				}
-
-				CurrentIndex -= 1;
+                if(CurrentIndex == 0 || CurrentIndex + 1 == Items.Count)
+                {
+                    return;
+                }
+                CurrentIndex = (CurrentIndex + ((bool)v ? 1 : -1));
 			});
 
 			RemoveCurrentItemCommand = new Command(() =>
