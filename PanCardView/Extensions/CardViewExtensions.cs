@@ -14,11 +14,10 @@ namespace PanCardView.Extensions
 #pragma warning disable
         public static SceneView AsSceneView(this BindableObject bindable)
         => bindable as SceneView;
-#pragma warning restore
 
         public static CoverFlowView AsCoverFlowView(this BindableObject bindable)
         => bindable as CoverFlowView;
-
+#pragma warning restore
         public static IndicatorsControl AsIndicatorsControl(this BindableObject bindable)
         => bindable as IndicatorsControl;
 

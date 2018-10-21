@@ -6,6 +6,7 @@ using PanCardView.Enums;
 using Xamarin.Forms;
 using static Xamarin.Forms.AbsoluteLayout;
 
+#pragma warning disable
 namespace PanCardView.Processors
 {
     public class BaseCoverFlowProcessor
@@ -26,7 +27,7 @@ namespace PanCardView.Processors
         public void HandleInitViews(IAbsoluteList<View> displayedViews, CoverItemPosition viewPosition)
         {
             var PreviousItemtranslation = 0.0;
-            var translate = (CoverFlow.Width/2 - CoverFlow.MarginBorder) * (int)viewPosition;
+            var translate = (CoverFlow.Width / 2 - CoverFlow.MarginBorder) * (int)viewPosition;
             var count = displayedViews.Count();
 
             foreach (var view in displayedViews)
@@ -133,3 +134,4 @@ namespace PanCardView.Processors
         }
     }
 }
+#pragma warning restore
