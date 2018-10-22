@@ -448,7 +448,7 @@ namespace PanCardView
             }
         }
 
-        public void OnSwiped(SwipeDirection swipeDirection)
+        public void OnSwiped(ItemSwipeDirection swipeDirection)
         {
             if (!IsUserInteractionEnabled)
             {
@@ -458,7 +458,7 @@ namespace PanCardView
             var oldIndex = SelectedIndex;
             if ((int)swipeDirection < 2)
             {
-                var isLeftSwiped = swipeDirection == SwipeDirection.Left;
+                var isLeftSwiped = swipeDirection == ItemSwipeDirection.Left;
                 var haveItems = (isLeftSwiped && NextViews.Any()) || ((!isLeftSwiped && PrevViews.Any()));
                 var isAndroid = Device.RuntimePlatform == Device.Android;
 
@@ -912,7 +912,7 @@ namespace PanCardView
                     if (checkSwipe.Value || absDiff > MoveDistance)
                     {
                         isNextSelected = diff < 0;
-                        FireItemSwiped(isNextSelected.Value ? SwipeDirection.Left : SwipeDirection.Right, oldIndex);
+                        FireItemSwiped(isNextSelected.Value ? ItemSwipeDirection.Left : ItemSwipeDirection.Right, oldIndex);
                     }
                 }
             }
@@ -1549,7 +1549,7 @@ namespace PanCardView
             ItemAppearing?.Invoke(this, args);
         }
 
-        private void FireItemSwiped(SwipeDirection swipeDirection, int index)
+        private void FireItemSwiped(ItemSwipeDirection swipeDirection, int index)
         {
             var item = GetItem(index);
             var args = new ItemSwipedEventArgs(swipeDirection, index, item);

@@ -1,7 +1,7 @@
 ﻿
 namespace PanCardView.Enums
 {
-    public enum SwipeDirection
+    public enum ItemSwipeDirection
     {
         Left = 0,
         Right = 1,

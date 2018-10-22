@@ -169,7 +169,7 @@ namespace PanCardView.Droid
         private void UpdatePan(GestureStatus status, double totalX = 0, double totalY = 0)
         => Element.OnPanUpdated(GetPanUpdatedEventArgs(status, totalX, totalY));
 
-        private void OnSwiped(SwipeDirection swipeDirection) => Element.OnSwiped(swipeDirection);
+        private void OnSwiped(ItemSwipeDirection swipeDirection) => Element.OnSwiped(swipeDirection);
 
         private PanUpdatedEventArgs GetPanUpdatedEventArgs(GestureStatus status, double totalX = 0, double totalY = 0)
         => new PanUpdatedEventArgs(status, _gestureId, totalX, totalY);
@@ -184,9 +184,9 @@ namespace PanCardView.Droid
     
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
     {
-        private readonly Action<SwipeDirection> _onSwiped;
+        private readonly Action<ItemSwipeDirection> _onSwiped;
 
-        public CardsGestureListener(Action<SwipeDirection> onSwiped)
+        public CardsGestureListener(Action<ItemSwipeDirection> onSwiped)
         => _onSwiped = onSwiped;
 
         public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
@@ -201,7 +201,7 @@ namespace PanCardView.Droid
                 absDiffX > CardsViewRenderer.SwipeThreshold &&
                 Abs(velocityX) > CardsViewRenderer.SwipeVelocityThreshold)
 			{
-                _onSwiped?.Invoke(diffX < 0 ? SwipeDirection.Left : SwipeDirection.Right);
+                _onSwiped?.Invoke(diffX < 0 ? ItemSwipeDirection.Left : ItemSwipeDirection.Right);
 				return true; 
 			}
 
@@ -209,7 +209,7 @@ namespace PanCardView.Droid
                absDiffY > CardsViewRenderer.SwipeThreshold &&
                Abs(velocityY) > CardsViewRenderer.SwipeVelocityThreshold)
             {
-                _onSwiped?.Invoke(diffY < 0 ? SwipeDirection.Up : SwipeDirection.Down);
+                _onSwiped?.Invoke(diffY < 0 ? ItemSwipeDirection.Up : ItemSwipeDirection.Down);
                 return true;
             }
 
