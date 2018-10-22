@@ -36,7 +36,7 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty IsRightToLeftFlowDirectionEnabledProperty = BindableProperty.Create(nameof(IsRightToLeftFlowDirectionEnabled), typeof(bool), typeof(ArrowControl), false, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsArrowControl().ResetVisibility();
+            bindable.AsArrowControl().OnIsRightToLeftFlowDirectionEnabledChnaged();
         });
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(ArrowControl), true);
@@ -176,6 +176,12 @@ namespace PanCardView.Controls
             IsVisible = false;
         }
 
+        protected virtual void OnIsRightToLeftFlowDirectionEnabledChnaged()
+        {
+            Rotation = IsRightToLeftFlowDirectionEnabled ? 180 : 0;
+            ResetVisibility();
+        }
+
         protected virtual void OnTapped()
         {
             if (IsUserInteractionRunning)
@@ -199,12 +205,7 @@ namespace PanCardView.Controls
 
             var cyclingIndex = SelectedIndex.ToCyclingIndex(ItemsCount);
 
-            if (!IsRightToLeftFlowDirectionEnabled && cyclingIndex == (IsRight ? ItemsCount - 1 : 0))
-            {
-                return false;
-            }
-
-            if (IsRightToLeftFlowDirectionEnabled && cyclingIndex == (IsRight ? 0 : ItemsCount - 1))
+            if (cyclingIndex == (IsRight ? ItemsCount - 1 : 0))
             {
                 return false;
             }
