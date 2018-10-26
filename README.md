@@ -1,5 +1,9 @@
 # CardsView and CarouselView controls for Xamarin Forms (based on Xamarin Forms AbsoluteLayout)
-![Logo](https://raw.githubusercontent.com/AndreiMisiukevich/CardView/master/images/Cardsview-logotype-main.png)
+<html>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AndreiMisiukevich/CardView/master/images/Cardsview-logotype-main.png" width="400">
+</p>
+</html>
 
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
