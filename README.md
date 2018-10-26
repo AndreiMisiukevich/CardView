@@ -19,12 +19,20 @@
 ## CardsView
 This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms applications like Tinder app has.
 
-![Sample GIF](https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif)
+<html>
+<p align="center">
+  <img src="https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif">
+</p>
+</html>
 
 ## CarouselView
 You are able to setup CarouselView control, that is based on CardsView
 
-![Sample GIF](https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif)
+<html>
+<p align="center">
+  <img src="https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif">
+</p>
+</html>
 
 ## Custom Animations
 You are able to create custom animations, just implement ICardProcessor or extend created processors (change animation speed or type)
