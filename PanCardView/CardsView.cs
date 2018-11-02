@@ -807,6 +807,12 @@ namespace PanCardView
             var oldRecIndex = OldIndex.ToCyclingIndex(ItemsCount);
 
             var deltaIndex = recIndex - oldRecIndex;
+
+            if (recIndex == SelectedIndex && oldRecIndex == OldIndex)
+            {
+                return recIndex > oldRecIndex ? AnimationDirection.Next : AnimationDirection.Prev;
+            }
+
             if (Abs(deltaIndex) == 1)
             {
                 return deltaIndex > 0
