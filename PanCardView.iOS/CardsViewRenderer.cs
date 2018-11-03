@@ -67,12 +67,12 @@ namespace PanCardView.iOS
         private void OnSwiped(UISwipeGestureRecognizer gesture)
         {
             var swipeDirection = gesture.Direction == UISwipeGestureRecognizerDirection.Left
-                                ? SwipeDirection.Left
+                                ? ItemSwipeDirection.Left
                                 : gesture.Direction == UISwipeGestureRecognizerDirection.Right
-                                    ? SwipeDirection.Right
+                                    ? ItemSwipeDirection.Right
                                     : gesture.Direction == UISwipeGestureRecognizerDirection.Up
-                                        ? SwipeDirection.Up
-                                        : SwipeDirection.Down;
+                                        ? ItemSwipeDirection.Up
+                                        : ItemSwipeDirection.Down;
 
             Element?.OnSwiped(swipeDirection);
         }
