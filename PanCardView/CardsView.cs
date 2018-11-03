@@ -808,21 +808,16 @@ namespace PanCardView
 
             var deltaIndex = recIndex - oldRecIndex;
 
-            if (recIndex == SelectedIndex && oldRecIndex == OldIndex)
+            var aniamationDirection = (AnimationDirection)Sign(deltaIndex);
+
+            var cyclingDeltaIndex = ItemsCount - Max(recIndex, oldRecIndex) + Min(recIndex, oldRecIndex);
+
+            if(cyclingDeltaIndex < Abs(deltaIndex))
             {
-                return recIndex > oldRecIndex ? AnimationDirection.Next : AnimationDirection.Prev;
+                aniamationDirection = (AnimationDirection)(-(int)aniamationDirection);
             }
 
-            if (Abs(deltaIndex) == 1)
-            {
-                return deltaIndex > 0
-                    ? AnimationDirection.Next
-                     : AnimationDirection.Prev;
-            }
-
-            return deltaIndex > 0
-                    ? AnimationDirection.Prev
-                     : AnimationDirection.Next;
+            return aniamationDirection;
         }
 
         private void OnTouchStarted()
