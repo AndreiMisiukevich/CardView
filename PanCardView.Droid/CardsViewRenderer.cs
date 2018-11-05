@@ -36,8 +36,8 @@ namespace PanCardView.Droid
         }
 
         public CardsViewRenderer(Context context) : base(context)
-		{
-		}
+        {
+        }
 
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
@@ -64,7 +64,7 @@ namespace PanCardView.Droid
         }
 
         public override bool OnTouchEvent(MotionEvent e)
-		{
+        {
             DetectEvent(e);
             if (e.ActionMasked == MotionEventActions.Move)
             {
@@ -94,26 +94,26 @@ namespace PanCardView.Droid
             }
         }
 
-		private void DetectEvent(MotionEvent ev)
-		{
-			if (ev.PointerCount > 1)
+        private void DetectEvent(MotionEvent ev)
+        {
+            if (ev.PointerCount > 1)
             {
                 return;
             }
-			try
-			{
-				if(_gestureDetector == null)
-				{
-					SetGestureDetector();
-				}
-				_gestureDetector.OnTouchEvent(ev);
-			}
-			catch (ObjectDisposedException)
-			{
-				SetGestureDetector();
-				DetectEvent(ev);
-			}
-		}
+            try
+            {
+                if (_gestureDetector == null)
+                {
+                    SetGestureDetector();
+                }
+                _gestureDetector.OnTouchEvent(ev);
+            }
+            catch (ObjectDisposedException)
+            {
+                SetGestureDetector();
+                DetectEvent(ev);
+            }
+        }
 
         private bool SetIsTouchHandled(float xDelta, float yDelta)
         {
@@ -180,10 +180,10 @@ namespace PanCardView.Droid
 
         private float GetTotalY(MotionEvent ev) => (ev.GetY() - _startY.GetValueOrDefault()) / Context.Resources.DisplayMetrics.Density;
 
-		private void SetGestureDetector()
-		=> _gestureDetector = new GestureDetector(Context, new CardsGestureListener(OnSwiped));
+        private void SetGestureDetector()
+        => _gestureDetector = new GestureDetector(Context, new CardsGestureListener(OnSwiped));
     }
-    
+
     public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
     {
         private readonly Action<ItemSwipeDirection> _onSwiped;
@@ -193,21 +193,21 @@ namespace PanCardView.Droid
 
         public override bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-			var diffX = (e2?.GetX() ?? 0) - (e1?.GetX() ?? 0);
-			var diffY = (e2?.GetY() ?? 0) - (e1?.GetY() ?? 0);
+            var diffX = (e2?.GetX() ?? 0) - (e1?.GetX() ?? 0);
+            var diffY = (e2?.GetY() ?? 0) - (e1?.GetY() ?? 0);
 
-			var absDiffX = Abs(diffX);
-			var absDiffY = Abs(diffY);
+            var absDiffX = Abs(diffX);
+            var absDiffY = Abs(diffY);
 
-			if (absDiffX > absDiffY && 
+            if (absDiffX > absDiffY &&
                 absDiffX > CardsViewRenderer.SwipeThreshold &&
                 Abs(velocityX) > CardsViewRenderer.SwipeVelocityThreshold)
-			{
+            {
                 _onSwiped?.Invoke(diffX < 0 ? ItemSwipeDirection.Left : ItemSwipeDirection.Right);
-				return true; 
-			}
+                return true;
+            }
 
-            if(absDiffY >= absDiffX &&
+            if (absDiffY >= absDiffX &&
                absDiffY > CardsViewRenderer.SwipeThreshold &&
                Abs(velocityY) > CardsViewRenderer.SwipeVelocityThreshold)
             {
