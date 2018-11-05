@@ -443,6 +443,10 @@ namespace PanCardView
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        OnTouchChanged(e.TotalX);
+                    }
                     OnTouchEnded();
                     return;
             }
