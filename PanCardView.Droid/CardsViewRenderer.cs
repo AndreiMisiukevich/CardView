@@ -141,7 +141,9 @@ namespace PanCardView.Droid
                 return;
             }
 
-            UpdatePan(isUpAction ? GestureStatus.Completed : GestureStatus.Canceled);
+            var xDelta = GetTotalX(ev);
+            var yDelta = GetTotalY(ev);
+            UpdatePan(isUpAction ? GestureStatus.Completed : GestureStatus.Canceled, xDelta, yDelta);
             _panStarted = false;
             _lastTouchHandlerId = null;
 
