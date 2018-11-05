@@ -864,7 +864,7 @@ namespace PanCardView
 
         private void OnTouchChanged(double diff)
         {
-            if (_shouldSkipTouch || (_shouldScrollParent ?? false))
+            if (_shouldSkipTouch || (_shouldScrollParent ?? false) || Abs(CurrentDiff - diff) <= double.Epsilon)
             {
                 return;
             }
