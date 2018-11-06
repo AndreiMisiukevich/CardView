@@ -184,7 +184,7 @@ namespace PanCardView.Controls
 
         protected virtual void OnTapped()
         {
-            if (IsUserInteractionRunning)
+            if (IsUserInteractionRunning || IsAutoInteractionRunning)
             {
                 return;
             }

@@ -111,7 +111,7 @@ namespace PanCardView
 
         public static readonly BindableProperty SwipeThresholdDistanceProperty = BindableProperty.Create(nameof(SwipeThresholdDistance), typeof(double), typeof(CardsView), 17.0);
 
-        public static readonly BindableProperty MoveThresholdDistanceProperty = BindableProperty.Create(nameof(MoveThresholdDistance), typeof(double), typeof(CardsView), 3.0);
+        public static readonly BindableProperty MoveThresholdDistanceProperty = BindableProperty.Create(nameof(MoveThresholdDistance), typeof(double), typeof(CardsView), 7.0);
 
         public static readonly BindableProperty VerticalSwipeThresholdDistanceProperty = BindableProperty.Create(nameof(VerticalSwipeThresholdDistance), typeof(double), typeof(CardsView), 30.0);
 
@@ -849,7 +849,10 @@ namespace PanCardView
             _interactions.Add(gestureId, InteractionType.User);
 
             FireUserInteracted(UserInteractionStatus.Started, CurrentDiff, SelectedIndex);
-            IsUserInteractionRunning = true;
+            if (Device.RuntimePlatform != Device.Android)
+            {
+                IsUserInteractionRunning = true;
+            }
             _isPanEndRequested = false;
 
             SetupBackViews();
