@@ -14,6 +14,15 @@ This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms 
 </p>
 </html>
 
+## CarouselView
+You are able to setup CarouselView control, that is based on CardsView
+
+<html>
+<p align="center">
+  <img src="https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif">
+</p>
+</html>
+
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
 * Add nuget package to your Xamarin.Forms .netStandard/PCL project and to your platform-specific projects
@@ -24,15 +33,6 @@ This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms 
 |Xamarin.iOS|8.0+|
 |Xamarin.Android|15+|
 |Windows 10 UWP|10.0.10240+|
-
-## CarouselView
-You are able to setup CarouselView control, that is based on CardsView
-
-<html>
-<p align="center">
-  <img src="https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif">
-</p>
-</html>
 
 ## Custom Animations
 You are able to create custom animations, just implement ICardProcessor or extend created processors (change animation speed or type)
