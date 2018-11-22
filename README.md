@@ -5,6 +5,15 @@
 </p>
 </html>
 
+## CardsView
+This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms applications like Tinder app has.
+
+<html>
+<p align="center">
+  <img src="https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif">
+</p>
+</html>
+
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
 * Add nuget package to your Xamarin.Forms .netStandard/PCL project and to your platform-specific projects
@@ -15,15 +24,6 @@
 |Xamarin.iOS|8.0+|
 |Xamarin.Android|15+|
 |Windows 10 UWP|10.0.10240+|
-
-## CardsView
-This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms applications like Tinder app has.
-
-<html>
-<p align="center">
-  <img src="https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif">
-</p>
-</html>
 
 ## CarouselView
 You are able to setup CarouselView control, that is based on CardsView
