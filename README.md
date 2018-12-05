@@ -95,6 +95,29 @@ carouselView.Children.Add(new IndicatorsControl());
 Also you are able to manage **IndicatorsControl** appearing/disappearing. For example if user doesn't select new page during N miliseconds, the indicators will disappear. Just set ToFadeDuration = 2000 (2 seconds delay before disappearing)
 Yoy manage **LeftArrowControl** and **RightArrowControl** as well as IndicatorsControl (ToFadeDuration is presented too).
 
+Indicators styling:
+``` xml
+ <ContentPage.Resources>
+    <ResourceDictionary>
+        <Style x:Key="ActiveIndicator" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="Red" />
+        </Style>
+        <Style x:Key="InactiveIndicator" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="OutlineColor" Value="Red" />
+        </Style>
+    </ResourceDictionary>
+</ContentPage.Resources>
+
+... 
+
+<controls:IndicatorsControl ToFadeDuration="1500"
+          SelectedIndicatorStyle="{StaticResource ActiveIndicator}"
+          UnselectedIndicatorStyle="{StaticResource InactiveIndicator}"/>
+```
+
+
+
 if you want to add items directly through xaml
 
 ``` xml
