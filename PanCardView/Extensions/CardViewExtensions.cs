@@ -28,7 +28,12 @@ namespace PanCardView.Extensions
         => bindable as ArrowControl;
 
         public static View CreateView(this DataTemplate template)
-        => template.CreateContent() as View;
+        {
+            var content = template.CreateContent();
+            return content is ViewCell cell
+                ? cell.View
+                : content as View;
+        }
 
         public static int ToCyclingIndex(this int index, int itemsCount)
         {

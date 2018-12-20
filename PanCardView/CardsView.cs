@@ -1175,7 +1175,7 @@ namespace PanCardView
         {
             if (!CheckIsCacheEnabled(template))
             {
-                return RetrieveView(template);
+                return template.CreateView();
             }
 
             List<View> viewsList;
@@ -1183,7 +1183,7 @@ namespace PanCardView
             {
                 viewsList = new List<View>
                 {
-                    RetrieveView(template)
+                    template.CreateView()
                 };
                 _viewsPool.Add(template, viewsList);
             }
@@ -1195,21 +1195,11 @@ namespace PanCardView
 
             if (view == null)
             {
-                view = RetrieveView(template);
+                view = template.CreateView();
                 viewsList.Add(view);
             }
 
             return view;
-        }
-
-        private View RetrieveView(DataTemplate template)
-        {
-            var content = template.CreateContent();
-            if(content is ViewCell cell)
-            {
-                return cell.View;
-            }
-            return content as View;
         }
 
         private object GetContext(int index, AnimationDirection animationDirection)
