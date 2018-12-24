@@ -23,7 +23,7 @@ namespace PanCardView.Controls.Styles
         {
             Setters = {
                 new Setter { Property = VisualElement.BackgroundColorProperty, Value = Color.Transparent },
-                new Setter { Property = Frame.OutlineColorProperty, Value = Color.White.MultiplyAlpha(.8) }
+                new Setter { Property = Frame.BorderColorProperty, Value = Color.White.MultiplyAlpha(.8) }
             }
         });
     }

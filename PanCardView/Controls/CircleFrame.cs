@@ -1,6 +1,6 @@
-﻿using System;
-using PanCardView.Extensions;
+﻿using PanCardView.Extensions;
 using Xamarin.Forms;
+
 namespace PanCardView.Controls
 {
     public class CircleFrame : Frame
@@ -9,8 +9,6 @@ namespace PanCardView.Controls
         {
             bindable.AsCircleFrame().OnSizeUpdated();
         });
-
-        public static bool FixFrameForOldFormsVersions { get; set; }
 
         public CircleFrame()
         {

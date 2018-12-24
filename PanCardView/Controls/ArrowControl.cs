@@ -103,7 +103,7 @@ namespace PanCardView.Controls
 
         public ArrowControl()
         {
-            OutlineColor = Color.White.MultiplyAlpha(.7);
+            BorderColor = Color.White.MultiplyAlpha(.7);
             BackgroundColor = Color.DarkGray.MultiplyAlpha(.7);
             Size = 40;
             Margin = new Thickness(20, 10);
