@@ -41,7 +41,7 @@
     <file src="PanCardView.iOS\bin\Release\PanCardView.iOS.dll" target="lib\Xamarin.iOS10\PanCardView.iOS.dll" />
 
     <!--Xamarin.Mac-->
-    <file src="PanCardView.iOS\bin\Release\PanCardView.iOS.dll" target="lib\Xamarin.Mac20\PanCardView.iOS.dll" />
+    <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\Xamarin.Mac20\PanCardView.dll" />
 
     <!--Windows WinUWP-->
     <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\uap\PanCardView.dll" />
