@@ -1,5 +1,4 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using Android.Runtime;
 using Android.Views;
 using PanCardView.Controls;
@@ -14,11 +13,6 @@ namespace PanCardView.Droid
     [Preserve(AllMembers = true)]
     public class ParentScrollViewRenderer : ScrollViewRenderer
     {
-        [Obsolete("For Forms <= 2.4")]
-        public ParentScrollViewRenderer()
-        {
-        }
-
         public ParentScrollViewRenderer(Context context) : base(context)
         {
         }

@@ -30,11 +30,6 @@ namespace PanCardView.Droid
         private float? _startY;
         private GestureDetector _gestureDetector;
 
-        [Obsolete("For Forms <= 2.4")]
-        public CardsViewRenderer()
-        {
-        }
-
         public CardsViewRenderer(Context context) : base(context)
         {
         }
