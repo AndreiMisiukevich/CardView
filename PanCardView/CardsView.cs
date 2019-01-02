@@ -489,10 +489,13 @@ namespace PanCardView
             if (CurrentView != null && ItemTemplate != null)
             {
                 var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
-                currentViewPair.Value.Clear();
-                currentViewPair.Value.Add(CurrentView);
-                _viewsPool.Clear();
-                _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
+                if (!currentViewPair.Equals(default(KeyValuePair<object, List<View>>)))
+                {
+                    currentViewPair.Value.Clear();
+                    currentViewPair.Value.Add(CurrentView);
+                    _viewsPool.Clear();
+                    _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
+                }
             }
 
             SetCurrentView();
