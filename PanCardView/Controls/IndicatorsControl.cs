@@ -210,35 +210,39 @@ namespace PanCardView.Controls
         {
             _fadeAnimationTokenSource?.Cancel();
 
-            if (ToFadeDuration > 0)
+            if(ToFadeDuration <= 0)
             {
-                if (IsUserInteractionRunning || IsAutoInteractionRunning)
-                {
-                    IsVisible = true;
-
-                    await new AnimationWrapper(v => Opacity = v, Opacity, 1)
-                        .Commit(this, nameof(ResetVisibility), 16, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
-                    return;
-                }
-
-                _fadeAnimationTokenSource = new CancellationTokenSource();
-                var token = _fadeAnimationTokenSource.Token;
-
-                await Task.Delay(ToFadeDuration);
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-
-                await new AnimationWrapper(v => Opacity = v, Opacity, 0)
-                    .Commit(this, nameof(ResetVisibility), 16, dissappearingTime ?? 330, disappearingEasing ?? Easing.SinOut);
-
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-                IsVisible = false;
+                Opacity = 1;
+                IsVisible = true;
+                return;
             }
+
+            if (IsUserInteractionRunning || IsAutoInteractionRunning)
+            {
+                IsVisible = true;
+
+                await new AnimationWrapper(v => Opacity = v, Opacity, 1)
+                    .Commit(this, nameof(ResetVisibility), 16, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
+                return;
+            }
+
+            _fadeAnimationTokenSource = new CancellationTokenSource();
+            var token = _fadeAnimationTokenSource.Token;
+
+            await Task.Delay(ToFadeDuration);
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await new AnimationWrapper(v => Opacity = v, Opacity, 0)
+                .Commit(this, nameof(ResetVisibility), 16, dissappearingTime ?? 330, disappearingEasing ?? Easing.SinOut);
+
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
+            IsVisible = false;
         }
 
         private void ApplyStyle(View view, int cyclingIndex)
