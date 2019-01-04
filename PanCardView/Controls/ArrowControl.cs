@@ -143,6 +143,9 @@ namespace PanCardView.Controls
             {
                 IsEnabled = isAvailable;
                 IsVisible = true;
+
+                await new AnimationWrapper(v => Opacity = v, Opacity, 1)
+                    .Commit(this, nameof(ResetVisibility), 16, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
                 return;
             }
 
