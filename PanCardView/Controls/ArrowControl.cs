@@ -139,9 +139,10 @@ namespace PanCardView.Controls
 
             var isAvailable = CheckAvailability();
 
+            IsEnabled = isAvailable;
+
             if (ToFadeDuration <= 0 && isAvailable)
             {
-                IsEnabled = isAvailable;
                 IsVisible = true;
 
                 await new AnimationWrapper(v => Opacity = v, Opacity, 1)
@@ -151,7 +152,6 @@ namespace PanCardView.Controls
 
             if (isAvailable && (IsUserInteractionRunning || IsAutoInteractionRunning))
             {
-                IsEnabled = isAvailable;
                 IsVisible = true;
 
                 await new AnimationWrapper(v => Opacity = v, Opacity, 1)
@@ -159,7 +159,6 @@ namespace PanCardView.Controls
                 return;
             }
 
-            IsEnabled = isAvailable;
             _fadeAnimationTokenSource = new CancellationTokenSource();
             var token = _fadeAnimationTokenSource.Token;
 
