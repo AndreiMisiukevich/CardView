@@ -202,9 +202,9 @@ namespace PanCardView
             set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
         }
 
-        protected virtual bool DefaultIsCyclical => false;
-
         protected virtual double DefaultMoveWidthPercentage => 0.325;
+
+        protected virtual bool DefaultIsCyclical => false;
 
         public View CurrentView { get; private set; }
 
