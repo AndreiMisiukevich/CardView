@@ -37,7 +37,7 @@ namespace PanCardViewSample.Views
 		protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
 		{
 			var carousel = container.AsCardsView();
-			return carousel.ItemsSource[0] == item 
+			return carousel[0] == item 
 				           ? RedTemplate 
 				           : GreenTemplate;
 		}

@@ -1,5 +1,7 @@
 ﻿using PanCardView.Controls;
 using Xamarin.Forms;
+using System.Collections;
+using System;
 
 namespace PanCardView.Extensions
 {
@@ -56,6 +58,56 @@ namespace PanCardView.Extensions
                 }
             }
             return index;
+        }
+
+        public static int FindIndex(this IEnumerable collection, object value)
+        {
+            if (collection is IList list)
+            {
+                return list.IndexOf(value);
+            }
+            var searchIndex = 0;
+            foreach (var item in collection)
+            {
+                if (item == value)
+                {
+                    return searchIndex;
+                }
+                ++searchIndex;
+            }
+            return -1;
+        }
+
+        public static object FindValue(this IEnumerable collection, int index)
+        {
+            if (collection is IList list)
+            {
+                return list[index];
+            }
+            var searchIndex = 0;
+            foreach (var item in collection)
+            {
+                if (searchIndex == index)
+                {
+                    return item;
+                }
+                ++searchIndex;
+            }
+            throw new IndexOutOfRangeException();
+        }
+
+        public static int Count(this IEnumerable collection)
+        {
+            if (collection is ICollection list)
+            {
+                return list.Count;
+            }
+            var searchIndex = 0;
+            foreach (var item in collection)
+            {
+                ++searchIndex;
+            }
+            return searchIndex;
         }
     }
 }

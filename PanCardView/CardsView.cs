@@ -38,12 +38,12 @@ namespace PanCardView
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(CardsView), null, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
         {
             var view = bindable.AsCardsView();
-            view.SelectedIndex = view.ItemsSource?.IndexOf(newValue) ?? -1;
+            view.SelectedIndex = view.ItemsSource?.FindIndex(newValue) ?? -1;
         });
 
-        public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IList), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(CardsView), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().SetItemsCount();
+            bindable.AsCardsView().SetItemsSource(oldValue as IEnumerable);
         });
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), propertyChanged: (bindable, oldValue, newValue) =>
@@ -149,7 +149,6 @@ namespace PanCardView
         private IEnumerable<View> _currentInactiveBackViews = Enumerable.Empty<View>();
 
         private AnimationDirection _currentBackAnimationDirection;
-        private INotifyCollectionChanged _currentObservableCollection;
 
         private int _viewsChildrenCount;
         private int _inCoursePanDelay;
@@ -224,9 +223,9 @@ namespace PanCardView
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public IList ItemsSource
+        public IEnumerable ItemsSource
         {
-            get => GetValue(ItemsSourceProperty) as IList;
+            get => GetValue(ItemsSourceProperty) as IEnumerable;
             set => SetValue(ItemsSourceProperty, value);
         }
 
@@ -422,6 +421,8 @@ namespace PanCardView
             set => SetValue(ItemSwipedCommandProperty, value);
         }
 
+        public object this[int index] => ItemsSource?.FindValue(index);
+
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         => OnPanUpdated(e);
 
@@ -572,7 +573,7 @@ namespace PanCardView
                 return;
             }
 
-            SelectedItem = ItemsSource[index];
+            SelectedItem = this[index];
         }
 
         protected virtual async void AdjustSlideShow(bool isForceStop = false)
@@ -1227,7 +1228,7 @@ namespace PanCardView
                 return null;
             }
 
-            return ItemsSource[index];
+            return this[index];
         }
 
         private bool CheckContextAssigned(View view)
@@ -1245,7 +1246,7 @@ namespace PanCardView
                 index = index.ToCyclingIndex(ItemsCount);
             }
             return index >= 0 && index < ItemsCount
-                ? ItemsSource[index]
+                ? this[index]
                     : null;
         }
 
@@ -1277,16 +1278,15 @@ namespace PanCardView
             }
         }
 
-        private void SetItemsCount()
+        private void SetItemsSource(IEnumerable oldCollection)
         {
-            if (_currentObservableCollection != null)
+            if (oldCollection is INotifyCollectionChanged oldObservableCollection)
             {
-                _currentObservableCollection.CollectionChanged -= OnObservableCollectionChanged;
+                oldObservableCollection.CollectionChanged -= OnObservableCollectionChanged;
             }
 
             if (ItemsSource is INotifyCollectionChanged observableCollection)
             {
-                _currentObservableCollection = observableCollection;
                 observableCollection.CollectionChanged += OnObservableCollectionChanged;
             }
 
@@ -1295,7 +1295,7 @@ namespace PanCardView
 
         private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ItemsCount = ItemsSource?.Count ?? -1;
+            ItemsCount = ItemsSource?.Count() ?? -1;
 
             ShouldSetIndexAfterPan = IsUserInteractionRunning;
             if (!IsUserInteractionRunning)
@@ -1319,7 +1319,7 @@ namespace PanCardView
             {
                 for (var i = 0; i < ItemsCount; ++i)
                 {
-                    if (ItemsSource[i] == GetItem(CurrentView))
+                    if (this[i] == GetItem(CurrentView))
                     {
                         index = i;
                         isCurrentContextPresent = true;
