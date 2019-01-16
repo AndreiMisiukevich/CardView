@@ -11,8 +11,10 @@ namespace PanCardView
         public CarouselView(ICardProcessor frontViewProcessor, ICardProcessor backViewProcessor) : base(frontViewProcessor, backViewProcessor)
         {
             IsClippedToBounds = true;
-            IsCyclical = true;
-            MoveWidthPercentage = .3;
         }
+
+        protected override double DefaultMoveWidthPercentage => .3;
+
+        protected override bool DefaultIsCyclical => true;
     }
 }
