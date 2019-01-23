@@ -33,6 +33,7 @@ You are able to setup CarouselView control, that is based on CardsView
 |Xamarin.iOS|8.0+|
 |Xamarin.Android|15+|
 |Windows 10 UWP|10.0.10240+|
+|MacOS|10.12+|
 
 ## Custom Animations
 You are able to create custom animations, just implement ICardProcessor or extend created processors (change animation speed or type)
