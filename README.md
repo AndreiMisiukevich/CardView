@@ -26,9 +26,9 @@ You are able to setup CarouselView control, that is based on CardsView
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
 * Add nuget package to your Xamarin.Forms .netStandard/PCL project and to your platform-specific projects
-* Just in case add 
-- **CardsViewRenderer.Preserve()** for **iOS** AppDelegate in **FinishedLaunching**
-- **new CardsViewRenderer()** for **Android** MainActivity in **OnCreate**
+* Just in case add:
+  - **CardsViewRenderer.Preserve()** for **iOS** AppDelegate in **FinishedLaunching**
+  - **new CardsViewRenderer()** for **Android** MainActivity in **OnCreate**
 
 |Platform|Version|
 | ------------------- | ------------------- |
