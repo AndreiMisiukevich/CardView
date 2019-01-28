@@ -34,6 +34,10 @@ namespace PanCardView.Droid
         {
         }
 
+        public static void Preserve()
+        {
+        }
+
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
             DetectEvent(ev);
