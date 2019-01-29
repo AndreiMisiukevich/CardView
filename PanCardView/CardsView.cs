@@ -152,13 +152,12 @@ namespace PanCardView
 
         private int _viewsChildrenCount;
         private int _inCoursePanDelay;
-        private double _parentWidth;
-        private double _parentHeight;
         private bool _isPanEndRequested = true;
         private bool _shouldSkipTouch;
         private bool _isViewsInited;
         private bool _hasRenderer;
         private bool? _shouldScrollParent;
+        private Size _parentSize;
         private DateTime _lastPanTime;
         private CancellationTokenSource _slideshowTokenSource;
 
@@ -717,8 +716,8 @@ namespace PanCardView
                 }
                 if (_isViewsInited &&
                     isValidParentSize &&
-                    Abs(_parentWidth - parerntWidth) > double.Epsilon &&
-                    Abs(_parentHeight - parentHeight) > double.Epsilon)
+                    Abs(_parentSize.Width - parerntWidth) > double.Epsilon &&
+                    Abs(_parentSize.Height - parentHeight) > double.Epsilon)
                 {
                     StoreParentSize(parerntWidth, parentHeight);
                     OnSizeChanged();
@@ -750,10 +749,7 @@ namespace PanCardView
         }
 
         private void StoreParentSize(double width, double height)
-        {
-            _parentWidth = width;
-            _parentHeight = height;
-        }
+        => _parentSize = new Size(width, height);
 
         private void SetPanGesture(bool _isForceRemove = false)
         {
