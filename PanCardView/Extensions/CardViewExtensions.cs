@@ -14,9 +14,6 @@ namespace PanCardView.Extensions
         => bindable as CarouselView;
 
 #pragma warning disable
-        public static SceneView AsSceneView(this BindableObject bindable)
-        => bindable as SceneView;
-
         public static CoverFlowView AsCoverFlowView(this BindableObject bindable)
         => bindable as CoverFlowView;
 #pragma warning restore
