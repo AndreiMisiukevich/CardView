@@ -1105,7 +1105,7 @@ namespace PanCardView
         {
             var view = CurrentView;
             CurrentView = CurrentBackViews.FirstOrDefault();
-            CurrentBackViews = CurrentBackViews.Except(Enumerable.Repeat(CurrentView, 1)).Union(Enumerable.Repeat(view, 1));
+            CurrentBackViews = Enumerable.Repeat(view, 1).Union(CurrentBackViews.Except(Enumerable.Repeat(CurrentView, 1)));
 
             if (isNext)
             {
