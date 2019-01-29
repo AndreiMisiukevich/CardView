@@ -16,7 +16,8 @@ namespace PanCardView.Processors
 
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
-            foreach(var view in views?.Where(v => v != null) ?? Enumerable.Empty<View>())
+            var view = views.FirstOrDefault();
+            if(view != null)
             {
                 view.TranslationX = Sign((int)animationDirection) * cardsView.Width;
                 view.IsVisible = false;
