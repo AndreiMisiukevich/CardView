@@ -10,4 +10,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ViewModels\CoverFlowViewModel.cs" />
+    <Compile Remove="Views\CoverFlowSampleView.cs" />
+  </ItemGroup>
 </Project>

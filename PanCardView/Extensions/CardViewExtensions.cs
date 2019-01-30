@@ -12,11 +12,10 @@ namespace PanCardView.Extensions
 
         public static CarouselView AsCarouselView(this BindableObject bindable)
         => bindable as CarouselView;
-
-#pragma warning disable
+            
         public static CoverFlowView AsCoverFlowView(this BindableObject bindable)
         => bindable as CoverFlowView;
-#pragma warning restore
+
         public static IndicatorsControl AsIndicatorsControl(this BindableObject bindable)
         => bindable as IndicatorsControl;
 

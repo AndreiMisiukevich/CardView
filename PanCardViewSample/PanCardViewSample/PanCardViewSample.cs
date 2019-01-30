@@ -24,7 +24,7 @@ namespace PanCardViewSample
 			var toCoverFlowBtn = new Button { Text = "CoverFlowView" };
             toCoverFlowBtn.Clicked += (sender, e) =>
 			{
-                this.Navigation.PushAsync(new CoverFlowSampleView(Width));
+                this.Navigation.PushAsync(new CoverFlowSampleXamlView());
 			};
 
 			var toCarouselScrollBtn = new Button { Text = "CarouselView scroll" };

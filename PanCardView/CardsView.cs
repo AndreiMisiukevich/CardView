@@ -51,7 +51,7 @@ namespace PanCardView
             bindable.AsCardsView().SetCurrentView();
         });
 
-        public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), 1, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultBackViewsDepth, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsCardsView().SetCurrentView();
         });
@@ -105,9 +105,9 @@ namespace PanCardView
 
         public static readonly BindableProperty AreAnimationsEnabledProperty = BindableProperty.Create(nameof(AreAnimationsEnabled), typeof(bool), typeof(CardsView), true);
 
-        public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), 12);
+        public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultMaxChildrenCount);
 
-        public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), 7);
+        public static readonly BindableProperty DesiredMaxChildrenCountProperty = BindableProperty.Create(nameof(DesiredMaxChildrenCount), typeof(int), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultDesiredMaxChildrenCount);
 
         public static readonly BindableProperty SwipeThresholdDistanceProperty = BindableProperty.Create(nameof(SwipeThresholdDistance), typeof(double), typeof(CardsView), 17.0);
 
@@ -200,9 +200,15 @@ namespace PanCardView
             set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
         }
 
+        protected virtual int DefaultBackViewsDepth => 1;
+
         protected virtual double DefaultMoveWidthPercentage => 0.325;
 
         protected virtual bool DefaultIsCyclical => false;
+
+        protected virtual int DefaultMaxChildrenCount => 12;
+
+        protected virtual int DefaultDesiredMaxChildrenCount => 7;
 
         public View CurrentView { get; private set; }
 
@@ -488,6 +494,38 @@ namespace PanCardView
             FireItemSwiped(swipeDirection, oldIndex);
         }
 
+        protected internal virtual async void SetCurrentView()
+        {
+            if (!_hasRenderer || Parent == null || await TryAutoNavigate())
+            {
+                return;
+            }
+
+            lock (_setCurrentViewLocker)
+            {
+                if (ItemsSource != null)
+                {
+                    var oldView = CurrentView;
+                    CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
+                    var newView = CurrentView;
+
+                    if (CurrentView == null && SelectedIndex >= 0)
+                    {
+                        ShouldIgnoreSetCurrentView = true;
+                        SelectedIndex = -1;
+                    }
+                    else if (SelectedIndex != OldIndex)
+                    {
+                        var isNextSelected = SelectedIndex > OldIndex;
+                        FireItemDisappearing(InteractionType.User, isNextSelected, OldIndex);
+                        FireItemAppearing(InteractionType.User, isNextSelected, SelectedIndex);
+                    }
+
+                    SetupBackViews();
+                }
+            }
+        }
+
         protected virtual void OnSizeChanged()
         {
             if (CurrentView != null && ItemTemplate != null)
@@ -527,38 +565,6 @@ namespace PanCardView
             {
                 SetLayoutBounds(view, new Rectangle(0, 0, 1, 1));
                 SetLayoutFlags(view, AbsoluteLayoutFlags.All);
-            }
-        }
-
-        protected virtual async void SetCurrentView()
-        {
-            if (!_hasRenderer || Parent == null || await TryAutoNavigate())
-            {
-                return;
-            }
-
-            lock (_setCurrentViewLocker)
-            {
-                if (ItemsSource != null)
-                {
-                    var oldView = CurrentView;
-                    CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
-                    var newView = CurrentView;
-
-                    if (CurrentView == null && SelectedIndex >= 0)
-                    {
-                        ShouldIgnoreSetCurrentView = true;
-                        SelectedIndex = -1;
-                    }
-                    else if (SelectedIndex != OldIndex)
-                    {
-                        var isNextSelected = SelectedIndex > OldIndex;
-                        FireItemDisappearing(InteractionType.User, isNextSelected, OldIndex);
-                        FireItemAppearing(InteractionType.User, isNextSelected, SelectedIndex);
-                    }
-
-                    SetupBackViews();
-                }
             }
         }
 
