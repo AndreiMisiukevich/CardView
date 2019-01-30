@@ -1,4 +1,5 @@
-﻿using PanCardView.Extensions;
+﻿using System.Threading.Tasks;
+using PanCardView.Extensions;
 using PanCardView.Processors;
 using Xamarin.Forms;
 
@@ -41,5 +42,11 @@ namespace PanCardView
         protected override int DefaultMaxChildrenCount => 17;
 
         protected override int DefaultDesiredMaxChildrenCount => 12;
+
+        protected override Task<bool> TryAutoNavigate()
+        => Task.FromResult(false);
+
+        protected override void OnCleanView(View view)
+        => view.TranslationX = int.MaxValue;
     }
 }

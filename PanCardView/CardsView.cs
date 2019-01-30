@@ -696,6 +696,10 @@ namespace PanCardView
 
         protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
 
+        protected virtual void OnCleanView(View view)
+        {
+        }
+
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
@@ -1279,6 +1283,7 @@ namespace PanCardView
         {
             if (CheckContextAssigned(view))
             {
+                OnCleanView(view);
                 view.Behaviors.Remove(_contextAssignedBehavior);
                 view.BindingContext = null;
             }
