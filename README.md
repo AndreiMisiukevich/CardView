@@ -23,6 +23,17 @@ You are able to setup CarouselView control, that is based on CardsView
 </p>
 </html>
 
+## CoverFlowView
+Also you can setup CoverFlowView control, that is based on CarouselView
+
+<html>
+<p align="center">
+  <img src="https://media.giphy.com/media/1dH0dPqdPHwkDadmAx/giphy.gif">
+</p>
+</html>
+
+CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CoverFlowSampleXamlView.xaml
+
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
 * Add nuget package to your Xamarin.Forms .netStandard/PCL project and to your platform-specific projects
