@@ -171,7 +171,7 @@ Check these classes (I implemented it for ParentScrollView. You can use it as ex
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/ParentScrollView.cs
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
 
--> If you want to put your cardsView/carouselView INTO a ```TabbedPage``` on Android:
+-> If you want to put your cardsView/carouselView INTO a ```TabbedPage``` on **Android**:
 1) Add an event handler for the ``` UserInteraction ``` event
 2) On ``` UserInteractionStatus.Started ```: Disable TabbedPage Swipe Scrolling
 3) On ``` UserInteractionStatus.Ending/Ended ```: Enabled TabbedPage Swipe Scrolling
