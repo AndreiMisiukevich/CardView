@@ -207,7 +207,6 @@ public PageWithCarouselView()
     InitializeComponent();
 
     carouselView.UserInteracted += CarouselView_UserInteracted;
-
 }
 
 private void CarouselView_UserInteracted(PanCardView.CardsView view, PanCardView.EventArgs.UserInteractedEventArgs args)
