@@ -171,6 +171,57 @@ Check these classes (I implemented it for ParentScrollView. You can use it as ex
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/ParentScrollView.cs
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
 
+-> If you want to put your cardsView/carouselView INTO a ```TabbedPage``` on **Android**:
+1) Add an event handler for the ``` UserInteraction ``` event
+2) On ``` UserInteractionStatus.Started ```: Disable TabbedPage Swipe Scrolling
+3) On ``` UserInteractionStatus.Ending/Ended ```: Enabled TabbedPage Swipe Scrolling
+
+Example:
+1) TabbedPage:
+``` csharp
+public partial class TabbedHomePage : Xamarin.Forms.TabbedPage
+{
+    public static TabbedHomePage Current { get; private set; }
+
+    public TabbedHomePage()
+    {
+        Current = this;
+    }
+
+    public static void DisableSwipe()
+    {
+        Current.On<Android>().DisableSwipePaging();
+    }
+    
+    public static void EnableSwipe()
+    {
+        Current.On<Android>().EnableSwipePaging();
+    }
+}
+```
+
+2) Page with CardsView/CarouselView:
+``` csharp
+public PageWithCarouselView()
+{
+    InitializeComponent();
+
+    carouselView.UserInteracted += CarouselView_UserInteracted;
+}
+
+private void CarouselView_UserInteracted(PanCardView.CardsView view, PanCardView.EventArgs.UserInteractedEventArgs args)
+{
+    if (args.Status == PanCardView.Enums.UserInteractionStatus.Started)
+    {
+        TabbedHomePage.DisableSwipe();
+    }
+    if (args.Status == PanCardView.Enums.UserInteractionStatus.Ended)
+    {
+        TabbedHomePage.EnableSwipe();
+    }
+}
+```
+
 -> If you don't want to handle vertical swipes or they interrupt your scrolling, you can set **VerticalSwipeThresholdDistance = "2000"** This property responds for vertical swipe detecting threshold
 
 -> If all these tricks didn't help you, you may use **IsPanInteractionEnabled = false** This trick disables pan interaction, but preserve ability to swipe cards.
