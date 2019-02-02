@@ -21,7 +21,7 @@ namespace PanCardView
         {
         }
 
-        public CoverFlowView(ICardProcessor frontViewProcessor, ICardProcessor backViewProcessor) : base(frontViewProcessor, backViewProcessor)
+        public CoverFlowView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor) : base(frontViewProcessor, backViewProcessor)
         {
         }
 
@@ -45,8 +45,5 @@ namespace PanCardView
 
         protected override Task<bool> TryAutoNavigate()
         => Task.FromResult(false);
-
-        protected override void OnCleanView(View view)
-        => view.TranslationX = int.MaxValue;
     }
 }

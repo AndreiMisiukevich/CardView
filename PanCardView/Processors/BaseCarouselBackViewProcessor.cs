@@ -8,7 +8,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseCarouselBackViewProcessor : ICardProcessor
+    public class BaseCarouselBackViewProcessor : ICardBackViewProcessor
     {
         public uint AnimationLength { get; set; } = 300;
 
@@ -23,6 +23,9 @@ namespace PanCardView.Processors
                 view.IsVisible = false;
             }
         }
+
+        public virtual void HandleCleanView(IEnumerable<View> views, CardsView cardsView)
+        => HandleInitView(views, cardsView, AnimationDirection.Null);
 
         public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {

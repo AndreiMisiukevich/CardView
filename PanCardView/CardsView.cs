@@ -165,7 +165,7 @@ namespace PanCardView
         {
         }
 
-        public CardsView(ICardProcessor frontViewProcessor, ICardProcessor backViewProcessor)
+        public CardsView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
         {
             FrontViewProcessor = frontViewProcessor;
             BackViewProcessor = backViewProcessor;
@@ -218,7 +218,7 @@ namespace PanCardView
 
         public ICardProcessor FrontViewProcessor { get; }
 
-        public ICardProcessor BackViewProcessor { get; }
+        public ICardBackViewProcessor BackViewProcessor { get; }
 
         public int SelectedIndex
         {
@@ -464,16 +464,17 @@ namespace PanCardView
 
         public void OnSwiped(ItemSwipeDirection swipeDirection)
         {
-            if (!IsUserInteractionEnabled)
+            if (!IsUserInteractionEnabled || !_isPanEndRequested || !CheckInteractionDelay())
             {
                 return;
             }
+            _lastPanTime = DateTime.UtcNow;
 
             var oldIndex = SelectedIndex;
             if ((int)swipeDirection < 2)
             {
                 var isLeftSwiped = swipeDirection == ItemSwipeDirection.Left;
-                var haveItems = (isLeftSwiped && NextViews.Any()) || ((!isLeftSwiped && PrevViews.Any()));
+                var haveItems = (isLeftSwiped && NextViews.Any()) || (!isLeftSwiped && PrevViews.Any());
                 var isAndroid = Device.RuntimePlatform == Device.Android;
 
                 if (IsPanSwipeEnabled && haveItems && isAndroid)
@@ -696,10 +697,6 @@ namespace PanCardView
 
         protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
 
-        protected virtual void OnCleanView(View view)
-        {
-        }
-
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
@@ -846,8 +843,7 @@ namespace PanCardView
                 return;
             }
 
-            var deltaTime = DateTime.Now - _lastPanTime;
-            if (!IsUserInteractionEnabled || deltaTime.TotalMilliseconds < UserInteractionDelay || CurrentView == null)
+            if (!CheckInteractionDelay())
             {
                 _shouldSkipTouch = true;
                 return;
@@ -874,7 +870,7 @@ namespace PanCardView
 
             _timeDiffItems.Add(new TimeDiffItem
             {
-                Time = DateTime.Now,
+                Time = DateTime.UtcNow,
                 Diff = 0
             });
         }
@@ -905,7 +901,7 @@ namespace PanCardView
                 return;
             }
 
-            _lastPanTime = DateTime.Now;
+            _lastPanTime = DateTime.UtcNow;
             var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
             interactionItem.State = InteractionState.Removing;
             if (interactionItem.Id == default(Guid))
@@ -1006,6 +1002,9 @@ namespace PanCardView
             _interactions.Remove(gestureId);
         }
 
+        private bool CheckInteractionDelay()
+            => IsUserInteractionEnabled && Abs((DateTime.UtcNow - _lastPanTime).TotalMilliseconds) >= UserInteractionDelay && CurrentView != null;
+
         private bool? CheckPanSwipe()
         {
             if (!IsPanSwipeEnabled)
@@ -1038,7 +1037,7 @@ namespace PanCardView
 
         private void SetupDiffItems(double diff)
         {
-            var timeNow = DateTime.Now;
+            var timeNow = DateTime.UtcNow;
 
             if (_timeDiffItems.Count >= 25)
             {
@@ -1283,7 +1282,7 @@ namespace PanCardView
         {
             if (CheckContextAssigned(view))
             {
-                OnCleanView(view);
+                BackViewProcessor.HandleCleanView(Enumerable.Repeat(view, 1), this);
                 view.Behaviors.Remove(_contextAssignedBehavior);
                 view.BindingContext = null;
             }

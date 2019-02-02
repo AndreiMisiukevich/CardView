@@ -2,7 +2,7 @@
 
 namespace PanCardView.Behaviors
 {
-    public class ContextAssignedBehavior : Behavior<View>
+    public sealed class ContextAssignedBehavior : Behavior<View>
     {
     }
 }

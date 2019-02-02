@@ -9,7 +9,7 @@ using PanCardView.Extensions;
 
 namespace PanCardView.Processors
 {
-    public class BaseCoverFlowBackViewProcessor : ICardProcessor
+    public class BaseCoverFlowBackViewProcessor : ICardBackViewProcessor
     {
         public uint AnimationLength { get; set; } = 300;
 
@@ -22,6 +22,16 @@ namespace PanCardView.Processors
             {
                 ++index;
                 view.TranslationX = Sign((int)animationDirection) * GetStep(cardsView) * index;
+            }
+        }
+
+        public virtual void HandleCleanView(IEnumerable<View> views, CardsView cardsView)
+        {
+            var index = 0;
+            foreach (var view in views?.Where(v => v != null) ?? Enumerable.Empty<View>())
+            {
+                ++index;
+                view.TranslationX = cardsView.Width;
             }
         }
 
