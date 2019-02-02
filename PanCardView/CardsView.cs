@@ -176,30 +176,6 @@ namespace PanCardView
 
         private bool ShouldSetIndexAfterPan { get; set; }
 
-        private IEnumerable<View> PrevViews
-        {
-            get => _prevViews;
-            set => _prevViews = value ?? Enumerable.Empty<View>();
-        }
-
-        private IEnumerable<View> NextViews
-        {
-            get => _nextViews;
-            set => _nextViews = value ?? Enumerable.Empty<View>();
-        }
-
-        private IEnumerable<View> CurrentBackViews
-        {
-            get => _currentBackViews;
-            set => _currentBackViews = value ?? Enumerable.Empty<View>();
-        }
-
-        private IEnumerable<View> CurrentInactiveBackViews
-        {
-            get => _currentInactiveBackViews;
-            set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
-        }
-
         protected virtual int DefaultBackViewsDepth => 1;
 
         protected virtual double DefaultMoveWidthPercentage => 0.325;
@@ -211,6 +187,30 @@ namespace PanCardView
         protected virtual int DefaultDesiredMaxChildrenCount => 7;
 
         public View CurrentView { get; private set; }
+
+        public IEnumerable<View> PrevViews
+        {
+            get => _prevViews;
+            private set => _prevViews = value ?? Enumerable.Empty<View>();
+        }
+
+        public IEnumerable<View> NextViews
+        {
+            get => _nextViews;
+            private set => _nextViews = value ?? Enumerable.Empty<View>();
+        }
+
+        public IEnumerable<View> CurrentBackViews
+        {
+            get => _currentBackViews;
+            private set => _currentBackViews = value ?? Enumerable.Empty<View>();
+        }
+
+        public IEnumerable<View> CurrentInactiveBackViews
+        {
+            get => _currentInactiveBackViews;
+            private set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
+        }
 
         public double CurrentDiff { get; private set; }
 
