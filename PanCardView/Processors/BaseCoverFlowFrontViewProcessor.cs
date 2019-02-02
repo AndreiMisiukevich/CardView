@@ -15,7 +15,7 @@ namespace PanCardView.Processors
 
         public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
-        public double NoItemMaxPanDistance { get; set; } = 25;
+        public double NoItemMaxPanDistance { get; set; } = 0;
 
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
@@ -29,7 +29,6 @@ namespace PanCardView.Processors
         public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
             var view = views.FirstOrDefault();
-            var inactiveView = inactiveViews.FirstOrDefault();
 
             if (Abs(xPos) > GetStep(cardsView) || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
             {

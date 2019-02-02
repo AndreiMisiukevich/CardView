@@ -18,9 +18,13 @@ namespace PanCardView.Processors
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
             var index = 0;
-            foreach (var view in views?.Where(v => v != null) ?? Enumerable.Empty<View>())
+            foreach (var view in views ?? Enumerable.Empty<View>())
             {
                 ++index;
+                if (view == null)
+                {
+                    continue;
+                }
                 view.TranslationX = Sign((int)animationDirection) * GetStep(cardsView) * index;
             }
         }
@@ -28,9 +32,13 @@ namespace PanCardView.Processors
         public virtual void HandleCleanView(IEnumerable<View> views, CardsView cardsView)
         {
             var index = 0;
-            foreach (var view in views?.Where(v => v != null) ?? Enumerable.Empty<View>())
+            foreach (var view in views ?? Enumerable.Empty<View>())
             {
                 ++index;
+                if (view == null)
+                {
+                    continue;
+                }
                 view.TranslationX = cardsView.Width;
             }
         }
@@ -50,7 +58,7 @@ namespace PanCardView.Processors
                 return;
             }
 
-            var otherViews = views.Union(inactiveViews).Except(Enumerable.Repeat(view, 1));
+            var otherViews = views.Union(inactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
             ProceedPositionChanged(Sign((int)animationDirection) * step + xPos, view, otherViews);
         }
 
@@ -62,7 +70,7 @@ namespace PanCardView.Processors
                 return Task.FromResult(false);
             }
 
-            var otherViews = views.Union(inactiveViews).Except(Enumerable.Repeat(view, 1));
+            var otherViews = views.Union(inactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
             return new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews), 0, -Sign((int)animationDirection) * GetStep(cardsView))
                 .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }
@@ -83,7 +91,7 @@ namespace PanCardView.Processors
                 return Task.FromResult(true);
             }
 
-            var otherViews = views.Union(inactiveViews).Except(Enumerable.Repeat(view, 1));
+            var otherViews = views.Union(inactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
             return new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews), view.TranslationX, Sign((int)animationDirection) * step)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
@@ -104,7 +112,7 @@ namespace PanCardView.Processors
                 return Task.FromResult(true);
             }
 
-            var otherViews = views.Union(inactiveViews).Except(Enumerable.Repeat(view, 1));
+            var otherViews = views.Union(inactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
             return new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews), view.TranslationX, -Sign((int)animationDirection) * step)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
@@ -120,8 +128,12 @@ namespace PanCardView.Processors
             var diff = checkView.TranslationX - value;
             checkView.TranslationX = value;
 
-            foreach (var view in views)
+            foreach (var view in views ?? Enumerable.Empty<View>())
             {
+                if(view == null)
+                {
+                    continue;
+                }
                 view.TranslationX -= diff;
             }
         }

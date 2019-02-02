@@ -16,6 +16,7 @@
 
     <cards:CoverFlowView 
         PositionShiftValue="60"
+        IsCyclical="false"
         SelectedIndex="{Binding CurrentIndex}"
         ItemsSource="{Binding Items}">
         <cards:CoverFlowView.ItemTemplate>
