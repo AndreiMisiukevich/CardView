@@ -7,12 +7,12 @@ namespace PanCardView
 {
     public class CoverFlowView : CarouselView
     {
-        public static readonly BindableProperty PositionShiftPercentageProperty = BindableProperty.Create(nameof(PositionShiftPercentage), typeof(double), typeof(CoverFlowView), 1.0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty PositionShiftPercentageProperty = BindableProperty.Create(nameof(PositionShiftPercentage), typeof(double), typeof(CoverFlowView), .0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsCardsView().SetCurrentView();
         });
 
-        public static readonly BindableProperty PositionShiftValueProperty = BindableProperty.Create(nameof(PositionShiftValue), typeof(double), typeof(CoverFlowView), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty PositionShiftValueProperty = BindableProperty.Create(nameof(PositionShiftValue), typeof(double), typeof(CoverFlowView), .0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsCardsView().SetCurrentView();
         });
@@ -25,12 +25,20 @@ namespace PanCardView
         {
         }
 
+        /// <summary>
+        /// Shift to current view percentage (percengate of CoverFlowView.Width)
+        /// </summary>
+        /// <value>The position shift value.</value>
         public double PositionShiftPercentage
         {
             get => (double)GetValue(PositionShiftPercentageProperty);
             set => SetValue(PositionShiftPercentageProperty, value);
         }
 
+        /// <summary>
+        /// Shift to current view in absolute points
+        /// </summary>
+        /// <value>The position shift value.</value>
         public double PositionShiftValue
         {
             get => (double)GetValue(PositionShiftValueProperty);

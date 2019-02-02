@@ -112,7 +112,7 @@ namespace PanCardView.Processors
         private double GetStep(CardsView cardsView)
         {
             var coverFlowView = cardsView.AsCoverFlowView();
-            return cardsView.Width * coverFlowView.PositionShiftPercentage - coverFlowView.PositionShiftValue;
+            return cardsView.Width * (1 - coverFlowView.PositionShiftPercentage) - coverFlowView.PositionShiftValue;
         }
             
         private void ProceedPositionChanged(double value, View checkView, IEnumerable<View> views)
