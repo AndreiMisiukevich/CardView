@@ -54,7 +54,6 @@ namespace PanCardView.Processors
                 return Task.FromResult(false);
             }
 
-            view.IsVisible = true;
             return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
                 .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }

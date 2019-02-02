@@ -631,7 +631,7 @@ namespace PanCardView
             var realDirection = animationDirection;
             if (IsRightToLeftFlowDirectionEnabled)
             {
-                realDirection = ((AnimationDirection)Sign(-(int)realDirection));
+                realDirection = (AnimationDirection)Sign(-(int)realDirection);
             }
 
             var oldView = CurrentView;
@@ -1086,17 +1086,15 @@ namespace PanCardView
             return newIndex;
         }
 
-        private void ResetActiveInactiveBackViews(double diff)
+        private void ResetActiveInactiveBackViews(AnimationDirection animationDirection)
         {
             var activeViews = NextViews;
             var inactiveViews = PrevViews;
-            var animationDirection = AnimationDirection.Next;
 
-            if (diff > 0)
+            if (animationDirection == AnimationDirection.Prev)
             {
                 activeViews = PrevViews;
                 inactiveViews = NextViews;
-                animationDirection = AnimationDirection.Prev;
             }
 
             CurrentBackViews = activeViews;
@@ -1109,6 +1107,9 @@ namespace PanCardView
                 ? inactiveViews
                 : null;
         }
+
+        private void ResetActiveInactiveBackViews(double diff)
+        => ResetActiveInactiveBackViews(diff > 0 ? AnimationDirection.Prev : AnimationDirection.Next);
 
         private void SwapViews(bool isNext)
         {
