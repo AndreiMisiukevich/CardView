@@ -547,10 +547,10 @@ namespace PanCardView
             ForceLayout();
         }
 
-        protected virtual void SetupBackViews()
+        protected virtual void SetupBackViews(int? index = null)
         {
-            SetupNextView();
-            SetupPrevView();
+            SetupNextView(index);
+            SetupPrevView(index);
 
             if (IsRightToLeftFlowDirectionEnabled)
             {
@@ -634,49 +634,48 @@ namespace PanCardView
                 realDirection = (AnimationDirection)Sign(-(int)realDirection);
             }
 
-            var oldView = CurrentView;
-            var newView = PrepareView(SelectedIndex, AnimationDirection.Current, Enumerable.Empty<View>());
-            CurrentView = newView;
+            SetupBackViews(OldIndex);
+            ResetActiveInactiveBackViews(realDirection);
+            SwapViews(realDirection);
 
-            BackViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, realDirection);
-
-            SetupLayout(CurrentView);
-
-            AddChild(oldView, CurrentView);
+            var views = CurrentBackViews
+                .Union(CurrentInactiveBackViews)
+                .Union(Enumerable.Repeat(CurrentView, 1))
+                .Where(x => x != null);
 
             var animationId = Guid.NewGuid();
-            StartAutoNavigation(oldView, animationId, animationDirection);
+
+            StartAutoNavigation(views, animationId, animationDirection);
             var autoNavigationTask = Task.WhenAll(
-                BackViewProcessor.HandleAutoNavigate(Enumerable.Repeat(oldView, 1), this, realDirection, CurrentInactiveBackViews),
+                BackViewProcessor.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews),
                 FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
 
-            if (ItemTemplate != null)
-            {
-                SetupBackViews();
-            }
-
             await autoNavigationTask;
-            EndAutoNavigation(oldView, animationId, animationDirection);
+
+            EndAutoNavigation(views, animationId, animationDirection);
 
             return true;
         }
 
-        protected virtual void SetupNextView()
+        protected virtual void SetupNextView(int? index = null)
         {
+            var realIndex = index ?? SelectedIndex;
             var indeces = new int[BackViewsDepth];
             for (int i = 0; i < indeces.Length; ++i)
             {
-                indeces[i] = SelectedIndex + 1 + i;
+                indeces[i] = realIndex + 1 + i;
             }
 
             NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, indeces);
         }
 
-        protected virtual void SetupPrevView()
+        protected virtual void SetupPrevView(int? index = null)
         {
+            var realIndex = index ?? SelectedIndex;
+
             var prevIndex = IsOnlyForwardDirection
-                ? SelectedIndex + 1
-                : SelectedIndex - 1;
+                ? realIndex + 1
+                : realIndex - 1;
 
 
             var indeces = new int[BackViewsDepth];
@@ -687,7 +686,7 @@ namespace PanCardView
                 {
                     incValue = -incValue;
                 }
-                indeces[i] = SelectedIndex + incValue;
+                indeces[i] = realIndex + incValue;
             }
 
             PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, indeces);
@@ -773,9 +772,9 @@ namespace PanCardView
             }
         }
 
-        private void StartAutoNavigation(View oldView, Guid animationId, AnimationDirection animationDirection)
+        private void StartAutoNavigation(IEnumerable<View> views, Guid animationId, AnimationDirection animationDirection)
         {
-            if (oldView != null)
+            if (views != null)
             {
                 _interactions.Add(animationId, InteractionType.Auto, InteractionState.Removing);
                 IsAutoInteractionRunning = true;
@@ -785,24 +784,30 @@ namespace PanCardView
                 }
                 lock (_viewsInUseLocker)
                 {
-                    _viewsInUse.Add(oldView);
+                    foreach(var view in views)
+                    {
+                        _viewsInUse.Add(view);
+                    }
                 }
                 FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, OldIndex);
             }
         }
 
-        private void EndAutoNavigation(View oldView, Guid animationId, AnimationDirection animationDirection)
+        private void EndAutoNavigation(IEnumerable<View> views, Guid animationId, AnimationDirection animationDirection)
         {
             _inCoursePanDelay = 0;
-            if (oldView != null)
+            if (views != null)
             {
                 lock (_viewsInUseLocker)
                 {
-                    _viewsInUse.Remove(oldView);
-                    CleanView(oldView);
+                    foreach (var view in views)
+                    {
+                        _viewsInUse.Remove(view);
+                    }
                 }
             }
             IsAutoInteractionRunning = false;
+
             var isProcessingNow = !_interactions.CheckLastId(animationId);
             RemoveRedundantChildren(isProcessingNow);
             FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
@@ -964,9 +969,6 @@ namespace PanCardView
                 );
             }
 
-            var oldView = CurrentBackViews.FirstOrDefault();
-            var newView = CurrentView;
-
             FireUserInteracted(UserInteractionStatus.Ending, diff, oldIndex);
             if (isNextSelected.HasValue)
             {
@@ -1126,6 +1128,9 @@ namespace PanCardView
             PrevViews = NextViews;
             NextViews = CurrentBackViews;
         }
+
+        private void SwapViews(AnimationDirection animationDirection)
+        => SwapViews(animationDirection == AnimationDirection.Next);
 
         private IEnumerable<View> GetViews(AnimationDirection animationDirection, ICardProcessor processor, params int[] indeces)
         {

@@ -23,6 +23,7 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 view.TranslationX = 0;
+                view.IsVisible = true;
             }
         }
 

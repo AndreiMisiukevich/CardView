@@ -25,7 +25,10 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
+                view.BatchBegin();
                 view.TranslationX = Sign((int)animationDirection) * GetStep(cardsView) * index;
+                view.IsVisible = true;
+                view.BatchCommit();
             }
         }
 
@@ -39,7 +42,10 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
+                view.BatchBegin();
                 view.TranslationX = cardsView.Width;
+                view.IsVisible = false;
+                view.BatchCommit();
             }
         }
 

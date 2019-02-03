@@ -19,13 +19,22 @@ namespace PanCardView.Processors
             var view = views.FirstOrDefault();
             if(view != null)
             {
+                view.BatchBegin();
                 view.TranslationX = Sign((int)animationDirection) * cardsView.Width;
                 view.IsVisible = false;
+                view.BatchCommit();
             }
         }
 
         public virtual void HandleCleanView(IEnumerable<View> views, CardsView cardsView)
-        => HandleInitView(views, cardsView, AnimationDirection.Null);
+        {
+            var view = views.FirstOrDefault();
+            if (view != null)
+            {
+                view.IsVisible = false;
+                view.TranslationX = cardsView.Width;
+            }
+        }
 
         public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
