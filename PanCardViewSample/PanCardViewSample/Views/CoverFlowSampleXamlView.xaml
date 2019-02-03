@@ -17,6 +17,8 @@
     <cards:CoverFlowView 
         PositionShiftValue="60"
         IsCyclical="false"
+        IsAutoInteractionRunning="{Binding IsAutoAnimationRunning}"
+        IsUserInteractionRunning="{Binding IsUserInteractionRunning}"
         SelectedIndex="{Binding CurrentIndex}"
         ItemsSource="{Binding Items}">
         <cards:CoverFlowView.ItemTemplate>

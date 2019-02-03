@@ -28,6 +28,11 @@ namespace PanCardViewSample.ViewModels
 
 			PanPositionChangedCommand = new Command(v =>
 			{
+                if(IsAutoAnimationRunning || IsUserInteractionRunning)
+                {
+                    return;
+                }
+
                 var index = CurrentIndex + ((bool)v ? 1 : -1);
                 if (index < 0 || index >= Items.Count)
                 {
@@ -60,7 +65,11 @@ namespace PanCardViewSample.ViewModels
 			}
 		}
 
-		public ObservableCollection<object> Items { get; }
+        public bool IsAutoAnimationRunning { get; set; }
+
+        public bool IsUserInteractionRunning { get; set; }
+
+        public ObservableCollection<object> Items { get; }
 
 		private string CreateSource()
 		{

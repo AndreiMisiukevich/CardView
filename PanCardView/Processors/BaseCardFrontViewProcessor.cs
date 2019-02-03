@@ -104,12 +104,14 @@ namespace PanCardView.Processors
         {
             if (view != null)
             {
+                view.BatchBegin();
                 view.Scale = 1;
                 view.Opacity = 1;
                 view.TranslationX = 0;
                 view.Rotation = 0;
                 view.TranslationY = 0;
                 view.IsVisible = isVisible;
+                view.BatchCommit();
             }
         }
 

@@ -549,8 +549,10 @@ namespace PanCardView
 
         protected virtual void SetupBackViews(int? index = null)
         {
-            SetupNextView(index);
-            SetupPrevView(index);
+            var realIndex = index ?? SelectedIndex;
+
+            SetupNextView(realIndex);
+            SetupPrevView(realIndex);
 
             if (IsRightToLeftFlowDirectionEnabled)
             {
@@ -634,9 +636,11 @@ namespace PanCardView
                 realDirection = (AnimationDirection)Sign(-(int)realDirection);
             }
 
+            var oldView = CurrentView;
             SetupBackViews(OldIndex);
             ResetActiveInactiveBackViews(realDirection);
             SwapViews(realDirection);
+            AddChild(oldView, CurrentView);
 
             var views = CurrentBackViews
                 .Union(CurrentInactiveBackViews)
@@ -644,8 +648,8 @@ namespace PanCardView
                 .Where(x => x != null);
 
             var animationId = Guid.NewGuid();
-
             StartAutoNavigation(views, animationId, animationDirection);
+            await Task.Delay(5);
             var autoNavigationTask = Task.WhenAll(
                 BackViewProcessor.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews),
                 FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
@@ -657,25 +661,22 @@ namespace PanCardView
             return true;
         }
 
-        protected virtual void SetupNextView(int? index = null)
+        protected virtual void SetupNextView(int index)
         {
-            var realIndex = index ?? SelectedIndex;
             var indeces = new int[BackViewsDepth];
             for (int i = 0; i < indeces.Length; ++i)
             {
-                indeces[i] = realIndex + 1 + i;
+                indeces[i] = index + 1 + i;
             }
 
             NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, indeces);
         }
 
-        protected virtual void SetupPrevView(int? index = null)
+        protected virtual void SetupPrevView(int index)
         {
-            var realIndex = index ?? SelectedIndex;
-
             var prevIndex = IsOnlyForwardDirection
-                ? realIndex + 1
-                : realIndex - 1;
+                ? index + 1
+                : index - 1;
 
 
             var indeces = new int[BackViewsDepth];
@@ -686,7 +687,7 @@ namespace PanCardView
                 {
                     incValue = -incValue;
                 }
-                indeces[i] = realIndex + incValue;
+                indeces[i] = index + incValue;
             }
 
             PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, indeces);
@@ -795,20 +796,29 @@ namespace PanCardView
 
         private void EndAutoNavigation(IEnumerable<View> views, Guid animationId, AnimationDirection animationDirection)
         {
+            var isProcessingNow = !_interactions.CheckLastId(animationId);
+
             _inCoursePanDelay = 0;
             if (views != null)
             {
                 lock (_viewsInUseLocker)
                 {
+                    var depth = BackViewsDepth;
                     foreach (var view in views)
                     {
                         _viewsInUse.Remove(view);
+                        if (isProcessingNow &&
+                            !_viewsInUse.Contains(view) &&
+                            depth <= 1 &&
+                            view != CurrentView)
+                        {
+                            CleanView(view);
+                        }
                     }
                 }
             }
-            IsAutoInteractionRunning = false;
 
-            var isProcessingNow = !_interactions.CheckLastId(animationId);
+            IsAutoInteractionRunning = false;
             RemoveRedundantChildren(isProcessingNow);
             FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
             _interactions.Remove(animationId);
