@@ -507,7 +507,7 @@ namespace PanCardView
                 if (ItemsSource != null)
                 {
                     var oldView = CurrentView;
-                    CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, SelectedIndex).FirstOrDefault();
+                    CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
                     var newView = CurrentView;
 
                     if (CurrentView == null && SelectedIndex >= 0)
@@ -661,38 +661,6 @@ namespace PanCardView
             return true;
         }
 
-        protected virtual void SetupNextView(int index)
-        {
-            var indeces = new int[BackViewsDepth];
-            for (int i = 0; i < indeces.Length; ++i)
-            {
-                indeces[i] = index + 1 + i;
-            }
-
-            NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, indeces);
-        }
-
-        protected virtual void SetupPrevView(int index)
-        {
-            var prevIndex = IsOnlyForwardDirection
-                ? index + 1
-                : index - 1;
-
-
-            var indeces = new int[BackViewsDepth];
-            for (int i = 0; i < indeces.Length; ++i)
-            {
-                var incValue = i + 1;
-                if (!IsOnlyForwardDirection)
-                {
-                    incValue = -incValue;
-                }
-                indeces[i] = index + incValue;
-            }
-
-            PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, indeces);
-        }
-
         protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
 
         protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
@@ -753,6 +721,35 @@ namespace PanCardView
         {
             base.OnParentSet();
             SetCurrentView();
+        }
+
+        private void SetupNextView(int index)
+        {
+            var indeces = new int[BackViewsDepth];
+            for (int i = 0; i < indeces.Length; ++i)
+            {
+                indeces[i] = index + 1 + i;
+            }
+
+            NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, Enumerable.Repeat(CurrentView, 1), indeces);
+        }
+
+        private void SetupPrevView(int index)
+        {
+            var isForwardOnly = IsOnlyForwardDirection;
+
+            var indeces = new int[BackViewsDepth];
+            for (int i = 0; i < indeces.Length; ++i)
+            {
+                var incValue = i + 1;
+                if (!isForwardOnly)
+                {
+                    incValue = -incValue;
+                }
+                indeces[i] = index + incValue;
+            }
+
+            PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, Enumerable.Repeat(CurrentView, 1).Union(NextViews), indeces);
         }
 
         private void StoreParentSize(double width, double height)
@@ -1142,13 +1139,18 @@ namespace PanCardView
         private void SwapViews(AnimationDirection animationDirection)
         => SwapViews(animationDirection == AnimationDirection.Next);
 
-        private IEnumerable<View> GetViews(AnimationDirection animationDirection, ICardProcessor processor, params int[] indeces)
+        private IEnumerable<View> GetViews(AnimationDirection animationDirection, ICardProcessor processor, IEnumerable<View> bookedViews, params int[] indeces)
         {
             var views = new View[indeces.Length];
 
             for (int i = 0; i < indeces.Length; ++i)
             {
-                views[i] = PrepareView(indeces[i], animationDirection, views);
+                var view = PrepareView(indeces[i], animationDirection, bookedViews);
+                views[i] = view;
+                if(view != null)
+                {
+                    bookedViews = bookedViews.Union(Enumerable.Repeat(view, 1));
+                }
             }
 
             if (views.All(x => x == null))
@@ -1210,17 +1212,14 @@ namespace PanCardView
             List<View> viewsList;
             if (!_viewsPool.TryGetValue(template, out viewsList))
             {
-                viewsList = new List<View>
-                {
-                    template.CreateView()
-                };
+                viewsList = new List<View>();
                 _viewsPool.Add(template, viewsList);
             }
 
-            var notUsingViews = viewsList.Where(v => !_viewsInUse.Contains(v));
+            var notUsingViews = viewsList.Where(v => !_viewsInUse.Contains(v) && !bookedViews.Contains(v));
             var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context || v == context)
                                     ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
-                                    ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v) && !bookedViews.Contains(v));
+                                    ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
 
             if (view == null)
             {
