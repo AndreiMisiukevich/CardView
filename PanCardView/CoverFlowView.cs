@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Specialized;
+using System.Threading.Tasks;
 using PanCardView.Extensions;
 using PanCardView.Processors;
 using Xamarin.Forms;
@@ -16,6 +17,8 @@ namespace PanCardView
         {
             bindable.AsCardsView().SetCurrentView();
         });
+
+        private bool _shouldSkipAutonavigationAnimation;
 
         public CoverFlowView() : this(new BaseCoverFlowFrontViewProcessor(), new BaseCoverFlowBackViewProcessor())
         {
@@ -50,5 +53,21 @@ namespace PanCardView
         protected override int DefaultMaxChildrenCount => 17;
 
         protected override int DefaultDesiredMaxChildrenCount => 12;
+
+        protected override void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (sender != null)
+            {
+                _shouldSkipAutonavigationAnimation = true;
+            }
+            base.OnObservableCollectionChanged(sender, e);
+        }
+
+        protected internal override void SetCurrentView(bool isHardSet = false)
+        {
+            isHardSet = _shouldSkipAutonavigationAnimation;
+            _shouldSkipAutonavigationAnimation = false;
+            base.SetCurrentView(isHardSet);
+        }
     }
 }

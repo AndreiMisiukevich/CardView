@@ -495,9 +495,9 @@ namespace PanCardView
             FireItemSwiped(swipeDirection, oldIndex);
         }
 
-        protected internal virtual async void SetCurrentView()
+        protected internal virtual async void SetCurrentView(bool isHardSet = false)
         {
-            if (!_hasRenderer || Parent == null || await TryAutoNavigate())
+            if (!isHardSet && (!_hasRenderer || Parent == null || await TryAutoNavigate()))
             {
                 return;
             }
@@ -524,6 +524,11 @@ namespace PanCardView
 
                     SetupBackViews();
                 }
+            }
+
+            if (isHardSet)
+            {
+                CleanUnprocessingChildren();
             }
         }
 
@@ -659,6 +664,17 @@ namespace PanCardView
             EndAutoNavigation(views, animationId, animationDirection);
 
             return true;
+        }
+
+        protected virtual void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            ItemsCount = ItemsSource?.Count() ?? -1;
+
+            ShouldSetIndexAfterPan = IsUserInteractionRunning;
+            if (!IsUserInteractionRunning)
+            {
+                SetNewIndex();
+            }
         }
 
         protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
@@ -1293,14 +1309,26 @@ namespace PanCardView
             }
         }
 
+        private void CleanUnprocessingChildren()
+        {
+            lock (_childLocker)
+            {
+                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c)).ToArray();
+                foreach (var view in views)
+                {
+                    CleanView(view);
+                }
+            }
+        }
+
         private void CleanView(View view)
         {
             if (CheckContextAssigned(view))
             {
-                BackViewProcessor.HandleCleanView(Enumerable.Repeat(view, 1), this);
                 view.Behaviors.Remove(_contextAssignedBehavior);
                 view.BindingContext = null;
             }
+            BackViewProcessor.HandleCleanView(Enumerable.Repeat(view, 1), this);
         }
 
         private void SetItemsSource(IEnumerable oldCollection)
@@ -1315,18 +1343,7 @@ namespace PanCardView
                 observableCollection.CollectionChanged += OnObservableCollectionChanged;
             }
 
-            OnObservableCollectionChanged(ItemsSource, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
-
-        private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            ItemsCount = ItemsSource?.Count() ?? -1;
-
-            ShouldSetIndexAfterPan = IsUserInteractionRunning;
-            if (!IsUserInteractionRunning)
-            {
-                SetNewIndex();
-            }
+            OnObservableCollectionChanged(oldCollection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         private void SetNewIndex()
@@ -1452,7 +1469,6 @@ namespace PanCardView
             foreach (var view in views)
             {
                 ExecutePreventInvalidOperationException(() => Children.Remove(view));
-
                 CleanView(view);
             }
         }
