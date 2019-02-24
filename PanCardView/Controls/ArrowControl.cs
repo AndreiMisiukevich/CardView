@@ -19,7 +19,7 @@ namespace PanCardView.Controls
             bindable.AsArrowControl().ResetVisibility();
         });
 
-        public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), false, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(ArrowControl), false, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsArrowControl().ResetVisibility();
         });

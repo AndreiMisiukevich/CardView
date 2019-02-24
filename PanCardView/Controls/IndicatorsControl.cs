@@ -48,7 +48,7 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetVisibility();
         });
 
-        public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IList), typeof(IndicatorsControl), null);
+        public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IEnumerable), typeof(IndicatorsControl), null);
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
 
@@ -129,9 +129,9 @@ namespace PanCardView.Controls
             set => SetValue(IsAutoInteractionRunningProperty, value);
         }
 
-        public IList IndicatorsContexts
+        public IEnumerable IndicatorsContexts
         {
-            get => GetValue(IndicatorsContextsProperty) as IList;
+            get => GetValue(IndicatorsContextsProperty) as IEnumerable;
             set => SetValue(IndicatorsContextsProperty, value);
         }
 
@@ -152,6 +152,8 @@ namespace PanCardView.Controls
             get => (int)GetValue(ToFadeDurationProperty);
             set => SetValue(ToFadeDurationProperty, value);
         }
+
+        public object this[int index] => IndicatorsContexts?.FindValue(index);
 
         protected override void OnParentSet()
         {
@@ -182,7 +184,7 @@ namespace PanCardView.Controls
         {
             for (var i = 0; i < Min(Children.Count, ItemsCount); ++i)
             {
-                Children[i].BindingContext = IndicatorsContexts[i];
+                Children[i].BindingContext = this[i];
             }
         }
 
