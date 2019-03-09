@@ -495,8 +495,10 @@ namespace PanCardView
             FireItemSwiped(swipeDirection, oldIndex);
         }
 
-        protected internal virtual async void SetCurrentView(bool isHardSet = false)
+        protected internal virtual async void SetCurrentView()
         {
+            var isHardSet = CheckIsHardSetCurrentView();
+
             if (!isHardSet && (!_hasRenderer || Parent == null || await TryAutoNavigate()))
             {
                 return;
@@ -507,7 +509,7 @@ namespace PanCardView
                 if (ItemsSource != null)
                 {
                     var oldView = CurrentView;
-                    CurrentView = GetViews(AnimationDirection.Current, FrontViewProcessor, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
+                    CurrentView = InitViews(FrontViewProcessor, AnimationDirection.Current, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
                     var newView = CurrentView;
 
                     if (CurrentView == null && SelectedIndex >= 0)
@@ -645,6 +647,7 @@ namespace PanCardView
             SetupBackViews(OldIndex);
             ResetActiveInactiveBackViews(realDirection);
             SwapViews(realDirection);
+            CurrentView = InitViews(null, AnimationDirection.Current, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
             AddChild(oldView, CurrentView);
 
             var views = CurrentBackViews
@@ -680,6 +683,8 @@ namespace PanCardView
         protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
 
         protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
+
+        protected virtual bool CheckIsHardSetCurrentView() => false;
 
         protected override void OnSizeAllocated(double width, double height)
         {
@@ -747,7 +752,7 @@ namespace PanCardView
                 indeces[i] = index + 1 + i;
             }
 
-            NextViews = GetViews(AnimationDirection.Next, BackViewProcessor, Enumerable.Repeat(CurrentView, 1), indeces);
+            NextViews = InitViews(BackViewProcessor, AnimationDirection.Next, Enumerable.Repeat(CurrentView, 1), indeces);
         }
 
         private void SetupPrevView(int index)
@@ -765,7 +770,7 @@ namespace PanCardView
                 indeces[i] = index + incValue;
             }
 
-            PrevViews = GetViews(AnimationDirection.Prev, BackViewProcessor, Enumerable.Repeat(CurrentView, 1).Union(NextViews), indeces);
+            PrevViews = InitViews(BackViewProcessor, AnimationDirection.Prev, Enumerable.Repeat(CurrentView, 1).Union(NextViews), indeces);
         }
 
         private void StoreParentSize(double width, double height)
@@ -1155,13 +1160,13 @@ namespace PanCardView
         private void SwapViews(AnimationDirection animationDirection)
         => SwapViews(animationDirection == AnimationDirection.Next);
 
-        private IEnumerable<View> GetViews(AnimationDirection animationDirection, ICardProcessor processor, IEnumerable<View> bookedViews, params int[] indeces)
+        private IEnumerable<View> InitViews(ICardProcessor processor, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
         {
             var views = new View[indeces.Length];
 
             for (int i = 0; i < indeces.Length; ++i)
             {
-                var view = PrepareView(indeces[i], animationDirection, bookedViews);
+                var view = PrepareView(animationDirection, bookedViews, indeces[i]);
                 views[i] = view;
                 if(view != null)
                 {
@@ -1174,7 +1179,7 @@ namespace PanCardView
                 return Enumerable.Empty<View>();
             }
 
-            processor.HandleInitView(views, this, animationDirection);
+            processor?.HandleInitView(views, this, animationDirection);
 
             SetupLayout(views);
 
@@ -1189,7 +1194,7 @@ namespace PanCardView
             return views;
         }
 
-        private View PrepareView(int index, AnimationDirection animationDirection, IEnumerable<View> bookedViews)
+        private View PrepareView(AnimationDirection animationDirection, IEnumerable<View> bookedViews, int index)
         {
             var context = GetContext(index, animationDirection);
 

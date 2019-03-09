@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using PanCardView.Extensions;
 using PanCardView.Processors;
 using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView
 {
@@ -18,7 +19,7 @@ namespace PanCardView
             bindable.AsCardsView().SetCurrentView();
         });
 
-        private bool _shouldSkipAutonavigationAnimation;
+        private bool _shouldForceHardSetCurrentView;
 
         public CoverFlowView() : this(new BaseCoverFlowFrontViewProcessor(), new BaseCoverFlowBackViewProcessor())
         {
@@ -58,16 +59,38 @@ namespace PanCardView
         {
             if (sender != null)
             {
-                _shouldSkipAutonavigationAnimation = true;
+                _shouldForceHardSetCurrentView = true;
             }
             base.OnObservableCollectionChanged(sender, e);
         }
 
-        protected internal override void SetCurrentView(bool isHardSet = false)
+        protected override bool CheckIsHardSetCurrentView()
         {
-            isHardSet = _shouldSkipAutonavigationAnimation;
-            _shouldSkipAutonavigationAnimation = false;
-            base.SetCurrentView(isHardSet);
+            if (_shouldForceHardSetCurrentView)
+            {
+                _shouldForceHardSetCurrentView = false;
+                return true;
+            }
+
+            var oldIndex = OldIndex;
+            var index = SelectedIndex;
+            var isCyclical = IsCyclical;
+
+            if (isCyclical)
+            {
+                oldIndex = oldIndex.ToCyclingIndex(ItemsCount);
+                index = index.ToCyclingIndex(ItemsCount);
+            }
+
+            var hasFirstElement = Min(oldIndex, index) == 0;
+            var hasLastElement = Max(oldIndex, index) == ItemsCount - 1;
+
+            if (Abs(index - oldIndex) > 1 && (!isCyclical || !hasFirstElement || !hasLastElement))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

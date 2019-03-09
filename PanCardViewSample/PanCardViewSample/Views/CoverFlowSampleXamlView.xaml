@@ -14,32 +14,37 @@
         <viewModels:CardsSampleViewModel/>
     </ContentPage.BindingContext>
 
-    <cards:CoverFlowView 
-        PositionShiftValue="60"
-        IsCyclical="false"
-        IsAutoInteractionRunning="{Binding IsAutoAnimationRunning}"
-        IsUserInteractionRunning="{Binding IsUserInteractionRunning}"
-        SelectedIndex="{Binding CurrentIndex}"
-        ItemsSource="{Binding Items}">
-        <cards:CoverFlowView.ItemTemplate>
-            <DataTemplate>
-                <ContentView Padding="40">
-                    <Frame 
-                        VerticalOptions="Center"
-                        HorizontalOptions="Fill"
-                        HeightRequest="290"
-                        Padding="0" 
-                        HasShadow="false"
-                        IsClippedToBounds="true"
-                        CornerRadius="10"
-                        BackgroundColor="{Binding Color}">
-                        
-                        <ffimage:CachedImage Source="{Binding Source}" Aspect="AspectFill"/> 
-                       
-                    </Frame>
-                </ContentView>
-            </DataTemplate>
-        </cards:CoverFlowView.ItemTemplate>
-    </cards:CoverFlowView>
+    <StackLayout>
+            <cards:CoverFlowView 
+                PositionShiftValue="60"
+                IsCyclical="false"
+                IsAutoInteractionRunning="{Binding IsAutoAnimationRunning}"
+                IsUserInteractionRunning="{Binding IsUserInteractionRunning}"
+                SelectedIndex="{Binding CurrentIndex}"
+                ItemsSource="{Binding Items}">
+            <cards:CoverFlowView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView Padding="40">
+                        <Frame 
+                            VerticalOptions="Center"
+                            HorizontalOptions="Fill"
+                            HeightRequest="290"
+                            Padding="0" 
+                            HasShadow="false"
+                            IsClippedToBounds="true"
+                            CornerRadius="10"
+                            BackgroundColor="{Binding Color}">
+                            
+                            <ffimage:CachedImage Source="{Binding Source}" Aspect="AspectFill"/> 
+                           
+                        </Frame>
+                    </ContentView>
+                </DataTemplate>
+            </cards:CoverFlowView.ItemTemplate>
+        </cards:CoverFlowView>
+        
+        <Button Text="TO LAST" Command="{Binding GoToLastCommand}" />
+        
+    </StackLayout>
     
 </ContentPage>

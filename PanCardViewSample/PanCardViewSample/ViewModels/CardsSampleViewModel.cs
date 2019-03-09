@@ -49,13 +49,20 @@ namespace PanCardViewSample.ViewModels
 				}
 				Items.RemoveAt(CurrentIndex.ToCyclingIndex(Items.Count));
 			});
+
+            GoToLastCommand = new Command(() =>
+            {
+                CurrentIndex = Items.Count - 1;
+            });
 		}
 
 		public ICommand PanPositionChangedCommand { get; }
 
 		public ICommand RemoveCurrentItemCommand { get; }
 
-		public int CurrentIndex
+        public ICommand GoToLastCommand { get; }
+
+        public int CurrentIndex
 		{
 			get => _currentIndex;
 			set
