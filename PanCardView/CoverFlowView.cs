@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using System.Threading.Tasks;
 using PanCardView.Extensions;
 using PanCardView.Processors;
 using Xamarin.Forms;

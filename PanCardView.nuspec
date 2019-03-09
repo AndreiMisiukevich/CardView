@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CardsView</id>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
@@ -22,7 +22,6 @@
     </releaseNotes>
   </metadata>
   <files>
-
     <!--Net Standard1.0-->
     <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\netstandard1.0\PanCardView.dll" />
 
