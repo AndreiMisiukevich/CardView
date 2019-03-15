@@ -7,7 +7,12 @@ namespace PanCardViewSample
 	{
 		public App()
 		{
-			MainPage = new NavigationPage(new StartPage());
+            if (Device.RuntimePlatform == Device.GTK)
+            {
+                MainPage = new Views.Gtk.CoverFlowSampleXamlView();
+                return;
+            }
+            MainPage = new NavigationPage(new StartPage());
 		}
 	}
 
@@ -79,6 +84,6 @@ namespace PanCardViewSample
 					}
 				}
 			};
-		}
+        }
 	}
 }

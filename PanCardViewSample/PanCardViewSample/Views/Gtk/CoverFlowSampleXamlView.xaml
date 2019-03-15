@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    x:Class="PanCardViewSample.Views.Gtk.CoverFlowSampleXamlView"
+    BackgroundColor="Black"
+    Title="Carousel Xaml">
+
+    <ContentPage.BindingContext>
+        <viewModels:CardsSampleViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout>
+            <cards:CoverFlowView 
+                PositionShiftValue="60"
+                IsCyclical="false"
+                IsAutoInteractionRunning="{Binding IsAutoAnimationRunning}"
+                IsUserInteractionRunning="{Binding IsUserInteractionRunning}"
+                SelectedIndex="{Binding CurrentIndex}"
+                ItemsSource="{Binding Items}">
+            <cards:CoverFlowView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView Padding="40">
+                        <Frame 
+                            VerticalOptions="Center"
+                            HorizontalOptions="Fill"
+                            HeightRequest="290"
+                            Padding="0" 
+                            HasShadow="false"
+                            IsClippedToBounds="true"
+                            CornerRadius="10"
+                            BackgroundColor="{Binding Color}">
+                            
+                            <Image Source="{Binding Source}" Aspect="AspectFill"/> 
+                           
+                        </Frame>
+                    </ContentView>
+                </DataTemplate>
+            </cards:CoverFlowView.ItemTemplate>
+        </cards:CoverFlowView>
+        
+        <Button Text="TO LAST" Command="{Binding GoToLastCommand}" />
+        
+    </StackLayout>
+    
+</ContentPage>

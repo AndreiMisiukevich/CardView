@@ -789,6 +789,37 @@ namespace PanCardView
                 _panGesture.PanUpdated += OnPanUpdated;
                 GestureRecognizers.Add(_panGesture);
             }
+
+            if (Device.RuntimePlatform == Device.GTK || Device.RuntimePlatform == Device.Tizen)
+            {
+                var lastTapTime = DateTime.MinValue;
+                const int delay = 200;
+                CancellationTokenSource tapCts = null;
+
+                GestureRecognizers.Add(new TapGestureRecognizer
+                {
+                    Command = new Command(async () =>
+                    {
+                        var now = DateTime.UtcNow;
+                        if(Abs((now - lastTapTime).TotalMilliseconds) < delay)
+                        {
+                            tapCts?.Cancel();
+                            lastTapTime = DateTime.MinValue;
+                            SelectedIndex = (SelectedIndex.ToCyclingIndex(ItemsCount) - 1).ToCyclingIndex(ItemsCount);
+                            return;
+                        }
+                        lastTapTime = now;
+                        tapCts = new CancellationTokenSource();
+                        var token = tapCts.Token;
+                        await Task.Delay(delay);
+                        if (!token.IsCancellationRequested)
+                        {
+                            SelectedIndex = (SelectedIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+                            return;
+                        }
+                    })
+                });
+            }
         }
 
         private void StartAutoNavigation(IEnumerable<View> views, Guid animationId, AnimationDirection animationDirection)

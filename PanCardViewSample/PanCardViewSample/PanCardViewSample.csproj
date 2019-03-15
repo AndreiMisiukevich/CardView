@@ -14,4 +14,7 @@
     <Compile Remove="ViewModels\CoverFlowViewModel.cs" />
     <Compile Remove="Views\CoverFlowSampleView.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Gtk\" />
+  </ItemGroup>
 </Project>
