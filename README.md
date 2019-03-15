@@ -232,6 +232,8 @@ private void CarouselView_UserInteracted(PanCardView.CardsView view, PanCardView
 
 -> If you get **crashes** during ItemsSource update, try to add/set items in Main Thread (Device.BeginInvokeInMainThread)
 
+-> **GTK** use click / double click for forward/back navigation.
+
 Check source code for more info, or 🇧🇾 ***just ask me =)*** 🇧🇾
 
 ## Full documentation
