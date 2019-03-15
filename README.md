@@ -42,11 +42,15 @@ CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/
   - **CardsViewRenderer.Preserve()** for **Android** MainActivity in **OnCreate**
 
 |Platform|Version|
-| ------------------- | ------------------- |
-|Xamarin.iOS|8.0+|
-|Xamarin.Android|15+|
-|Windows 10 UWP|10.0.10240+|
-|MacOS|10.12+|
+| ------------------- | :-----------: |
+|Xamarin.iOS|iOS 7+|
+|Xamarin.Mac|All|
+|Xamarin.Android|API 15+|
+|Windows 10 UWP|10+|
+|Tizen|4.0+|
+|Gtk|All|
+|.NET Standard|2.0+|
+
 
 ## Custom Animations
 You are able to create custom animations, just implement ICardProcessor or extend created processors (change animation speed or type)
