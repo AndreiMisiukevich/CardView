@@ -18,8 +18,7 @@ namespace PanCardView.iOS
         private readonly UISwipeGestureRecognizer _downSwipeGesture;
 
         public static void Preserve()
-        {
-        }
+        => CardsView.Preserve();
 
         public CardsViewRenderer()
         {

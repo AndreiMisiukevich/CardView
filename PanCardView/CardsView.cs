@@ -432,6 +432,20 @@ namespace PanCardView
 
         public object this[int index] => ItemsSource?.FindValue(index);
 
+        public static void Preserve()
+        => new List<Type>
+        {
+            typeof(CarouselView),
+            typeof(CoverFlowView),
+            typeof(ArrowControl),
+            typeof(LeftArrowControl),
+            typeof(RightArrowControl),
+            typeof(CircleFrame),
+            typeof(IndicatorItemView),
+            typeof(IndicatorsControl),
+            typeof(ParentScrollView)
+        }.Clear();
+
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         => OnPanUpdated(e);
 
