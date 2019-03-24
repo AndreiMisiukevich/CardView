@@ -1,4 +1,4 @@
-﻿using Xamarin.Forms;
+﻿using System.ComponentModel;
 
 namespace PanCardView.Controls
 {
@@ -7,6 +7,11 @@ namespace PanCardView.Controls
         public IndicatorItemView()
         {
             Size = 10;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new static void Preserve()
+        {
         }
     }
 }

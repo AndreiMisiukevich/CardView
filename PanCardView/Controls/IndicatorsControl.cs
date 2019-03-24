@@ -8,6 +8,7 @@ using static System.Math;
 using System.Threading.Tasks;
 using System.Threading;
 using PanCardView.Utility;
+using System.ComponentModel;
 
 namespace PanCardView.Controls
 {
@@ -155,6 +156,7 @@ namespace PanCardView.Controls
 
         public object this[int index] => IndicatorsContexts?.FindValue(index);
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
         {
         }

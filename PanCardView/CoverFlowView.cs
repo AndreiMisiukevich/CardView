@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.ComponentModel;
 using PanCardView.Extensions;
 using PanCardView.Processors;
 using Xamarin.Forms;
@@ -46,6 +47,11 @@ namespace PanCardView
         {
             get => (double)GetValue(PositionShiftValueProperty);
             set => SetValue(PositionShiftValueProperty, value);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new static void Preserve()
+        {
         }
 
         protected override int DefaultBackViewsDepth => 2;

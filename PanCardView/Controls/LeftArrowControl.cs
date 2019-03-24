@@ -1,4 +1,4 @@
-﻿using PanCardView.Extensions;
+﻿using System.ComponentModel;
 using Xamarin.Forms;
 
 namespace PanCardView.Controls
@@ -20,6 +20,11 @@ namespace PanCardView.Controls
                 Text = "➤",
                 Rotation = 180
             };
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new static void Preserve()
+        {
         }
     }
 }

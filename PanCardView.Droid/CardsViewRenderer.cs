@@ -35,7 +35,7 @@ namespace PanCardView.Droid
         }
 
         public static void Preserve()
-        => CardsView.Preserve();
+        => Preserver.Preserve();
 
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {

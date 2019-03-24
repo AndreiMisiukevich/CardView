@@ -1,5 +1,5 @@
 ﻿using Xamarin.Forms;
-using PanCardView.Extensions;
+using System.ComponentModel;
 
 namespace PanCardView.Controls
 {
@@ -18,6 +18,11 @@ namespace PanCardView.Controls
                 FontSize = 20,
                 Text = "➤"
             };
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new static void Preserve()
+        {
         }
     }
 }

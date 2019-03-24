@@ -1,4 +1,5 @@
-﻿using PanCardView.Extensions;
+﻿using System.ComponentModel;
+using PanCardView.Extensions;
 using Xamarin.Forms;
 
 namespace PanCardView.Controls
@@ -19,6 +20,7 @@ namespace PanCardView.Controls
             Padding = 0;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
         {
         }

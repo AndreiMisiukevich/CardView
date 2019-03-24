@@ -4,6 +4,7 @@ using System.Threading;
 using PanCardView.Extensions;
 using PanCardView.Utility;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace PanCardView.Controls
 {
@@ -124,7 +125,8 @@ namespace PanCardView.Controls
             });
         }
 
-        public static void Preserve()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new static void Preserve()
         {
         }
 

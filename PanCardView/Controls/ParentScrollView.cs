@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System.ComponentModel;
+using Xamarin.Forms;
 
 namespace PanCardView.Controls
 {
@@ -6,6 +7,7 @@ namespace PanCardView.Controls
     {
         private double _prevY;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
         {
         }

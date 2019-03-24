@@ -1,4 +1,5 @@
 ﻿using PanCardView.Processors;
+using System.ComponentModel;
 
 namespace PanCardView
 {
@@ -16,5 +17,10 @@ namespace PanCardView
         protected override double DefaultMoveWidthPercentage => .3;
 
         protected override bool DefaultIsCyclical => true;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new static void Preserve()
+        {
+        }
     }
 }
