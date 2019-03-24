@@ -19,6 +19,10 @@ namespace PanCardView.Controls
             Padding = 0;
         }
 
+        public static void Preserve()
+        {
+        }
+
         public double Size
         {
             get => (double)GetValue(SizeProperty);

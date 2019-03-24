@@ -6,6 +6,10 @@ namespace PanCardView.Controls
     {
         private double _prevY;
 
+        public static void Preserve()
+        {
+        }
+
         public virtual void HandleOrdinateValue(double y, bool isFirst)
         {
             if (isFirst)

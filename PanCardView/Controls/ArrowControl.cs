@@ -124,6 +124,10 @@ namespace PanCardView.Controls
             });
         }
 
+        public static void Preserve()
+        {
+        }
+
         protected override void OnParentSet()
         {
             base.OnParentSet();

@@ -155,6 +155,10 @@ namespace PanCardView.Controls
 
         public object this[int index] => IndicatorsContexts?.FindValue(index);
 
+        public static void Preserve()
+        {
+        }
+
         protected override void OnParentSet()
         {
             base.OnParentSet();
