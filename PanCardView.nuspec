@@ -56,5 +56,11 @@
 
     <!--GTK-->
     <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\net46\PanCardView.dll" />
+
+    <!--tvOS-->
+    <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\XamarinTVOS\PanCardView.dll" />
+      
+    <!--Net 4.5-->
+    <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\net45\PanCardView.dll" />
   </files>
 </package>
