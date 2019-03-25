@@ -49,6 +49,7 @@ CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/
 |Windows 10 UWP|10+|
 |Tizen|4.0+|
 |Gtk|All|
+|WPF|.NET 4.5|
 |.NET Standard|2.0+|
 
 
