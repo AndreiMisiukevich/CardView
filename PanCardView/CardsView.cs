@@ -82,7 +82,7 @@ namespace PanCardView
             bindable.AsCardsView().SetPanGesture(!(bool)newValue);
         });
 
-        public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1);
+        public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1, BindingMode.OneWayToSource);
 
         public static readonly BindableProperty IsUserInteractionEnabledProperty = BindableProperty.Create(nameof(IsUserInteractionEnabled), typeof(bool), typeof(CardsView), true);
 

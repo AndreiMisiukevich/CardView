@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
 using Xamarin.Forms;
+using PanCardView.Droid;
 
 namespace PanCardViewSample.Droid
 {
@@ -18,10 +19,11 @@ namespace PanCardViewSample.Droid
 			base.OnCreate(bundle);
 
 			Forms.SetFlags("FastRenderers_Experimental");
-			CachedImageRenderer.Init(true);
 			global::Xamarin.Forms.Forms.Init(this, bundle);
+            CachedImageRenderer.Init(true);
+            CardsViewRenderer.Preserve();
 
-			LoadApplication(new App());
+            LoadApplication(new App());
 		}
 	}
 }
