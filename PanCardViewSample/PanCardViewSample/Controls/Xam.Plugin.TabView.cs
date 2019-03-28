@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -31,6 +31,7 @@ namespace PanCardViewSample.Controls
 	{
 		private StackLayout _mainContainerSL;
 		private Grid _headerContainerGrid;
+        private ScrollView _horizontalScrool;
 		private CarouselView _carouselView;
 		private int _position = 0;
 
@@ -142,7 +143,19 @@ namespace PanCardViewSample.Controls
 					ColumnSpacing = 0
 				};
 
-				_carouselView = new CarouselView
+                _horizontalScrool = new ScrollView
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.Fill,
+                    BackgroundColor = Color.Transparent,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Never,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Never,
+                    Orientation = ScrollOrientation.Horizontal,
+                    Content = _headerContainerGrid
+                };
+
+
+                _carouselView = new CarouselView
 				{
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.FillAndExpand,
@@ -158,7 +171,7 @@ namespace PanCardViewSample.Controls
 				{
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.FillAndExpand,
-					Children = { _headerContainerGrid, _carouselView },
+					Children = { _horizontalScrool, _carouselView },
 					Spacing = 0
 				};
 
