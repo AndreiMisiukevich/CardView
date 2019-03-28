@@ -31,7 +31,7 @@ namespace PanCardViewSample.Controls
 	{
 		private StackLayout _mainContainerSL;
 		private Grid _headerContainerGrid;
-        private ScrollView _horizontalScrool;
+        	private ScrollView _horizontalScroll;
 		private CarouselView _carouselView;
 		private int _position = 0;
 
@@ -143,7 +143,7 @@ namespace PanCardViewSample.Controls
 					ColumnSpacing = 0
 				};
 
-                _horizontalScrool = new ScrollView
+                _horizontalScroll = new ScrollView
                 {
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.Fill,
@@ -171,7 +171,7 @@ namespace PanCardViewSample.Controls
 				{
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.FillAndExpand,
-					Children = { _horizontalScrool, _carouselView },
+					Children = { _horizontalScroll, _carouselView },
 					Spacing = 0
 				};
 
