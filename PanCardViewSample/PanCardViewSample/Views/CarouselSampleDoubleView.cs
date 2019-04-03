@@ -1,6 +1,7 @@
 ﻿using PanCardView;
 using PanCardViewSample.ViewModels;
 using Xamarin.Forms;
+using CardCarouselView = PanCardView.CarouselView;
 
 namespace PanCardViewSample.Views
 {
@@ -8,7 +9,7 @@ namespace PanCardViewSample.Views
 	{
 		public CarouselSampleDoubleView()
 		{
-			var cardsView = new CarouselView
+			var cardsView = new CardCarouselView
 			{
 				ItemTemplate = new DataTemplate(GetCardItem)
 			};
@@ -36,7 +37,7 @@ namespace PanCardViewSample.Views
 			AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.All);
 			AbsoluteLayout.SetLayoutBounds(label, new Rectangle(.5, 1, 1, .5));
 
-			var cardsView = new CarouselView
+			var cardsView = new CardCarouselView
 			{
 				ItemTemplate = new DataTemplate(() =>
 				{

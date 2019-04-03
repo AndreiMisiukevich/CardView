@@ -1,6 +1,7 @@
 ﻿using PanCardView;
 using PanCardView.Controls;
 using Xamarin.Forms;
+using CardCarouselView = PanCardView.CarouselView;
 namespace PanCardViewSample.Views
 {
     public class CarouselSampleViewNoTemplate : ContentPage
@@ -9,7 +10,7 @@ namespace PanCardViewSample.Views
         {
             Title = "CarouselSampleViewNoTemplate";
 
-            var carousel = new CarouselView
+            var carousel = new CardCarouselView
             {
                 HeightRequest = 200,
                 ItemsSource = new[] {

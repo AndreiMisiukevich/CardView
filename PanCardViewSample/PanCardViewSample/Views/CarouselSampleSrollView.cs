@@ -3,18 +3,19 @@ using PanCardView.Controls;
 using PanCardView.Controls.Styles;
 using PanCardViewSample.ViewModels;
 using Xamarin.Forms;
+using CardCarouselView = PanCardView.CarouselView;
 
 namespace PanCardViewSample.Views
 {
 	public class CarouselSampleSrollView : ContentPage
 	{
-		private readonly CarouselView _carouselView;
+		private readonly CardCarouselView _carouselView;
 
 		public CarouselSampleSrollView()
 		{
-			_carouselView = new CarouselView
-			{
-				ItemTemplate = new DataTemplate(GetCardItem),
+			_carouselView = new CardCarouselView
+            {
+                ItemTemplate = new DataTemplate(GetCardItem),
 				Children = {
 					new IndicatorsControl
 					{

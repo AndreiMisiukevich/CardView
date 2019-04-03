@@ -8,6 +8,7 @@ using System.Text;
 using PanCardView;
 using Xamarin.Forms;
 using PanCardView.EventArgs;
+using CardCarouselView = PanCardView.CarouselView;
 
 namespace PanCardViewSample.Controls
 {
@@ -31,8 +32,8 @@ namespace PanCardViewSample.Controls
 	{
 		private StackLayout _mainContainerSL;
 		private Grid _headerContainerGrid;
-        	private ScrollView _horizontalScroll;
-		private CarouselView _carouselView;
+		private ScrollView _horizontalScroll;
+		private CardCarouselView _carouselView;
 		private int _position = 0;
 
 		public ObservableCollection<TabItem> ItemSource { get; set; }
@@ -154,8 +155,7 @@ namespace PanCardViewSample.Controls
                     Content = _headerContainerGrid
                 };
 
-
-                _carouselView = new CarouselView
+				_carouselView = new CardCarouselView
 				{
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.FillAndExpand,

@@ -4,6 +4,8 @@ using PanCardViewSample.ViewModels;
 using PanCardView;
 using System.Collections.Generic;
 using PanCardView.Extensions;
+using CardCarouselView = PanCardView.CarouselView;
+
 namespace PanCardViewSample.Views
 {
 	public class CarouselSampleListView : ContentPage
@@ -12,8 +14,8 @@ namespace PanCardViewSample.Views
 		{
 			BindingContext = new CarouselSampleListViewModel();
 
-			var carousel = new CarouselView
-			{
+			var carousel = new CardCarouselView
+            {
 				ItemTemplate = new ListTemplateSelector()
 			};
 
