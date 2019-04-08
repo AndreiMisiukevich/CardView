@@ -24,6 +24,8 @@ namespace PanCardView.iOS
 
         public CardsViewWrapperRenderer()
         {
+            //todo add gestures for dragging slides
+
             _leftSwipeGesture = new UISwipeGestureRecognizer(OnSwiped)
             {
                 Direction = UISwipeGestureRecognizerDirection.Left
@@ -90,7 +92,7 @@ namespace PanCardView.iOS
     {
         public override bool PointInside(CGPoint point, UIEvent uievent)
         {
-            return false;
+            return false; //pass gestures to windows behind
         }
     }
 }
