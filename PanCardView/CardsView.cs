@@ -1346,7 +1346,7 @@ namespace PanCardView
 
                 if (currentIndex < backIndex)
                 {
-                    LowerChild(view);
+                    ExecutePreventInvalidOperationException(() => LowerChild(view));
                 }
             }
         }
@@ -1530,7 +1530,7 @@ namespace PanCardView
                     }
                     catch (InvalidOperationException)
                     {
-                        System.Diagnostics.Debug.WriteLine("Couldn't handle InvalidOperationException");
+                        System.Diagnostics.Debug.WriteLine("CardsView: Couldn't handle InvalidOperationException");
                     }
                 });
             }
