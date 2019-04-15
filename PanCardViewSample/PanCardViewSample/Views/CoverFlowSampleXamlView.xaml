@@ -8,7 +8,7 @@
     xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     x:Class="PanCardViewSample.Views.CoverFlowSampleXamlView"
     BackgroundColor="Black"
-    Title="Carousel Xaml">
+    Title="CoverFlow Xaml">
 
     <ContentPage.BindingContext>
         <viewModels:CardsSampleViewModel/>

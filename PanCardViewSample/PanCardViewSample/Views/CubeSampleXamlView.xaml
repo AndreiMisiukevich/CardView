@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    x:Class="PanCardViewSample.Views.CubeSampleXamlView"
+    BackgroundColor="Black"
+    Title="Cube Xaml">
+
+    <ContentPage.BindingContext>
+        <viewModels:CardsSampleViewModel/>
+    </ContentPage.BindingContext>
+
+    <cards:CubeView 
+        ItemsSource="{Binding Items}"
+        SelectedIndex="{Binding CurrentIndex}">
+        <cards:CubeView.ItemTemplate>
+            <DataTemplate>
+                <ContentView BackgroundColor="{Binding Color}">
+                    <Frame 
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        HeightRequest="300"
+                        WidthRequest="300"
+                        Padding="0" 
+                        HasShadow="false"
+                        IsClippedToBounds="true"
+                        CornerRadius="10">
+                        
+                        <ffimage:CachedImage Source="{Binding Source}"/> 
+                        
+                    </Frame>
+                </ContentView>
+            </DataTemplate>
+        </cards:CubeView.ItemTemplate>
+    </cards:CubeView>
+    
+</ContentPage>

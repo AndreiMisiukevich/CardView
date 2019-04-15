@@ -20,7 +20,7 @@ namespace PanCardView.Processors
             if(view != null)
             {
                 view.BatchBegin();
-                view.TranslationX = Sign((int)animationDirection) * cardsView.Width;
+                SetTranslationX(view, Sign((int)animationDirection) * cardsView.Width, cardsView);
                 view.IsVisible = false;
                 view.BatchCommit();
             }
@@ -32,7 +32,7 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 view.IsVisible = false;
-                view.TranslationX = cardsView.Width;
+                SetTranslationX(view, cardsView.Width, cardsView);
             }
         }
 
@@ -60,7 +60,7 @@ namespace PanCardView.Processors
             {
                 return;
             }
-            view.TranslationX = value;
+            SetTranslationX(view, value, cardsView);
         }
 
         public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -75,7 +75,7 @@ namespace PanCardView.Processors
                ? cardsView.Width
                : -cardsView.Width;
 
-            return new AnimationWrapper(v => view.TranslationX = v, 0, destinationPos)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), 0, destinationPos)
                 .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }
 
@@ -92,7 +92,7 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, Sign((int)animationDirection) * cardsView.Width)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), view.TranslationX, Sign((int)animationDirection) * cardsView.Width)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
 
@@ -109,8 +109,11 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, -Sign((int)animationDirection) * cardsView.Width)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), view.TranslationX, -Sign((int)animationDirection) * cardsView.Width)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
+
+        protected virtual void SetTranslationX(View view, double value, CardsView cardsView)
+            => view.TranslationX = value;
     }
 }

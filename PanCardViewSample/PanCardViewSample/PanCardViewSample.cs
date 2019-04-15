@@ -68,7 +68,13 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CarouselSampleEmbeddedView());
 			};
 
-			Content = new ScrollView
+            var toCubeBtn = new Button { Text = "CubeView Xaml" };
+            toCubeBtn.Clicked += (sender, e) =>
+            {
+                this.Navigation.PushAsync(new CubeSampleXamlView());
+            };
+
+            Content = new ScrollView
 			{
 				Content = new StackLayout
 				{
@@ -80,8 +86,9 @@ namespace PanCardViewSample
 						toCarouselNoTemplateBtn,
 						toCarouselXamlBtn,
 						toCarouselListBtn,
-						toCarouselEmbBtn
-					}
+						toCarouselEmbBtn,
+                        toCubeBtn
+                    }
 				}
 			};
         }

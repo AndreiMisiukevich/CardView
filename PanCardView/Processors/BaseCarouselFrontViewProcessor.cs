@@ -22,7 +22,7 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 view.BatchBegin();
-                view.TranslationX = 0;
+                SetTranslationX(view, 0, cardsView);
                 view.IsVisible = true;
                 view.BatchCommit();
             }
@@ -54,7 +54,7 @@ namespace PanCardView.Processors
 
             if (view != null)
             {
-                view.TranslationX = xPos;
+                SetTranslationX(view, xPos, cardsView);
             }
         }
 
@@ -67,7 +67,7 @@ namespace PanCardView.Processors
             }
 
             view.IsVisible = true;
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), view.TranslationX, 0)
                 .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }
 
@@ -84,7 +84,7 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), view.TranslationX, 0)
                 .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
 
@@ -101,8 +101,11 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), view.TranslationX, 0)
                 .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
+
+        protected virtual void SetTranslationX(View view, double value, CardsView cardsView)
+            => view.TranslationX = value;
     }
 }

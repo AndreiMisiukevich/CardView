@@ -7,6 +7,7 @@ namespace PanCardView
         {
             CardsView.Preserve();
             CarouselView.Preserve();
+            CubeView.Preserve();
             CoverFlowView.Preserve();
             ArrowControl.Preserve();
             LeftArrowControl.Preserve();
