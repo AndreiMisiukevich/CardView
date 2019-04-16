@@ -86,13 +86,13 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
+            var animTimePercent = (cardsView.Width - Abs(GetTranslationX(view))) / cardsView.Width;
             var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), view.TranslationX, Sign((int)animationDirection) * cardsView.Width)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), Sign((int)animationDirection) * cardsView.Width)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
 
@@ -103,15 +103,18 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var animTimePercent = (cardsView.Width - Abs(view.TranslationX)) / cardsView.Width;
+            var animTimePercent = (cardsView.Width - Abs(GetTranslationX(view))) / cardsView.Width;
             var animLength = (uint)(AnimationLength * animTimePercent);
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), view.TranslationX, -Sign((int)animationDirection) * cardsView.Width)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), -Sign((int)animationDirection) * cardsView.Width)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
+
+        protected virtual double GetTranslationX(View view)
+            => view.TranslationX;
 
         protected virtual void SetTranslationX(View view, double value, CardsView cardsView)
             => view.TranslationX = value;

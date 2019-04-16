@@ -14,28 +14,50 @@
         <viewModels:CardsSampleViewModel/>
     </ContentPage.BindingContext>
 
-    <cards:CubeView 
-        ItemsSource="{Binding Items}"
-        SelectedIndex="{Binding CurrentIndex}">
-        <cards:CubeView.ItemTemplate>
-            <DataTemplate>
-                <ContentView BackgroundColor="{Binding Color}">
-                    <Frame 
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        HeightRequest="300"
-                        WidthRequest="300"
-                        Padding="0" 
-                        HasShadow="false"
-                        IsClippedToBounds="true"
-                        CornerRadius="10">
-                        
-                        <ffimage:CachedImage Source="{Binding Source}"/> 
-                        
-                    </Frame>
-                </ContentView>
-            </DataTemplate>
-        </cards:CubeView.ItemTemplate>
-    </cards:CubeView>
+    <StackLayout Spacing="50" Padding="0, 50">    
+            <cards:CubeView 
+                VerticalOptions="FillAndExpand"
+                ItemsSource="{Binding Items}"
+                SelectedIndex="{Binding CurrentIndex}">
+            <cards:CubeView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView>
+                        <Frame 
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            HeightRequest="300"
+                            WidthRequest="300"
+                            Padding="0" 
+                            HasShadow="false"
+                            BackgroundColor="{Binding Color}"
+                            IsClippedToBounds="true"
+                            CornerRadius="10">
+                            
+                            <ffimage:CachedImage
+                                Source="{Binding Source}" Aspect="AspectFill"/> 
+                            
+                        </Frame>
+                    </ContentView>
+                </DataTemplate>
+            </cards:CubeView.ItemTemplate>
+        </cards:CubeView>
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand">
+                <Button TextColor="White"
+                        HorizontalOptions="FillAndExpand"
+                        FontAttributes="Bold"
+                        Text="PREV"
+                        FontSize="30"
+                        Command="{Binding PanPositionChangedCommand}" 
+                        CommandParameter="False"/>
+                <Button TextColor="White"
+                        HorizontalOptions="FillAndExpand"
+                        FontAttributes="Bold"
+                        Text="NEXT"
+                        FontSize="30"
+                        Command="{Binding PanPositionChangedCommand}" 
+                        CommandParameter="True"/>
+        </StackLayout>
+    </StackLayout>
     
 </ContentPage>

@@ -13,7 +13,7 @@ namespace PanCardViewSample.ViewModels
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private int _currentIndex;
-		private int _ImageCount = 500;
+		private int _ImageCount = 1058;
 
 		public CardsSampleViewModel()
 		{
@@ -33,7 +33,7 @@ namespace PanCardViewSample.ViewModels
                     return;
                 }
 
-                var index = CurrentIndex + ((bool)v ? 1 : -1);
+                var index = CurrentIndex + (bool.Parse(v.ToString()) ? 1 : -1);
                 if (index < 0 || index >= Items.Count)
                 {
                     return;
