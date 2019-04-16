@@ -26,7 +26,10 @@ namespace PanCardView.Processors
                     continue;
                 }
                 view.BatchBegin();
-                view.TranslationX = Sign((int)animationDirection) * GetStep(cardsView) * index;
+                view.TranslationX = Sign((int)animationDirection)
+                    * (cardsView.IsRightToLeftFlowDirectionEnabled ? -1 : 1)
+                    * GetStep(cardsView)
+                    * index;
                 view.IsVisible = true;
                 view.BatchCommit();
             }

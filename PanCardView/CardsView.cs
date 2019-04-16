@@ -712,9 +712,16 @@ namespace PanCardView
                 {
                     _isViewsInited = true;
                     StoreParentSize(parerntWidth, parentHeight);
+                    var prevAnimationDirection = AnimationDirection.Prev;
+                    var nextAnimationDirection = AnimationDirection.Next;
+                    if (IsRightToLeftFlowDirectionEnabled)
+                    {
+                        prevAnimationDirection = AnimationDirection.Next;
+                        nextAnimationDirection = AnimationDirection.Prev;
+                    }
                     FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
-                    BackViewProcessor.HandleInitView(PrevViews, this, AnimationDirection.Prev);
-                    BackViewProcessor.HandleInitView(NextViews, this, AnimationDirection.Next);
+                    BackViewProcessor.HandleInitView(PrevViews, this, prevAnimationDirection);
+                    BackViewProcessor.HandleInitView(NextViews, this, nextAnimationDirection);
                 }
                 if (_isViewsInited &&
                     isValidParentSize &&
