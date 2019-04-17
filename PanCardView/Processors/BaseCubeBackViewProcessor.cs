@@ -5,12 +5,6 @@ namespace PanCardView.Processors
 {
     public class BaseCubeBackViewProcessor : BaseCarouselBackViewProcessor
     {
-        public BaseCubeBackViewProcessor()
-        {
-            AnimEasing = Easing.CubicInOut;
-            AnimationLength = 350;
-        }
-
         protected override double GetTranslationX(View view)
             => view.Margin.Left > 0
                 ? view.Margin.Left
