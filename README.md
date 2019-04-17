@@ -34,6 +34,16 @@ Also you can setup CoverFlowView control, that is based on CarouselView
 
 CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CoverFlowSampleXamlView.xaml
 
+## CubeView
+
+You can achive this type of animation as well
+
+<html>
+<p align="center">
+  <img src="https://media.giphy.com/media/SXmXvjNJQMCcWMrvPj/giphy.gif">
+</p>
+</html>
+
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
 * Add nuget package to your Xamarin.Forms .NETSTANDARD/PCL project and to your platform-specific projects
