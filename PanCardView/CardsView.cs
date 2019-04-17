@@ -1259,7 +1259,11 @@ namespace PanCardView
 
             if (view != null && view != context)
             {
-                view.BindingContext = context;
+                if (view.BindingContext != context)
+                {
+                    view.BindingContext = null;
+                    view.BindingContext = context;
+                }
                 view.Behaviors.Remove(_contextAssignedBehavior);
                 view.Behaviors.Add(_contextAssignedBehavior);
             }
