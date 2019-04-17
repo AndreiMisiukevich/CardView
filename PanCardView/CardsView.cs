@@ -635,7 +635,7 @@ namespace PanCardView
                 return false;
             }
 
-            var context = GetContext(SelectedIndex, AnimationDirection.Current);
+            var context = GetContext(SelectedIndex, true);
 
             if (GetItem(CurrentView) == context)
             {
@@ -652,9 +652,10 @@ namespace PanCardView
             var oldView = CurrentView;
             SetupBackViews(OldIndex);
             ResetActiveInactiveBackViews(realDirection);
+            var newView = InitViews(BackViewProcessor, realDirection, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
             SwapViews(realDirection);
-            CurrentView = InitViews(null, AnimationDirection.Current, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
-            AddChild(oldView, CurrentView);
+            CurrentView = newView;
+
 
             var views = CurrentBackViews
                 .Union(CurrentInactiveBackViews)
@@ -1210,7 +1211,7 @@ namespace PanCardView
 
             for (int i = 0; i < indeces.Length; ++i)
             {
-                var view = PrepareView(animationDirection, bookedViews, indeces[i]);
+                var view = PrepareView(bookedViews, indeces[i]);
                 views[i] = view;
                 if(view != null)
                 {
@@ -1223,7 +1224,7 @@ namespace PanCardView
                 return Enumerable.Empty<View>();
             }
 
-            processor?.HandleInitView(views, this, animationDirection);
+            processor.HandleInitView(views, this, animationDirection);
 
             SetupLayout(views);
 
@@ -1238,9 +1239,9 @@ namespace PanCardView
             return views;
         }
 
-        private View PrepareView(AnimationDirection animationDirection, IEnumerable<View> bookedViews, int index)
+        private View PrepareView(IEnumerable<View> bookedViews, int index)
         {
-            var context = GetContext(index, animationDirection);
+            var context = GetContext(index, !bookedViews.Any());
 
             if (context == null)
             {
@@ -1299,7 +1300,7 @@ namespace PanCardView
             return view;
         }
 
-        private object GetContext(int index, AnimationDirection animationDirection)
+        private object GetContext(int index, bool isCurrent)
         {
             if (ItemsCount <= 0)
             {
@@ -1308,7 +1309,7 @@ namespace PanCardView
 
             if (!CheckIndexValid(index))
             {
-                if (!IsCyclical || (animationDirection != AnimationDirection.Current && ItemsCount <= 1))
+                if (!IsCyclical || (!isCurrent && ItemsCount <= 1))
                 {
                     return null;
                 }
