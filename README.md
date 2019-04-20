@@ -47,7 +47,7 @@ You can achive this type of animation as well
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
 * Add nuget package to your Xamarin.Forms .NETSTANDARD/PCL project and to your platform-specific projects
-* Just in case add (**AFTER** ```Forms.Init(...)```):
+* Just in case add (**BETWEEN** ```Forms.Init(...)``` and ```LoadApplication(new App());```):
   - **CardsViewRenderer.Preserve()** for **iOS** AppDelegate in **FinishedLaunching**
   - **CardsViewRenderer.Preserve()** for **Android** MainActivity in **OnCreate**
 
