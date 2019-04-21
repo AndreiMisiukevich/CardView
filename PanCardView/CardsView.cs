@@ -540,7 +540,7 @@ namespace PanCardView
             }
         }
 
-        protected virtual void OnSizeChanged()
+        protected virtual async void OnSizeChanged()
         {
             if (CurrentView != null && ItemTemplate != null)
             {
@@ -553,7 +553,7 @@ namespace PanCardView
                     _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
                 }
             }
-
+            await Task.Delay(1);// Workaround for https://github.com/AndreiMisiukevich/CardView/issues/194
             SetCurrentView();
             RemoveUnprocessingChildren();
             LayoutChildren(X, Y, Width, Height);
