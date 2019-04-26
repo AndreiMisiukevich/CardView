@@ -72,7 +72,7 @@ namespace PanCardView.Utility
             var parentAnimation = animationWrapper.Callback != null
                 ? new Animation(animationWrapper.Callback, animationWrapper.Start, animationWrapper.End)
                 : new Animation();
-            
+
             foreach (AnimationWrapper childAnimation in animationWrapper)
             {
                 var anim = PrepareAnimation(childAnimation);

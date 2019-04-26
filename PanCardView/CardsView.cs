@@ -815,7 +815,7 @@ namespace PanCardView
                     Command = new Command(async () =>
                     {
                         var now = DateTime.UtcNow;
-                        if(Abs((now - lastTapTime).TotalMilliseconds) < delay)
+                        if (Abs((now - lastTapTime).TotalMilliseconds) < delay)
                         {
                             tapCts?.Cancel();
                             lastTapTime = DateTime.MinValue;
@@ -848,7 +848,7 @@ namespace PanCardView
                 }
                 lock (_viewsInUseLocker)
                 {
-                    foreach(var view in views)
+                    foreach (var view in views)
                     {
                         _viewsInUse.Add(view);
                     }
@@ -905,7 +905,7 @@ namespace PanCardView
 
             var cyclingDeltaIndex = ItemsCount - Max(recIndex, oldRecIndex) + Min(recIndex, oldRecIndex);
 
-            if(cyclingDeltaIndex < Abs(deltaIndex))
+            if (cyclingDeltaIndex < Abs(deltaIndex))
             {
                 aniamationDirection = (AnimationDirection)(-(int)aniamationDirection);
             }
@@ -1039,7 +1039,7 @@ namespace PanCardView
             }
             else
             {
-                endingTask = interactionItem.WasTouchChanged 
+                endingTask = interactionItem.WasTouchChanged
                     ? Task.WhenAll(
                         FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
                         BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews))
@@ -1217,7 +1217,7 @@ namespace PanCardView
             {
                 var view = PrepareView(bookedViews, indeces[i]);
                 views[i] = view;
-                if(view != null)
+                if (view != null)
                 {
                     bookedViews = bookedViews.Union(Enumerable.Repeat(view, 1));
                 }
@@ -1539,7 +1539,8 @@ namespace PanCardView
             }
             catch (InvalidOperationException)
             {
-                Device.BeginInvokeOnMainThread(() => {
+                Device.BeginInvokeOnMainThread(() =>
+                {
                     try
                     {
                         action?.Invoke();
