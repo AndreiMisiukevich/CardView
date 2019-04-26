@@ -960,6 +960,9 @@ namespace PanCardView
                 return;
             }
 
+            var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
+            interactionItem.WasTouchChanged = true;
+
             ResetActiveInactiveBackViews(diff);
 
             CurrentDiff = diff;
@@ -1036,10 +1039,11 @@ namespace PanCardView
             }
             else
             {
-                endingTask = Task.WhenAll(
-                    FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
-                    BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews)
-                );
+                endingTask = interactionItem.WasTouchChanged 
+                    ? Task.WhenAll(
+                        FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
+                        BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews))
+                    : Task.FromResult(true);
             }
 
             FireUserInteracted(UserInteractionStatus.Ending, diff, oldIndex);
