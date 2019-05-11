@@ -23,7 +23,7 @@ namespace PanCardViewSample.Views
                 Icon = "next",
                 CommandParameter = true
             };
-            nextItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
+            nextItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.RemoveCurrentItemCommand));
 
             ToolbarItems.Add(prevItem);
             ToolbarItems.Add(nextItem);
