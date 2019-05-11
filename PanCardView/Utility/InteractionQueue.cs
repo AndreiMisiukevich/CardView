@@ -22,12 +22,7 @@ namespace PanCardView.Utility
         {
             lock (_queueLocker)
             {
-                _queue.Add(new InteractionItem
-                {
-                    Id = id,
-                    Type = type,
-                    State = state
-                });
+                _queue.Add(InteractionItem.GetItem(id, type, state));
             }
         }
 
@@ -36,7 +31,7 @@ namespace PanCardView.Utility
             lock (_queueLocker)
             {
                 var item = _queue.FirstOrDefault(i => i.Id == id);
-                _queue.Remove(item);
+                _queue.Remove(InteractionItem.PutItem(item));
             }
         }
 
