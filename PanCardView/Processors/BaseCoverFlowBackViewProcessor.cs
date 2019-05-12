@@ -57,6 +57,8 @@ namespace PanCardView.Processors
             var view = views.FirstOrDefault();
             if (animationDirection == AnimationDirection.Null || view == null)
             {
+                HandleInitView(views, cardsView, (AnimationDirection)Sign(view?.TranslationX ?? 0));
+                HandleInitView(inactiveViews, cardsView, (AnimationDirection)Sign(inactiveViews?.FirstOrDefault()?.TranslationX ?? 0));
                 return;
             }
 
