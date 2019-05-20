@@ -1,48 +1,29 @@
-# CardsView and CarouselView controls for Xamarin Forms (based on Xamarin Forms AbsoluteLayout)
 <html>
-<p align="center">
-  <img src="https://raw.githubusercontent.com/AndreiMisiukevich/CardView/master/images/Cardsview-logotype-main.png" width="400">
-</p>
+  <p align="center">
+    <img src="https://raw.githubusercontent.com/AndreiMisiukevich/CardView/master/images/Cardsview-logotype-main.png" width="400">
+  </p>
 </html>
 
-## CardsView
-This plugin provides opportunity to create swipeable CardsView in Xamarin.Forms applications like Tinder app has.
-
+## CardsView | CarouselView | CoverFlowView | CubeView
 <html>
-<p align="center">
-  <img src="https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif">
-</p>
-</html>
-
-## CarouselView
-You are able to setup CarouselView control, that is based on CardsView
-
-<html>
-<p align="center">
-  <img src="https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif">
-</p>
-</html>
-
-## CoverFlowView
-Also you can setup CoverFlowView control, that is based on CarouselView
-
-<html>
-<p align="center">
-  <img src="https://media.giphy.com/media/1dH0dPqdPHwkDadmAx/giphy.gif">
-</p>
+  <table style="width:100%">
+    <tr>
+      <th>CardsView</th>
+      <th>CarouselView</th> 
+      <th>CoverFlowView</th>
+      <th>CubeView</th>
+    </tr>
+    <tr>
+      <td><img src="https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif"></td>
+      <td><img src="https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif"></td>
+      <td><img src="https://media.giphy.com/media/1dH0dPqdPHwkDadmAx/giphy.gif"></td>
+    <td><img src="https://media.giphy.com/media/SXmXvjNJQMCcWMrvPj/giphy.gif"></td>
+    </tr>
+  </table>
 </html>
 
 CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CoverFlowSampleXamlView.xaml
 
-## CubeView
-
-You can achive this type of animation as well
-
-<html>
-<p align="center">
-  <img src="https://media.giphy.com/media/SXmXvjNJQMCcWMrvPj/giphy.gif">
-</p>
-</html>
 
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
