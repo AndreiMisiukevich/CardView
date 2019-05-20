@@ -4,7 +4,7 @@
   </p>
 </html>
 
-## CardsView | CarouselView | CoverFlowView | CubeView
+## GIF
 <html>
   <table style="width:100%">
     <tr>
