@@ -1417,9 +1417,10 @@ namespace PanCardView
 
             if (CurrentView != null)
             {
+                var currentItem = GetItem(CurrentView);
                 for (var i = 0; i < ItemsCount; ++i)
                 {
-                    if (this[i] == GetItem(CurrentView))
+                    if (this[i] == currentItem)
                     {
                         index = i;
                         isCurrentContextPresent = true;
@@ -1440,7 +1441,7 @@ namespace PanCardView
 
             if (SelectedIndex == index)
             {
-                if (!isCurrentContextPresent)
+                if (!isCurrentContextPresent || BackViewsDepth > 1)
                 {
                     OldIndex = index;
                     SetCurrentView();
