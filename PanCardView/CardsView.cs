@@ -697,8 +697,13 @@ namespace PanCardView
         {
             base.OnSizeAllocated(width, height);
 
-            if (width < 0) return;
+            if (width <= 0 || height <= 0)
+            {
+                return;
+            }
 
+            lock (_sizeChangedLocker)
+            {
                 var parent = FindParentPage();
                 if (parent == null)
                 {
@@ -731,6 +736,7 @@ namespace PanCardView
                 {
                     StoreParentSize(parentWidth, parentHeight);
                     OnSizeChanged();
+                }
             }
         }
 
