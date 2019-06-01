@@ -697,6 +697,11 @@ namespace PanCardView
         {
             base.OnSizeAllocated(width, height);
 
+            if (width <= 0 || height <= 0)
+            {
+                return;
+            }
+
             lock (_sizeChangedLocker)
             {
                 var parent = FindParentPage();
@@ -705,14 +710,14 @@ namespace PanCardView
                     return;
                 }
 
-                var parerntWidth = parent.Width;
+                var parentWidth = parent.Width;
                 var parentHeight = parent.Height;
-                var isValidParentSize = parerntWidth > 0 && parentHeight > 0;
+                var isValidParentSize = parentWidth > 0 && parentHeight > 0;
 
                 if (!_isViewsInited && isValidParentSize)
                 {
                     _isViewsInited = true;
-                    StoreParentSize(parerntWidth, parentHeight);
+                    StoreParentSize(parentWidth, parentHeight);
                     var prevAnimationDirection = AnimationDirection.Prev;
                     var nextAnimationDirection = AnimationDirection.Next;
                     if (IsRightToLeftFlowDirectionEnabled)
@@ -726,10 +731,10 @@ namespace PanCardView
                 }
                 if (_isViewsInited &&
                     isValidParentSize &&
-                    Abs(_parentSize.Width - parerntWidth) > double.Epsilon &&
+                    Abs(_parentSize.Width - parentWidth) > double.Epsilon &&
                     Abs(_parentSize.Height - parentHeight) > double.Epsilon)
                 {
-                    StoreParentSize(parerntWidth, parentHeight);
+                    StoreParentSize(parentWidth, parentHeight);
                     OnSizeChanged();
                 }
             }
