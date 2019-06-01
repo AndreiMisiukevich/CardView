@@ -28,6 +28,8 @@ UnselectedIndicatorStyle | `Style` | DefaultUnselectedIndicatorItemStyle - Frame
 UseCardItemsAsIndicatorsBindingContexts | `bool` | true | Sets the indicators `BindingContext` to the `ItemSource` in the parent.
 IsUserInteractionRunning | `bool` | true | Is used when `ToFadeDuration` is greater than 0 to show and hide the IndicatorControl.
 IsAutoInteractionRunning | `bool` | true | Is used when `ToFadeDuration` is greater than 0 to show and hide the IndicatorControl.
+MinimumVisibleIndicatorsCount | `int` | 1 | Minimum allowed count of indicators for showing the control.
+MaximumVisibleIndicatorsCount | `int` | int.MaxValue | Maximum allowed count of indicators for showing the control.
 IndicatorsContexts | `IList` | null | Binding contexts for each of the indicators, can be used to bind in the `ItemTemplate`
 ItemTemplate | `DataTemplate` | [IndicatorItemView](IndicatorItemView.md) | The data template used for each of the indicators.
 UseParentAsBindingContext | `bool` | true | Set the `BindingContext` of this control to the parent.
