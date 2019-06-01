@@ -49,6 +49,16 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetVisibility();
         });
 
+        public static readonly BindableProperty MinimumVisibleIndicatorsCountProperty = BindableProperty.Create(nameof(MinimumVisibleIndicatorsCount), typeof(int), typeof(IndicatorsControl), 1, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsIndicatorsControl().ResetVisibility();
+        });
+
+        public static readonly BindableProperty MaximumVisibleIndicatorsCountProperty = BindableProperty.Create(nameof(MaximumVisibleIndicatorsCount), typeof(int), typeof(IndicatorsControl), int.MaxValue, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsIndicatorsControl().ResetVisibility();
+        });
+
         public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IEnumerable), typeof(IndicatorsControl), null);
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
@@ -128,6 +138,18 @@ namespace PanCardView.Controls
         {
             get => (bool)GetValue(IsAutoInteractionRunningProperty);
             set => SetValue(IsAutoInteractionRunningProperty, value);
+        }
+
+        public int MinimumVisibleIndicatorsCount
+        {
+            get => (int)GetValue(MinimumVisibleIndicatorsCountProperty);
+            set => SetValue(MinimumVisibleIndicatorsCountProperty, value);
+        }
+
+        public int MaximumVisibleIndicatorsCount
+        {
+            get => (int)GetValue(MaximumVisibleIndicatorsCountProperty);
+            set => SetValue(MaximumVisibleIndicatorsCountProperty, value);
         }
 
         public IEnumerable IndicatorsContexts
@@ -217,6 +239,14 @@ namespace PanCardView.Controls
         protected virtual async void ResetVisibility(uint? appearingTime = null, Easing appearingEasing = null, uint? dissappearingTime = null, Easing disappearingEasing = null)
         {
             _fadeAnimationTokenSource?.Cancel();
+
+            if(ItemsCount < MinimumVisibleIndicatorsCount ||
+                ItemsCount > MaximumVisibleIndicatorsCount)
+            {
+                Opacity = 0;
+                IsVisible = false;
+                return;
+            }
 
             if(ToFadeDuration <= 0)
             {
@@ -312,6 +342,7 @@ namespace PanCardView.Controls
             {
                 ResetIndicatorsContexts();
                 ResetIndicatorsStylesNonBatch();
+                ResetVisibility();
                 BatchCommit();
             }
         }
