@@ -27,4 +27,4 @@ IsAutoInteractionRunning | `bool` | true | Is used when `ToFadeDuration` is grea
 UseParentAsBindingContext | `bool` | true | Set the `BindingContext` of this control to the parent.
 ToFadeDuration | `int` | 0 | The duration in milliseconds beforethe indicator control will fade out so it is not visible.
 IsRight | `bool` | true | The position of the control (Right by default).
-
+ImageSource | `ImageSource` | WhiteLeftArrowImageSource / WhiteRightArrowImageSource| The image source of left / right arrow, can be set black arrows via ```PanCardView.Resources.ResourceInfo``` or any image you want.
