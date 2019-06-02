@@ -9,8 +9,9 @@ namespace PanCardView.Controls
         public RightArrowControl()
         {
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(1, .5, -1, -1));
-            ImageSource = WhiteRightArrowImageSource;
         }
+
+        protected override ImageSource DefaultImageSource => WhiteRightArrowImageSource;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new static void Preserve()

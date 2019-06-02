@@ -40,7 +40,7 @@ namespace PanCardView.Controls
             bindable.AsArrowControl().OnIsRightToLeftFlowDirectionEnabledChnaged();
         });
 
-        public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(ArrowControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(ArrowControl), defaultValueCreator: b => b.AsArrowControl().DefaultImageSource, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsArrowControl().OnImageSourceChanged();
         });
@@ -113,16 +113,19 @@ namespace PanCardView.Controls
             set => SetValue(IsRightProperty, value);
         }
 
-        protected Image ContentImage { get; } = new Image
-        {
-            Aspect = Aspect.AspectFill,
-            VerticalOptions = LayoutOptions.FillAndExpand,
-            HorizontalOptions = LayoutOptions.FillAndExpand,
-            InputTransparent = true
-        };
+        protected Image ContentImage { get; }
 
         public ArrowControl()
         {
+            Content = ContentImage = new Image
+            {
+                Aspect = Aspect.AspectFill,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                InputTransparent = true,
+                Source = ImageSource
+            };
+
             WidthRequest = 40;
             HeightRequest = 40;
 
@@ -142,9 +145,9 @@ namespace PanCardView.Controls
             {
                 Command = new Command(OnTapped)
             });
-
-            Content = ContentImage;
         }
+
+        protected virtual ImageSource DefaultImageSource => null;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
