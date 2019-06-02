@@ -5,4 +5,22 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Images\arrow.png" />
+    <None Remove="Resources\leftArrow.png" />
+    <None Remove="Resources\rightArrow.png" />
+    <None Remove="Resources\leftArrowBlack.png" />
+    <None Remove="Resources\rightArrowBlack.png" />
+    <None Remove="Resources\leftArrow.png" />
+    <None Remove="Resources\rightArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\leftArrowBlack.png" />
+    <EmbeddedResource Include="Resources\rightArrowBlack.png" />
+    <EmbeddedResource Include="Resources\leftArrow.png" />
+    <EmbeddedResource Include="Resources\rightArrow.png" />
+  </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using System.ComponentModel;
+using static PanCardView.Resources.ResourcesInfo;
 
 namespace PanCardView.Controls
 {
@@ -8,16 +9,7 @@ namespace PanCardView.Controls
         public RightArrowControl()
         {
             AbsoluteLayout.SetLayoutBounds(this, new Rectangle(1, .5, -1, -1));
-            Content = new Label
-            {
-                TextColor = Color.White.MultiplyAlpha(.7),
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                FontAttributes = FontAttributes.Bold,
-                Margin = new Thickness(4, 0, 0, 0),
-                FontSize = 20,
-                Text = "➤"
-            };
+            ImageSource = WhiteRightArrowImageSource;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

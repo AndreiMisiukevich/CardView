@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using PanCardView.Extensions;
 using Xamarin.Forms;
+using static System.Math;
 
 namespace PanCardView.Controls
 {
@@ -31,19 +32,37 @@ namespace PanCardView.Controls
             set => SetValue(SizeProperty, value);
         }
 
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            if(width > 0 && height > 0)
+            {
+                SetCornerRadius(Min(width, height));
+            }
+        }
+
         protected void OnSizeUpdated()
         {
+            var size = Size;
+            if(size < 0)
+            {
+                return;
+            }
+
             try
             {
                 BatchBegin();
-                HeightRequest = Size;
-                WidthRequest = Size;
-                CornerRadius = (float)Size / 2;
+                HeightRequest = size;
+                WidthRequest = size;
+                SetCornerRadius(size);
             }
             finally
             {
                 BatchCommit();
             }
         }
+
+        private void SetCornerRadius(double size)
+            => CornerRadius = (float)size / 2;
     }
 }

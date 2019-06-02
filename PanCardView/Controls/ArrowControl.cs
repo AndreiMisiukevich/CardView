@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace PanCardView.Controls
 {
-    public class ArrowControl : CircleFrame
+    public class ArrowControl : ContentView
     {
         public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(ArrowControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
         {
@@ -38,6 +38,11 @@ namespace PanCardView.Controls
         public static readonly BindableProperty IsRightToLeftFlowDirectionEnabledProperty = BindableProperty.Create(nameof(IsRightToLeftFlowDirectionEnabled), typeof(bool), typeof(ArrowControl), false, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsArrowControl().OnIsRightToLeftFlowDirectionEnabledChnaged();
+        });
+
+        public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(ArrowControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsArrowControl().OnImageSourceChanged();
         });
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(ArrowControl), true);
@@ -90,6 +95,12 @@ namespace PanCardView.Controls
             set => SetValue(IsRightToLeftFlowDirectionEnabledProperty, value);
         }
 
+        public ImageSource ImageSource
+        {
+            get => (ImageSource)GetValue(ImageSourceProperty);
+            set => SetValue(ImageSourceProperty, value);
+        }
+
         public int ToFadeDuration
         {
             get => (int)GetValue(ToFadeDurationProperty);
@@ -102,11 +113,19 @@ namespace PanCardView.Controls
             set => SetValue(IsRightProperty, value);
         }
 
+        protected Image ContentImage { get; } = new Image
+        {
+            Aspect = Aspect.AspectFill,
+            VerticalOptions = LayoutOptions.FillAndExpand,
+            HorizontalOptions = LayoutOptions.FillAndExpand,
+            InputTransparent = true
+        };
+
         public ArrowControl()
         {
-            BorderColor = Color.White.MultiplyAlpha(.7);
-            BackgroundColor = Color.DarkGray.MultiplyAlpha(.7);
-            Size = 40;
+            WidthRequest = 40;
+            HeightRequest = 40;
+
             Margin = new Thickness(20, 10);
             AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
 
@@ -123,10 +142,12 @@ namespace PanCardView.Controls
             {
                 Command = new Command(OnTapped)
             });
+
+            Content = ContentImage;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new static void Preserve()
+        public static void Preserve()
         {
         }
 
@@ -189,6 +210,8 @@ namespace PanCardView.Controls
             Rotation = IsRightToLeftFlowDirectionEnabled ? 180 : 0;
             ResetVisibility();
         }
+
+        protected virtual void OnImageSourceChanged() => ContentImage.Source = ImageSource;
 
         protected virtual void OnTapped()
         {
