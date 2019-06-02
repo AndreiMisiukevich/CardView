@@ -9,13 +9,10 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Images\arrow.png" />
     <None Remove="Resources\leftArrow.png" />
     <None Remove="Resources\rightArrow.png" />
     <None Remove="Resources\leftArrowBlack.png" />
     <None Remove="Resources\rightArrowBlack.png" />
-    <None Remove="Resources\leftArrow.png" />
-    <None Remove="Resources\rightArrow.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\leftArrowBlack.png" />
