@@ -95,6 +95,15 @@
   <ItemGroup>
     <Content Include="next.png" />
     <Content Include="prev.png" />
+    <Content Include="..\..\images\Resources\pan2.png">
+      <Link>pan2.png</Link>
+    </Content>
+    <Content Include="..\..\images\Resources\pan0.png">
+      <Link>pan0.png</Link>
+    </Content>
+    <Content Include="..\..\images\Resources\pan1.png">
+      <Link>pan1.png</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.3.4.0.1008975\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.3.4.0.1008975\build\Xamarin.Forms.targets')" />

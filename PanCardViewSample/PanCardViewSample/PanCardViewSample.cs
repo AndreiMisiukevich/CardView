@@ -68,6 +68,12 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CarouselSampleEmbeddedView());
 			};
 
+            var toPanBtn = new Button { Text = "Panorama Xaml" };
+            toPanBtn.Clicked += (sender, e) =>
+            {
+                this.Navigation.PushAsync(new PanoramaSampleView());
+            };
+
             var toCubeBtn = new Button { Text = "CubeView Xaml" };
             toCubeBtn.Clicked += (sender, e) =>
             {
@@ -87,6 +93,7 @@ namespace PanCardViewSample
 						toCarouselXamlBtn,
 						toCarouselListBtn,
 						toCarouselEmbBtn,
+                        toPanBtn,
                         toCubeBtn
                     }
 				}

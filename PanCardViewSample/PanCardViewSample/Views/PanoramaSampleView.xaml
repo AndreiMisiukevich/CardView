@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    x:Class="PanCardViewSample.Views.PanoramaSampleView"
+    BackgroundColor="Black"
+    Title="Panorama">
+
+    <ContentPage.BindingContext>
+        <viewModels:PanoramaSampleViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout>
+            <cards:CoverFlowView 
+                PositionShiftValue="120"
+                IsCyclical="false"
+                ItemsSource="{Binding Items}">
+            <cards:CoverFlowView.ItemTemplate>
+                <DataTemplate>
+                    <ffimage:CachedImage Source="{Binding .}" 
+                                         Aspect="AspectFill" 
+                                         HorizontalOptions="FillAndExpand"
+                                         Margin="60"/> 
+                </DataTemplate>
+            </cards:CoverFlowView.ItemTemplate>
+        </cards:CoverFlowView> 
+    </StackLayout>
+</ContentPage>

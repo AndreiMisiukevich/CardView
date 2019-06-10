@@ -142,6 +142,15 @@
   <ItemGroup>
     <BundleResource Include="Resources\next%403x.png" />
     <BundleResource Include="Resources\prev%403x.png" />
+    <BundleResource Include="..\..\images\Resources\pan0.png">
+      <Link>Resources\pan0.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\images\Resources\pan1.png">
+      <Link>Resources\pan1.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\images\Resources\pan2.png">
+      <Link>Resources\pan2.png</Link>
+    </BundleResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.3.4.0.1008975\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.3.4.0.1008975\build\Xamarin.Forms.targets')" />

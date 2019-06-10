@@ -122,6 +122,15 @@
   <ItemGroup>
     <BundleResource Include="Resources\next%403x.png" />
     <BundleResource Include="Resources\prev%403x.png" />
+    <BundleResource Include="..\..\images\Resources\pan2.png">
+      <Link>Resources\pan2.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\images\Resources\pan0.png">
+      <Link>Resources\pan0.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\images\Resources\pan1.png">
+      <Link>Resources\pan1.png</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PanCardView\PanCardView.csproj">

@@ -162,6 +162,15 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\next.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\prev.png" />
+    <AndroidResource Include="..\..\images\Resources\pan0.png">
+      <Link>Resources\drawable-xxhdpi\pan0.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\images\Resources\pan1.png">
+      <Link>Resources\drawable-xxhdpi\pan1.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\images\Resources\pan2.png">
+      <Link>Resources\drawable-xxhdpi\pan2.png</Link>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\packages\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />
