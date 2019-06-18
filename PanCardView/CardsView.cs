@@ -962,6 +962,11 @@ namespace PanCardView
             }
 
             var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
+            if(interactionItem == null)
+			{
+				return;
+			}
+
             interactionItem.WasTouchChanged = true;
 
             ResetActiveInactiveBackViews(diff);
