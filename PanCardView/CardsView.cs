@@ -988,10 +988,14 @@ namespace PanCardView
                 return;
             }
 
-            _lastPanTime = DateTime.UtcNow;
             var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
+            if(interactionItem == null)
+            {
+                return;
+            }
+            _lastPanTime = DateTime.UtcNow;
             interactionItem.State = InteractionState.Removing;
-            if (interactionItem.Id == default(Guid))
+            if (interactionItem.Id == default)
             {
                 return;
             }
