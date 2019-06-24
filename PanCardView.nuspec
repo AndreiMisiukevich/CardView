@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>CardsView</id>
-    <version>2.1.4</version>
+    <version>2.1.5</version>
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/AndreiMisiukevich/CardView</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/AndreiMisiukevich/CardView/master/images/Cardsview-logotype-main.png</iconUrl>
     <description>Cards View</description>
-    <summary>This package provides opportunity to create swipeable CardsView like in Tinder app has, classic CarouselView and CoverFlowView for previewing side elements</summary>
+    <summary>This package provides opportunity to create swipeable CardsView like Tinder app has, classic CarouselView, CoverFlowView for previewing side elements and CubeView</summary>
     <tags>carouselview, cardsview, coverflowview, carousel view, cards view, xamarin, forms, carousel, xamarin.forms, card, cards, cardview, panView, pan, swipeview, swiperview, swipe, tinder swiper, coverflow, cubeView</tags>
     <dependencies>
       <group>

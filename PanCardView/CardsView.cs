@@ -995,7 +995,7 @@ namespace PanCardView
             }
             _lastPanTime = DateTime.UtcNow;
             interactionItem.State = InteractionState.Removing;
-            if (interactionItem.Id == default)
+            if (interactionItem.Id == default(Guid))
             {
                 return;
             }
