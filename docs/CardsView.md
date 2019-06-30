@@ -8,7 +8,8 @@ Event | Arguments type | Description
 --- | --- | ---
 UserInteracted | `CardsViewUserInteractedHandler` | It is raised when user interacts with any card (Start, End, Move).
 ItemDisappearing | `CardsViewItemDisappearingHandler` | It is raised when any card is disappearing.
-ItemAppearing | `CardsViewItemAppearingHandler` | It is raised when any card is appearing.
+ItemBeforeAppearing | `CardsViewItemBeforeAppearingHandler` | It is raised when any card is started appearing (before animation).
+ItemAppearing | `CardsViewItemAppearingHandler` | It is raised when any card is ended appearing (after animation).
 ItemSwiped | `CardsViewItemSwipedHandler` | It is raised when user swips any card (Left, Right, Up, Down)
 
 ### Properties
@@ -31,7 +32,8 @@ IsUserInteractionInCourse | `bool` | true | Determines if the control should for
 IsUserInteractionRunning | `bool` | false | Determines if the UserInteration is running, e.g., This is set to true in `OnTouchStarted()` and false in `OnTouchEnded()`.
 IsViewCacheEnabled | `bool` | true | Determines wether the control should retrieve the next view from the views pool or create a new one each time.
 IsPanInteractionEnabled | `bool` | true | **Only used in Android and iOS** Determines wether the control should handle pan gesture events or it should handle only swipes.
-ItemAppearingCommand | `ICommand` | null | The command that is executed when a new item is displayed.
+ItemBeforeAppearingCommand | `ICommand` | null | The command that is executed when a new item is started to display.
+ItemAppearingCommand | `ICommand` | null | The command that is executed when a new item is ended to display.
 ItemDisappearingCommand | `ICommand` | null | The command that is executed when the item is no longer the displayed item.
 ItemsCount | `int` | -1 | The count of the items in `ItemsSource`. Primarily used to work out the cyclic index.
 ItemsSource | `IList` | null | Sets the items source of the control. If the source is an `ObservableCollection` the CollectionChanged events are subscribed to.
