@@ -122,12 +122,15 @@ namespace PanCardView
 
         public static readonly BindableProperty ItemDisappearingCommandProperty = BindableProperty.Create(nameof(ItemDisappearingCommand), typeof(ICommand), typeof(CardsView), null);
 
+        public static readonly BindableProperty ItemBeforeAppearingCommandProperty = BindableProperty.Create(nameof(ItemBeforeAppearingCommand), typeof(ICommand), typeof(CardsView), null);
+
         public static readonly BindableProperty ItemAppearingCommandProperty = BindableProperty.Create(nameof(ItemAppearingCommand), typeof(ICommand), typeof(CardsView), null);
 
         public static readonly BindableProperty ItemSwipedCommandProperty = BindableProperty.Create(nameof(ItemSwipedCommand), typeof(ICommand), typeof(CardsView), null);
 
         public event CardsViewUserInteractedHandler UserInteracted;
         public event CardsViewItemDisappearingHandler ItemDisappearing;
+        public event CardsViewItemBeforeAppearingHandler ItemBeforeAppearing;
         public event CardsViewItemAppearingHandler ItemAppearing;
         public event CardsViewItemSwipedHandler ItemSwiped;
 
@@ -419,6 +422,12 @@ namespace PanCardView
             set => SetValue(ItemDisappearingCommandProperty, value);
         }
 
+        public ICommand ItemBeforeAppearingCommand
+        {
+            get => GetValue(ItemBeforeAppearingCommandProperty) as ICommand;
+            set => SetValue(ItemBeforeAppearingCommandProperty, value);
+        }
+
         public ICommand ItemAppearingCommand
         {
             get => GetValue(ItemAppearingCommandProperty) as ICommand;
@@ -527,6 +536,7 @@ namespace PanCardView
                     {
                         var isNextSelected = SelectedIndex > OldIndex;
                         FireItemDisappearing(InteractionType.User, isNextSelected, OldIndex);
+                        FireItemBeforeAppearing(InteractionType.User, isNextSelected, SelectedIndex);
                         FireItemAppearing(InteractionType.User, isNextSelected, SelectedIndex);
                     }
 
@@ -855,6 +865,7 @@ namespace PanCardView
                     }
                 }
                 FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, OldIndex);
+                FireItemBeforeAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
             }
         }
 
@@ -1028,7 +1039,7 @@ namespace PanCardView
 
             _timeDiffItems.Clear();
 
-            Task endingTask = null;
+            Task endingTask;
             if (isNextSelected.HasValue)
             {
                 index = GetNewIndexFromDiff();
@@ -1060,9 +1071,10 @@ namespace PanCardView
             if (isNextSelected.HasValue)
             {
                 FireItemDisappearing(InteractionType.User, isNextSelected.GetValueOrDefault(), oldIndex);
+                FireItemBeforeAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
             }
-            CurrentDiff = 0;
 
+            CurrentDiff = 0;
             await endingTask;
 
             FireUserInteracted(UserInteractionStatus.Ended, diff, oldIndex);
@@ -1293,8 +1305,7 @@ namespace PanCardView
                 return template.CreateView();
             }
 
-            List<View> viewsList;
-            if (!_viewsPool.TryGetValue(template, out viewsList))
+            if (!_viewsPool.TryGetValue(template, out List<View> viewsList))
             {
                 viewsList = new List<View>();
                 _viewsPool.Add(template, viewsList);
@@ -1558,7 +1569,7 @@ namespace PanCardView
                     }
                     catch (InvalidOperationException)
                     {
-                        System.Diagnostics.Debug.WriteLine("CardsView: Couldn't handle InvalidOperationException");
+                        Console.WriteLine("CardsView: Couldn't handle InvalidOperationException");
                     }
                 });
             }
@@ -1661,6 +1672,14 @@ namespace PanCardView
             var args = new ItemDisappearingEventArgs(type, isNextSelected, index, item);
             ItemDisappearingCommand?.Execute(args);
             ItemDisappearing?.Invoke(this, args);
+        }
+
+        private void FireItemBeforeAppearing(InteractionType type, bool isNextSelected, int index)
+        {
+            var item = GetItem(index);
+            var args = new ItemBeforeAppearingEventArgs(type, isNextSelected, index, item);
+            ItemBeforeAppearingCommand?.Execute(args);
+            ItemBeforeAppearing?.Invoke(this, args);
         }
 
         private void FireItemAppearing(InteractionType type, bool isNextSelected, int index)
