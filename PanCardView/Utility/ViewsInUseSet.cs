@@ -7,6 +7,14 @@ namespace PanCardView.Utility
 	{
 		private readonly Dictionary<View, int> _viewsSet = new Dictionary<View, int>();
 
+        public void AddRange(IEnumerable<View> views)
+        {
+            foreach(var view in views)
+            {
+                Add(view);
+            }
+        }
+
 		public void Add(View view)
 		=> _viewsSet[view] = Contains(view)
 			? _viewsSet[view] + 1

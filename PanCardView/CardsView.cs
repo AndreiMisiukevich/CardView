@@ -859,10 +859,7 @@ namespace PanCardView
                 }
                 lock (_viewsInUseLocker)
                 {
-                    foreach (var view in views)
-                    {
-                        _viewsInUse.Add(view);
-                    }
+                    _viewsInUse.AddRange(views);
                 }
                 FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, OldIndex);
                 FireItemBeforeAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
@@ -1596,13 +1593,8 @@ namespace PanCardView
             lock (_viewsInUseLocker)
             {
                 var views = NextViews.Union(PrevViews).Union(Enumerable.Repeat(CurrentView, 1));
-
                 _viewsGestureCounter[gestureId] = views;
-
-                foreach (var view in views.Where(v => v != null))
-                {
-                    _viewsInUse.Add(view);
-                }
+                _viewsInUse.AddRange(views.Where(v => v != null));
             }
         }
 
