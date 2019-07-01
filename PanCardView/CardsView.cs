@@ -133,6 +133,11 @@ namespace PanCardView
         public event CardsViewItemBeforeAppearingHandler ItemBeforeAppearing;
         public event CardsViewItemAppearingHandler ItemAppearing;
         public event CardsViewItemSwipedHandler ItemSwiped;
+        public event NotifyCollectionChangedEventHandler ViewsInUseCollectionChanged
+        {
+            add => _viewsInUseSet.CollectionChanged += value;
+            remove => _viewsInUseSet.CollectionChanged -= value;
+        }
 
         private readonly object _childLocker = new object();
         private readonly object _viewsInUseLocker = new object();
@@ -142,7 +147,7 @@ namespace PanCardView
         private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
         private readonly Dictionary<Guid, IEnumerable<View>> _viewsGestureCounter = new Dictionary<Guid, IEnumerable<View>>();
         private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
-        private readonly ViewsInUseSet _viewsInUse = new ViewsInUseSet();
+        private readonly ViewsInUseSet _viewsInUseSet = new ViewsInUseSet();
         private readonly InteractionQueue _interactions = new InteractionQueue();
         private readonly PanGestureRecognizer _panGesture = new PanGestureRecognizer();
         private readonly ContextAssignedBehavior _contextAssignedBehavior = new ContextAssignedBehavior();
@@ -191,6 +196,8 @@ namespace PanCardView
         protected virtual int DefaultDesiredMaxChildrenCount => 7;
 
         public View CurrentView { get; private set; }
+
+        public IReadOnlyList<View> ViewsInUseCollection => _viewsInUseSet.Views;
 
         public IEnumerable<View> PrevViews
         {
@@ -859,7 +866,7 @@ namespace PanCardView
                 }
                 lock (_viewsInUseLocker)
                 {
-                    _viewsInUse.AddRange(views);
+                    _viewsInUseSet.AddRange(views);
                 }
                 FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, OldIndex);
                 FireItemBeforeAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
@@ -875,14 +882,10 @@ namespace PanCardView
             {
                 lock (_viewsInUseLocker)
                 {
-                    var depth = BackViewsDepth;
-                    foreach (var view in views)
+                    _viewsInUseSet.RemoveRange(views);
+                    if(isProcessingNow && BackViewsDepth <= 1)
                     {
-                        _viewsInUse.Remove(view);
-                        if (isProcessingNow &&
-                            !_viewsInUse.Contains(view) &&
-                            depth <= 1 &&
-                            view != CurrentView)
+                        foreach(var view in views.Where(v => !_viewsInUseSet.Contains(v) && v != CurrentView))
                         {
                             CleanView(view);
                         }
@@ -1308,7 +1311,7 @@ namespace PanCardView
                 _viewsPool.Add(template, viewsList);
             }
 
-            var notUsingViews = viewsList.Where(v => !_viewsInUse.Contains(v) && !bookedViews.Contains(v));
+            var notUsingViews = viewsList.Where(v => !_viewsInUseSet.Contains(v) && !bookedViews.Contains(v));
             var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context || v == context)
                                     ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
                                     ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
@@ -1526,7 +1529,7 @@ namespace PanCardView
 
             lock (_childLocker)
             {
-                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUse.Contains(c)).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();
+                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUseSet.Contains(c)).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();
                 RemoveChildren(views);
             }
         }
@@ -1594,7 +1597,7 @@ namespace PanCardView
             {
                 var views = NextViews.Union(PrevViews).Union(Enumerable.Repeat(CurrentView, 1));
                 _viewsGestureCounter[gestureId] = views;
-                _viewsInUse.AddRange(views.Where(v => v != null));
+                _viewsInUseSet.AddRange(views);
             }
         }
 
@@ -1607,10 +1610,11 @@ namespace PanCardView
                     return;
                 }
 
-                foreach (var view in _viewsGestureCounter[gestureId])
+                var views = _viewsGestureCounter[gestureId];
+                _viewsInUseSet.RemoveRange(views);
+                if(isProcessingNow)
                 {
-                    _viewsInUse.Remove(view);
-                    if (isProcessingNow && !_viewsInUse.Contains(view))
+                    foreach(var view in views.Where(v => !_viewsInUseSet.Contains(v)))
                     {
                         CleanView(view);
                     }
