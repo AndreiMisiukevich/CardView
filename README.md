@@ -222,7 +222,7 @@ private void CarouselView_UserInteracted(PanCardView.CardsView view, PanCardView
 
 -> If all these tricks didn't help you, you may use **IsPanInteractionEnabled = false** This trick disables pan interaction, but preserve ability to swipe cards.
 
--> If you get **crashes** during ItemsSource update, try to add/set items in Main Thread (Device.BeginInvokeInMainThread)
+-> If you get **crashes** during ItemsSource update, try to add/set items in Main Thread (**Device.BeginInvokeOnMainThread**)
 
 -> **GTK** use click / double click for forward/back navigation.
 
