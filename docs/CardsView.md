@@ -10,7 +10,8 @@ UserInteracted | `CardsViewUserInteractedHandler` | It is raised when user inter
 ItemDisappearing | `CardsViewItemDisappearingHandler` | It is raised when any card is disappearing.
 ItemBeforeAppearing | `CardsViewItemBeforeAppearingHandler` | It is raised when any card is started appearing (before animation).
 ItemAppearing | `CardsViewItemAppearingHandler` | It is raised when any card is ended appearing (after animation).
-ItemSwiped | `CardsViewItemSwipedHandler` | It is raised when user swips any card (Left, Right, Up, Down)
+ItemSwiped | `CardsViewItemSwipedHandler` | It is raised when user swipes any card (Left, Right, Up, Down).
+ViewsInUseCollectionChanged | `NotifyCollectionChangedEventHandler` | It is raised when ViewsInUseCollection changed (Add, Remove).
 
 ### Properties
 
