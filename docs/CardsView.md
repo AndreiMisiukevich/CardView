@@ -22,7 +22,7 @@ Property | Type | Default | Description
 BackViewsDepth | `int` | 1 | This determines how many views should be loaded in the `SetupNextView()` and `SetupPrevView()`
 DesiredMaxChildrenCount | `int` | 7 | Used to determine when to remove views from the Children stack of the control. This is used when the auto navigation animation is not processing, e.g., when `isProcessingNow` is set to false.
 IsAutoInteractionRunning | `bool` | false | Determines if the auto navigation is running, e.g., This is set to true in `StartAutoNavigation()` and false in `EndAutoNavigation()`.
-IsAutoNavigatingAimationEnabled | `bool` | true | Determines if the control should animate cards, if selected item/index was chagend without user interaction (e.g. from code).
+IsAutoNavigatingAnimationEnabled | `bool` | true | Determines if the control should animate cards, if selected item/index was chagend without user interaction (e.g. from code).
 IsCyclical | `bool` | true | Determines if the control can cycle round from the last view to the first, allows for infinite swiping.
 IsOnlyForwardDirection | `bool` | false | Set to only allow the control to move forward and not have the abilitly to go back to previous cards.
 IsPanSwipeEnabled | `bool` | true | Set to allow the control to detec swipes from fast pan movements.
