@@ -100,7 +100,10 @@ namespace PanCardView
 
         public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultIsCyclical);
 
-        public static readonly BindableProperty IsAutoNavigatingAimationEnabledProperty = BindableProperty.Create(nameof(IsAutoNavigatingAimationEnabled), typeof(bool), typeof(CardsView), true);
+        [Obsolete("USE IsAutoNavigatingAnimationEnabledProperty")]
+        public static readonly BindableProperty IsAutoNavigatingAimationEnabledProperty = IsAutoNavigatingAnimationEnabledProperty;
+
+        public static readonly BindableProperty IsAutoNavigatingAnimationEnabledProperty = BindableProperty.Create(nameof(IsAutoNavigatingAnimationEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty IsPanSwipeEnabledProperty = BindableProperty.Create(nameof(IsPanSwipeEnabled), typeof(bool), typeof(CardsView), true);
 
@@ -355,10 +358,17 @@ namespace PanCardView
             set => SetValue(IsCyclicalProperty, value);
         }
 
+        [Obsolete("USE IsAutoNavigatingAnimationEnabled")]
         public bool IsAutoNavigatingAimationEnabled
         {
-            get => (bool)GetValue(IsAutoNavigatingAimationEnabledProperty);
-            set => SetValue(IsAutoNavigatingAimationEnabledProperty, value);
+            get => (bool)GetValue(IsAutoNavigatingAnimationEnabledProperty);
+            set => SetValue(IsAutoNavigatingAnimationEnabledProperty, value);
+        }
+
+        public bool IsAutoNavigatingAnimationEnabled
+        {
+            get => (bool)GetValue(IsAutoNavigatingAnimationEnabledProperty);
+            set => SetValue(IsAutoNavigatingAnimationEnabledProperty, value);
         }
 
         public bool AreAnimationsEnabled
@@ -647,7 +657,7 @@ namespace PanCardView
 
         protected virtual async Task<bool> TryAutoNavigate()
         {
-            if (CurrentView == null || !IsAutoNavigatingAimationEnabled)
+            if (CurrentView == null || !IsAutoNavigatingAnimationEnabled)
             {
                 return false;
             }
