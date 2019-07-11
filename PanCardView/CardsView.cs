@@ -494,7 +494,7 @@ namespace PanCardView
             }
         }
 
-        public void OnSwiped(ItemSwipeDirection swipeDirection)
+        public virtual void OnSwiped(ItemSwipeDirection swipeDirection)
         {
             if (!IsUserInteractionEnabled || !_isPanEndRequested || !CheckInteractionDelay())
             {
