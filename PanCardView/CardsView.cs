@@ -893,9 +893,9 @@ namespace PanCardView
                 lock (_viewsInUseLocker)
                 {
                     _viewsInUseSet.RemoveRange(views);
-                    if(isProcessingNow && BackViewsDepth <= 1)
+                    if (isProcessingNow && BackViewsDepth <= 1)
                     {
-                        foreach(var view in views.Where(v => !_viewsInUseSet.Contains(v) && v != CurrentView))
+                        foreach (var view in views.Where(v => !_viewsInUseSet.Contains(v) && v != CurrentView))
                         {
                             CleanView(view);
                         }
@@ -983,10 +983,10 @@ namespace PanCardView
             }
 
             var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
-            if(interactionItem == null)
-			{
-				return;
-			}
+            if (interactionItem == null)
+            {
+                return;
+            }
 
             interactionItem.WasTouchChanged = true;
 
@@ -1010,7 +1010,7 @@ namespace PanCardView
             }
 
             var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
-            if(interactionItem == null)
+            if (interactionItem == null)
             {
                 return;
             }
@@ -1622,9 +1622,9 @@ namespace PanCardView
 
                 var views = _viewsGestureCounter[gestureId];
                 _viewsInUseSet.RemoveRange(views);
-                if(isProcessingNow)
+                if (isProcessingNow)
                 {
-                    foreach(var view in views.Where(v => !_viewsInUseSet.Contains(v)))
+                    foreach (var view in views.Where(v => !_viewsInUseSet.Contains(v)))
                     {
                         CleanView(view);
                     }
