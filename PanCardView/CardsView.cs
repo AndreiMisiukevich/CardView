@@ -82,6 +82,10 @@ namespace PanCardView
             bindable.AsCardsView().SetPanGesture(!(bool)newValue);
         });
 
+        public static readonly BindableProperty IsNextItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsNextItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
+
+        public static readonly BindableProperty IsPrevItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsPrevItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
+
         public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(CardsView), -1, BindingMode.OneWayToSource);
 
         public static readonly BindableProperty IsUserInteractionEnabledProperty = BindableProperty.Create(nameof(IsUserInteractionEnabled), typeof(bool), typeof(CardsView), true);
@@ -295,14 +299,22 @@ namespace PanCardView
             set => SetValue(IsAutoInteractionRunningProperty, value);
         }
 
-        /// <summary>
-        /// Only for iOS and Android
-        /// </summary>
-        /// <value>Pan interaction is enabled</value>
         public bool IsPanInteractionEnabled
         {
             get => (bool)GetValue(IsPanInteractionEnabledProperty);
             set => SetValue(IsPanInteractionEnabledProperty, value);
+        }
+
+        public bool IsNextItemPanInteractionEnabled
+        {
+            get => (bool)GetValue(IsNextItemPanInteractionEnabledProperty);
+            set => SetValue(IsNextItemPanInteractionEnabledProperty, value);
+        }
+
+        public bool IsPrevItemPanInteractionEnabled
+        {
+            get => (bool)GetValue(IsPrevItemPanInteractionEnabledProperty);
+            set => SetValue(IsPrevItemPanInteractionEnabledProperty, value);
         }
 
         public int ItemsCount
@@ -484,7 +496,7 @@ namespace PanCardView
 
         public void OnPanUpdated(PanUpdatedEventArgs e)
         {
-            if (ItemsCount <= 0)
+            if (ItemsCount <= 0 || !IsPanInteractionEnabled)
             {
                 return;
             }
@@ -807,7 +819,9 @@ namespace PanCardView
                 indeces[i] = index + 1 + i;
             }
 
-            NextViews = InitViews(BackViewProcessor, AnimationDirection.Next, Enumerable.Repeat(CurrentView, 1), indeces);
+            NextViews = IsNextItemPanInteractionEnabled
+                ? InitViews(BackViewProcessor, AnimationDirection.Next, Enumerable.Repeat(CurrentView, 1), indeces)
+                : Enumerable.Empty<View>();
         }
 
         private void SetupPrevView(int index)
@@ -825,19 +839,21 @@ namespace PanCardView
                 indeces[i] = index + incValue;
             }
 
-            PrevViews = InitViews(BackViewProcessor, AnimationDirection.Prev, Enumerable.Repeat(CurrentView, 1).Union(NextViews), indeces);
+            PrevViews = (IsPrevItemPanInteractionEnabled && !isForwardOnly) || (IsNextItemPanInteractionEnabled && isForwardOnly)
+                ? InitViews(BackViewProcessor, AnimationDirection.Prev, Enumerable.Repeat(CurrentView, 1).Union(NextViews), indeces)
+                : Enumerable.Empty<View>();
         }
 
         private void StoreParentSize(double width, double height)
         => _parentSize = new Size(width, height);
 
-        private void SetPanGesture(bool _isForceRemove = false)
+        private void SetPanGesture(bool isForceRemove = false)
         {
             if (Device.RuntimePlatform != Device.Android)
             {
                 _panGesture.PanUpdated -= OnPanUpdated;
                 GestureRecognizers.Remove(_panGesture);
-                if (_isForceRemove)
+                if (isForceRemove)
                 {
                     return;
                 }
