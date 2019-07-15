@@ -92,7 +92,11 @@ namespace PanCardView
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
-        public static readonly BindableProperty IsViewCacheEnabledProperty = BindableProperty.Create(nameof(IsViewCacheEnabled), typeof(bool), typeof(CardsView), true);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use IsViewReusingEnabledProperty instead")]
+        public static readonly BindableProperty IsViewCacheEnabledProperty = IsViewReusingEnabledProperty;
+
+        public static readonly BindableProperty IsViewReusingEnabledProperty = BindableProperty.Create(nameof(IsViewReusingEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty UserInteractionDelayProperty = BindableProperty.Create(nameof(UserInteractionDelay), typeof(int), typeof(CardsView), 200);
 
@@ -100,7 +104,7 @@ namespace PanCardView
 
         public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultIsCyclical);
 
-        [Obsolete("USE IsAutoNavigatingAnimationEnabledProperty")]
+        [Obsolete("Use IsAutoNavigatingAnimationEnabledProperty instead")]
         public static readonly BindableProperty IsAutoNavigatingAimationEnabledProperty = IsAutoNavigatingAnimationEnabledProperty;
 
         public static readonly BindableProperty IsAutoNavigatingAnimationEnabledProperty = BindableProperty.Create(nameof(IsAutoNavigatingAnimationEnabled), typeof(bool), typeof(CardsView), true);
@@ -150,7 +154,7 @@ namespace PanCardView
         private readonly object _setCurrentViewLocker = new object();
         private readonly object _sizeChangedLocker = new object();
 
-        private readonly Dictionary<object, List<View>> _viewsPool = new Dictionary<object, List<View>>();
+        private readonly Dictionary<object, HashSet<View>> _viewsPool = new Dictionary<object, HashSet<View>>();
         private readonly Dictionary<Guid, IEnumerable<View>> _viewsGestureCounter = new Dictionary<Guid, IEnumerable<View>>();
         private readonly List<TimeDiffItem> _timeDiffItems = new List<TimeDiffItem>();
         private readonly ViewsInUseSet _viewsInUseSet = new ViewsInUseSet();
@@ -337,10 +341,18 @@ namespace PanCardView
             set => SetValue(IsOnlyForwardDirectionProperty, value);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Please use IsViewReusingEnabled instead")]
         public bool IsViewCacheEnabled
         {
             get => (bool)GetValue(IsViewCacheEnabledProperty);
             set => SetValue(IsViewCacheEnabledProperty, value);
+        }
+
+        public bool IsViewReusingEnabled
+        {
+            get => (bool)GetValue(IsViewReusingEnabledProperty);
+            set => SetValue(IsViewReusingEnabledProperty, value);
         }
 
         public int UserInteractionDelay
@@ -718,8 +730,6 @@ namespace PanCardView
         }
 
         protected virtual bool CheckIsProtectedView(View view) => view.Behaviors.Any(b => b is ProtectedControlBehavior);
-
-        protected virtual bool CheckIsCacheEnabled(DataTemplate template) => IsViewCacheEnabled;
 
         protected virtual bool CheckIsHardSetCurrentView() => false;
 
@@ -1313,26 +1323,24 @@ namespace PanCardView
 
         private View CreateRetrieveView(object context, DataTemplate template, IEnumerable<View> bookedViews)
         {
-            if (!CheckIsCacheEnabled(template))
+            if (!_viewsPool.TryGetValue(template, out HashSet<View> viewsCollection))
             {
-                return template.CreateView();
+                viewsCollection = new HashSet<View>();
+                _viewsPool.Add(template, viewsCollection);
             }
 
-            if (!_viewsPool.TryGetValue(template, out List<View> viewsList))
+            var notUsingViews = viewsCollection.Where(v => !_viewsInUseSet.Contains(v) && !bookedViews.Contains(v));
+            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context || v == context);
+            if(IsViewReusingEnabled)
             {
-                viewsList = new List<View>();
-                _viewsPool.Add(template, viewsList);
+                view = view ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
+                            ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
             }
-
-            var notUsingViews = viewsList.Where(v => !_viewsInUseSet.Contains(v) && !bookedViews.Contains(v));
-            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context || v == context)
-                                    ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
-                                    ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
 
             if (view == null)
             {
                 view = template.CreateView();
-                viewsList.Add(view);
+                viewsCollection.Add(view);
             }
 
             return view;
@@ -1361,6 +1369,17 @@ namespace PanCardView
             }
 
             return this[index];
+        }
+
+        private void RemoveRangeViewsPool(View[] views)
+        {
+            foreach(var view in views)
+            {
+                foreach (var viewsCollection in _viewsPool.Values)
+                {
+                    viewsCollection.Remove(view);
+                }
+            }
         }
 
         private bool CheckContextAssigned(View view)
@@ -1415,11 +1434,11 @@ namespace PanCardView
 
         private void CleanView(View view)
         {
-            if (CheckContextAssigned(view))
+            if (CheckContextAssigned(view) && IsViewReusingEnabled)
             {
-                view.Behaviors.Remove(_contextAssignedBehavior);
                 view.BindingContext = null;
             }
+            view.Behaviors.Remove(_contextAssignedBehavior);
             BackViewProcessor.HandleCleanView(Enumerable.Repeat(view, 1), this);
         }
 
@@ -1542,8 +1561,12 @@ namespace PanCardView
 
             lock (_childLocker)
             {
-                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUseSet.Contains(c)).Take(_viewsChildrenCount - DesiredMaxChildrenCount).ToArray();
-                RemoveChildren(views);
+                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUseSet.Contains(c));
+                if(IsViewReusingEnabled)
+                {
+                    views = views.Take(_viewsChildrenCount - DesiredMaxChildrenCount);
+                }
+                RemoveChildren(views.ToArray());
             }
         }
 
@@ -1563,6 +1586,11 @@ namespace PanCardView
             {
                 ExecutePreventInvalidOperationException(() => Children.Remove(view));
                 CleanView(view);
+            }
+
+            if(!IsViewReusingEnabled)
+            {
+                RemoveRangeViewsPool(views);
             }
         }
 
