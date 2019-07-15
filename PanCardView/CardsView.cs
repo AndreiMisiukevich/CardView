@@ -125,16 +125,19 @@ namespace PanCardView
 
         public static readonly BindableProperty ItemDisappearingCommandProperty = BindableProperty.Create(nameof(ItemDisappearingCommand), typeof(ICommand), typeof(CardsView), null);
 
-        public static readonly BindableProperty ItemBeforeAppearingCommandProperty = BindableProperty.Create(nameof(ItemBeforeAppearingCommand), typeof(ICommand), typeof(CardsView), null);
-
         public static readonly BindableProperty ItemAppearingCommandProperty = BindableProperty.Create(nameof(ItemAppearingCommand), typeof(ICommand), typeof(CardsView), null);
+
+        public static readonly BindableProperty ItemAppearedCommandProperty = BindableProperty.Create(nameof(ItemAppearedCommand), typeof(ICommand), typeof(CardsView), null);
 
         public static readonly BindableProperty ItemSwipedCommandProperty = BindableProperty.Create(nameof(ItemSwipedCommand), typeof(ICommand), typeof(CardsView), null);
 
         public event CardsViewUserInteractedHandler UserInteracted;
         public event CardsViewItemDisappearingHandler ItemDisappearing;
-        public event CardsViewItemBeforeAppearingHandler ItemBeforeAppearing;
         public event CardsViewItemAppearingHandler ItemAppearing;
+        public event CardsViewItemAppearedHandler ItemAppeared;
+        /// <summary>
+        /// Raised when user swiped (swipe gesture). If you want to detect card switching, use ItemAppeared / ItemAppearing
+        /// </summary>
         public event CardsViewItemSwipedHandler ItemSwiped;
         public event NotifyCollectionChangedEventHandler ViewsInUseCollectionChanged
         {
@@ -439,10 +442,10 @@ namespace PanCardView
             set => SetValue(ItemDisappearingCommandProperty, value);
         }
 
-        public ICommand ItemBeforeAppearingCommand
+        public ICommand ItemAppearedCommand
         {
-            get => GetValue(ItemBeforeAppearingCommandProperty) as ICommand;
-            set => SetValue(ItemBeforeAppearingCommandProperty, value);
+            get => GetValue(ItemAppearedCommandProperty) as ICommand;
+            set => SetValue(ItemAppearedCommandProperty, value);
         }
 
         public ICommand ItemAppearingCommand
@@ -553,8 +556,8 @@ namespace PanCardView
                     {
                         var isNextSelected = SelectedIndex > OldIndex;
                         FireItemDisappearing(InteractionType.User, isNextSelected, OldIndex);
-                        FireItemBeforeAppearing(InteractionType.User, isNextSelected, SelectedIndex);
                         FireItemAppearing(InteractionType.User, isNextSelected, SelectedIndex);
+                        FireItemAppeared(InteractionType.User, isNextSelected, SelectedIndex);
                     }
 
                     SetupBackViews();
@@ -879,7 +882,7 @@ namespace PanCardView
                     _viewsInUseSet.AddRange(views);
                 }
                 FireItemDisappearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, OldIndex);
-                FireItemBeforeAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
+                FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
             }
         }
 
@@ -905,7 +908,7 @@ namespace PanCardView
 
             IsAutoInteractionRunning = false;
             RemoveRedundantChildren(isProcessingNow);
-            FireItemAppearing(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
+            FireItemAppeared(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
             _interactions.Remove(animationId);
         }
 
@@ -1081,7 +1084,7 @@ namespace PanCardView
             if (isNextSelected.HasValue)
             {
                 FireItemDisappearing(InteractionType.User, isNextSelected.GetValueOrDefault(), oldIndex);
-                FireItemBeforeAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
+                FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
             }
 
             CurrentDiff = 0;
@@ -1090,7 +1093,7 @@ namespace PanCardView
             FireUserInteracted(UserInteractionStatus.Ended, diff, oldIndex);
             if (isNextSelected.HasValue)
             {
-                FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
+                FireItemAppeared(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
             }
 
             var isProcessingNow = !_interactions.CheckLastId(gestureId);
@@ -1680,20 +1683,20 @@ namespace PanCardView
             ItemDisappearing?.Invoke(this, args);
         }
 
-        private void FireItemBeforeAppearing(InteractionType type, bool isNextSelected, int index)
-        {
-            var item = GetItem(index);
-            var args = new ItemBeforeAppearingEventArgs(type, isNextSelected, index, item);
-            ItemBeforeAppearingCommand?.Execute(args);
-            ItemBeforeAppearing?.Invoke(this, args);
-        }
-
         private void FireItemAppearing(InteractionType type, bool isNextSelected, int index)
         {
             var item = GetItem(index);
             var args = new ItemAppearingEventArgs(type, isNextSelected, index, item);
             ItemAppearingCommand?.Execute(args);
             ItemAppearing?.Invoke(this, args);
+        }
+
+        private void FireItemAppeared(InteractionType type, bool isNextSelected, int index)
+        {
+            var item = GetItem(index);
+            var args = new ItemAppearedEventArgs(type, isNextSelected, index, item);
+            ItemAppearedCommand?.Execute(args);
+            ItemAppeared?.Invoke(this, args);
         }
 
         private void FireItemSwiped(ItemSwipeDirection swipeDirection, int index)

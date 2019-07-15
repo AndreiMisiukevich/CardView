@@ -2,9 +2,9 @@
 
 namespace PanCardView.EventArgs
 {
-    public class ItemBeforeAppearingEventArgs : System.EventArgs
+    public class ItemAppearedEventArgs : System.EventArgs
     {
-        public ItemBeforeAppearingEventArgs(InteractionType type, bool isNextSelected, int index, object item)
+        public ItemAppearedEventArgs(InteractionType type, bool isNextSelected, int index, object item)
         {
             Type = type;
             IsNextSelected = isNextSelected;
