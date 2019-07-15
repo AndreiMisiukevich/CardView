@@ -31,8 +31,10 @@ IsRightToLeftFlowDirectionEnabled | `bool` | false | Set RightToLeft flow direct
 IsUserInteractionEnabled | `bool` | true | Determines if the control can be interacted with, e.g., `OnTouch` events.
 IsUserInteractionInCourse | `bool` | true | Determines if the control should forbid to start new interaction with card before previous ending.
 IsUserInteractionRunning | `bool` | false | Determines if the UserInteration is running, e.g., This is set to true in `OnTouchStarted()` and false in `OnTouchEnded()`.
-IsViewCacheEnabled | `bool` | true | Determines wether the control should retrieve the next view from the views pool or create a new one each time.
-IsPanInteractionEnabled | `bool` | true | **Only used in Android and iOS** Determines wether the control should handle pan gesture events or it should handle only swipes.
+IsViewReusingEnabled | `bool` | true | Determines wether the control should try to retrieve view from the views pool or create an own view for certain item.
+IsPanInteractionEnabled | `bool` | true | Determines wether the control should handle pan gesture events or it should handle only swipes.
+IsNextItemPanInteractionEnabled | `bool` | true | Determines wether next items are available for user interaction.
+IsPrevItemPanInteractionEnabled | `bool` | true | Determines wether previous items are available for user interaction.
 ItemBeforeAppearingCommand | `ICommand` | null | The command that is executed when a new item is started to display.
 ItemAppearingCommand | `ICommand` | null | The command that is executed when a new item is ended to display.
 ItemDisappearingCommand | `ICommand` | null | The command that is executed when the item is no longer the displayed item.
