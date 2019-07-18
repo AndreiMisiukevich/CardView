@@ -5,6 +5,7 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using PanCardView.Enums;
+using static Xamarin.Forms.Platform.iOS.Platform;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.iOS
