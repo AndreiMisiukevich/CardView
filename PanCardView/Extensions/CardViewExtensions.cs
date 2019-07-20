@@ -94,6 +94,8 @@ namespace PanCardView.Extensions
 
         public static int Count(this IEnumerable collection)
         {
+        	if (collection == null) return 0;
+        
             if (collection is ICollection list)
             {
                 return list.Count;
