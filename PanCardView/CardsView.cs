@@ -691,7 +691,7 @@ namespace PanCardView
 
             var context = GetContext(SelectedIndex, true);
 
-            if (GetItem(CurrentView) == context)
+            if (Equals(GetItem(CurrentView), context))
             {
                 return false;
             }
@@ -1346,7 +1346,7 @@ namespace PanCardView
             }
 
             var notUsingViews = viewsCollection.Where(v => !_viewsInUseSet.Contains(v) && !bookedViews.Contains(v));
-            var view = notUsingViews.FirstOrDefault(v => v.BindingContext == context || v == context);
+            var view = notUsingViews.FirstOrDefault(v => Equals(v.BindingContext, context) || v == context);
             if(IsViewReusingEnabled)
             {
                 view = view ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
@@ -1489,7 +1489,7 @@ namespace PanCardView
                 var currentItem = GetItem(CurrentView);
                 for (var i = 0; i < ItemsCount; ++i)
                 {
-                    if (this[i] == currentItem)
+                    if (Equals(this[i], currentItem))
                     {
                         index = i;
                         isCurrentContextPresent = true;
