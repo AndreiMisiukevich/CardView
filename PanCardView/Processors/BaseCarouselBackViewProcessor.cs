@@ -14,10 +14,14 @@ namespace PanCardView.Processors
 
         public Easing AnimEasing { get; set; } = Easing.SinInOut;
 
+        public double ScaleFactor { get; set; } = 1;
+
+        public double OpacityFactor { get; set; } = 1;
+
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
             var view = views.FirstOrDefault();
-            if(view != null)
+            if (view != null)
             {
                 view.BatchBegin();
                 SetTranslationX(view, Sign((int)animationDirection) * cardsView.Width, cardsView);
@@ -114,9 +118,16 @@ namespace PanCardView.Processors
         }
 
         protected virtual double GetTranslationX(View view)
-            => view.TranslationX;
+            => view?.TranslationX ?? 0;
 
         protected virtual void SetTranslationX(View view, double value, CardsView cardsView)
-            => view.TranslationX = value;
+        {
+            view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
+            view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
+            view.TranslationX = value;
+        }
+
+        protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView)
+            => (factor - 1) / cardsView.Width * Abs(value) + 1;
     }
 }

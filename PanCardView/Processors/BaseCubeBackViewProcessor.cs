@@ -15,6 +15,8 @@ namespace PanCardView.Processors
             try
             {
                 view.BatchBegin();
+                view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
+                view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
                 view.Margin = new Thickness(value > 0 ? value : 0, 0, value < 0 ? -value : 0, 0);
                 view.RotationY = value * Angle90 / cardsView.Width;
             }

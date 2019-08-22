@@ -9,27 +9,26 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class BaseCoverFlowFrontViewProcessor : ICardProcessor
+    public class BaseCoverFlowFrontViewProcessor : BaseCarouselFrontViewProcessor
     {
-        public uint AnimationLength { get; set; } = 300;
+        public BaseCoverFlowFrontViewProcessor()
+        {
+            NoItemMaxPanDistance = 0;
+        }
 
-        public Easing AnimEasing { get; set; } = Easing.SinInOut;
-
-        public double NoItemMaxPanDistance { get; set; } = 0;
-
-        public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
+        public override void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
             var view = views.FirstOrDefault();
             if (view != null)
             {
                 view.BatchBegin();
-                view.TranslationX = 0;
+                SetTranslationX(view, 0, cardsView);
                 view.IsVisible = true;
                 view.BatchCommit();
             }
         }
 
-        public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
+        public override void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
             var view = views.FirstOrDefault();
 
@@ -45,11 +44,11 @@ namespace PanCardView.Processors
 
             if (view != null)
             {
-                view.TranslationX = xPos;
+                SetTranslationX(view, xPos, cardsView);
             }
         }
 
-        public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
+        public override Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
             var view = views.FirstOrDefault();
             if (view == null)
@@ -57,11 +56,11 @@ namespace PanCardView.Processors
                 return Task.FromResult(false);
             }
 
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), 0)
                 .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }
 
-        public virtual Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
+        public override Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
             var view = views.FirstOrDefault();
             if (view == null)
@@ -70,17 +69,17 @@ namespace PanCardView.Processors
             }
             var step = GetStep(cardsView);
 
-            var animTimePercent = 1 - (step - Abs(view.TranslationX)) / step;
+            var animTimePercent = 1 - (step - Abs(GetTranslationX(view))) / step;
             var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), 0)
                 .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
 
-        public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
+        public override Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
             var view = views.FirstOrDefault();
             if (view == null)
@@ -89,13 +88,13 @@ namespace PanCardView.Processors
             }
             var step = GetStep(cardsView);
 
-            var animTimePercent = 1 - (step - Abs(view.TranslationX)) / step;
+            var animTimePercent = 1 - (step - Abs(GetTranslationX(view))) / step;
             var animLength = (uint)(AnimationLength * animTimePercent);
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => view.TranslationX = v, view.TranslationX, 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), 0)
                 .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
 
