@@ -27,6 +27,7 @@ IsCyclical | `bool` | true | Determines if the control can cycle round from the 
 IsOnlyForwardDirection | `bool` | false | Set to only allow the control to move forward and not have the abilitly to go back to previous cards.
 IsPanSwipeEnabled | `bool` | true | Set to allow the control to detec swipes from fast pan movements.
 VerticalSwipeThresholdDistance | `double` | 30.0 | **Only used in Android** Determines distance for recognizing movement as vertical swipe.
+IsVerticalSwipeEnabled | `bool` | true | **Only used in Android and iOS** Determines if vertical swipes are enabled.
 IsRightToLeftFlowDirectionEnabled | `bool` | false | Set RightToLeft flow direction for current control.
 IsUserInteractionEnabled | `bool` | true | Determines if the control can be interacted with, e.g., `OnTouch` events.
 IsUserInteractionInCourse | `bool` | true | Determines if the control should forbid to start new interaction with card before previous ending.
