@@ -5,6 +5,7 @@
     xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
     xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
     xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
     xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     x:Class="PanCardViewSample.Views.CarouselSampleXamlView"
     BackgroundColor="Black"
@@ -18,6 +19,12 @@
         ItemsSource="{Binding Items}"
         SlideShowDuration="3500"
         SelectedIndex="{Binding CurrentIndex}">
+
+        <x:Arguments>
+            <proc:BaseCarouselFrontViewProcessor ScaleFactor="0.5" OpacityFactor="0" />
+            <proc:BaseCarouselBackViewProcessor ScaleFactor="0.5" OpacityFactor="0" />
+        </x:Arguments>
+
         <cards:CarouselView.ItemTemplate>
             <DataTemplate>
                 <ContentView>
