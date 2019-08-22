@@ -118,9 +118,10 @@ namespace PanCardView.Droid
             var xDeltaAbs = Abs(xDelta);
             var yDeltaAbs = Abs(yDelta);
             var isHandled = (yDeltaAbs > xDeltaAbs &&
-                                     yDeltaAbs > Element.VerticalSwipeThresholdDistance) ||
-                                    (xDeltaAbs > yDeltaAbs &&
-                                     xDeltaAbs > Element.MoveThresholdDistance);
+                             Element.IsVerticalSwipeEnabled &&
+                             yDeltaAbs > Element.VerticalSwipeThresholdDistance) ||
+                            (xDeltaAbs > yDeltaAbs &&
+                             xDeltaAbs > Element.MoveThresholdDistance);
 
             Element.IsUserInteractionRunning |= isHandled;
             return IsTouchHandled = isHandled;

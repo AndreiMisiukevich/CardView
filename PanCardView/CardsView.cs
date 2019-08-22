@@ -120,6 +120,8 @@ namespace PanCardView
 
         public static readonly BindableProperty VerticalSwipeThresholdDistanceProperty = BindableProperty.Create(nameof(VerticalSwipeThresholdDistance), typeof(double), typeof(CardsView), 30.0);
 
+        public static readonly BindableProperty IsVerticalSwipeEnabledProperty = BindableProperty.Create(nameof(IsVerticalSwipeEnabled), typeof(bool), typeof(CardsView), true);
+
         public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
 
         public static readonly BindableProperty UserInteractedCommandProperty = BindableProperty.Create(nameof(UserInteractedCommand), typeof(ICommand), typeof(CardsView), null);
@@ -426,6 +428,16 @@ namespace PanCardView
             set => SetValue(VerticalSwipeThresholdDistanceProperty, value);
         }
 
+        /// <summary>
+        /// Only for Android and iOS
+        /// </summary>
+        /// <value>Move threshold distance.</value>
+        public bool IsVerticalSwipeEnabled
+        {
+            get => (bool)GetValue(IsVerticalSwipeEnabledProperty);
+            set => SetValue(IsVerticalSwipeEnabledProperty, value);
+        }
+
         public TimeSpan SwipeThresholdTime
         {
             get => (TimeSpan)GetValue(SwipeThresholdTimeProperty);
@@ -469,9 +481,11 @@ namespace PanCardView
         {
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         => OnPanUpdated(e);
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void OnPanUpdated(PanUpdatedEventArgs e)
         {
             if (ItemsCount <= 0 || !IsPanInteractionEnabled)
@@ -499,6 +513,7 @@ namespace PanCardView
             }
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void OnSwiped(ItemSwipeDirection swipeDirection)
         {
             if (!IsUserInteractionEnabled || !_isPanEndRequested || !CheckInteractionDelay())

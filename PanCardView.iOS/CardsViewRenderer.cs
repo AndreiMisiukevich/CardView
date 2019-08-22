@@ -5,6 +5,7 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using PanCardView.Enums;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.iOS
@@ -49,9 +50,35 @@ namespace PanCardView.iOS
             }
         }
 
-        protected virtual void ResetSwipeGestureRecognizer(UISwipeGestureRecognizer swipeGestureRecognizer)
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if(e.PropertyName == CardsView.IsVerticalSwipeEnabledProperty.PropertyName)
+            {
+                SetSwipeGestures();
+                return;
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                _leftSwipeGesture?.Dispose();
+                _rightSwipeGesture?.Dispose();
+                _upSwipeGesture?.Dispose();
+                _downSwipeGesture?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        protected virtual void ResetSwipeGestureRecognizer(UISwipeGestureRecognizer swipeGestureRecognizer, bool isForceRemove = false)
         {
             RemoveGestureRecognizer(swipeGestureRecognizer);
+            if(isForceRemove)
+            {
+                return;
+            }
             AddGestureRecognizer(swipeGestureRecognizer);
         }
 
@@ -59,8 +86,10 @@ namespace PanCardView.iOS
         {
             ResetSwipeGestureRecognizer(_leftSwipeGesture);
             ResetSwipeGestureRecognizer(_rightSwipeGesture);
-            ResetSwipeGestureRecognizer(_upSwipeGesture);
-            ResetSwipeGestureRecognizer(_downSwipeGesture);
+
+            var shouldRemoveVerticalSwipes = !(Element?.IsVerticalSwipeEnabled ?? false);
+            ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveVerticalSwipes);
+            ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveVerticalSwipes);
         }
 
         private void OnSwiped(UISwipeGestureRecognizer gesture)
