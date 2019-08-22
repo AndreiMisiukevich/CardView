@@ -118,13 +118,21 @@ namespace PanCardView.Processors
         }
 
         protected virtual double GetTranslationX(View view)
-            => view?.TranslationX ?? 0;
+        {
+            if(view == null)
+            {
+                return 0;
+            }
+            var value = view.TranslationX;
+            value += Sign(value) * (1 - view.Scale) * view.Width / 2;
+            return value;
+        }
 
         protected virtual void SetTranslationX(View view, double value, CardsView cardsView)
         {
             view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
             view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
-            view.TranslationX = value;
+            view.TranslationX = value - Sign(value) * (1 - view.Scale) * view.Width / 2;
         }
 
         protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView)
