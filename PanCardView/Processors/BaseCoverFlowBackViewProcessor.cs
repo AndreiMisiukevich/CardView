@@ -21,13 +21,10 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
-                view.BatchBegin();
                 SetTranslationX(view, Sign((int)animationDirection)
                     * (cardsView.IsRightToLeftFlowDirectionEnabled ? -1 : 1)
                     * GetStep(cardsView)
-                    * index, cardsView);
-                view.IsVisible = true;
-                view.BatchCommit();
+                    * index, cardsView, true);
             }
         }
 
@@ -41,10 +38,7 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
-                view.BatchBegin();
-                SetTranslationX(view, cardsView.Width, cardsView);
-                view.IsVisible = false;
-                view.BatchCommit();
+                SetTranslationX(view, cardsView.Width, cardsView, false);
             }
         }
 

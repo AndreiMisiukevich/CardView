@@ -5,9 +5,11 @@
     xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
     xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
     xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:res="clr-namespace:PanCardView.Resources;assembly=PanCardView"
+    xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
     xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     x:Class="PanCardViewSample.Views.CoverFlowSampleXamlView"
-    BackgroundColor="Black"
+    BackgroundColor="White"
     Title="CoverFlow Xaml">
 
     <ContentPage.BindingContext>
@@ -16,31 +18,39 @@
 
     <StackLayout>
             <cards:CoverFlowView 
-                PositionShiftValue="60"
+                PositionShiftValue="145"
                 IsCyclical="false"
-                IsAutoInteractionRunning="{Binding IsAutoAnimationRunning}"
-                IsUserInteractionRunning="{Binding IsUserInteractionRunning}"
                 SelectedIndex="{Binding CurrentIndex}"
                 ItemsSource="{Binding Items}">
+
+                <x:Arguments>
+                    <proc:BaseCoverFlowFrontViewProcessor ScaleFactor="0.75" OpacityFactor="0.25" />
+                    <proc:BaseCoverFlowBackViewProcessor  ScaleFactor="0.75" OpacityFactor="0.25" />
+                </x:Arguments>
+
             <cards:CoverFlowView.ItemTemplate>
                 <DataTemplate>
-                    <ContentView Padding="40">
-                        <Frame 
-                            VerticalOptions="Center"
-                            HorizontalOptions="Fill"
-                            HeightRequest="290"
-                            Padding="0" 
-                            HasShadow="false"
-                            IsClippedToBounds="true"
-                            CornerRadius="10"
-                            BackgroundColor="{Binding Color}">
-                            
+                   <Frame
+                       Margin="80"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Fill"
+                       Padding="0" 
+                       HasShadow="false"
+                       IsClippedToBounds="true"
+                       CornerRadius="10"
+                       BackgroundColor="{Binding Color}">
                             <ffimage:CachedImage Source="{Binding Source}" Aspect="AspectFill"/> 
-                           
                         </Frame>
-                    </ContentView>
                 </DataTemplate>
             </cards:CoverFlowView.ItemTemplate>
+
+            <controls:LeftArrowControl
+                AbsoluteLayout.LayoutBounds="0, 1, -1, -1"
+                ImageSource="{Static res:ResourcesInfo.BlackLeftArrowImageSource}" />
+            <controls:RightArrowControl
+                AbsoluteLayout.LayoutBounds="1, 1, -1, -1"
+                ImageSource="{Static res:ResourcesInfo.BlackRightArrowImageSource}"/>
+
         </cards:CoverFlowView>
         
         <Button Text="TO LAST" Command="{Binding GoToLastCommand}" />

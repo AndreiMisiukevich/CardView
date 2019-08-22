@@ -21,10 +21,7 @@ namespace PanCardView.Processors
             var view = views.FirstOrDefault();
             if (view != null)
             {
-                view.BatchBegin();
-                SetTranslationX(view, 0, cardsView);
-                view.IsVisible = true;
-                view.BatchCommit();
+                SetTranslationX(view, 0, cardsView, true);
             }
         }
 

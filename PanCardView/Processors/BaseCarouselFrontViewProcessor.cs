@@ -23,13 +23,7 @@ namespace PanCardView.Processors
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
             var view = views.FirstOrDefault();
-            if (view != null)
-            {
-                view.BatchBegin();
-                SetTranslationX(view, 0, cardsView);
-                view.IsVisible = true;
-                view.BatchCommit();
-            }
+            SetTranslationX(view, 0, cardsView, true);
         }
 
         public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -56,10 +50,7 @@ namespace PanCardView.Processors
                 xPos = Sign(xPos) * Min(Abs(xPos / 4), NoItemMaxPanDistance);
             }
 
-            if (view != null)
-            {
-                SetTranslationX(view, xPos, cardsView);
-            }
+            SetTranslationX(view, xPos, cardsView);
         }
 
         public virtual Task HandleAutoNavigate(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -116,18 +107,32 @@ namespace PanCardView.Processors
                 return 0;
             }
             var value = view.TranslationX;
-            value += Sign(value) * (1 - view.Scale) * view.Width / 2;
+            value += Sign(value) * view.Width * 0.5 * (1 - view.Scale);
             return value;
         }
 
-        protected virtual void SetTranslationX(View view, double value, CardsView cardsView)
+        protected virtual void SetTranslationX(View view, double value, CardsView cardsView, bool? isVisible = null)
         {
-            view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
-            view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
-            view.TranslationX = value - Sign(value) * (1 - view.Scale) * view.Width / 2;
+            if (view == null)
+            {
+                return;
+            }
+
+            try
+            {
+                view.BatchBegin();
+                view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
+                view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
+                view.TranslationX = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
+                view.IsVisible = isVisible ?? view.IsVisible;
+            }
+            finally
+            {
+                view.BatchCommit();
+            }
         }
 
         protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView)
-            => (factor - 1) / cardsView.Width * Abs(value) + 1;
+            => Abs(value) * (factor - 1) / cardsView.Width + 1;
     }
 }
