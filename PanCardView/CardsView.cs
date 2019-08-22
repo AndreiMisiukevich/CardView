@@ -96,10 +96,6 @@ namespace PanCardView
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use IsViewReusingEnabledProperty instead")]
-        public static readonly BindableProperty IsViewCacheEnabledProperty = IsViewReusingEnabledProperty;
-
         public static readonly BindableProperty IsViewReusingEnabledProperty = BindableProperty.Create(nameof(IsViewReusingEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty UserInteractionDelayProperty = BindableProperty.Create(nameof(UserInteractionDelay), typeof(int), typeof(CardsView), 200);
@@ -107,9 +103,6 @@ namespace PanCardView
         public static readonly BindableProperty IsUserInteractionInCourseProperty = BindableProperty.Create(nameof(IsUserInteractionInCourse), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultIsCyclical);
-
-        [Obsolete("Use IsAutoNavigatingAnimationEnabledProperty instead")]
-        public static readonly BindableProperty IsAutoNavigatingAimationEnabledProperty = IsAutoNavigatingAnimationEnabledProperty;
 
         public static readonly BindableProperty IsAutoNavigatingAnimationEnabledProperty = BindableProperty.Create(nameof(IsAutoNavigatingAnimationEnabled), typeof(bool), typeof(CardsView), true);
 
@@ -353,14 +346,6 @@ namespace PanCardView
             set => SetValue(IsOnlyForwardDirectionProperty, value);
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Please use IsViewReusingEnabled instead")]
-        public bool IsViewCacheEnabled
-        {
-            get => (bool)GetValue(IsViewCacheEnabledProperty);
-            set => SetValue(IsViewCacheEnabledProperty, value);
-        }
-
         public bool IsViewReusingEnabled
         {
             get => (bool)GetValue(IsViewReusingEnabledProperty);
@@ -383,13 +368,6 @@ namespace PanCardView
         {
             get => (bool)GetValue(IsCyclicalProperty);
             set => SetValue(IsCyclicalProperty, value);
-        }
-
-        [Obsolete("USE IsAutoNavigatingAnimationEnabled")]
-        public bool IsAutoNavigatingAimationEnabled
-        {
-            get => (bool)GetValue(IsAutoNavigatingAnimationEnabledProperty);
-            set => SetValue(IsAutoNavigatingAnimationEnabledProperty, value);
         }
 
         public bool IsAutoNavigatingAnimationEnabled
