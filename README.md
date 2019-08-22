@@ -17,12 +17,29 @@
       <td><img src="https://media.giphy.com/media/3oFzlV5tQhF1udDxIY/giphy.gif"></td>
       <td><img src="https://media.giphy.com/media/du0akXCuO8BTHzBuat/giphy.gif"></td>
       <td><img src="https://media.giphy.com/media/1dH0dPqdPHwkDadmAx/giphy.gif"></td>
-    <td><img src="https://media.giphy.com/media/SXmXvjNJQMCcWMrvPj/giphy.gif"></td>
+      <td><img src="https://media.giphy.com/media/SXmXvjNJQMCcWMrvPj/giphy.gif"></td>
     </tr>
   </table>
 </html>
 
-CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CoverFlowSampleXamlView.xaml
+<html>
+  <table style="width:100%">
+    <tr>
+      <th>ScaleFactor & OpacityFactor</th>
+    </tr>
+    <tr>
+      <td><img src="https://media.giphy.com/media/S9EVF6Xzq6K488rr5B/giphy.gif"></td>
+    </tr>
+  </table>
+</html>
+
+* CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CoverFlowSampleXamlView.xaml
+* CarouselView sample:
+https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CarouselSampleXamlView.xaml
+* CubeView sample:
+https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CubeSampleXamlView.xaml
+* CardsView sample:
+https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanCardViewSample/Views/CardsSampleView.cs
 
 
 ## Setup
@@ -42,14 +59,6 @@ CoverFlowView sample: https://github.com/AndreiMisiukevich/CardView/blob/master/
 |Gtk|All|
 |WPF|.NET 4.5|
 |.NET Standard|2.0+|
-
-
-## Custom Animations
-You are able to create custom animations, just implement ICardProcessor or extend created processors (change animation speed or type)
-https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardView/Processors
-
-## Samples
-The sample you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
 
 **C#:**
 
@@ -148,12 +157,54 @@ if you want to add items directly through xaml
 ...
 ```
 
+if you want to achieve scale or opacity changing effects for side views (**ScaleFactor** & **OpacityFactor**), you should mange corresponding properties in processors and pass them to view constructor via **x:Arguments**:
+
+``` xml
+<ContentPage 
+    ...
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView">
+
+...
+
+<cards:CoverFlowView 
+      PositionShiftValue="145"
+      ItemsSource="{Binding Items}">
+
+      <x:Arguments>
+          <proc:BaseCoverFlowFrontViewProcessor ScaleFactor="0.75" OpacityFactor="0.25" />
+          <proc:BaseCoverFlowBackViewProcessor  ScaleFactor="0.75" OpacityFactor="0.25" />
+      </x:Arguments>
+
+  <cards:CoverFlowView.ItemTemplate>
+      <DataTemplate>
+         <Frame
+             Margin="80">
+               
+              ....
+
+          </Frame>
+      </DataTemplate>
+  </cards:CoverFlowView.ItemTemplate>
+
+</cards:CoverFlowView>
+
+...
+```
 
 -> If you want to customize indicators, you need set *SelectedIndicatorStyle* and/or *UnselectedIndicatorStyle*, or you are able to extend this class and override several methods.
 Also you can customize position of indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
 
 This class is describing default indicators styles (each default indicator item is Frame)
 https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Styles/DefaultIndicatorItemStyles.cs
+
+
+**MORE SAMPLES** you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
+
+## Custom Animations
+You are able to create custom animations, just implement *ICardProcessor* & *ICardBackViewProcessor* or extend existing processors (change animation speed or type etc.)
+https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardView/Processors
+
 
 ## Workarounds
 
@@ -218,7 +269,7 @@ private void CarouselView_UserInteracted(PanCardView.CardsView view, PanCardView
 }
 ```
 
--> If you don't want to handle vertical swipes or they interrupt your scrolling, you can set **VerticalSwipeThresholdDistance = "2000"** This property responds for vertical swipe detecting threshold
+-> If you don't want to handle vertical swipes or they interrupt your scrolling, you can set **IsVerticalSwipeEnabled = "false"**
 
 -> If all these tricks didn't help you, you may use **IsPanInteractionEnabled = false** This trick disables pan interaction, but preserve ability to swipe cards.
 
