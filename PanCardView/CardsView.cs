@@ -860,6 +860,7 @@ namespace PanCardView
                 const int delay = 200;
                 CancellationTokenSource tapCts = null;
 
+                GestureRecognizers.Clear();
                 GestureRecognizers.Add(new TapGestureRecognizer
                 {
                     Command = new Command(async () =>

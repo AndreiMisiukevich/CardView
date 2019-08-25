@@ -71,7 +71,6 @@ namespace PanCardView.Controls
         {
         }
 
-        private readonly TapGestureRecognizer _itemTapGesture;
         private CancellationTokenSource _fadeAnimationTokenSource;
 
         public IndicatorsControl()
@@ -90,12 +89,6 @@ namespace PanCardView.Controls
             AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
 
             Behaviors.Add(new ProtectedControlBehavior());
-
-            _itemTapGesture = new TapGestureRecognizer();
-            _itemTapGesture.Tapped += (tapSender, tapArgs) =>
-            {
-                SelectedIndex = IndexOf(tapSender as View);
-            };
         }
 
         public int SelectedIndex
@@ -222,7 +215,9 @@ namespace PanCardView.Controls
             for (var i = 0; i < ItemsCount - oldCount; ++i)
             {
                 var item = ItemTemplate.CreateView();
-                AddItemTapGesture(item);
+                var itemTapGesture = new TapGestureRecognizer();
+                itemTapGesture.Tapped += (tapSender, tapArgs) => SelectedIndex = IndexOf(tapSender as View);
+                item.GestureRecognizers.Add(itemTapGesture);
                 Children.Add(item);
             }
         }
@@ -352,15 +347,6 @@ namespace PanCardView.Controls
             if (UseCardItemsAsIndicatorsBindingContexts && IndicatorsContexts != null)
             {
                 OnResetIndicatorsContexts();
-            }
-        }
-
-        private void AddItemTapGesture(View view)
-        {
-            var gestures = view.GestureRecognizers;
-            if (!gestures.Contains(_itemTapGesture))
-            {
-                view.GestureRecognizers.Add(_itemTapGesture);
             }
         }
     }
