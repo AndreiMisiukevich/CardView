@@ -47,8 +47,8 @@ MaxChildrenCount | `int` | 12 | Used to determine when to remove views from the 
 MoveDistance | `double` | -1 | The distance the swipe needs to move in order for a page to move to the next.
 MoveThresholdDistance | `double` | 3.0 | **Only used in Android**. The distance threshold needed to detect a swipe.
 MoveWidthPercentage | `double` | .325 | The percentage of the control's width needed to move in order for a page to move to the next.
-SelectedIndex | `int` | -1 | Sets the selected index of the control and updates the `SelectedItem`.
-SelectedItem | `object` | null | Sets the selected item of the control and updates the `SelectedIndex`. If the item's index is not found it sets `SelectedIndex` to -1.
+SelectedIndex | `int` | -1 | Sets or gets the selected index of the control and updates the `SelectedItem`.
+SelectedItem | `object` | null | Sets or gets the selected item of the control and updates the `SelectedIndex`. If the item's index is not found it sets `SelectedIndex` to -1.
 SlideShowDuration | `int` | 0 | This property determines the number of milliseconds to wait before disaplying the next card. 
 SwipeThresholdDistance | `double` | 17.0 | This is used in conjuction with `SwipeThresholdTime` to detect if a swipe has happened. The swipe distance needs to be greater than or equal to: `SwipeThresholdDistance * timeDiff.TotalMilliseconds / SwipeThresholdTime.TotalMilliseconds`
 SwipeThresholdTime | `TimeSpan` | Android: 100ms Others:60ms | This is used in conjuction with `SwipeThresholdDistance` to detect if a swipe has happened. The swipe distance needs to be greater than or equal to: `SwipeThresholdDistance * timeDiff.TotalMilliseconds / SwipeThresholdTime.TotalMilliseconds`
