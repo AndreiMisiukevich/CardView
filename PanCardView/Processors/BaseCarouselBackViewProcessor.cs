@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using static PanCardView.Processors.Constants;
 using static System.Math;
 
 namespace PanCardView.Processors
@@ -17,6 +18,8 @@ namespace PanCardView.Processors
         public double ScaleFactor { get; set; } = 1;
 
         public double OpacityFactor { get; set; } = 1;
+
+        public double RotationFactor { get; set; } = 0;
 
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
@@ -145,6 +148,7 @@ namespace PanCardView.Processors
                 view.BatchBegin();
                 view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
                 view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
+                view.Rotation = CalculateFactoredProperty(value, RotationFactor, cardsView, 0) * Angle360;
                 view.TranslationX = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
                 view.IsVisible = isVisible ?? view.IsVisible;
             }
@@ -154,7 +158,7 @@ namespace PanCardView.Processors
             }
         }
 
-        protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView)
-            => Abs(value) * (factor - 1) / cardsView.Width + 1;
+        protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView, int defaultFactorValue = 1)
+            => Abs(value) * (factor - defaultFactorValue) / cardsView.Width + defaultFactorValue;
     }
 }
