@@ -66,8 +66,6 @@ namespace PanCardView.Droid
             DetectEvent(e);
             if (e.ActionMasked == MotionEventActions.Move)
             {
-                var density = Context.Resources.DisplayMetrics.Density;
-
                 var xDelta = GetTotalX(e);
                 var yDelta = GetTotalY(e);
                 SetIsTouchHandled(xDelta, yDelta);
