@@ -523,8 +523,9 @@ namespace PanCardView
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void OnSwiped(ItemSwipeDirection swipeDirection)
+        public async void OnSwiped(ItemSwipeDirection swipeDirection)
         {
+            await Task.Delay(1);
             if (!IsUserInteractionEnabled || !_isPanEndRequested || !CheckInteractionDelay())
             {
                 return;
