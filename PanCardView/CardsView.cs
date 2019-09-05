@@ -134,6 +134,8 @@ namespace PanCardView
 
         public static readonly BindableProperty ItemSwipedCommandProperty = BindableProperty.Create(nameof(ItemSwipedCommand), typeof(ICommand), typeof(CardsView), null);
 
+        internal static readonly BindableProperty ShouldAutoNavigateToNextProperty = BindableProperty.Create(nameof(ShouldAutoNavigateToNext), typeof(bool?), typeof(CardsView), null);
+
         public event CardsViewUserInteractedHandler UserInteracted;
         public event CardsViewItemDisappearingHandler ItemDisappearing;
         public event CardsViewItemAppearingHandler ItemAppearing;
@@ -177,7 +179,7 @@ namespace PanCardView
         private bool? _shouldScrollParent;
         private Size _parentSize;
         private DateTime _lastPanTime;
-        private CancellationTokenSource _slideshowTokenSource;
+        private CancellationTokenSource _slideShowTokenSource;
 
         public CardsView() : this(new BaseCardFrontViewProcessor(), new BaseCardBackViewProcessor())
         {
@@ -474,6 +476,13 @@ namespace PanCardView
             set => SetValue(ItemSwipedCommandProperty, value);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool? ShouldAutoNavigateToNext
+        {
+            get => GetValue(ShouldAutoNavigateToNextProperty) as bool?;
+            set => SetValue(ShouldAutoNavigateToNextProperty, value);
+        }
+
         public object this[int index] => ItemsSource?.FindValue(index);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -540,7 +549,8 @@ namespace PanCardView
                     {
                         isLeftSwiped = !isLeftSwiped;
                     }
-                    SelectedIndex = (SelectedIndex + (isLeftSwiped ? 1 : -1)).ToCyclingIndex(ItemsCount);
+
+                    SetSelectedWithShouldAutoNavigateToNext(isLeftSwiped);
                 }
             }
 
@@ -650,7 +660,7 @@ namespace PanCardView
 
         protected virtual async void AdjustSlideShow(bool isForceStop = false)
         {
-            _slideshowTokenSource?.Cancel();
+            _slideShowTokenSource?.Cancel();
             if (isForceStop)
             {
                 return;
@@ -658,8 +668,8 @@ namespace PanCardView
 
             if (SlideShowDuration > 0)
             {
-                _slideshowTokenSource = new CancellationTokenSource();
-                var token = _slideshowTokenSource.Token;
+                _slideShowTokenSource = new CancellationTokenSource();
+                var token = _slideShowTokenSource.Token;
                 while (true)
                 {
                     await Task.Delay(SlideShowDuration);
@@ -669,7 +679,7 @@ namespace PanCardView
                     }
                     if (ItemsCount > 0)
                     {
-                        SelectedIndex = (SelectedIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+                        SetSelectedWithShouldAutoNavigateToNext(true);
                     }
                 }
             }
@@ -939,6 +949,13 @@ namespace PanCardView
                 return SelectedIndex < OldIndex
                        ? AnimationDirection.Prev
                        : AnimationDirection.Next;
+            }
+
+            if(ShouldAutoNavigateToNext.HasValue)
+            {
+                return ShouldAutoNavigateToNext.GetValueOrDefault()
+                    ? AnimationDirection.Next
+                    : AnimationDirection.Prev;
             }
 
             var recIndex = SelectedIndex.ToCyclingIndex(ItemsCount);
@@ -1218,6 +1235,19 @@ namespace PanCardView
             }
 
             return newIndex;
+        }
+
+        private void SetSelectedWithShouldAutoNavigateToNext(bool isNext)
+        {
+            try
+            {
+                ShouldAutoNavigateToNext = isNext;
+                SelectedIndex = (SelectedIndex + (isNext ? 1 : -1)).ToCyclingIndex(ItemsCount);
+            }
+            finally
+            {
+                ShouldAutoNavigateToNext = null;
+            }
         }
 
         private void ResetActiveInactiveBackViews(AnimationDirection animationDirection)

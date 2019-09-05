@@ -51,6 +51,8 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty IsRightProperty = BindableProperty.Create(nameof(IsRight), typeof(bool), typeof(ArrowControl), true);
 
+        protected internal static readonly BindableProperty ShouldAutoNavigateToNextProperty = BindableProperty.Create(nameof(ShouldAutoNavigateToNext), typeof(bool?), typeof(CardsView), null, BindingMode.OneWayToSource);
+
         private CancellationTokenSource _fadeAnimationTokenSource;
 
         public int SelectedIndex
@@ -113,6 +115,12 @@ namespace PanCardView.Controls
             set => SetValue(IsRightProperty, value);
         }
 
+        internal bool? ShouldAutoNavigateToNext
+        {
+            get => GetValue(ShouldAutoNavigateToNextProperty) as bool?;
+            set => SetValue(ShouldAutoNavigateToNextProperty, value);
+        }
+
         protected Image ContentImage { get; }
 
         public ArrowControl()
@@ -138,6 +146,7 @@ namespace PanCardView.Controls
             this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
             this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
             this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, nameof(CardsView.IsRightToLeftFlowDirectionEnabled));
+            this.SetBinding(ShouldAutoNavigateToNextProperty, nameof(CardsView.ShouldAutoNavigateToNext));
 
             Behaviors.Add(new ProtectedControlBehavior());
 
@@ -222,7 +231,7 @@ namespace PanCardView.Controls
             {
                 return;
             }
-            SelectedIndex = (SelectedIndex + (IsRight ? 1 : -1)).ToCyclingIndex(ItemsCount);
+            SetSelectedWithShouldAutoNavigateToNext();
         }
 
         private bool CheckAvailability()
@@ -245,6 +254,19 @@ namespace PanCardView.Controls
             }
 
             return true;
+        }
+
+        private void SetSelectedWithShouldAutoNavigateToNext()
+        {
+            try
+            {
+                ShouldAutoNavigateToNext = IsRight;
+                SelectedIndex = (SelectedIndex + (IsRight ? 1 : -1)).ToCyclingIndex(ItemsCount);
+            }
+            finally
+            {
+                ShouldAutoNavigateToNext = null;
+            }
         }
     }
 }
