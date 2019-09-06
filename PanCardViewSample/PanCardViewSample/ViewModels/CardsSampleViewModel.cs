@@ -13,17 +13,17 @@ namespace PanCardViewSample.ViewModels
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private int _currentIndex;
-		private int _ImageCount = 1058;
+		private int _imageCount = 1078;
 
 		public CardsSampleViewModel()
 		{
 			Items = new ObservableCollection<object>
 			{
-				new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Red },
-				new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Green },
-				new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Gold },
-				new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Silver },
-				new { Source = CreateSource(), Ind = _ImageCount++, Color = Color.Blue }
+				new { Source = CreateSource(), Ind = _imageCount++, Color = Color.Red },
+				new { Source = CreateSource(), Ind = _imageCount++, Color = Color.Green },
+				new { Source = CreateSource(), Ind = _imageCount++, Color = Color.Gold },
+				new { Source = CreateSource(), Ind = _imageCount++, Color = Color.Silver },
+				new { Source = CreateSource(), Ind = _imageCount++, Color = Color.Blue }
 			};
 
 			PanPositionChangedCommand = new Command(v =>
@@ -80,7 +80,7 @@ namespace PanCardViewSample.ViewModels
 
 		private string CreateSource()
 		{
-			var source = $"https://picsum.photos/500/500?image={_ImageCount}";
+			var source = $"https://picsum.photos/500/500?image={_imageCount}";
 			return source;
 		}
 	}
