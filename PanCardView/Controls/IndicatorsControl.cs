@@ -278,17 +278,18 @@ namespace PanCardView.Controls
             IsVisible = false;
         }
 
-        private void ApplyStyle(View view, int cyclingIndex)
+        private void ApplyStyle(View view, int selectedIndex)
         {
             try
             {
                 view.BatchBegin();
-                if (IndexOf(view) == cyclingIndex)
+                var index = IndexOf(view);
+                if (index == selectedIndex)
                 {
-                    ApplySelectedStyle(view, cyclingIndex);
+                    ApplySelectedStyle(view, index);
                     return;
                 }
-                ApplyUnselectedStyle(view, cyclingIndex);
+                ApplyUnselectedStyle(view, index);
             }
             finally
             {
