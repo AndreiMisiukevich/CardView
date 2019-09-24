@@ -1536,7 +1536,9 @@ namespace PanCardView
 
                 if (index < 0)
                 {
-                    index = SelectedIndex - 1;
+                    index = IsCyclical || SelectedIndex < ItemsCount
+                        ? SelectedIndex
+                        : ItemsCount - 1;
                 }
             }
 
