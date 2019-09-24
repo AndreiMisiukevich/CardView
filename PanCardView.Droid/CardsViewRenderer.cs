@@ -41,7 +41,7 @@ namespace PanCardView.Droid
         {
             DetectEvent(ev);
 
-            if (!Element.IsPanInteractionEnabled)
+            if (!Element.IsPanInteractionEnabled || Element.ShouldThrottlePanInteraction)
             {
                 base.OnInterceptTouchEvent(ev);
                 return false;

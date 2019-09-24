@@ -24,9 +24,10 @@ DesiredMaxChildrenCount | `int` | 7 | Used to determine when to remove views fro
 IsAutoInteractionRunning | `bool` | false | Determines if the auto navigation is running, e.g., This is set to true in `StartAutoNavigation()` and false in `EndAutoNavigation()`.
 IsAutoNavigatingAnimationEnabled | `bool` | true | Determines if the control should animate cards, if selected item/index was chagend without user interaction (e.g. from code).
 IsCyclical | `bool` | true | Determines if the control can cycle round from the last view to the first, allows for infinite swiping.
-IsOnlyForwardDirection | `bool` | false | Set to only allow the control to move forward and not have the abilitly to go back to previous cards.
+IsOnlyForwardDirection | `bool` | false | Determines if the control should always take next elements for putting them on sides (like Tinder).
 IsPanSwipeEnabled | `bool` | true | Set to allow the control to detec swipes from fast pan movements.
 VerticalSwipeThresholdDistance | `double` | 30.0 | **Only used in Android** Determines distance for recognizing movement as vertical swipe.
+ShouldThrottlePanInteraction | `bool` | false | **Only used in Android** Set to allow throttling pan gesture interaction.
 IsVerticalSwipeEnabled | `bool` | true | **Only used in Android and iOS** Determines if vertical swipes are enabled.
 IsRightToLeftFlowDirectionEnabled | `bool` | false | Set RightToLeft flow direction for current control.
 IsUserInteractionEnabled | `bool` | true | Determines if the control can be interacted with, e.g., `OnTouch` events.

@@ -120,6 +120,8 @@ namespace PanCardView
 
         public static readonly BindableProperty VerticalSwipeThresholdDistanceProperty = BindableProperty.Create(nameof(VerticalSwipeThresholdDistance), typeof(double), typeof(CardsView), 30.0);
 
+        public static readonly BindableProperty ShouldThrottlePanInteractionProperty = BindableProperty.Create(nameof(ShouldThrottlePanInteraction), typeof(bool), typeof(CardsView), false);
+
         public static readonly BindableProperty IsVerticalSwipeEnabledProperty = BindableProperty.Create(nameof(IsVerticalSwipeEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
@@ -141,7 +143,7 @@ namespace PanCardView
         public event CardsViewItemAppearingHandler ItemAppearing;
         public event CardsViewItemAppearedHandler ItemAppeared;
         /// <summary>
-        /// Raised when user swiped (swipe gesture). If you want to detect card switching, use ItemAppeared / ItemAppearing
+        /// Raised when user swiped a view (swipe gesture). If you want to detect card switching, use ItemAppeared / ItemAppearing
         /// </summary>
         public event CardsViewItemSwipedHandler ItemSwiped;
         public event NotifyCollectionChangedEventHandler ViewsInUseCollectionChanged
@@ -423,11 +425,21 @@ namespace PanCardView
         /// <summary>
         /// Only for Android
         /// </summary>
-        /// <value>Move threshold distance.</value>
+        /// <value>Vertical swipe threshold distance.</value>
         public double VerticalSwipeThresholdDistance
         {
             get => (double)GetValue(VerticalSwipeThresholdDistanceProperty);
             set => SetValue(VerticalSwipeThresholdDistanceProperty, value);
+        }
+
+        /// <summary>
+        /// Only for Android
+        /// </summary>
+        /// <value>Should throttle pan interaction.</value>
+        public bool ShouldThrottlePanInteraction
+        {
+            get => (bool)GetValue(ShouldThrottlePanInteractionProperty);
+            set => SetValue(ShouldThrottlePanInteractionProperty, value);
         }
 
         /// <summary>
@@ -851,13 +863,13 @@ namespace PanCardView
         private void StoreParentSize(double width, double height)
         => _parentSize = new Size(width, height);
 
-        private void SetPanGesture(bool isForceRemove = false)
+        private void SetPanGesture(bool isForceRemoving = false)
         {
             if (Device.RuntimePlatform != Device.Android)
             {
                 _panGesture.PanUpdated -= OnPanUpdated;
                 GestureRecognizers.Remove(_panGesture);
-                if (isForceRemove)
+                if (isForceRemoving)
                 {
                     return;
                 }
