@@ -634,8 +634,8 @@ namespace PanCardView
         {
             var realIndex = index ?? SelectedIndex;
 
-            SetupNextView(realIndex);
-            SetupPrevView(realIndex);
+            var bookedView = SetupNextView(realIndex, Enumerable.Repeat(CurrentView, 1));
+            SetupPrevView(realIndex, bookedView);
 
             if (IsRightToLeftFlowDirectionEnabled)
             {
@@ -827,7 +827,7 @@ namespace PanCardView
             SetCurrentView();
         }
 
-        private void SetupNextView(int index)
+        private IEnumerable<View> SetupNextView(int index, IEnumerable<View> bookedViews)
         {
             var indeces = new int[BackViewsDepth];
             for (int i = 0; i < indeces.Length; ++i)
@@ -836,11 +836,12 @@ namespace PanCardView
             }
 
             NextViews = IsNextItemPanInteractionEnabled
-                ? InitViews(BackViewProcessor, AnimationDirection.Next, Enumerable.Repeat(CurrentView, 1), indeces)
+                ? InitViews(BackViewProcessor, AnimationDirection.Next, bookedViews, indeces)
                 : Enumerable.Empty<View>();
+            return bookedViews.Union(NextViews);
         }
 
-        private void SetupPrevView(int index)
+        private IEnumerable<View> SetupPrevView(int index, IEnumerable<View> bookedViews)
         {
             var isForwardOnly = IsOnlyForwardDirection;
 
@@ -856,8 +857,9 @@ namespace PanCardView
             }
 
             PrevViews = (IsPrevItemPanInteractionEnabled && !isForwardOnly) || (IsNextItemPanInteractionEnabled && isForwardOnly)
-                ? InitViews(BackViewProcessor, AnimationDirection.Prev, Enumerable.Repeat(CurrentView, 1).Union(NextViews), indeces)
+                ? InitViews(BackViewProcessor, AnimationDirection.Prev, bookedViews, indeces)
                 : Enumerable.Empty<View>();
+            return bookedViews.Union(PrevViews);
         }
 
         private void StoreParentSize(double width, double height)
