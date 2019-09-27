@@ -176,7 +176,7 @@ namespace PanCardView
         private int _inCoursePanDelay;
         private bool _isPanEndRequested = true;
         private bool _shouldSkipTouch;
-        private bool _isViewsInited;
+        private bool _isViewInited;
         private bool _hasRenderer;
         private bool? _shouldScrollParent;
         private Size _parentSize;
@@ -778,9 +778,9 @@ namespace PanCardView
                 var isValidSize = width > 0 && height > 0;
                 var isValidParentSize = parentWidth > 0 && parentHeight > 0;
 
-                if (!_isViewsInited && isValidParentSize && isValidSize)
+                if (!_isViewInited && isValidParentSize && isValidSize)
                 {
-                    _isViewsInited = true;
+                    _isViewInited = true;
                     StoreParentSize(parentWidth, parentHeight);
                     var prevAnimationDirection = AnimationDirection.Prev;
                     var nextAnimationDirection = AnimationDirection.Next;
@@ -793,7 +793,7 @@ namespace PanCardView
                     BackViewProcessor.HandleInitView(PrevViews, this, prevAnimationDirection);
                     BackViewProcessor.HandleInitView(NextViews, this, nextAnimationDirection);
                 }
-                if (_isViewsInited &&
+                if (_isViewInited &&
                     isValidParentSize &&
                     Abs(_parentSize.Width - parentWidth) > double.Epsilon &&
                     Abs(_parentSize.Height - parentHeight) > double.Epsilon)
