@@ -1311,11 +1311,11 @@ namespace PanCardView
 
         private IEnumerable<View> InitViews(ICardProcessor processor, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
         {
+            var views = new View[indeces.Length];
+
             try
             {
                 BatchBegin();
-                var views = new View[indeces.Length];
-
                 for (int i = 0; i < indeces.Length; ++i)
                 {
                     var view = PrepareView(bookedViews, indeces[i]);
@@ -1325,30 +1325,30 @@ namespace PanCardView
                         bookedViews = bookedViews.Union(Enumerable.Repeat(view, 1));
                     }
                 }
-
-                if (views.All(x => x == null))
-                {
-                    return Enumerable.Empty<View>();
-                }
-
-                processor.HandleInitView(views, this, animationDirection);
-
-                SetupLayout(views);
-
-                if (animationDirection == AnimationDirection.Current)
-                {
-                    AddBackChild(views);
-                }
-                else
-                {
-                    AddChild(CurrentView, views);
-                }
-                return views;
             }
             finally
             {
                 BatchCommit();
             }
+
+            if (views.All(x => x == null))
+            {
+                return Enumerable.Empty<View>();
+            }
+
+            processor.HandleInitView(views, this, animationDirection);
+
+            SetupLayout(views);
+
+            if (animationDirection == AnimationDirection.Current)
+            {
+                AddBackChild(views);
+            }
+            else
+            {
+                AddChild(CurrentView, views);
+            }
+            return views;
         }
 
         private View PrepareView(IEnumerable<View> bookedViews, int index)
