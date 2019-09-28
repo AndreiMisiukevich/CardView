@@ -1311,36 +1311,44 @@ namespace PanCardView
 
         private IEnumerable<View> InitViews(ICardProcessor processor, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
         {
-            var views = new View[indeces.Length];
-
-            for (int i = 0; i < indeces.Length; ++i)
+            try
             {
-                var view = PrepareView(bookedViews, indeces[i]);
-                views[i] = view;
-                if (view != null)
+                BatchBegin();
+                var views = new View[indeces.Length];
+
+                for (int i = 0; i < indeces.Length; ++i)
                 {
-                    bookedViews = bookedViews.Union(Enumerable.Repeat(view, 1));
+                    var view = PrepareView(bookedViews, indeces[i]);
+                    views[i] = view;
+                    if (view != null)
+                    {
+                        bookedViews = bookedViews.Union(Enumerable.Repeat(view, 1));
+                    }
                 }
-            }
 
-            if (views.All(x => x == null))
+                if (views.All(x => x == null))
+                {
+                    return Enumerable.Empty<View>();
+                }
+
+                processor.HandleInitView(views, this, animationDirection);
+
+                SetupLayout(views);
+
+                if (animationDirection == AnimationDirection.Current)
+                {
+                    AddBackChild(views);
+                }
+                else
+                {
+                    AddChild(CurrentView, views);
+                }
+                return views;
+            }
+            finally
             {
-                return Enumerable.Empty<View>();
+                BatchCommit();
             }
-
-            processor.HandleInitView(views, this, animationDirection);
-
-            SetupLayout(views);
-
-            if (animationDirection == AnimationDirection.Current)
-            {
-                AddBackChild(views);
-            }
-            else
-            {
-                AddChild(CurrentView, views);
-            }
-            return views;
         }
 
         private View PrepareView(IEnumerable<View> bookedViews, int index)
@@ -1396,6 +1404,12 @@ namespace PanCardView
             {
                 view = template.CreateView();
                 viewsCollection.Add(view);
+            }
+
+            // https://github.com/AndreiMisiukevich/CardView/issues/282
+            if (IsCyclical && BackViewsDepth > 1 && ItemsCount <= BackViewsDepth * 2)
+            {
+                BackViewProcessor.HandleCleanView(notUsingViews.Except(Enumerable.Repeat(view, 1)), this);
             }
 
             return view;
