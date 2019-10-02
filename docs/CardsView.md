@@ -4,7 +4,7 @@ This is the "Tinder" style card swiping view. This is also the base for the [Car
 
 ### Events
 
-Event | Arguments type | Description
+Event | Delegate type | Description
 --- | --- | ---
 UserInteracted | `CardsViewUserInteractedHandler` | It is raised when user interacts with any card (Start, End, Move).
 ItemDisappearing | `CardsViewItemDisappearingHandler` | It is raised when any card is disappearing.
