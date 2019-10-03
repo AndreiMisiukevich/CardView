@@ -600,6 +600,30 @@ namespace PanCardView
                 return;
             }
 
+            if (!isHardSet)
+            {
+                SetAllViews();
+                return;
+            }
+
+            //https://github.com/AndreiMisiukevich/CardView/issues/286
+            var opacity = Opacity;
+            var scale = Scale;
+            var time = 150u;
+
+            await Task.WhenAll(
+                this.FadeTo(0, time, Easing.CubicIn),
+                this.ScaleTo(.8, time, Easing.CubicIn));
+            SetAllViews();
+            CleanUnprocessingChildren();
+            await Task.Delay(10);
+            await Task.WhenAll(
+                this.FadeTo(opacity, time, Easing.CubicOut),
+                this.ScaleTo(scale, time, Easing.CubicOut));
+        }
+
+        protected virtual void SetAllViews()
+        {
             lock (_setCurrentViewLocker)
             {
                 if (ItemsSource != null)
@@ -623,11 +647,6 @@ namespace PanCardView
 
                     SetupBackViews();
                 }
-            }
-
-            if (isHardSet)
-            {
-                CleanUnprocessingChildren();
             }
         }
 
