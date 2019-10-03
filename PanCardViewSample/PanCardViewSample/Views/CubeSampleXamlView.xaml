@@ -14,10 +14,10 @@
         <viewModels:CardsSampleViewModel/>
     </ContentPage.BindingContext>
 
-    <StackLayout Spacing="50" Padding="0, 50">
+    <StackLayout Spacing="50" Padding="0, 0, 0, 50">
         <controls:TabsControl
             HorizontalOptions="FillAndExpand"
-            HeightRequest="30"
+            HeightRequest="40"
             BindingContext="{x:Reference cube}">
             <controls:TabsControl.ItemTemplate>
                 <DataTemplate>
@@ -27,7 +27,7 @@
                            VerticalOptions="CenterAndExpand"
                            FontSize="24"
                            FontAttributes="Bold"
-                           TextColor="Gold"
+                           TextColor="CadetBlue"
                            Text="{Binding Ind}"/>
 
                 </DataTemplate>

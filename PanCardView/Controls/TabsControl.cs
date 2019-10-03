@@ -12,7 +12,7 @@ namespace PanCardView.Controls
 
     public class TabsControl : AbsoluteLayout
     {
-        public static readonly BindableProperty CurrentDiffProperty = BindableProperty.Create(nameof(CurrentDiff), typeof(double), typeof(TabsControl), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty DiffProperty = BindableProperty.Create(nameof(Diff), typeof(double), typeof(TabsControl), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsTabsView().UpdateStripe();
         });
@@ -75,8 +75,8 @@ namespace PanCardView.Controls
             Children.Add(_currentItemStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
             Children.Add(_nextItemStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
 
-            this.SetBinding(CurrentDiffProperty, nameof(CardsView.CurrentDiff));
-            this.SetBinding(MaxDiffProperty, nameof(CardsView.Width));
+            this.SetBinding(DiffProperty, nameof(CardsView.Diff));
+            this.SetBinding(MaxDiffProperty, nameof(Width));
             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
             this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
             this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
@@ -86,11 +86,11 @@ namespace PanCardView.Controls
             SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
             Behaviors.Add(new ProtectedControlBehavior());
         }
-        
-        public double CurrentDiff
+
+        public double Diff
         {
-            get => (double)GetValue(CurrentDiffProperty);
-            set => SetValue(CurrentDiffProperty, value);
+            get => (double)GetValue(DiffProperty);
+            set => SetValue(DiffProperty, value);
         }
 
         public double MaxDiff
@@ -177,7 +177,7 @@ namespace PanCardView.Controls
 
         private void ResetControl()
         {
-            if(Parent == null)
+            if (Parent == null)
             {
                 return;
             }
@@ -206,6 +206,7 @@ namespace PanCardView.Controls
                     _itemsStackLayout.Children.Add(itemView);
                 }
 
+                _itemsStackLayout.Margin = new Thickness(0, 0, 0, StripeHeight);
                 _currentItemStripeView.Color = StripeColor;
                 _nextItemStripeView.Color = StripeColor;
 
@@ -219,7 +220,7 @@ namespace PanCardView.Controls
 
         private void UpdateStripe(double? diff = null)
         {
-            var currentDiff = diff ?? CurrentDiff;
+            var currentDiff = diff ?? Diff;
             var selectedIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
             if (selectedIndex < 0)
             {

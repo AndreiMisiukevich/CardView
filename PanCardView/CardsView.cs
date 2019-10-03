@@ -82,7 +82,7 @@ namespace PanCardView
             bindable.AsCardsView().SetPanGesture(!(bool)newValue);
         });
 
-        public static readonly BindableProperty CurrentDiffProperty = BindableProperty.Create(nameof(CurrentDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
+        public static readonly BindableProperty DiffProperty = BindableProperty.Create(nameof(Diff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
 
         public static readonly BindableProperty IsNextItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsNextItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
 
@@ -181,6 +181,7 @@ namespace PanCardView
         private bool _isViewInited;
         private bool _hasRenderer;
         private bool? _shouldScrollParent;
+        private double _currentDiff;
         private Size _parentSize;
         private DateTime _lastPanTime;
         private CancellationTokenSource _slideShowTokenSource;
@@ -236,6 +237,16 @@ namespace PanCardView
         {
             get => _currentInactiveBackViews;
             private set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
+        }
+
+        public double CurrentDiff
+        {
+            get => _currentDiff;
+            internal set
+            {
+                _currentDiff = value;
+                Diff = value;
+            }
         }
 
         public int OldIndex { get; private set; } = -1;
@@ -304,10 +315,10 @@ namespace PanCardView
             set => SetValue(IsPanInteractionEnabledProperty, value);
         }
 
-        public double CurrentDiff
+        public double Diff
         {
-            get => (double)GetValue(CurrentDiffProperty);
-            set => SetValue(CurrentDiffProperty, value);
+            get => (double)GetValue(DiffProperty);
+            set => SetValue(DiffProperty, value);
         }
 
         public bool IsNextItemPanInteractionEnabled
@@ -1145,7 +1156,7 @@ namespace PanCardView
                 FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
             }
 
-            CurrentDiff = 0;
+            _currentDiff = 0;
             await endingTask;
 
             FireUserInteracted(UserInteractionStatus.Ended, diff, oldIndex);

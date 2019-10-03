@@ -129,6 +129,7 @@ namespace PanCardView.Processors
                 view.Rotation = CalculateFactoredProperty(value, RotationFactor, cardsView, 0) * Angle360 * Sign(-value);
                 view.TranslationX = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
                 view.IsVisible = isVisible ?? view.IsVisible;
+                cardsView.Diff = value;
             }
             finally
             {
