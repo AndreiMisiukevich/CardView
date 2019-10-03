@@ -17,6 +17,7 @@
     <StackLayout Spacing="50" Padding="0, 0, 0, 50">
         <ContentView HeightRequest="40" HorizontalOptions="FillAndExpand">
             <controls:TabsControl
+                StripeColor="Gold"
                 ToFadeDuration="2000"
                 HeightRequest="40"
                 BindingContext="{x:Reference cube}">
@@ -29,7 +30,7 @@
                                FontSize="24"
                                FontAttributes="Bold"
                                TextColor="CadetBlue"
-                               Text="{Binding Ind}"/>
+                               Text="{Binding Title}"/>
 
                     </DataTemplate>
                 </controls:TabsControl.ItemTemplate>
