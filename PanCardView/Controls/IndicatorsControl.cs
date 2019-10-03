@@ -12,6 +12,10 @@ using System.ComponentModel;
 
 namespace PanCardView.Controls
 {
+    //TODO: Drop UseCardItemsAsIndicatorsBindingContextsProperty
+    //TODO: Rename IndicatorsContexts to ItemsSource
+    //TODO: MinimumVisibleIndicatorsCount -> ShowSingleElement
+
     public class IndicatorsControl : StackLayout
     {
         public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
@@ -179,7 +183,7 @@ namespace PanCardView.Controls
         protected override void OnParentSet()
         {
             base.OnParentSet();
-            if (UseParentAsBindingContext)
+            if (UseParentAsBindingContext && Parent is CardsView)
             {
                 BindingContext = Parent;
             }
@@ -299,7 +303,7 @@ namespace PanCardView.Controls
 
         private void ResetIndicatorsStylesNonBatch()
         {
-            var cyclingIndex = SelectedIndex.ToCyclingIndex(ItemsCount);
+            var cyclingIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
             OnResetIndicatorsStyles(cyclingIndex);
         }
 

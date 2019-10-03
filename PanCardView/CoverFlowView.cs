@@ -83,8 +83,8 @@ namespace PanCardView
 
             if (isCyclical)
             {
-                oldIndex = oldIndex.ToCyclingIndex(ItemsCount);
-                index = index.ToCyclingIndex(ItemsCount);
+                oldIndex = oldIndex.ToCyclicalIndex(ItemsCount);
+                index = index.ToCyclicalIndex(ItemsCount);
             }
 
             var hasFirstElement = Min(oldIndex, index) == 0;

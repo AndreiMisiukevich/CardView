@@ -82,6 +82,8 @@ namespace PanCardView
             bindable.AsCardsView().SetPanGesture(!(bool)newValue);
         });
 
+        public static readonly BindableProperty CurrentDiffProperty = BindableProperty.Create(nameof(CurrentDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
+
         public static readonly BindableProperty IsNextItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsNextItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty IsPrevItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsPrevItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
@@ -236,8 +238,6 @@ namespace PanCardView
             private set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
         }
 
-        public double CurrentDiff { get; private set; }
-
         public int OldIndex { get; private set; } = -1;
 
         public ICardProcessor FrontViewProcessor { get; }
@@ -302,6 +302,12 @@ namespace PanCardView
         {
             get => (bool)GetValue(IsPanInteractionEnabledProperty);
             set => SetValue(IsPanInteractionEnabledProperty, value);
+        }
+
+        public double CurrentDiff
+        {
+            get => (double)GetValue(CurrentDiffProperty);
+            set => SetValue(CurrentDiffProperty, value);
         }
 
         public bool IsNextItemPanInteractionEnabled
@@ -659,7 +665,7 @@ namespace PanCardView
             var index = SelectedIndex;
             if (IsCyclical)
             {
-                index = index.ToCyclingIndex(ItemsCount);
+                index = index.ToCyclicalIndex(ItemsCount);
             }
 
             if (!CheckIndexValid(index))
@@ -895,7 +901,7 @@ namespace PanCardView
                         {
                             tapCts?.Cancel();
                             lastTapTime = DateTime.MinValue;
-                            SelectedIndex = (SelectedIndex.ToCyclingIndex(ItemsCount) - 1).ToCyclingIndex(ItemsCount);
+                            SelectedIndex = (SelectedIndex.ToCyclicalIndex(ItemsCount) - 1).ToCyclicalIndex(ItemsCount);
                             return;
                         }
                         lastTapTime = now;
@@ -904,7 +910,7 @@ namespace PanCardView
                         await Task.Delay(delay);
                         if (!token.IsCancellationRequested)
                         {
-                            SelectedIndex = (SelectedIndex.ToCyclingIndex(ItemsCount) + 1).ToCyclingIndex(ItemsCount);
+                            SelectedIndex = (SelectedIndex.ToCyclicalIndex(ItemsCount) + 1).ToCyclicalIndex(ItemsCount);
                             return;
                         }
                     })
@@ -973,8 +979,8 @@ namespace PanCardView
                     : AnimationDirection.Prev;
             }
 
-            var recIndex = SelectedIndex.ToCyclingIndex(ItemsCount);
-            var oldRecIndex = OldIndex.ToCyclingIndex(ItemsCount);
+            var recIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
+            var oldRecIndex = OldIndex.ToCyclicalIndex(ItemsCount);
 
             var deltaIndex = recIndex - oldRecIndex;
 
@@ -1246,7 +1252,7 @@ namespace PanCardView
                     return -1;
                 }
 
-                newIndex = newIndex.ToCyclingIndex(ItemsCount);
+                newIndex = newIndex.ToCyclicalIndex(ItemsCount);
             }
 
             return newIndex;
@@ -1257,7 +1263,7 @@ namespace PanCardView
             try
             {
                 ShouldAutoNavigateToNext = isNext;
-                SelectedIndex = (SelectedIndex + (isNext ? 1 : -1)).ToCyclingIndex(ItemsCount);
+                SelectedIndex = (SelectedIndex + (isNext ? 1 : -1)).ToCyclicalIndex(ItemsCount);
             }
             finally
             {
@@ -1429,7 +1435,7 @@ namespace PanCardView
                     return null;
                 }
 
-                index = index.ToCyclingIndex(ItemsCount);
+                index = index.ToCyclicalIndex(ItemsCount);
             }
 
             if (index < 0 || ItemsSource == null)
@@ -1463,7 +1469,7 @@ namespace PanCardView
         {
             if (IsCyclical)
             {
-                index = index.ToCyclingIndex(ItemsCount);
+                index = index.ToCyclicalIndex(ItemsCount);
             }
             return index >= 0 && index < ItemsCount
                 ? this[index]

@@ -25,6 +25,9 @@ namespace PanCardView.Extensions
         public static ArrowControl AsArrowControl(this BindableObject bindable)
         => bindable as ArrowControl;
 
+        public static TabsControl AsTabsView(this BindableObject bindable)
+        => bindable as TabsControl;
+
         public static View CreateView(this DataTemplate template)
         {
             var content = template.CreateContent();
@@ -33,7 +36,22 @@ namespace PanCardView.Extensions
                 : content as View;
         }
 
+        public static DataTemplate SelectTemplate(this DataTemplate template, object context)
+        {
+            while (template is DataTemplateSelector selector)
+            {
+                template = selector.SelectTemplate(context, null);
+            }
+            return template;
+        }
+
+        [Obsolete]
         public static int ToCyclingIndex(this int index, int itemsCount)
+        {
+            return ToCyclicalIndex(index, itemsCount);
+        }
+
+        public static int ToCyclicalIndex(this int index, int itemsCount)
         {
             if (itemsCount <= 0)
             {

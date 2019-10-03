@@ -16,6 +16,7 @@ namespace PanCardView
             IndicatorItemView.Preserve();
             IndicatorsControl.Preserve();
             ParentScrollView.Preserve();
+            TabsControl.Preserve();
         }
     }
 }

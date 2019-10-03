@@ -166,7 +166,7 @@ namespace PanCardView.Controls
         protected override void OnParentSet()
         {
             base.OnParentSet();
-            if (UseParentAsBindingContext)
+            if (UseParentAsBindingContext && Parent is CardsView)
             {
                 BindingContext = Parent;
             }
@@ -246,7 +246,7 @@ namespace PanCardView.Controls
                 return true;
             }
 
-            var cyclingIndex = SelectedIndex.ToCyclingIndex(ItemsCount);
+            var cyclingIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
 
             if (cyclingIndex == (IsRight ? ItemsCount - 1 : 0))
             {
@@ -261,7 +261,7 @@ namespace PanCardView.Controls
             try
             {
                 ShouldAutoNavigateToNext = IsRight;
-                SelectedIndex = (SelectedIndex + (IsRight ? 1 : -1)).ToCyclingIndex(ItemsCount);
+                SelectedIndex = (SelectedIndex + (IsRight ? 1 : -1)).ToCyclicalIndex(ItemsCount);
             }
             finally
             {

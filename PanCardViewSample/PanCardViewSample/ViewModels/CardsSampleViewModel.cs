@@ -47,7 +47,7 @@ namespace PanCardViewSample.ViewModels
 				{ 
 					return;
 				}
-				Items.RemoveAt(CurrentIndex.ToCyclingIndex(Items.Count));
+				Items.RemoveAt(CurrentIndex.ToCyclicalIndex(Items.Count));
 			});
 
             GoToLastCommand = new Command(() =>
