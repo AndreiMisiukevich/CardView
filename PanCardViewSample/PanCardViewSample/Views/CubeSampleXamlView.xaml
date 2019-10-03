@@ -29,7 +29,7 @@
                                VerticalOptions="CenterAndExpand"
                                FontSize="24"
                                FontAttributes="Bold"
-                               TextColor="CadetBlue"
+                               TextColor="Gold"
                                Text="{Binding Title}"/>
 
                     </DataTemplate>

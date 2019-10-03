@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading;
@@ -70,21 +71,13 @@ namespace PanCardView.Controls
         {
         }
 
-        private readonly BoxView _currentItemStripeView = new BoxView();
-        private readonly BoxView _nextItemStripeView = new BoxView();
         private CancellationTokenSource _fadeAnimationTokenSource;
-
-        private readonly StackLayout _itemsStackLayout = new StackLayout
-        {
-            Spacing = 0,
-            Orientation = StackOrientation.Horizontal,
-        };
 
         public TabsControl()
         {
-            Children.Add(_itemsStackLayout, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
-            Children.Add(_currentItemStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
-            Children.Add(_nextItemStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
+            Children.Add(ItemsStackLayout, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+            Children.Add(MainStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
+            Children.Add(AdditionalStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
 
             this.SetBinding(DiffProperty, nameof(CardsView.ProcessorDiff));
             this.SetBinding(MaxDiffProperty, nameof(Width));
@@ -98,6 +91,16 @@ namespace PanCardView.Controls
             SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
             Behaviors.Add(new ProtectedControlBehavior());
         }
+
+        private StackLayout ItemsStackLayout { get; } = new StackLayout
+        {
+            Spacing = 0,
+            Orientation = StackOrientation.Horizontal
+        };
+
+        private BoxView MainStripeView { get; set; } = new BoxView();
+
+        private BoxView AdditionalStripeView { get; set; } = new BoxView();
 
         public double Diff
         {
@@ -250,7 +253,7 @@ namespace PanCardView.Controls
             try
             {
                 BatchBegin();
-                _itemsStackLayout.Children.Clear();
+                ItemsStackLayout.Children.Clear();
                 if (ItemsSource == null)
                 {
                     return;
@@ -274,7 +277,7 @@ namespace PanCardView.Controls
                             SelectedIndex = ItemsSource.FindIndex(p);
                         })
                     });
-                    _itemsStackLayout.Children.Add(itemView);
+                    ItemsStackLayout.Children.Add(itemView);
                 }
 
                 ResetStripeViewNonBatch();
@@ -319,9 +322,9 @@ namespace PanCardView.Controls
 
         private void ResetStripeViewNonBatch()
         {
-            _itemsStackLayout.Margin = new Thickness(0, 0, 0, StripeHeight);
-            _currentItemStripeView.Color = StripeColor;
-            _nextItemStripeView.Color = StripeColor;
+            ItemsStackLayout.Margin = new Thickness(0, 0, 0, StripeHeight);
+            MainStripeView.Color = StripeColor;
+            AdditionalStripeView.Color = StripeColor;
         }
 
         private void UpdateStripePosition()
@@ -364,8 +367,8 @@ namespace PanCardView.Controls
 
             var itemProgress = Min(Abs(diff) / MaxDiff, 1);
 
-            var currentItemView = _itemsStackLayout.Children[SelectedIndex];
-            var affectedItemView = _itemsStackLayout.Children[affectedIndex];
+            var currentItemView = ItemsStackLayout.Children[SelectedIndex];
+            var affectedItemView = ItemsStackLayout.Children[affectedIndex];
             if (diff <= 0)
             {
                 CalculateStripePosition(currentItemView, affectedItemView, itemProgress, selectedIndex > affectedIndex);
@@ -374,18 +377,29 @@ namespace PanCardView.Controls
             CalculateStripePosition(affectedItemView, currentItemView, 1 - itemProgress, selectedIndex < affectedIndex);
         }
 
-        private void CalculateStripePosition(View firstView, View secondView, double itemProgress, bool needSecondStripe)
+        private void CalculateStripePosition(View firstView, View secondView, double itemProgress, bool isSecondStripeVisible)
         {
-            var x = firstView.X + firstView.Width * itemProgress;
-            var width = firstView.Width * (1 - itemProgress) + secondView.Width * itemProgress;
-            SetLayoutBounds(_currentItemStripeView, new Rectangle(x, 1, width, StripeHeight));
-            if (needSecondStripe)
+            if(itemProgress <= 0 &&
+                GetLayoutBounds(AdditionalStripeView).Width >
+                GetLayoutBounds(MainStripeView).Width)
             {
-                _nextItemStripeView.IsVisible = true;
-                SetLayoutBounds(_nextItemStripeView, new Rectangle(secondView.X, 1, secondView.Width * itemProgress, StripeHeight));
-                return;
+                SwapStripeViews();
             }
-            _nextItemStripeView.IsVisible = false;
+
+            AdditionalStripeView.IsVisible = isSecondStripeVisible;
+            var additionalStripeWidth = isSecondStripeVisible ? secondView.Width * itemProgress : 0;
+            SetLayoutBounds(AdditionalStripeView, new Rectangle(secondView.X, 1, additionalStripeWidth, StripeHeight));
+
+            var x = firstView.X + firstView.Width * itemProgress;
+            var mainStripewidth = firstView.Width * (1 - itemProgress) + secondView.Width * itemProgress - additionalStripeWidth;
+            SetLayoutBounds(MainStripeView, new Rectangle(x, 1, mainStripewidth, StripeHeight));
+        }
+
+        private void SwapStripeViews()
+        {
+            var view = MainStripeView;
+            MainStripeView = AdditionalStripeView;
+            AdditionalStripeView = view;
         }
     }
 }
