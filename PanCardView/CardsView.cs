@@ -564,6 +564,12 @@ namespace PanCardView
             var oldIndex = SelectedIndex;
             if ((int)swipeDirection < 2)
             {
+                //https://github.com/AndreiMisiukevich/CardView/issues/285
+                if (!IsUserInteractionRunning && !IsAutoInteractionRunning)
+                {
+                    SetupBackViews();
+                }
+
                 var isLeftSwiped = swipeDirection == ItemSwipeDirection.Left;
                 var haveItems = (isLeftSwiped && NextViews.Any()) || (!isLeftSwiped && PrevViews.Any());
                 var isAndroid = Device.RuntimePlatform == Device.Android;
