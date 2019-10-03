@@ -22,7 +22,7 @@ namespace PanCardView.Processors
         public double NoItemMaxPanDistance { get; set; } = 25;
 
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
-        => ResetInitialState(views.FirstOrDefault());
+        => ResetInitialState(views.FirstOrDefault(), cardsView);
 
         public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
@@ -46,7 +46,7 @@ namespace PanCardView.Processors
 
             if (view != null)
             {
-                view.TranslationX = xPos;
+                SetTranslationX(view, xPos, cardsView);
                 view.TranslationY = multiplier * Abs(xPos) / 10;
                 view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Width);
             }
@@ -76,18 +76,18 @@ namespace PanCardView.Processors
 
                 if (animLength == 0)
                 {
-                    ResetInitialState(view);
+                    ResetInitialState(view, cardsView);
                     return;
                 }
 
                 await new AnimationWrapper {
-                    { 0, 1, new AnimationWrapper (v => view.TranslationX = v, view.TranslationX, 0) },
+                    { 0, 1, new AnimationWrapper (v => SetTranslationX(view, v, cardsView), view.TranslationX, 0) },
                     { 0, 1, new AnimationWrapper (v => view.TranslationY = v, view.TranslationY, 0) },
                     { 0, 1, new AnimationWrapper (v => view.Rotation = v, view.Rotation, 0) }
                 }.Commit(view, nameof(HandlePanReset), 16, animLength, ResetEasing);
             }
 
-            ResetInitialState(view);
+            ResetInitialState(view, cardsView);
         }
 
         public virtual Task HandlePanApply(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -100,22 +100,28 @@ namespace PanCardView.Processors
             return Task.FromResult(true);
         }
 
-        protected virtual void ResetInitialState(View view, bool isVisible = true)
+        protected virtual void ResetInitialState(View view, CardsView cardsView, bool isVisible = true)
         {
             if (view != null)
             {
                 view.BatchBegin();
                 view.Scale = 1;
                 view.Opacity = 1;
-                view.TranslationX = 0;
+                SetTranslationX(view, 0, cardsView, isVisible);
                 view.Rotation = 0;
                 view.TranslationY = 0;
-                view.IsVisible = isVisible;
                 view.BatchCommit();
             }
         }
 
         private bool CheckIsInitialPosition(View view)
         => (int)view.TranslationX == 0 && (int)view.TranslationY == 0 && (int)view.Rotation == 0;
+
+        protected virtual void SetTranslationX(View view, double value, CardsView cardsView, bool? isVisible = null)
+        {
+            view.TranslationX = value;
+            view.IsVisible = isVisible ?? view.IsVisible;
+            cardsView.ProcessorDiff = value;
+        }
     }
 }

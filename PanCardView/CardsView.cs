@@ -82,7 +82,7 @@ namespace PanCardView
             bindable.AsCardsView().SetPanGesture(!(bool)newValue);
         });
 
-        public static readonly BindableProperty DiffProperty = BindableProperty.Create(nameof(Diff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
+        public static readonly BindableProperty CurrentDiffProperty = BindableProperty.Create(nameof(CurrentDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
 
         public static readonly BindableProperty IsNextItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsNextItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
 
@@ -140,6 +140,8 @@ namespace PanCardView
 
         internal static readonly BindableProperty ShouldAutoNavigateToNextProperty = BindableProperty.Create(nameof(ShouldAutoNavigateToNext), typeof(bool?), typeof(CardsView), null);
 
+        internal static readonly BindableProperty ProcessorDiffProperty = BindableProperty.Create(nameof(ProcessorDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
+
         public event CardsViewUserInteractedHandler UserInteracted;
         public event CardsViewItemDisappearingHandler ItemDisappearing;
         public event CardsViewItemAppearingHandler ItemAppearing;
@@ -181,7 +183,6 @@ namespace PanCardView
         private bool _isViewInited;
         private bool _hasRenderer;
         private bool? _shouldScrollParent;
-        private double _currentDiff;
         private Size _parentSize;
         private DateTime _lastPanTime;
         private CancellationTokenSource _slideShowTokenSource;
@@ -237,16 +238,6 @@ namespace PanCardView
         {
             get => _currentInactiveBackViews;
             private set => _currentInactiveBackViews = value ?? Enumerable.Empty<View>();
-        }
-
-        public double CurrentDiff
-        {
-            get => _currentDiff;
-            internal set
-            {
-                _currentDiff = value;
-                Diff = value;
-            }
         }
 
         public int OldIndex { get; private set; } = -1;
@@ -315,10 +306,10 @@ namespace PanCardView
             set => SetValue(IsPanInteractionEnabledProperty, value);
         }
 
-        public double Diff
+        public double CurrentDiff
         {
-            get => (double)GetValue(DiffProperty);
-            set => SetValue(DiffProperty, value);
+            get => (double)GetValue(CurrentDiffProperty);
+            set => SetValue(CurrentDiffProperty, value);
         }
 
         public bool IsNextItemPanInteractionEnabled
@@ -510,6 +501,13 @@ namespace PanCardView
         {
             get => GetValue(ShouldAutoNavigateToNextProperty) as bool?;
             set => SetValue(ShouldAutoNavigateToNextProperty, value);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public double ProcessorDiff
+        {
+            get => (double)GetValue(ProcessorDiffProperty);
+            set => SetValue(ProcessorDiffProperty, value);
         }
 
         public object this[int index] => ItemsSource?.FindValue(index);
@@ -1162,7 +1160,7 @@ namespace PanCardView
                 FireItemAppearing(InteractionType.User, isNextSelected.GetValueOrDefault(), index);
             }
 
-            _currentDiff = 0;
+            CurrentDiff = 0;
             await endingTask;
 
             FireUserInteracted(UserInteractionStatus.Ended, diff, oldIndex);
@@ -1688,7 +1686,7 @@ namespace PanCardView
             }
         }
 
-        private void ExecutePreventInvalidOperationException(Action action)
+        private void ExecutePreventInvalidOperationException(Action action, int restartCount = 0)
         {
             try
             {
@@ -1704,6 +1702,11 @@ namespace PanCardView
                     }
                     catch (InvalidOperationException)
                     {
+                        if (restartCount <= 0)
+                        {
+                            ExecutePreventInvalidOperationException(action, ++restartCount);
+                            return;
+                        }
                         Console.WriteLine("CardsView: Couldn't handle InvalidOperationException");
                     }
                 });

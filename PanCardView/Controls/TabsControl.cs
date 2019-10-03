@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using PanCardView.Behaviors;
 using PanCardView.Extensions;
@@ -7,52 +8,48 @@ using static System.Math;
 
 namespace PanCardView.Controls
 {
-    //TODO: Observe ItemsSource instead ItemsCount. If any element is moved, count won't be updated
-    // (the same for IndicatorsControl)
+    //TODO: Observe ItemsSource instead ItemsCount. If any element is moved, count won't be updated (the same for IndicatorsControl)
 
     public class TabsControl : AbsoluteLayout
     {
         public static readonly BindableProperty DiffProperty = BindableProperty.Create(nameof(Diff), typeof(double), typeof(TabsControl), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsTabsView().UpdateStripe();
+            bindable.AsTabsView().UpdateStripePosition();
         });
 
         public static readonly BindableProperty MaxDiffProperty = BindableProperty.Create(nameof(MaxDiff), typeof(double), typeof(TabsControl), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsTabsView().UpdateStripe();
+            bindable.AsTabsView().UpdateStripePosition();
         });
 
-        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(TabsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsTabsView().ResetSelectedIndex();
-        });
+        public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(TabsControl), -1);
 
-        public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(TabsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsTabsView().ResetControl();
-        });
+        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(TabsControl), 0, BindingMode.TwoWay);
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(TabsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsTabsView().ResetControl();
+            bindable.AsTabsView().ResetItemsLayout();
         });
 
         public static readonly BindableProperty StripeColorProperty = BindableProperty.Create(nameof(StripeColor), typeof(Color), typeof(TabsControl), Color.CadetBlue, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsTabsView().ResetControl();
+            bindable.AsTabsView().ResetStripeView();
         });
 
         public static readonly BindableProperty StripeHeightProperty = BindableProperty.Create(nameof(StripeHeight), typeof(double), typeof(TabsControl), 3.0, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsTabsView().ResetControl();
+            bindable.AsTabsView().ResetStripeView();
         });
 
         public static readonly BindableProperty IsCyclicalProperty = BindableProperty.Create(nameof(IsCyclical), typeof(bool), typeof(TabsControl), false, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsTabsView().ResetControl();
+            bindable.AsTabsView().ResetItemsLayout();
         });
 
-        public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(TabsControl), null);
+        public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(TabsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsTabsView().ResetItemsSource(oldValue as IEnumerable);
+        });
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(TabsControl), true);
 
@@ -75,10 +72,9 @@ namespace PanCardView.Controls
             Children.Add(_currentItemStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
             Children.Add(_nextItemStripeView, new Rectangle(0, 1, 0, 0), AbsoluteLayoutFlags.YProportional);
 
-            this.SetBinding(DiffProperty, nameof(CardsView.Diff));
+            this.SetBinding(DiffProperty, nameof(CardsView.ProcessorDiff));
             this.SetBinding(MaxDiffProperty, nameof(Width));
             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
-            this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
             this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
             this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical));
 
@@ -99,16 +95,16 @@ namespace PanCardView.Controls
             set => SetValue(MaxDiffProperty, value);
         }
 
-        public int SelectedIndex
-        {
-            get => (int)GetValue(SelectedIndexProperty);
-            set => SetValue(SelectedIndexProperty, value);
-        }
-
         public int ItemsCount
         {
             get => (int)GetValue(ItemsCountProperty);
             set => SetValue(ItemsCountProperty, value);
+        }
+
+        public int SelectedIndex
+        {
+            get => (int)GetValue(SelectedIndexProperty);
+            set => SetValue(SelectedIndexProperty, value);
         }
 
         public DataTemplate ItemTemplate
@@ -161,21 +157,10 @@ namespace PanCardView.Controls
             {
                 BindingContext = Parent;
             }
-            ResetControl();
+            ResetItemsLayout();
         }
 
-        private void ResetSelectedIndex()
-        {
-            var selectedIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
-            if (selectedIndex < 0)
-            {
-                return;
-            }
-
-            UpdateStripe(0);
-        }
-
-        private void ResetControl()
+        private void ResetItemsLayout()
         {
             if (Parent == null)
             {
@@ -186,14 +171,20 @@ namespace PanCardView.Controls
             {
                 BatchBegin();
                 _itemsStackLayout.Children.Clear();
-                if (ItemsSource == null || ItemTemplate == null)
+                if (ItemsSource == null)
                 {
                     return;
                 }
 
+                ItemsCount = ItemsSource.Count();
                 foreach (var item in ItemsSource)
                 {
-                    var itemView = ItemTemplate.SelectTemplate(item).CreateView();
+                    var itemView = ItemTemplate?.SelectTemplate(item)?.CreateView() ?? item as View;
+                    if (itemView == null)
+                    {
+                        return;
+                    }
+
                     itemView.BindingContext = item;
                     itemView.GestureRecognizers.Add(new TapGestureRecognizer
                     {
@@ -206,11 +197,8 @@ namespace PanCardView.Controls
                     _itemsStackLayout.Children.Add(itemView);
                 }
 
-                _itemsStackLayout.Margin = new Thickness(0, 0, 0, StripeHeight);
-                _currentItemStripeView.Color = StripeColor;
-                _nextItemStripeView.Color = StripeColor;
-
-                ResetSelectedIndex();
+                ResetStripeViewNonBatch();
+                UpdateStripePositionNonBatch();
             }
             finally
             {
@@ -218,18 +206,69 @@ namespace PanCardView.Controls
             }
         }
 
-        private void UpdateStripe(double? diff = null)
+        private void ResetItemsSource(IEnumerable oldCollection)
         {
-            var currentDiff = diff ?? Diff;
+            if (oldCollection is INotifyCollectionChanged oldObservableCollection)
+            {
+                oldObservableCollection.CollectionChanged -= OnObservableCollectionChanged;
+            }
+
+            if (ItemsSource is INotifyCollectionChanged observableCollection)
+            {
+                observableCollection.CollectionChanged += OnObservableCollectionChanged;
+            }
+
+            OnObservableCollectionChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        => ResetItemsLayout();
+
+        private void ResetStripeView()
+        {
+            try
+            {
+                BatchBegin();
+                ResetStripeViewNonBatch();
+            }
+            finally
+            {
+                BatchCommit();
+            }
+        }
+
+        private void ResetStripeViewNonBatch()
+        {
+            _itemsStackLayout.Margin = new Thickness(0, 0, 0, StripeHeight);
+            _currentItemStripeView.Color = StripeColor;
+            _nextItemStripeView.Color = StripeColor;
+        }
+
+        private void UpdateStripePosition()
+        {
+            try
+            {
+                BatchBegin();
+                UpdateStripePositionNonBatch();
+            }
+            finally
+            {
+                BatchCommit();
+            }
+        }
+
+        private void UpdateStripePositionNonBatch()
+        {
+            var diff = Diff;
             var selectedIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
             if (selectedIndex < 0)
             {
                 return;
             }
 
-            var affectedIndex = currentDiff < 0
+            var affectedIndex = diff < 0
                     ? (selectedIndex + 1)
-                    : currentDiff > 0
+                    : diff > 0
                         ? (selectedIndex - 1)
                         : selectedIndex;
 
@@ -243,11 +282,11 @@ namespace PanCardView.Controls
                 return;
             }
 
-            var itemProgress = Min(Abs(currentDiff) / MaxDiff, 1);
+            var itemProgress = Min(Abs(diff) / MaxDiff, 1);
 
             var currentItemView = _itemsStackLayout.Children[SelectedIndex];
             var affectedItemView = _itemsStackLayout.Children[affectedIndex];
-            if (currentDiff <= 0)
+            if (diff <= 0)
             {
                 CalculateStripePosition(currentItemView, affectedItemView, itemProgress, selectedIndex > affectedIndex);
                 return;
@@ -257,24 +296,16 @@ namespace PanCardView.Controls
 
         private void CalculateStripePosition(View firstView, View secondView, double itemProgress, bool needSecondStripe)
         {
-            try
+            var x = firstView.X + firstView.Width * itemProgress;
+            var width = firstView.Width * (1 - itemProgress) + secondView.Width * itemProgress;
+            SetLayoutBounds(_currentItemStripeView, new Rectangle(x, 1, width, StripeHeight));
+            if (needSecondStripe)
             {
-                BatchBegin();
-                var x = firstView.X + firstView.Width * itemProgress;
-                var width = firstView.Width * (1 - itemProgress) + secondView.Width * itemProgress;
-                SetLayoutBounds(_currentItemStripeView, new Rectangle(x, 1, width, StripeHeight));
-                if (needSecondStripe)
-                {
-                    _nextItemStripeView.IsVisible = true;
-                    SetLayoutBounds(_nextItemStripeView, new Rectangle(secondView.X, 1, secondView.Width * itemProgress, StripeHeight));
-                    return;
-                }
-                _nextItemStripeView.IsVisible = false;
+                _nextItemStripeView.IsVisible = true;
+                SetLayoutBounds(_nextItemStripeView, new Rectangle(secondView.X, 1, secondView.Width * itemProgress, StripeHeight));
+                return;
             }
-            catch
-            {
-                BatchCommit();
-            }
+            _nextItemStripeView.IsVisible = false;
         }
     }
 }

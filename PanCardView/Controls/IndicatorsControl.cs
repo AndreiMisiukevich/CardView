@@ -9,13 +9,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using PanCardView.Utility;
 using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace PanCardView.Controls
 {
-    //TODO: Drop UseCardItemsAsIndicatorsBindingContextsProperty
-    //TODO: Rename IndicatorsContexts to ItemsSource
-    //TODO: MinimumVisibleIndicatorsCount -> ShowSingleElement
-
     public class IndicatorsControl : StackLayout
     {
         public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
@@ -23,10 +20,7 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
         });
 
-        public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsIndicatorsControl().ResetIndicatorsCount((int)oldValue, (int)newValue);
-        });
+        public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(IndicatorsControl), -1);
 
         public static readonly BindableProperty SelectedIndicatorStyleProperty = BindableProperty.Create(nameof(SelectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), DefaultSelectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
         {
@@ -36,11 +30,6 @@ namespace PanCardView.Controls
         public static readonly BindableProperty UnselectedIndicatorStyleProperty = BindableProperty.Create(nameof(UnselectedIndicatorStyle), typeof(Style), typeof(IndicatorsControl), DefaultUnselectedIndicatorItemStyle, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
-        });
-
-        public static readonly BindableProperty UseCardItemsAsIndicatorsBindingContextsProperty = BindableProperty.Create(nameof(UseCardItemsAsIndicatorsBindingContexts), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            bindable.AsIndicatorsControl().ResetIndicatorsContexts();
         });
 
         public static readonly BindableProperty IsUserInteractionRunningProperty = BindableProperty.Create(nameof(IsUserInteractionRunning), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
@@ -53,7 +42,7 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetVisibility();
         });
 
-        public static readonly BindableProperty MinimumVisibleIndicatorsCountProperty = BindableProperty.Create(nameof(MinimumVisibleIndicatorsCount), typeof(int), typeof(IndicatorsControl), 1, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty HidesForSingleIndicatorProperty = BindableProperty.Create(nameof(HidesForSingleIndicator), typeof(bool), typeof(IndicatorsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetVisibility();
         });
@@ -63,7 +52,10 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetVisibility();
         });
 
-        public static readonly BindableProperty IndicatorsContextsProperty = BindableProperty.Create(nameof(IndicatorsContexts), typeof(IEnumerable), typeof(IndicatorsControl), null);
+        public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(IndicatorsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsIndicatorsControl().ResetItemsSource(oldValue as IEnumerable);
+        });
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
 
@@ -83,8 +75,7 @@ namespace PanCardView.Controls
             Orientation = StackOrientation.Horizontal;
 
             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
-            this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
-            this.SetBinding(IndicatorsContextsProperty, nameof(CardsView.ItemsSource));
+            this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
             this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
             this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
 
@@ -119,12 +110,6 @@ namespace PanCardView.Controls
             set => SetValue(UnselectedIndicatorStyleProperty, value);
         }
 
-        public bool UseCardItemsAsIndicatorsBindingContexts
-        {
-            get => (bool)GetValue(UseCardItemsAsIndicatorsBindingContextsProperty);
-            set => SetValue(UseCardItemsAsIndicatorsBindingContextsProperty, value);
-        }
-
         public bool IsUserInteractionRunning
         {
             get => (bool)GetValue(IsUserInteractionRunningProperty);
@@ -137,10 +122,10 @@ namespace PanCardView.Controls
             set => SetValue(IsAutoInteractionRunningProperty, value);
         }
 
-        public int MinimumVisibleIndicatorsCount
+        public bool HidesForSingleIndicator
         {
-            get => (int)GetValue(MinimumVisibleIndicatorsCountProperty);
-            set => SetValue(MinimumVisibleIndicatorsCountProperty, value);
+            get => (bool)GetValue(HidesForSingleIndicatorProperty);
+            set => SetValue(HidesForSingleIndicatorProperty, value);
         }
 
         public int MaximumVisibleIndicatorsCount
@@ -149,10 +134,10 @@ namespace PanCardView.Controls
             set => SetValue(MaximumVisibleIndicatorsCountProperty, value);
         }
 
-        public IEnumerable IndicatorsContexts
+        public IEnumerable ItemsSource
         {
-            get => GetValue(IndicatorsContextsProperty) as IEnumerable;
-            set => SetValue(IndicatorsContextsProperty, value);
+            get => GetValue(ItemsSourceProperty) as IEnumerable;
+            set => SetValue(ItemsSourceProperty, value);
         }
 
         public DataTemplate ItemTemplate
@@ -173,7 +158,7 @@ namespace PanCardView.Controls
             set => SetValue(ToFadeDurationProperty, value);
         }
 
-        public object this[int index] => IndicatorsContexts?.FindValue(index);
+        public object this[int index] => ItemsSource?.FindValue(index);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
@@ -205,42 +190,12 @@ namespace PanCardView.Controls
             }
         }
 
-        protected virtual void OnResetIndicatorsContexts()
-        {
-            for (var i = 0; i < Min(Children.Count, ItemsCount); ++i)
-            {
-                Children[i].BindingContext = this[i];
-            }
-        }
-
-        protected virtual void AddExtraIndicatorsItems()
-        {
-            var oldCount = Children.Count;
-            for (var i = 0; i < ItemsCount - oldCount; ++i)
-            {
-                var item = ItemTemplate.CreateView();
-                var itemTapGesture = new TapGestureRecognizer();
-                itemTapGesture.Tapped += (tapSender, tapArgs) => SelectedIndex = IndexOf(tapSender as View);
-                item.GestureRecognizers.Add(itemTapGesture);
-                Children.Add(item);
-            }
-        }
-
-        protected virtual void RemoveRedundantIndicatorsItems()
-        {
-            foreach (var item in Children.Where((v, i) => i >= ItemsCount).ToArray())
-            {
-                Children.Remove(item);
-                item.BindingContext = null;
-            }
-        }
-
         protected virtual async void ResetVisibility(uint? appearingTime = null, Easing appearingEasing = null, uint? dissappearingTime = null, Easing disappearingEasing = null)
         {
             _fadeAnimationTokenSource?.Cancel();
 
-            if(ItemsCount < MinimumVisibleIndicatorsCount ||
-                ItemsCount > MaximumVisibleIndicatorsCount)
+            if (ItemsCount > MaximumVisibleIndicatorsCount ||
+                (HidesForSingleIndicator && ItemsCount <= 1 && ItemsCount >= 0))
             {
                 Opacity = 0;
                 IsVisible = false;
@@ -282,6 +237,24 @@ namespace PanCardView.Controls
             IsVisible = false;
         }
 
+        private void ResetItemsSource(IEnumerable oldCollection)
+        {
+            if (oldCollection is INotifyCollectionChanged oldObservableCollection)
+            {
+                oldObservableCollection.CollectionChanged -= OnObservableCollectionChanged;
+            }
+
+            if (ItemsSource is INotifyCollectionChanged observableCollection)
+            {
+                observableCollection.CollectionChanged += OnObservableCollectionChanged;
+            }
+
+            OnObservableCollectionChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        private void OnObservableCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        => ResetIndicatorsLayout();
+
         private void ApplyStyle(View view, int selectedIndex)
         {
             try
@@ -320,38 +293,41 @@ namespace PanCardView.Controls
             }
         }
 
-        private void ResetIndicatorsCount(int oldValue, int newValue)
+        private void ResetIndicatorsLayout()
         {
+            if (ItemsSource == null)
+            {
+                return;
+            }
             try
             {
                 BatchBegin();
-                if (oldValue < 0)
+                Children.Clear();
+                ItemsCount = ItemsSource.Count();
+                for (var i = 0; i < ItemsCount; ++i)
                 {
-                    oldValue = 0;
+                    var item = this[i];
+                    var view = ItemTemplate?.SelectTemplate(item)?.CreateView() ?? item as View;
+                    if(view == null)
+                    {
+                        return;
+                    }
+                    if(!Equals(view, item))
+                    {
+                        view.BindingContext = item;
+                    }
+                    var itemTapGesture = new TapGestureRecognizer();
+                    itemTapGesture.Tapped += (tapSender, tapArgs) => SelectedIndex = IndexOf(tapSender as View);
+                    view.GestureRecognizers.Clear();
+                    view.GestureRecognizers.Add(itemTapGesture);
+                    Children.Add(view);
                 }
-
-                if (oldValue > newValue)
-                {
-                    RemoveRedundantIndicatorsItems();
-                    return;
-                }
-
-                AddExtraIndicatorsItems();
             }
             finally
             {
-                ResetIndicatorsContexts();
                 ResetIndicatorsStylesNonBatch();
                 ResetVisibility();
                 BatchCommit();
-            }
-        }
-
-        private void ResetIndicatorsContexts()
-        {
-            if (UseCardItemsAsIndicatorsBindingContexts && IndicatorsContexts != null)
-            {
-                OnResetIndicatorsContexts();
             }
         }
     }

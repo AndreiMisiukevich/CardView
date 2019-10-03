@@ -36,7 +36,7 @@ namespace PanCardView.Processors
                 view.Margin = new Thickness(margin > 0 ? margin : 0, 0, margin < 0 ? -margin : 0, 0);
                 view.RotationY = value * Angle90 / cardsView.Width;
                 view.IsVisible = isVisible ?? view.IsVisible;
-                cardsView.Diff = value;
+                cardsView.ProcessorDiff = value;
             }
             finally
             {
