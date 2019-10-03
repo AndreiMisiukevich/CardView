@@ -4,7 +4,6 @@ using System.Collections;
 using System.Linq;
 using Xamarin.Forms;
 using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
-using static System.Math;
 using System.Threading.Tasks;
 using System.Threading;
 using PanCardView.Utility;

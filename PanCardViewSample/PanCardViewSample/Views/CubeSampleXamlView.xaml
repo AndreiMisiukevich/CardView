@@ -15,24 +15,26 @@
     </ContentPage.BindingContext>
 
     <StackLayout Spacing="50" Padding="0, 0, 0, 50">
-        <controls:TabsControl
-            HorizontalOptions="FillAndExpand"
-            HeightRequest="40"
-            BindingContext="{x:Reference cube}">
-            <controls:TabsControl.ItemTemplate>
-                <DataTemplate>
-                    <Label HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           HorizontalOptions="FillAndExpand"
-                           VerticalOptions="CenterAndExpand"
-                           FontSize="24"
-                           FontAttributes="Bold"
-                           TextColor="CadetBlue"
-                           Text="{Binding Ind}"/>
+        <ContentView HeightRequest="40" HorizontalOptions="FillAndExpand">
+            <controls:TabsControl
+                ToFadeDuration="2000"
+                HeightRequest="40"
+                BindingContext="{x:Reference cube}">
+                <controls:TabsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Label HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="CadetBlue"
+                               Text="{Binding Ind}"/>
 
-                </DataTemplate>
-            </controls:TabsControl.ItemTemplate>
-        </controls:TabsControl>
+                    </DataTemplate>
+                </controls:TabsControl.ItemTemplate>
+            </controls:TabsControl>
+        </ContentView>
         <cards:CubeView
                 x:Name="cube"
                 VerticalOptions="FillAndExpand"

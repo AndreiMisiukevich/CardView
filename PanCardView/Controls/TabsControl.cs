@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using PanCardView.Behaviors;
 using PanCardView.Extensions;
+using PanCardView.Utility;
 using Xamarin.Forms;
 using static System.Math;
 
 namespace PanCardView.Controls
 {
-    //TODO: Observe ItemsSource instead ItemsCount. If any element is moved, count won't be updated (the same for IndicatorsControl)
-
     public class TabsControl : AbsoluteLayout
     {
         public static readonly BindableProperty DiffProperty = BindableProperty.Create(nameof(Diff), typeof(double), typeof(TabsControl), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
@@ -51,6 +52,18 @@ namespace PanCardView.Controls
             bindable.AsTabsView().ResetItemsSource(oldValue as IEnumerable);
         });
 
+        public static readonly BindableProperty IsUserInteractionRunningProperty = BindableProperty.Create(nameof(IsUserInteractionRunning), typeof(bool), typeof(TabsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsTabsView().ResetVisibility();
+        });
+
+        public static readonly BindableProperty IsAutoInteractionRunningProperty = BindableProperty.Create(nameof(IsAutoInteractionRunning), typeof(bool), typeof(TabsControl), true, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsTabsView().ResetVisibility();
+        });
+
+        public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(TabsControl), 0);
+
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(TabsControl), true);
 
         static TabsControl()
@@ -59,6 +72,7 @@ namespace PanCardView.Controls
 
         private readonly BoxView _currentItemStripeView = new BoxView();
         private readonly BoxView _nextItemStripeView = new BoxView();
+        private CancellationTokenSource _fadeAnimationTokenSource;
 
         private readonly StackLayout _itemsStackLayout = new StackLayout
         {
@@ -77,6 +91,8 @@ namespace PanCardView.Controls
             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
             this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
             this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical));
+            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
+            this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
 
             SetLayoutBounds(this, new Rectangle(.5, 1, -1, -1));
             SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
@@ -137,6 +153,24 @@ namespace PanCardView.Controls
             set => SetValue(ItemsSourceProperty, value);
         }
 
+        public bool IsUserInteractionRunning
+        {
+            get => (bool)GetValue(IsUserInteractionRunningProperty);
+            set => SetValue(IsUserInteractionRunningProperty, value);
+        }
+
+        public bool IsAutoInteractionRunning
+        {
+            get => (bool)GetValue(IsAutoInteractionRunningProperty);
+            set => SetValue(IsAutoInteractionRunningProperty, value);
+        }
+
+        public int ToFadeDuration
+        {
+            get => (int)GetValue(ToFadeDurationProperty);
+            set => SetValue(ToFadeDurationProperty, value);
+        }
+
         public bool UseParentAsBindingContext
         {
             get => (bool)GetValue(UseParentAsBindingContextProperty);
@@ -148,6 +182,52 @@ namespace PanCardView.Controls
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
         {
+        }
+
+        protected virtual async void ResetVisibility(uint? appearingTime = null, Easing appearingEasing = null, uint? dissappearingTime = null, Easing disappearingEasing = null)
+        {
+            _fadeAnimationTokenSource?.Cancel();
+
+            if (ItemsCount == 0)
+            {
+                Opacity = 0;
+                IsVisible = false;
+                return;
+            }
+
+            if (ToFadeDuration <= 0)
+            {
+                Opacity = 1;
+                IsVisible = true;
+                return;
+            }
+
+            if (IsUserInteractionRunning || IsAutoInteractionRunning)
+            {
+                IsVisible = true;
+
+                await new AnimationWrapper(v => Opacity = v, Opacity, 1)
+                    .Commit(this, nameof(ResetVisibility), 16, appearingTime ?? 330, appearingEasing ?? Easing.CubicInOut);
+                return;
+            }
+
+            _fadeAnimationTokenSource = new CancellationTokenSource();
+            var token = _fadeAnimationTokenSource.Token;
+
+            await Task.Delay(ToFadeDuration);
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await new AnimationWrapper(v => Opacity = v, Opacity, 0)
+                .Commit(this, nameof(ResetVisibility), 16, dissappearingTime ?? 330, disappearingEasing ?? Easing.SinOut);
+
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
+            IsVisible = false;
         }
 
         protected override void OnParentSet()
