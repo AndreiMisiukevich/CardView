@@ -14,7 +14,7 @@ namespace PanCardView.Controls
 {
     public class IndicatorsControl : StackLayout
     {
-        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(IndicatorsControl), 0, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsStyles();
         });
@@ -294,31 +294,40 @@ namespace PanCardView.Controls
 
         private void ResetIndicatorsLayout()
         {
-            if (ItemsSource == null)
-            {
-                return;
-            }
             try
             {
                 BatchBegin();
                 Children.Clear();
-                ItemsCount = ItemsSource.Count();
-                for (var i = 0; i < ItemsCount; ++i)
+                if (ItemsSource == null)
                 {
-                    var item = this[i];
+                    return;
+                }
+
+                ItemsCount = ItemsSource.Count();
+                foreach(var item in ItemsSource)
+                {
                     var view = ItemTemplate?.SelectTemplate(item)?.CreateView() ?? item as View;
-                    if(view == null)
+                    if (view == null)
                     {
                         return;
                     }
-                    if(!Equals(view, item))
+
+                    if (!Equals(view, item))
                     {
                         view.BindingContext = item;
                     }
-                    var itemTapGesture = new TapGestureRecognizer();
-                    itemTapGesture.Tapped += (tapSender, tapArgs) => SelectedIndex = IndexOf(tapSender as View);
+
                     view.GestureRecognizers.Clear();
-                    view.GestureRecognizers.Add(itemTapGesture);
+                    view.GestureRecognizers.Add(new TapGestureRecognizer
+                    {
+                        CommandParameter = item,
+                        Command = new Command(p =>
+                        {
+                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWayToSource);
+                            SelectedIndex = ItemsSource.FindIndex(p);
+                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
+                        })
+                    });
                     Children.Add(view);
                 }
             }

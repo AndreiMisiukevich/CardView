@@ -602,27 +602,14 @@ namespace PanCardView
 
             if (!isHardSet)
             {
-                SetAllViews();
+                SetAllViews(false);
                 return;
             }
 
-            //https://github.com/AndreiMisiukevich/CardView/issues/286
-            var opacity = Opacity;
-            var scale = Scale;
-            var time = 150u;
-
-            await Task.WhenAll(
-                this.FadeTo(0, time, Easing.CubicIn),
-                this.ScaleTo(.8, time, Easing.CubicIn));
-            SetAllViews();
-            CleanUnprocessingChildren();
-            await Task.Delay(10);
-            await Task.WhenAll(
-                this.FadeTo(opacity, time, Easing.CubicOut),
-                this.ScaleTo(scale, time, Easing.CubicOut));
+            await HardSetAsync();
         }
 
-        protected virtual void SetAllViews()
+        protected virtual void SetAllViews(bool shouldCleanUnprocessingViews)
         {
             lock (_setCurrentViewLocker)
             {
@@ -647,7 +634,25 @@ namespace PanCardView
 
                     SetupBackViews();
                 }
+                CleanUnprocessingChildren();
             }
+        }
+
+        //https://github.com/AndreiMisiukevich/CardView/issues/286
+        protected virtual async Task HardSetAsync()
+        {
+            var opacity = Opacity;
+            var scale = Scale;
+            var time = 150u;
+
+            await Task.WhenAll(
+                this.FadeTo(0, time, Easing.CubicIn),
+                this.ScaleTo(.75, time, Easing.CubicIn));
+            SetAllViews(true);
+            await Task.Delay(10);
+            await Task.WhenAll(
+                this.FadeTo(opacity, time, Easing.CubicOut),
+                this.ScaleTo(scale, time, Easing.CubicOut));
         }
 
         protected virtual async void OnSizeChanged()

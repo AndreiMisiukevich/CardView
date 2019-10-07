@@ -262,18 +262,19 @@ namespace PanCardView.Controls
                 ItemsCount = ItemsSource.Count();
                 foreach (var item in ItemsSource)
                 {
-                    var itemView = ItemTemplate?.SelectTemplate(item)?.CreateView() ?? item as View;
-                    if (itemView == null)
+                    var view = ItemTemplate?.SelectTemplate(item)?.CreateView() ?? item as View;
+                    if (view == null)
                     {
                         return;
                     }
 
-                    if (!Equals(itemView, item))
+                    if (!Equals(view, item))
                     {
-                        itemView.BindingContext = item;
+                        view.BindingContext = item;
                     }
 
-                    itemView.GestureRecognizers.Add(new TapGestureRecognizer
+                    view.GestureRecognizers.Clear();
+                    view.GestureRecognizers.Add(new TapGestureRecognizer
                     {
                         CommandParameter = item,
                         Command = new Command(p =>
@@ -283,7 +284,7 @@ namespace PanCardView.Controls
                             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
                         })
                     });
-                    ItemsStackLayout.Children.Add(itemView);
+                    ItemsStackLayout.Children.Add(view);
                 }
 
                 ResetStripeViewNonBatch();
