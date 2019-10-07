@@ -26,7 +26,7 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(TabsControl), -1);
 
-        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(TabsControl), 0, BindingMode.TwoWay);
+        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(TabsControl), 0);
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(TabsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
@@ -268,13 +268,19 @@ namespace PanCardView.Controls
                         return;
                     }
 
-                    itemView.BindingContext = item;
+                    if (!Equals(itemView, item))
+                    {
+                        itemView.BindingContext = item;
+                    }
+
                     itemView.GestureRecognizers.Add(new TapGestureRecognizer
                     {
                         CommandParameter = item,
                         Command = new Command(p =>
                         {
+                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWayToSource);
                             SelectedIndex = ItemsSource.FindIndex(p);
+                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
                         })
                     });
                     ItemsStackLayout.Children.Add(itemView);
@@ -367,7 +373,7 @@ namespace PanCardView.Controls
 
             var itemProgress = Min(Abs(diff) / MaxDiff, 1);
 
-            var currentItemView = ItemsStackLayout.Children[SelectedIndex];
+            var currentItemView = ItemsStackLayout.Children[selectedIndex];
             var affectedItemView = ItemsStackLayout.Children[affectedIndex];
             if (diff <= 0)
             {
