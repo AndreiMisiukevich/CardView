@@ -349,13 +349,16 @@ namespace PanCardView.Controls
 
         private void UpdateStripePositionNonBatch()
         {
-            var diff = Diff;
-            var selectedIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
-            if (selectedIndex < 0)
+            var itemsCount = ItemsCount;
+            var selectedIndex = SelectedIndex.ToCyclicalIndex(itemsCount);
+            var maxDiff = MaxDiff;
+
+            if (selectedIndex < 0 || maxDiff < 0)
             {
                 return;
             }
 
+            var diff = Diff;
             var affectedIndex = diff < 0
                     ? (selectedIndex + 1)
                     : diff > 0
@@ -364,15 +367,15 @@ namespace PanCardView.Controls
 
             if (IsCyclical)
             {
-                affectedIndex = affectedIndex.ToCyclicalIndex(ItemsCount);
+                affectedIndex = affectedIndex.ToCyclicalIndex(itemsCount);
             }
 
-            if (affectedIndex < 0 || affectedIndex >= ItemsCount)
+            if (affectedIndex < 0 || affectedIndex >= itemsCount)
             {
                 return;
             }
 
-            var itemProgress = Min(Abs(diff) / MaxDiff, 1);
+            var itemProgress = Min(Abs(diff) / maxDiff, 1);
 
             var currentItemView = ItemsStackLayout.Children[selectedIndex];
             var affectedItemView = ItemsStackLayout.Children[affectedIndex];
