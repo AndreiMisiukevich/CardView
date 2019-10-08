@@ -275,8 +275,8 @@ namespace PanCardView.Controls
 
         private void ResetIndicatorsStylesNonBatch()
         {
-            var cyclingIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
-            OnResetIndicatorsStyles(cyclingIndex);
+            var cyclicalIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
+            OnResetIndicatorsStyles(cyclicalIndex);
         }
 
         private void ResetIndicatorsStyles()

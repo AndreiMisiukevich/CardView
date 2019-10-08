@@ -246,9 +246,9 @@ namespace PanCardView.Controls
                 return true;
             }
 
-            var cyclingIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
+            var cyclicalIndex = SelectedIndex.ToCyclicalIndex(ItemsCount);
 
-            if (cyclingIndex == (IsRight ? ItemsCount - 1 : 0))
+            if (cyclicalIndex == (IsRight ? ItemsCount - 1 : 0))
             {
                 return false;
             }

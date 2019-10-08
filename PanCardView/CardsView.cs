@@ -1025,9 +1025,9 @@ namespace PanCardView
 
             var aniamationDirection = (AnimationDirection)Sign(deltaIndex);
 
-            var cyclingDeltaIndex = ItemsCount - Max(recIndex, oldRecIndex) + Min(recIndex, oldRecIndex);
+            var cyclicalDeltaIndex = ItemsCount - Max(recIndex, oldRecIndex) + Min(recIndex, oldRecIndex);
 
-            if (cyclingDeltaIndex < Abs(deltaIndex))
+            if (cyclicalDeltaIndex < Abs(deltaIndex))
             {
                 aniamationDirection = (AnimationDirection)(-(int)aniamationDirection);
             }

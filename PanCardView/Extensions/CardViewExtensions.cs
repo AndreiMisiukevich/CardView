@@ -45,12 +45,6 @@ namespace PanCardView.Extensions
             return template;
         }
 
-        [Obsolete]
-        public static int ToCyclingIndex(this int index, int itemsCount)
-        {
-            return ToCyclicalIndex(index, itemsCount);
-        }
-
         public static int ToCyclicalIndex(this int index, int itemsCount)
         {
             if (itemsCount <= 0)
