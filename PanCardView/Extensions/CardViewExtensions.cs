@@ -51,21 +51,11 @@ namespace PanCardView.Extensions
             {
                 return -1;
             }
-            if (index < 0)
-            {
-                while (index < 0)
-                {
-                    index += itemsCount;
-                }
-            }
-            else
-            {
-                while (index >= itemsCount)
-                {
-                    index -= itemsCount;
-                }
-            }
-            return index;
+
+            var reminder = index % itemsCount;
+            return reminder >= 0
+                ? reminder
+                : reminder + itemsCount;
         }
 
         public static int FindIndex(this IEnumerable collection, object value)
