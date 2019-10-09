@@ -1732,7 +1732,9 @@ namespace PanCardView
                             ExecutePreventInvalidOperationException(action, ++restartCount);
                             return;
                         }
-                        Debug.WriteLine("CardsView: Couldn't handle InvalidOperationException");
+#if NETSTANDARD2_0
+                        Console.WriteLine("CardsView: Couldn't handle InvalidOperationException");
+#endif
                     }
                 });
             }
