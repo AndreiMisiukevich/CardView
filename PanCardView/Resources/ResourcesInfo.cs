@@ -11,7 +11,7 @@ namespace PanCardView.Resources
         private const string BlackRightArrowResourceName = "rightArrowBlack.png";
         private const string BlackLeftArrowResourceName = "leftArrowBlack.png";
 
-        private static Assembly ResourceAssembly => typeof(ResourcesInfo).Assembly;
+        private static Assembly ResourceAssembly => typeof(ResourcesInfo).GetTypeInfo().Assembly;
 
         public static ImageSource WhiteRightArrowImageSource
             => ImageSource.FromResource($"{ResourcesPath}.{WhiteRightArrowResourceName}", ResourceAssembly);

@@ -18,6 +18,7 @@ using System.Runtime.CompilerServices;
 using PanCardView.EventArgs;
 using PanCardView.Delegates;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace PanCardView
 {
@@ -1731,7 +1732,7 @@ namespace PanCardView
                             ExecutePreventInvalidOperationException(action, ++restartCount);
                             return;
                         }
-                        Console.WriteLine("CardsView: Couldn't handle InvalidOperationException");
+                        Debug.WriteLine("CardsView: Couldn't handle InvalidOperationException");
                     }
                 });
             }
