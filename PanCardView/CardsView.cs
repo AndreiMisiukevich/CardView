@@ -1580,7 +1580,6 @@ namespace PanCardView
             }
 
             var index = -1;
-            var isCurrentContextPresent = false;
 
             if (CurrentView != null)
             {
@@ -1590,22 +1589,17 @@ namespace PanCardView
                     if (Equals(this[i], currentItem))
                     {
                         index = i;
-                        isCurrentContextPresent = true;
                         break;
                     }
                 }
-
-                if (index < 0)
-                {
-                    index = IsCyclical || SelectedIndex < ItemsCount
-                        ? SelectedIndex
-                        : ItemsCount - 1;
-                }
             }
 
-            if (index < 0)
+            var isCurrentContextPresent = index >= 0;
+            if (!isCurrentContextPresent)
             {
-                index = 0;
+                index = Max(0, IsCyclical || (SelectedIndex < ItemsCount && SelectedIndex >= 0)
+                        ? SelectedIndex.ToCyclicalIndex(ItemsCount)
+                        : ItemsCount - 1);
             }
 
             if (SelectedIndex == index)
