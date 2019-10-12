@@ -69,7 +69,7 @@ namespace PanCardView.Processors
                 return;
             }
 
-            var calcScale = InitialScale + Abs((xPos / cardsView.MoveDistance) * (1 - InitialScale));
+            var calcScale = InitialScale + Abs((xPos / cardsView.RealMoveDistance) * (1 - InitialScale));
             view.Scale = Min(calcScale, 1);
         }
 
@@ -81,7 +81,7 @@ namespace PanCardView.Processors
                 return;
             }
 
-            await new AnimationWrapper(v => HandleAutoAnimatingPosChanged(view, cardsView, v, animationDirection), 0, cardsView.MoveDistance)
+            await new AnimationWrapper(v => HandleAutoAnimatingPosChanged(view, cardsView, v, animationDirection), 0, cardsView.RealMoveDistance)
                 .Commit(view, nameof(HandleAutoNavigate), 16, AutoNavigateAnimationLength, AutoNavigateEasing);
             await HandlePanApply(views, cardsView, animationDirection, inactiveViews);
         }

@@ -202,6 +202,23 @@ namespace PanCardView
 
         private bool ShouldSetIndexAfterPan { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int RealUserInteractionDelay => IsUserInteractionInCourse
+            ? _inCoursePanDelay
+            : UserInteractionDelay;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public double RealMoveDistance
+        {
+            get
+            {
+                var dist = MoveDistance;
+                return dist > 0
+                        ? dist
+                        : Width * MoveWidthPercentage;
+            }
+        }
+
         protected virtual int DefaultBackViewsDepth => 1;
 
         protected virtual double DefaultMoveWidthPercentage => 0.325;
@@ -338,13 +355,7 @@ namespace PanCardView
 
         public double MoveDistance
         {
-            get
-            {
-                var dist = (double)GetValue(MoveDistanceProperty);
-                return dist > 0
-                        ? dist
-                        : Width * MoveWidthPercentage;
-            }
+            get => (double)GetValue(MoveDistanceProperty);
             set => SetValue(MoveDistanceProperty, value);
         }
 
@@ -368,7 +379,7 @@ namespace PanCardView
 
         public int UserInteractionDelay
         {
-            get => IsUserInteractionInCourse ? _inCoursePanDelay : (int)GetValue(UserInteractionDelayProperty);
+            get =>(int)GetValue(UserInteractionDelayProperty);
             set => SetValue(UserInteractionDelayProperty, value);
         }
 
@@ -1139,7 +1150,7 @@ namespace PanCardView
                 var checkSwipe = CheckPanSwipe();
                 if (checkSwipe.HasValue)
                 {
-                    if (checkSwipe.Value || absDiff > MoveDistance)
+                    if (checkSwipe.Value || absDiff > RealMoveDistance)
                     {
                         isNextSelected = diff < 0;
                         FireItemSwiped(isNextSelected.Value ? ItemSwipeDirection.Left : ItemSwipeDirection.Right, oldIndex);
@@ -1214,7 +1225,7 @@ namespace PanCardView
         }
 
         private bool CheckInteractionDelay()
-            => IsUserInteractionEnabled && Abs((DateTime.UtcNow - _lastPanTime).TotalMilliseconds) >= UserInteractionDelay && CurrentView != null;
+            => IsUserInteractionEnabled && Abs((DateTime.UtcNow - _lastPanTime).TotalMilliseconds) >= RealUserInteractionDelay && CurrentView != null;
 
         private bool? CheckPanSwipe()
         {

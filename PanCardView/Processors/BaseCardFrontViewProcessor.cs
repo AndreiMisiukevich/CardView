@@ -72,7 +72,7 @@ namespace PanCardView.Processors
 
             if (!CheckIsInitialPosition(view))
             {
-                var animLength = (uint)(ResetAnimationLength * Min(Abs(view.TranslationX / cardsView.MoveDistance), 1.0));
+                var animLength = (uint)(ResetAnimationLength * Min(Abs(view.TranslationX / cardsView.RealMoveDistance), 1.0));
 
                 if (animLength == 0)
                 {
