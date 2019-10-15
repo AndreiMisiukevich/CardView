@@ -1396,14 +1396,10 @@ namespace PanCardView
 
             SetupLayout(views);
 
-            if (animationDirection == AnimationDirection.Current)
-            {
-                AddBackChild(views);
-            }
-            else
-            {
-                AddChild(CurrentView, views);
-            }
+            AddChild(animationDirection != AnimationDirection.Current
+                ? CurrentView
+                : null, views);
+
             return views;
         }
 
@@ -1526,7 +1522,7 @@ namespace PanCardView
                     : null;
         }
 
-        private void SendChildrenToBackIfNeeded(View view, View topView)
+        private void SendChildToBackIfNeeded(View view, View topView)
         {
             lock (_childLocker)
             {
@@ -1626,25 +1622,7 @@ namespace PanCardView
             SelectedIndex = index;
         }
 
-        private void AddBackChild(params View[] views)
-        {
-            lock (_childLocker)
-            {
-                foreach (var view in views)
-                {
-                    if (view == null || Children.Contains(view))
-                    {
-                        continue;
-                    }
-
-                    ++_viewsChildrenCount;
-
-                    ExecutePreventInvalidOperationException(() => Children.Insert(0, view));
-                }
-            }
-        }
-
-        private void AddChild(View topView, params View[] views)
+        private void AddChild(View topView = null, params View[] views)
         {
             lock (_childLocker)
             {
@@ -1657,12 +1635,14 @@ namespace PanCardView
 
                     if (Children.Contains(view))
                     {
-                        SendChildrenToBackIfNeeded(view, topView);
+                        SendChildToBackIfNeeded(view, topView);
                         continue;
                     }
 
                     ++_viewsChildrenCount;
-                    var index = Children.IndexOf(topView);
+                    var index = topView != null
+                        ? Children.IndexOf(topView)
+                        : 0;
 
                     ExecutePreventInvalidOperationException(() => Children.Insert(index, view));
                 }
