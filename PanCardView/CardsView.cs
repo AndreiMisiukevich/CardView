@@ -1396,7 +1396,7 @@ namespace PanCardView
 
             SetupLayout(views);
 
-            AddChild(animationDirection != AnimationDirection.Current
+            AddChildren(animationDirection != AnimationDirection.Current
                 ? CurrentView
                 : null, views);
 
@@ -1622,7 +1622,7 @@ namespace PanCardView
             SelectedIndex = index;
         }
 
-        private void AddChild(View topView = null, params View[] views)
+        private void AddChildren(View topView = null, params View[] views)
         {
             lock (_childLocker)
             {
