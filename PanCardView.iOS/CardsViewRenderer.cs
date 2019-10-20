@@ -41,6 +41,17 @@ namespace PanCardView.iOS
             };
         }
 
+        public override void AddGestureRecognizer(UIGestureRecognizer gestureRecognizer)
+        {
+            base.AddGestureRecognizer(gestureRecognizer);
+
+            if (gestureRecognizer is UIPanGestureRecognizer)
+            {
+                gestureRecognizer.ShouldBeRequiredToFailBy = ShouldBeRequiredToFailBy;
+                gestureRecognizer.ShouldRecognizeSimultaneously = ShouldRecognizeSimultaneously;
+            }
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
         {
             base.OnElementChanged(e);
@@ -53,7 +64,7 @@ namespace PanCardView.iOS
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if(e.PropertyName == CardsView.IsVerticalSwipeEnabledProperty.PropertyName)
+            if (e.PropertyName == CardsView.IsVerticalSwipeEnabledProperty.PropertyName)
             {
                 SetSwipeGestures();
                 return;
@@ -62,7 +73,7 @@ namespace PanCardView.iOS
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 _leftSwipeGesture?.Dispose();
                 _rightSwipeGesture?.Dispose();
@@ -75,7 +86,7 @@ namespace PanCardView.iOS
         protected virtual void ResetSwipeGestureRecognizer(UISwipeGestureRecognizer swipeGestureRecognizer, bool isForceRemove = false)
         {
             RemoveGestureRecognizer(swipeGestureRecognizer);
-            if(isForceRemove)
+            if (isForceRemove)
             {
                 return;
             }
@@ -104,5 +115,13 @@ namespace PanCardView.iOS
 
             Element?.OnSwiped(swipeDirection);
         }
+
+        private bool ShouldBeRequiredToFailBy(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
+        => IsPanGestureHandled() && otherGestureRecognizer.View != this;
+
+        private bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
+        => !IsPanGestureHandled();
+
+        private bool IsPanGestureHandled() => Element?.CurrentDiff >= Element?.MoveThresholdDistance;
     }
 }

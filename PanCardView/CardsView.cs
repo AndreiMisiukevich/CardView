@@ -432,7 +432,7 @@ namespace PanCardView
         }
 
         /// <summary>
-        /// Only for Android
+        /// Only for Android and iOS
         /// </summary>
         /// <value>Move threshold distance.</value>
         public double MoveThresholdDistance
@@ -546,7 +546,7 @@ namespace PanCardView
                     OnTouchStarted();
                     return;
                 case GestureStatus.Running:
-                    HandleParentScroll(e);
+                    //HandleParentScroll(e);
                     OnTouchChanged(e.TotalX);
                     return;
                 case GestureStatus.Canceled:
@@ -1772,37 +1772,6 @@ namespace PanCardView
                     }
                 }
                 _viewsGestureCounter.Remove(gestureId);
-            }
-        }
-
-        private void HandleParentScroll(PanUpdatedEventArgs e)
-        {
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                var y = e.TotalY;
-                var absY = Abs(y);
-                var absX = Abs(e.TotalX);
-
-                var isFirst = false;
-                if (!_shouldScrollParent.HasValue)
-                {
-                    _shouldScrollParent = absY > absX;
-                    isFirst = true;
-                }
-
-                if (_shouldScrollParent.Value)
-                {
-                    var parent = Parent;
-                    while (parent != null)
-                    {
-                        if (parent is IOrdinateHandlerParentView scrollableView)
-                        {
-                            scrollableView.HandleOrdinateValue(y, isFirst);
-                            break;
-                        }
-                        parent = parent.Parent;
-                    }
-                }
             }
         }
 
