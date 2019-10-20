@@ -82,6 +82,10 @@ namespace PanCardView
             bindable.AsCardsView().SetPanGesture(!(bool)newValue);
         });
 
+        public static readonly BindableProperty IsAutoFindAndScrollParentScrollEnabledProperty = BindableProperty.Create(nameof(AutoFindAndScrollParentScrollEnabled), typeof(bool), typeof(CardsView), false, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+        });
+
         public static readonly BindableProperty CurrentDiffProperty = BindableProperty.Create(nameof(CurrentDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
 
         public static readonly BindableProperty IsNextItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsNextItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
@@ -321,6 +325,12 @@ namespace PanCardView
         {
             get => (bool)GetValue(IsPanInteractionEnabledProperty);
             set => SetValue(IsPanInteractionEnabledProperty, value);
+        }
+
+        public bool AutoFindAndScrollParentScrollEnabled
+        {
+            get => (bool)GetValue(IsAutoFindAndScrollParentScrollEnabledProperty);
+            set => SetValue(IsAutoFindAndScrollParentScrollEnabledProperty, value);
         }
 
         public double CurrentDiff
@@ -1771,8 +1781,9 @@ namespace PanCardView
                 _viewsGestureCounter.Remove(gestureId);
             }
         }
-
-        private void HandleParentScroll(PanUpdatedEventArgs e)
+        ScrollView ParentScrollView { get; set; }
+        private double _prevY;
+        private async void HandleParentScroll(PanUpdatedEventArgs e)
         {
             if (Device.RuntimePlatform == Device.iOS)
             {
@@ -1797,7 +1808,33 @@ namespace PanCardView
                             scrollableView.HandleOrdinateValue(y, isFirst);
                             break;
                         }
+                        else if (parent.GetType() == typeof(ScrollView) || parent.GetType().IsSubclassOf(typeof(ScrollView)))
+                        {
+                            ParentScrollView = parent as ScrollView;
+                            break;
+                        }
+
                         parent = parent.Parent;
+                    }
+                    if(this.AutoFindAndScrollParentScrollEnabled)
+                    {
+                        if (this.ParentScrollView != null)
+                        {
+                            if (isFirst)
+                            {
+                                _prevY = 0;
+                            }
+                            var newValue = this.ParentScrollView.ScrollY + _prevY - y;
+
+                            _prevY = y;
+                            //if (Content == null ||
+                            //    newValue < 0 ||
+                            //    newValue > (Content.Height - Height))
+                            //{
+                            //    return;
+                            //}
+                            await this.ParentScrollView.ScrollToAsync(0, newValue, false);
+                        }
                     }
                 }
             }
