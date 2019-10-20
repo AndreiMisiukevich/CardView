@@ -1461,7 +1461,10 @@ namespace PanCardView
             // https://github.com/AndreiMisiukevich/CardView/issues/282
             if (IsCyclical && BackViewsDepth > 1 && ItemsCount <= BackViewsDepth * 2)
             {
-                BackViewProcessor.HandleCleanView(notUsingViews.Except(Enumerable.Repeat(view, 1)), this);
+                var duplicatedViews = notUsingViews
+                    .Except(Enumerable.Repeat(view, 1))
+                    .Where(v => Equals(GetItem(v), GetItem(view)));
+                BackViewProcessor.HandleCleanView(duplicatedViews, this);
             }
 
             return view;
