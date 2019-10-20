@@ -30,15 +30,9 @@ namespace PanCardView.Processors
 
         public override void HandleCleanView(IEnumerable<View> views, CardsView cardsView)
         {
-            var index = 0;
             foreach (var view in views ?? Enumerable.Empty<View>())
             {
-                ++index;
-                if (view == null)
-                {
-                    continue;
-                }
-                SetTranslationX(view, cardsView.Width, cardsView, false);
+                SetTranslationX(view, cardsView.Width, cardsView, false, true);
             }
         }
 

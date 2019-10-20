@@ -30,7 +30,7 @@ namespace PanCardView.Processors
         public virtual void HandleCleanView(IEnumerable<View> views, CardsView cardsView)
         {
             var view = views.FirstOrDefault();
-            SetTranslationX(view, cardsView.Width, cardsView, false);
+            SetTranslationX(view, cardsView.Width, cardsView, false, true);
         }
 
         public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -121,24 +121,26 @@ namespace PanCardView.Processors
             return value;
         }
 
-        protected virtual void SetTranslationX(View view, double value, CardsView cardsView, bool? isVisible = null)
+        protected virtual void SetTranslationX(View view, double value, CardsView cardsView, bool? isVisible = null, bool isClean = false)
         {
             if(view == null)
             {
                 return;
             }
 
-            if(view.Width < 0)
+            void OnViewSizeChanged(object sender, System.EventArgs e)
             {
-                void OnViewSizeChanged(object sender, System.EventArgs e)
+                if (view.Width < 0)
                 {
-                    if(view.Width < 0)
-                    {
-                        return;
-                    }
-                    view.SizeChanged -= OnViewSizeChanged;
-                    SetTranslationX(view, value, cardsView, isVisible);
+                    return;
                 }
+                view.SizeChanged -= OnViewSizeChanged;
+                SetTranslationX(view, value, cardsView, isVisible);
+            }
+            view.SizeChanged -= OnViewSizeChanged;
+
+            if (view.Width < 0 && !isClean)
+            {
                 view.SizeChanged += OnViewSizeChanged;
                 return;
             }

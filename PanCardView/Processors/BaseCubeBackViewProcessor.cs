@@ -21,7 +21,7 @@ namespace PanCardView.Processors
             return value;
         }
 
-        protected override void SetTranslationX(View view, double value, CardsView cardsView, bool? isVisible = null)
+        protected override void SetTranslationX(View view, double value, CardsView cardsView, bool? isVisible = null, bool isClean = false)
         {
             if(view == null)
             {
