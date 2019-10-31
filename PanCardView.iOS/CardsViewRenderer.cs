@@ -13,10 +13,11 @@ namespace PanCardView.iOS
     [Preserve(AllMembers = true)]
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
-        private readonly UISwipeGestureRecognizer _leftSwipeGesture;
-        private readonly UISwipeGestureRecognizer _rightSwipeGesture;
-        private readonly UISwipeGestureRecognizer _upSwipeGesture;
-        private readonly UISwipeGestureRecognizer _downSwipeGesture;
+        private UISwipeGestureRecognizer _leftSwipeGesture;
+        private UISwipeGestureRecognizer _rightSwipeGesture;
+        private UISwipeGestureRecognizer _upSwipeGesture;
+        private UISwipeGestureRecognizer _downSwipeGesture;
+        private UIPanGestureRecognizer _panGestureRecognizer;
 
         public static void Preserve()
         => Preserver.Preserve();
@@ -45,8 +46,9 @@ namespace PanCardView.iOS
         {
             base.AddGestureRecognizer(gestureRecognizer);
 
-            if (gestureRecognizer is UIPanGestureRecognizer)
+            if (gestureRecognizer is UIPanGestureRecognizer panGestureRecognizer)
             {
+                _panGestureRecognizer = panGestureRecognizer;
                 gestureRecognizer.ShouldBeRequiredToFailBy = ShouldBeRequiredToFailBy;
                 gestureRecognizer.ShouldRecognizeSimultaneously = ShouldRecognizeSimultaneously;
             }
@@ -79,6 +81,12 @@ namespace PanCardView.iOS
                 _rightSwipeGesture?.Dispose();
                 _upSwipeGesture?.Dispose();
                 _downSwipeGesture?.Dispose();
+                _panGestureRecognizer?.Dispose();
+                _leftSwipeGesture = null;
+                _rightSwipeGesture = null;
+                _upSwipeGesture = null;
+                _downSwipeGesture = null;
+                _panGestureRecognizer = null;
             }
             base.Dispose(disposing);
         }
