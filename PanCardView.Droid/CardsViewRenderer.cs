@@ -122,6 +122,7 @@ namespace PanCardView.Droid
                              xDeltaAbs > Element.MoveThresholdDistance);
 
             Element.IsUserInteractionRunning |= isHandled;
+            Parent?.RequestDisallowInterceptTouchEvent(isHandled);
             return IsTouchHandled = isHandled;
         }
 
@@ -147,6 +148,7 @@ namespace PanCardView.Droid
             _panStarted = false;
             _lastTouchHandlerId = null;
 
+            Parent?.RequestDisallowInterceptTouchEvent(false);
             IsTouchHandled = false;
 
             _startX = null;
