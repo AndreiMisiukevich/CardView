@@ -807,7 +807,7 @@ namespace PanCardView
             ItemsCount = ItemsSource?.Count() ?? -1;
 
             ShouldSetIndexAfterPan = IsUserInteractionRunning;
-            if (!IsUserInteractionRunning)
+            if (!ShouldSetIndexAfterPan)
             {
                 SetNewIndex();
             }
@@ -1239,8 +1239,8 @@ namespace PanCardView
                 return false;
             }
 
-            var lastItem = _timeDiffItems.Last();
-            var firstItem = _timeDiffItems.First();
+            var lastItem = _timeDiffItems.LastOrDefault();
+            var firstItem = _timeDiffItems.FirstOrDefault();
 
             var distDiff = lastItem.Diff - firstItem.Diff;
 
@@ -1604,17 +1604,19 @@ namespace PanCardView
                 }
             }
 
-            var isCurrentContextPresent = index >= 0;
-            if (!isCurrentContextPresent)
+            var isCurrentContextPresented = index >= 0;
+            if (!isCurrentContextPresented)
             {
-                index = Max(0, IsCyclical || (SelectedIndex < ItemsCount && SelectedIndex >= 0)
-                        ? SelectedIndex.ToCyclicalIndex(ItemsCount)
-                        : ItemsCount - 1);
+                index = SelectedIndex;
+                if(index > ItemsCount || index < 0)
+                {
+                    index = 0;
+                }
             }
 
             if (SelectedIndex == index)
             {
-                if (!isCurrentContextPresent || BackViewsDepth > 1)
+                if (!isCurrentContextPresented || BackViewsDepth > 1)
                 {
                     OldIndex = index;
                     SetCurrentView();
