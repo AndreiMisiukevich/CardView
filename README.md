@@ -210,16 +210,6 @@ https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardView/Processors
 
 ## Workarounds
 
--> If you want to put your cardsView/carouselView INTO scroll view, you should to use *ParentScrollView* instead of Xamarin.Forms.ScrollView. Set *VerticalSwipeThresholdDistance* rahter big value on Android.. otherwise sometimes fast scroll gestures can be interpritated as swipe.
-
--> If you want to put cardsView/carouselView INTO ListView or INTO any another scrollable view you should follow these steps
-1) Create your own class and implement IOrdinateHandlerParentView interface (It's needed only for iOS, but do it into shared project)
-2) Create the renderer for this class (For Android)
-
-Check these classes (I implemented it for ParentScrollView. You can use it as example, nothing difficult :))
-https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Controls/ParentScrollView.cs
-https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView.Droid/ParentScrollViewRenderer.cs
-
 -> If you want to put your cardsView/carouselView INTO a ```TabbedPage``` on **Android**:
 1) Add an event handler for the ``` UserInteraction ``` event
 2) On ``` UserInteractionStatus.Started ```: Disable TabbedPage Swipe Scrolling

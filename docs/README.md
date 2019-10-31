@@ -10,4 +10,4 @@ Here you will find detailed documentation on setting up and using the CardsView 
 * [ArrowControl](ArrowControl.md)
 * [IndicatorsControl](IndicatorsControl.md)
 * [IndicatorItemView](IndicatorItemView.md)
-* [ParentScrollView](ParentScrollView.md)
+* [TabsControl](TabsControl.md)
