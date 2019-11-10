@@ -202,13 +202,11 @@ namespace PanCardView
 
         private bool ShouldSetIndexAfterPan { get; set; }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public int RealUserInteractionDelay => IsUserInteractionInCourse
+        private int RealUserInteractionDelay => IsUserInteractionInCourse
             ? _inCoursePanDelay
             : UserInteractionDelay;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public double RealMoveDistance
+        internal double RealMoveDistance
         {
             get
             {
@@ -546,7 +544,6 @@ namespace PanCardView
                     OnTouchStarted();
                     return;
                 case GestureStatus.Running:
-                    //HandleParentScroll(e);
                     OnTouchChanged(e.TotalX);
                     return;
                 case GestureStatus.Canceled:
