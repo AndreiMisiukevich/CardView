@@ -1765,7 +1765,7 @@ namespace PanCardView
                 _viewsInUseSet.RemoveRange(views);
                 if (isProcessingNow)
                 {
-                    foreach (var view in views.Where(v => !_viewsInUseSet.Contains(v)))
+                    foreach (var view in views.Where(v => v != null && !_viewsInUseSet.Contains(v)))
                     {
                         CleanView(view);
                     }
