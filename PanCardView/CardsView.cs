@@ -182,7 +182,6 @@ namespace PanCardView
         private bool _shouldSkipTouch;
         private bool _isViewInited;
         private bool _hasRenderer;
-        private bool? _shouldScrollParent;
         private Size _parentSize;
         private DateTime _lastPanTime;
         private CancellationTokenSource _slideShowTokenSource;
@@ -1045,7 +1044,6 @@ namespace PanCardView
 
         private void OnTouchStarted()
         {
-            _shouldScrollParent = null;
             if (!_isPanEndRequested)
             {
                 return;
@@ -1085,7 +1083,7 @@ namespace PanCardView
 
         private void OnTouchChanged(double diff)
         {
-            if (_shouldSkipTouch || (_shouldScrollParent ?? false) || Abs(CurrentDiff - diff) <= double.Epsilon)
+            if (_shouldSkipTouch || Abs(CurrentDiff - diff) <= double.Epsilon)
             {
                 return;
             }
