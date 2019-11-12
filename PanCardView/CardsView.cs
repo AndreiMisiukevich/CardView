@@ -461,7 +461,7 @@ namespace PanCardView
         /// <summary>
         /// Only for Android and iOS
         /// </summary>
-        /// <value>Move threshold distance.</value>
+        /// <value>Is vertical swipe enabled.</value>
         public bool IsVerticalSwipeEnabled
         {
             get => (bool)GetValue(IsVerticalSwipeEnabledProperty);
