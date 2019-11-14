@@ -36,6 +36,7 @@ IsUserInteractionInCourse | `bool` | true | Determines if the control should for
 IsUserInteractionRunning | `bool` | false | Determines if the UserInteration is running, e.g., This is set to true in `OnTouchStarted()` and false in `OnTouchEnded()`.
 IsViewReusingEnabled | `bool` | true | Determines wether the control should try to retrieve view from the views pool or create an own view for certain item.
 IsPanInteractionEnabled | `bool` | true | Determines wether the control should handle pan gesture events or it should handle only swipes.
+IsHorizontalOrientation | `bool` | true | Determines what is the orientation of the control.
 IsNextItemPanInteractionEnabled | `bool` | true | Determines wether next items are available for user interaction.
 IsPrevItemPanInteractionEnabled | `bool` | true | Determines wether previous items are available for user interaction.
 ItemBeforeAppearingCommand | `ICommand` | null | The command that is executed when a new item is started to display.
