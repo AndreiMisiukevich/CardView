@@ -7,6 +7,9 @@ namespace PanCardView.Extensions
 {
     public static class CardViewExtensions
     {
+        public static double GetSize(this CardsView cardsView, View card = null)
+        => cardsView.IsHorizontalOrientation ? (card ?? cardsView).Width : (card ?? cardsView).Height;
+
         public static CardsView AsCardsView(this BindableObject bindable)
         => bindable as CardsView;
 

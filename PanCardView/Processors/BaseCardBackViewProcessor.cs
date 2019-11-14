@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using static PanCardView.Processors.Constants;
 using static System.Math;
 using PanCardView.Utility;
+using PanCardView.Extensions;
 
 namespace PanCardView.Processors
 {
@@ -47,7 +48,7 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 view.IsVisible = false;
-                view.TranslationX = cardsView.Size;
+                view.TranslationX = cardsView.GetSize();
             }
         }
 
@@ -122,7 +123,7 @@ namespace PanCardView.Processors
 
             view.TranslationX = xPos;
             view.TranslationY = Abs(xPos) / 10;
-            view.Rotation = 0.3 * Min(xPos / cardsView.Size, 1) * Rad;
+            view.Rotation = 0.3 * Min(xPos / cardsView.GetSize(), 1) * Rad;
         }
     }
 }

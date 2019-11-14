@@ -53,7 +53,7 @@ namespace PanCardView.Processors
                 return Task.FromResult(false);
             }
 
-            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0)
                 .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
         }
 
@@ -66,13 +66,13 @@ namespace PanCardView.Processors
             }
             var step = GetStep(cardsView);
 
-            var animTimePercent = 1 - (step - Abs(GetTranslationX(view))) / step;
+            var animTimePercent = 1 - (step - Abs(GetTranslationX(view, cardsView))) / step;
             var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0)
                 .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
 
@@ -85,20 +85,20 @@ namespace PanCardView.Processors
             }
             var step = GetStep(cardsView);
 
-            var animTimePercent = 1 - (step - Abs(GetTranslationX(view))) / step;
+            var animTimePercent = 1 - (step - Abs(GetTranslationX(view, cardsView))) / step;
             var animLength = (uint)(AnimationLength * animTimePercent);
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), 0)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0)
                 .Commit(view, nameof(HandlePanApply), 16, animLength, AnimEasing);
         }
 
         private double GetStep(CardsView cardsView)
         {
             var coverFlowView = cardsView.AsCoverFlowView();
-            return cardsView.Size * (1 - coverFlowView.PositionShiftPercentage) - coverFlowView.PositionShiftValue;
+            return cardsView.GetSize() * (1 - coverFlowView.PositionShiftPercentage) - coverFlowView.PositionShiftValue;
         }
     }
 }

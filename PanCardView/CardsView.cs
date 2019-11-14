@@ -553,13 +553,13 @@ namespace PanCardView
                     OnTouchStarted();
                     return;
                 case GestureStatus.Running:
-                    OnTouchChanged(e.TotalX);
+                    OnTouchChanged(IsHorizontalOrientation ? e.TotalX : e.TotalY);
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform == Device.Android)
                     {
-                        OnTouchChanged(e.TotalX);
+                        OnTouchChanged(IsHorizontalOrientation ? e.TotalX : e.TotalY);
                     }
                     OnTouchEnded();
                     return;

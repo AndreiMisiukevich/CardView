@@ -1,4 +1,5 @@
 ﻿using PanCardView.Enums;
+using PanCardView.Extensions;
 using PanCardView.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +25,13 @@ namespace PanCardView.Processors
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
             var view = views.FirstOrDefault();
-            SetTranslationX(view, Sign((int)animationDirection) * cardsView.Size, cardsView, false);
+            SetTranslationX(view, Sign((int)animationDirection) * cardsView.GetSize(), cardsView, false);
         }
 
         public virtual void HandleCleanView(IEnumerable<View> views, CardsView cardsView)
         {
             var view = views.FirstOrDefault();
-            SetTranslationX(view, cardsView.Size, cardsView, false, true);
+            SetTranslationX(view, cardsView.GetSize(), cardsView, false, true);
         }
 
         public virtual void HandlePanChanged(IEnumerable<View> views, CardsView cardsView, double xPos, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
@@ -52,8 +53,8 @@ namespace PanCardView.Processors
                 return;
             }
 
-            var value = Sign((int)animationDirection) * cardsView.Size + xPos;
-            if (Abs(value) > cardsView.Size || (animationDirection == AnimationDirection.Prev && value > 0) || (animationDirection == AnimationDirection.Next && value < 0))
+            var value = Sign((int)animationDirection) * cardsView.GetSize() + xPos;
+            if (Abs(value) > cardsView.GetSize() || (animationDirection == AnimationDirection.Prev && value > 0) || (animationDirection == AnimationDirection.Next && value < 0))
             {
                 return;
             }
@@ -69,8 +70,8 @@ namespace PanCardView.Processors
             }
 
             var destinationPos = animationDirection == AnimationDirection.Prev
-               ? cardsView.Size
-               : -cardsView.Size;
+               ? cardsView.GetSize()
+               : -cardsView.GetSize();
 
             return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), 0, destinationPos)
                 .Commit(view, nameof(HandleAutoNavigate), 16, AnimationLength, AnimEasing);
@@ -83,13 +84,13 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var animTimePercent = (cardsView.Size - Abs(GetTranslationX(view))) / cardsView.Size;
+            var animTimePercent = (cardsView.GetSize() - Abs(GetTranslationX(view, cardsView))) / cardsView.GetSize();
             var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), Sign((int)animationDirection) * cardsView.Size)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), Sign((int)animationDirection) * cardsView.GetSize())
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
 
@@ -100,24 +101,24 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var animTimePercent = (cardsView.Size - Abs(GetTranslationX(view))) / cardsView.Size;
+            var animTimePercent = (cardsView.GetSize() - Abs(GetTranslationX(view, cardsView))) / cardsView.GetSize();
             var animLength = (uint)(AnimationLength * animTimePercent);
             if (animLength == 0)
             {
                 return Task.FromResult(true);
             }
-            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view), -Sign((int)animationDirection) * cardsView.Size)
+            return new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), -Sign((int)animationDirection) * cardsView.GetSize())
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
 
-        protected virtual double GetTranslationX(View view)
+        protected virtual double GetTranslationX(View view, CardsView cardsView)
         {
             if (view == null)
             {
                 return 0;
             }
-            var value = view.TranslationX;
-            value += Sign(value) * view.Width * 0.5 * (1 - view.Scale);
+            var value = cardsView.IsHorizontalOrientation ? view.TranslationX : view.TranslationY;
+            value += Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
             return value;
         }
 
@@ -130,7 +131,7 @@ namespace PanCardView.Processors
 
             void OnViewSizeChanged(object sender, System.EventArgs e)
             {
-                if (view.Width < 0)
+                if (cardsView.GetSize(view) < 0)
                 {
                     return;
                 }
@@ -139,7 +140,7 @@ namespace PanCardView.Processors
             }
             view.SizeChanged -= OnViewSizeChanged;
 
-            if (view.Width < 0 && !isClean)
+            if (cardsView.GetSize(view) < 0 && !isClean)
             {
                 view.SizeChanged += OnViewSizeChanged;
                 return;
@@ -151,7 +152,15 @@ namespace PanCardView.Processors
                 view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
                 view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
                 view.Rotation = CalculateFactoredProperty(value, RotationFactor, cardsView, 0) * Angle360 * Sign(-value);
-                view.TranslationX = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
+                var translation = value - Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
+                if (cardsView.IsHorizontalOrientation)
+                {
+                    view.TranslationX = translation;
+                }
+                else
+                {
+                    view.TranslationY = translation;
+                }
                 view.IsVisible = isVisible ?? view.IsVisible;
             }
             finally
@@ -161,6 +170,6 @@ namespace PanCardView.Processors
         }
 
         protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView, int defaultFactorValue = 1)
-            => Abs(value) * (factor - defaultFactorValue) / cardsView.Size + defaultFactorValue;
+            => Abs(value) * (factor - defaultFactorValue) / cardsView.GetSize() + defaultFactorValue;
     }
 }

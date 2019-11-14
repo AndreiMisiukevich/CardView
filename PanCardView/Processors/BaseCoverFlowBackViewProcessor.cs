@@ -32,7 +32,7 @@ namespace PanCardView.Processors
         {
             foreach (var view in views ?? Enumerable.Empty<View>())
             {
-                SetTranslationX(view, cardsView.Size, cardsView, false, true);
+                SetTranslationX(view, cardsView.GetSize(), cardsView, false, true);
             }
         }
 
@@ -41,8 +41,8 @@ namespace PanCardView.Processors
             var view = views.FirstOrDefault();
             if (animationDirection == AnimationDirection.Null || view == null)
             {
-                HandleInitView(views, cardsView, (AnimationDirection)Sign(GetTranslationX(view)));
-                HandleInitView(inactiveViews, cardsView, (AnimationDirection)Sign(GetTranslationX(inactiveViews?.FirstOrDefault())));
+                HandleInitView(views, cardsView, (AnimationDirection)Sign(GetTranslationX(view, cardsView)));
+                HandleInitView(inactiveViews, cardsView, (AnimationDirection)Sign(GetTranslationX(inactiveViews?.FirstOrDefault(), cardsView)));
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace PanCardView.Processors
             }
             var step = GetStep(cardsView);
 
-            var animTimePercent = (step - Abs(GetTranslationX(view))) / step;
+            var animTimePercent = (step - Abs(GetTranslationX(view, cardsView))) / step;
             var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
             if (animLength == 0)
             {
@@ -87,7 +87,7 @@ namespace PanCardView.Processors
             }
 
             var otherViews = views.Union(inactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
-            return new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews, cardsView), GetTranslationX(view), Sign((int)animationDirection) * step)
+            return new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews, cardsView), GetTranslationX(view, cardsView), Sign((int)animationDirection) * step)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
 
@@ -100,7 +100,7 @@ namespace PanCardView.Processors
             }
             var step = GetStep(cardsView);
 
-            var animTimePercent = (step - Abs(GetTranslationX(view))) / step;
+            var animTimePercent = (step - Abs(GetTranslationX(view, cardsView))) / step;
             var animLength = (uint)(AnimationLength * animTimePercent);
             if (animLength == 0)
             {
@@ -108,19 +108,19 @@ namespace PanCardView.Processors
             }
 
             var otherViews = views.Union(inactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
-            return new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews, cardsView), GetTranslationX(view), -Sign((int)animationDirection) * step)
+            return new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews, cardsView), GetTranslationX(view, cardsView), -Sign((int)animationDirection) * step)
                 .Commit(view, nameof(HandlePanReset), 16, animLength, AnimEasing);
         }
 
         private double GetStep(CardsView cardsView)
         {
             var coverFlowView = cardsView.AsCoverFlowView();
-            return cardsView.Size * (1 - coverFlowView.PositionShiftPercentage) - coverFlowView.PositionShiftValue;
+            return cardsView.GetSize() * (1 - coverFlowView.PositionShiftPercentage) - coverFlowView.PositionShiftValue;
         }
             
         private void ProceedPositionChanged(double value, View checkView, IEnumerable<View> views, CardsView cardsView)
         {
-            var diff = GetTranslationX(checkView) - value;
+            var diff = GetTranslationX(checkView, cardsView) - value;
             SetTranslationX(checkView, value, cardsView);
 
             foreach (var view in views ?? Enumerable.Empty<View>())
@@ -129,7 +129,7 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
-                SetTranslationX(view, GetTranslationX(view) - diff, cardsView);
+                SetTranslationX(view, GetTranslationX(view, cardsView) - diff, cardsView);
             }
         }
     }

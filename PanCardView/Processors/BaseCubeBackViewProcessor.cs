@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using PanCardView.Extensions;
+using Xamarin.Forms;
 using static System.Math;
 using static PanCardView.Processors.Constants;
 
@@ -6,18 +7,22 @@ namespace PanCardView.Processors
 {
     public class BaseCubeBackViewProcessor : BaseCarouselBackViewProcessor
     {
-        protected override double GetTranslationX(View view)
+        protected override double GetTranslationX(View view, CardsView cardsView)
         {
             if (view == null)
             {
                 return 0;
             }
 
-            var value = view.Margin.Left > 0
-                ? view.Margin.Left
-                : -view.Margin.Right;
+            var value = cardsView.IsHorizontalOrientation
+                ? view.Margin.Left > 0
+                    ? view.Margin.Left
+                    : -view.Margin.Right
+                : view.Margin.Top > 0
+                    ? view.Margin.Top
+                    : -view.Margin.Bottom;
+            value += Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
 
-            value += Sign(value) * view.Width * 0.5 * (1 - view.Scale);
             return value;
         }
 
@@ -33,9 +38,18 @@ namespace PanCardView.Processors
                 view.BatchBegin();
                 view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
                 view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
-                var margin = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
-                view.Margin = new Thickness(margin > 0 ? margin : 0, 0, margin < 0 ? -margin : 0, 0);
-                view.RotationY = value * Angle90 / cardsView.Size;
+                var margin = value - Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
+                var rotation = value * Angle90 / cardsView.GetSize();
+                if (cardsView.IsHorizontalOrientation)
+                {
+                    view.Margin = new Thickness(margin > 0 ? margin : 0, 0, margin < 0 ? -margin : 0, 0);
+                    view.RotationY = rotation;
+                }
+                else
+                {
+                    view.Margin = new Thickness(0, margin > 0 ? margin : 0, 0, margin < 0 ? -margin : 0);
+                    view.RotationX = rotation;
+                }
             }
             finally
             {

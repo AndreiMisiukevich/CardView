@@ -30,7 +30,7 @@ namespace PanCardView
         }
 
         /// <summary>
-        /// Shift to current view percentage (percengate of CoverFlowView.Width)
+        /// Shift to current view percentage (percengate of CoverFlowView Size)
         /// </summary>
         /// <value>The position shift value.</value>
         public double PositionShiftPercentage
