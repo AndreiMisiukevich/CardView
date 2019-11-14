@@ -32,7 +32,7 @@ namespace PanCardView.Processors
         {
             foreach (var view in views ?? Enumerable.Empty<View>())
             {
-                SetTranslationX(view, cardsView.Width, cardsView, false, true);
+                SetTranslationX(view, cardsView.Size, cardsView, false, true);
             }
         }
 
@@ -115,7 +115,7 @@ namespace PanCardView.Processors
         private double GetStep(CardsView cardsView)
         {
             var coverFlowView = cardsView.AsCoverFlowView();
-            return cardsView.Width * (1 - coverFlowView.PositionShiftPercentage) - coverFlowView.PositionShiftValue;
+            return cardsView.Size * (1 - coverFlowView.PositionShiftPercentage) - coverFlowView.PositionShiftValue;
         }
             
         private void ProceedPositionChanged(double value, View checkView, IEnumerable<View> views, CardsView cardsView)

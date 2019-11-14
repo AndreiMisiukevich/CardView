@@ -48,7 +48,7 @@ namespace PanCardView.Processors
             {
                 SetTranslationX(view, xPos, cardsView);
                 view.TranslationY = multiplier * Abs(xPos) / 10;
-                view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Width);
+                view.Rotation = multiplier * 0.3 * Rad * (xPos / cardsView.Size);
             }
         }
 

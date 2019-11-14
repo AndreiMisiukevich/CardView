@@ -43,7 +43,7 @@ namespace PanCardView.Processors
                 inactiveView.IsVisible = false;
             }
 
-            if (Abs(xPos) > cardsView.Width || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
+            if (Abs(xPos) > cardsView.Size || (animationDirection == AnimationDirection.Prev && xPos < 0) || (animationDirection == AnimationDirection.Next && xPos > 0))
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var animTimePercent = 1 - (cardsView.Width - Abs(GetTranslationX(view))) / cardsView.Width;
+            var animTimePercent = 1 - (cardsView.Size - Abs(GetTranslationX(view))) / cardsView.Size;
             var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
             if (animLength == 0)
             {
@@ -93,7 +93,7 @@ namespace PanCardView.Processors
             {
                 return Task.FromResult(true);
             }
-            var animTimePercent = 1 - (cardsView.Width - Abs(GetTranslationX(view))) / cardsView.Width;
+            var animTimePercent = 1 - (cardsView.Size - Abs(GetTranslationX(view))) / cardsView.Size;
             var animLength = (uint)(AnimationLength * animTimePercent);
             if (animLength == 0)
             {
@@ -127,7 +127,15 @@ namespace PanCardView.Processors
                 view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
                 view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
                 view.Rotation = CalculateFactoredProperty(value, RotationFactor, cardsView, 0) * Angle360 * Sign(-value);
-                view.TranslationX = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
+                var translation = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
+                if (cardsView.IsHorizontalOrientation)
+                {
+                    view.TranslationX = translation;
+                }
+                else
+                {
+                    view.TranslationY = translation;
+                }
                 view.IsVisible = isVisible ?? view.IsVisible;
                 cardsView.ProcessorDiff = value;
             }
@@ -138,6 +146,6 @@ namespace PanCardView.Processors
         }
 
         protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView, double defaultFactorValue = 1)
-            => Abs(value) * (factor - defaultFactorValue) / cardsView.Width + defaultFactorValue;
+            => Abs(value) * (factor - defaultFactorValue) / cardsView.Size + defaultFactorValue;
     }
 }

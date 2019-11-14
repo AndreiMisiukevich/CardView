@@ -47,7 +47,7 @@ namespace PanCardView.Processors
             if (view != null)
             {
                 view.IsVisible = false;
-                view.TranslationX = cardsView.Width;
+                view.TranslationX = cardsView.Size;
             }
         }
 
@@ -122,7 +122,7 @@ namespace PanCardView.Processors
 
             view.TranslationX = xPos;
             view.TranslationY = Abs(xPos) / 10;
-            view.Rotation = 0.3 * Min(xPos / cardsView.Width, 1) * Rad;
+            view.Rotation = 0.3 * Min(xPos / cardsView.Size, 1) * Rad;
         }
     }
 }

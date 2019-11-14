@@ -84,6 +84,8 @@ namespace PanCardView
 
         public static readonly BindableProperty CurrentDiffProperty = BindableProperty.Create(nameof(CurrentDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
 
+        public static readonly BindableProperty IsHorizontalOrientationProperty = BindableProperty.Create(nameof(IsHorizontalOrientation), typeof(bool), typeof(CardsView), true);
+
         public static readonly BindableProperty IsNextItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsNextItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
 
         public static readonly BindableProperty IsPrevItemPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsPrevItemPanInteractionEnabled), typeof(bool), typeof(CardsView), true);
@@ -230,6 +232,8 @@ namespace PanCardView
 
         public IReadOnlyList<View> ViewsInUseCollection => _viewsInUseSet.Views;
 
+        public double Size => IsHorizontalOrientation ? Width : Height;
+
         public IEnumerable<View> PrevViews
         {
             get => _prevViews;
@@ -324,6 +328,12 @@ namespace PanCardView
         {
             get => (double)GetValue(CurrentDiffProperty);
             set => SetValue(CurrentDiffProperty, value);
+        }
+
+        public bool IsHorizontalOrientation
+        {
+            get => (bool)GetValue(IsHorizontalOrientationProperty);
+            set => SetValue(IsHorizontalOrientationProperty, value);
         }
 
         public bool IsNextItemPanInteractionEnabled

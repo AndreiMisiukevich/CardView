@@ -34,7 +34,7 @@ namespace PanCardView.Processors
                 view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
                 var margin = value - Sign(value) * view.Width * 0.5 * (1 - view.Scale);
                 view.Margin = new Thickness(margin > 0 ? margin : 0, 0, margin < 0 ? -margin : 0, 0);
-                view.RotationY = value * Angle90 / cardsView.Width;
+                view.RotationY = value * Angle90 / cardsView.Size;
                 view.IsVisible = isVisible ?? view.IsVisible;
                 cardsView.ProcessorDiff = value;
             }
