@@ -214,7 +214,7 @@ namespace PanCardView
                 var dist = MoveDistance;
                 return dist > 0
                         ? dist
-                        : Width * MoveWidthPercentage;
+                        : Size * MoveWidthPercentage;
             }
         }
 
