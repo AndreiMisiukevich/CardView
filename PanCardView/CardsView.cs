@@ -601,7 +601,7 @@ namespace PanCardView
                         isLeftSwiped = !isLeftSwiped;
                     }
 
-                    SetSelectedWithShouldAutoNavigateToNext(isLeftSwiped);
+                    SetSelectedIndexWithShouldAutoNavigateToNext(isLeftSwiped);
                 }
             }
 
@@ -754,7 +754,7 @@ namespace PanCardView
                     }
                     if (ItemsCount > 0)
                     {
-                        SetSelectedWithShouldAutoNavigateToNext(true);
+                        SetSelectedIndexWithShouldAutoNavigateToNext(true);
                     }
                 }
             }
@@ -1313,7 +1313,7 @@ namespace PanCardView
             return newIndex;
         }
 
-        private void SetSelectedWithShouldAutoNavigateToNext(bool isNext)
+        private void SetSelectedIndexWithShouldAutoNavigateToNext(bool isNext)
         {
             try
             {
