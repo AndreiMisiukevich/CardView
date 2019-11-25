@@ -49,7 +49,7 @@ ItemTemplate | `DataTemplate` | null | Sets the data Template that the `ItemsSou
 MaxChildrenCount | `int` | 12 | Used to determine when to remove views from the Children stack on the control. This is used when the auto navigation animation is processing, e.g., when `isProcessingNow` is set to true.
 MoveDistance | `double` | -1 | The distance the swipe needs to move in order for a page to move to the next.
 MoveThresholdDistance | `double` | 3.0 | **Only used in Android**. The distance threshold needed to detect a swipe.
-MoveWidthPercentage | `double` | .325 | The percentage of the control's width needed to move in order for a page to move to the next.
+MoveSizePercentage | `double` | .325 | The percentage of the control's size (Width or Height) needed to move in order for a page to move to the next.
 SelectedIndex | `int` | -1 | Sets or gets the selected index of the control and updates the `SelectedItem`.
 SelectedItem | `object` | null | Sets or gets the selected item of the control and updates the `SelectedIndex`. If the item's index is not found it sets `SelectedIndex` to -1.
 SlideShowDuration | `int` | 0 | This property determines the number of milliseconds to wait before disaplying the next card. 

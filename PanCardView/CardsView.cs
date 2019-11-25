@@ -96,7 +96,11 @@ namespace PanCardView
 
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
-        public static readonly BindableProperty MoveWidthPercentageProperty = BindableProperty.Create(nameof(MoveWidthPercentage), typeof(double), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultMoveWidthPercentage);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use MoveSizePercentageProperty")]
+        public static readonly BindableProperty MoveWidthPercentageProperty = MoveSizePercentageProperty;
+
+        public static readonly BindableProperty MoveSizePercentageProperty = BindableProperty.Create(nameof(MoveSizePercentage), typeof(double), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultMoveSizePercentage);
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
 
@@ -214,13 +218,13 @@ namespace PanCardView
                 var dist = MoveDistance;
                 return dist > 0
                         ? dist
-                        : Size * MoveWidthPercentage;
+                        : Size * MoveSizePercentage;
             }
         }
 
         protected virtual int DefaultBackViewsDepth => 1;
 
-        protected virtual double DefaultMoveWidthPercentage => 0.325;
+        protected virtual double DefaultMoveSizePercentage => 0.325;
 
         protected virtual bool DefaultIsCyclical => false;
 
@@ -366,10 +370,18 @@ namespace PanCardView
             set => SetValue(MoveDistanceProperty, value);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use MoveSizePercentage instead")]
         public double MoveWidthPercentage
         {
-            get => (double)GetValue(MoveWidthPercentageProperty);
-            set => SetValue(MoveWidthPercentageProperty, value);
+            get => MoveSizePercentage;
+            set => MoveSizePercentage = value;
+        }
+
+        public double MoveSizePercentage
+        {
+            get => (double)GetValue(MoveSizePercentageProperty);
+            set => SetValue(MoveSizePercentageProperty, value);
         }
 
         public bool IsOnlyForwardDirection

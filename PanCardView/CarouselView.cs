@@ -14,7 +14,7 @@ namespace PanCardView
             IsClippedToBounds = true;
         }
 
-        protected override double DefaultMoveWidthPercentage => .3;
+        protected override double DefaultMoveSizePercentage => .3;
 
         protected override bool DefaultIsCyclical => true;
 
