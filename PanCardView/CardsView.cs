@@ -624,29 +624,27 @@ namespace PanCardView
         {
             var isHardSet = CheckIsHardSetCurrentView();
 
-            if (!isHardSet && (!_hasRenderer || Parent == null || await TryAutoNavigate()))
+            if(isHardSet)
+            {
+                await HardSetAsync();
+                return;
+            }
+
+            if (!_hasRenderer || Parent == null || await TryAutoNavigate())
             {
                 return;
             }
 
-            if (!isHardSet)
-            {
-                SetAllViews(false);
-                return;
-            }
-
-            await HardSetAsync();
+            SetAllViews(false);
         }
 
-        protected virtual void SetAllViews(bool shouldCleanUnprocessingViews)
+        protected virtual void SetAllViews(bool shouldCleanUnprocessingChildren)
         {
             lock (_setCurrentViewLocker)
             {
                 if (ItemsSource != null)
                 {
-                    var oldView = CurrentView;
                     CurrentView = InitViews(FrontViewProcessor, AnimationDirection.Current, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
-                    var newView = CurrentView;
 
                     if (CurrentView == null && SelectedIndex >= 0)
                     {
@@ -663,7 +661,10 @@ namespace PanCardView
 
                     SetupBackViews();
                 }
-                CleanUnprocessingChildren();
+                if (shouldCleanUnprocessingChildren)
+                {
+                    CleanUnprocessingChildren();
+                }
             }
         }
 
