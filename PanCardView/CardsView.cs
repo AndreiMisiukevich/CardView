@@ -559,19 +559,20 @@ namespace PanCardView
                 return;
             }
 
+            var totalValue = IsHorizontalOrientation ? e.TotalX : e.TotalY;
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
                     OnTouchStarted();
                     return;
                 case GestureStatus.Running:
-                    OnTouchChanged(IsHorizontalOrientation ? e.TotalX : e.TotalY);
+                    OnTouchChanged(totalValue);
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform == Device.Android)
                     {
-                        OnTouchChanged(IsHorizontalOrientation ? e.TotalX : e.TotalY);
+                        OnTouchChanged(totalValue);
                     }
                     OnTouchEnded();
                     return;
@@ -622,7 +623,9 @@ namespace PanCardView
 
         protected internal virtual async void SetCurrentView()
         {
-            var isHardSet = CheckIsHardSetCurrentView();
+            var isHardSet = CheckIsHardSetCurrentView() ||
+                //https://github.com/AndreiMisiukevich/CardView/issues/313
+                (BackViewsDepth > 1 && (IsAutoInteractionRunning || IsUserInteractionRunning));
 
             if(isHardSet)
             {
