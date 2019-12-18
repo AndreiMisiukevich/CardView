@@ -117,8 +117,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Attribute.behavior_overlapTop = global::PanCardViewSample.Droid.Resource.Attribute.behavior_overlapTop;
 			global::PanCardView.Droid.Resource.Attribute.behavior_peekHeight = global::PanCardViewSample.Droid.Resource.Attribute.behavior_peekHeight;
 			global::PanCardView.Droid.Resource.Attribute.behavior_skipCollapsed = global::PanCardViewSample.Droid.Resource.Attribute.behavior_skipCollapsed;
-			global::PanCardView.Droid.Resource.Attribute.borderlessButtonStyle = global::PanCardViewSample.Droid.Resource.Attribute.borderlessButtonStyle;
 			global::PanCardView.Droid.Resource.Attribute.borderWidth = global::PanCardViewSample.Droid.Resource.Attribute.borderWidth;
+			global::PanCardView.Droid.Resource.Attribute.borderlessButtonStyle = global::PanCardViewSample.Droid.Resource.Attribute.borderlessButtonStyle;
 			global::PanCardView.Droid.Resource.Attribute.bottomAppBarStyle = global::PanCardViewSample.Droid.Resource.Attribute.bottomAppBarStyle;
 			global::PanCardView.Droid.Resource.Attribute.bottomNavigationStyle = global::PanCardViewSample.Droid.Resource.Attribute.bottomNavigationStyle;
 			global::PanCardView.Droid.Resource.Attribute.bottomSheetDialogTheme = global::PanCardViewSample.Droid.Resource.Attribute.bottomSheetDialogTheme;
@@ -184,9 +184,9 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Attribute.closeIconVisible = global::PanCardViewSample.Droid.Resource.Attribute.closeIconVisible;
 			global::PanCardView.Droid.Resource.Attribute.closeItemLayout = global::PanCardViewSample.Droid.Resource.Attribute.closeItemLayout;
 			global::PanCardView.Droid.Resource.Attribute.collapseContentDescription = global::PanCardViewSample.Droid.Resource.Attribute.collapseContentDescription;
+			global::PanCardView.Droid.Resource.Attribute.collapseIcon = global::PanCardViewSample.Droid.Resource.Attribute.collapseIcon;
 			global::PanCardView.Droid.Resource.Attribute.collapsedTitleGravity = global::PanCardViewSample.Droid.Resource.Attribute.collapsedTitleGravity;
 			global::PanCardView.Droid.Resource.Attribute.collapsedTitleTextAppearance = global::PanCardViewSample.Droid.Resource.Attribute.collapsedTitleTextAppearance;
-			global::PanCardView.Droid.Resource.Attribute.collapseIcon = global::PanCardViewSample.Droid.Resource.Attribute.collapseIcon;
 			global::PanCardView.Droid.Resource.Attribute.color = global::PanCardViewSample.Droid.Resource.Attribute.color;
 			global::PanCardView.Droid.Resource.Attribute.colorAccent = global::PanCardViewSample.Droid.Resource.Attribute.colorAccent;
 			global::PanCardView.Droid.Resource.Attribute.colorBackgroundFloating = global::PanCardViewSample.Droid.Resource.Attribute.colorBackgroundFloating;
@@ -232,8 +232,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Attribute.dividerVertical = global::PanCardViewSample.Droid.Resource.Attribute.dividerVertical;
 			global::PanCardView.Droid.Resource.Attribute.drawableSize = global::PanCardViewSample.Droid.Resource.Attribute.drawableSize;
 			global::PanCardView.Droid.Resource.Attribute.drawerArrowStyle = global::PanCardViewSample.Droid.Resource.Attribute.drawerArrowStyle;
-			global::PanCardView.Droid.Resource.Attribute.dropdownListPreferredItemHeight = global::PanCardViewSample.Droid.Resource.Attribute.dropdownListPreferredItemHeight;
 			global::PanCardView.Droid.Resource.Attribute.dropDownListViewStyle = global::PanCardViewSample.Droid.Resource.Attribute.dropDownListViewStyle;
+			global::PanCardView.Droid.Resource.Attribute.dropdownListPreferredItemHeight = global::PanCardViewSample.Droid.Resource.Attribute.dropdownListPreferredItemHeight;
 			global::PanCardView.Droid.Resource.Attribute.editTextBackground = global::PanCardViewSample.Droid.Resource.Attribute.editTextBackground;
 			global::PanCardView.Droid.Resource.Attribute.editTextColor = global::PanCardViewSample.Droid.Resource.Attribute.editTextColor;
 			global::PanCardView.Droid.Resource.Attribute.editTextStyle = global::PanCardViewSample.Droid.Resource.Attribute.editTextStyle;
@@ -296,12 +296,12 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Attribute.icon = global::PanCardViewSample.Droid.Resource.Attribute.icon;
 			global::PanCardView.Droid.Resource.Attribute.iconEndPadding = global::PanCardViewSample.Droid.Resource.Attribute.iconEndPadding;
 			global::PanCardView.Droid.Resource.Attribute.iconGravity = global::PanCardViewSample.Droid.Resource.Attribute.iconGravity;
-			global::PanCardView.Droid.Resource.Attribute.iconifiedByDefault = global::PanCardViewSample.Droid.Resource.Attribute.iconifiedByDefault;
 			global::PanCardView.Droid.Resource.Attribute.iconPadding = global::PanCardViewSample.Droid.Resource.Attribute.iconPadding;
 			global::PanCardView.Droid.Resource.Attribute.iconSize = global::PanCardViewSample.Droid.Resource.Attribute.iconSize;
 			global::PanCardView.Droid.Resource.Attribute.iconStartPadding = global::PanCardViewSample.Droid.Resource.Attribute.iconStartPadding;
 			global::PanCardView.Droid.Resource.Attribute.iconTint = global::PanCardViewSample.Droid.Resource.Attribute.iconTint;
 			global::PanCardView.Droid.Resource.Attribute.iconTintMode = global::PanCardViewSample.Droid.Resource.Attribute.iconTintMode;
+			global::PanCardView.Droid.Resource.Attribute.iconifiedByDefault = global::PanCardViewSample.Droid.Resource.Attribute.iconifiedByDefault;
 			global::PanCardView.Droid.Resource.Attribute.imageButtonStyle = global::PanCardViewSample.Droid.Resource.Attribute.imageButtonStyle;
 			global::PanCardView.Droid.Resource.Attribute.indeterminateProgressStyle = global::PanCardViewSample.Droid.Resource.Attribute.indeterminateProgressStyle;
 			global::PanCardView.Droid.Resource.Attribute.initialActivityCount = global::PanCardViewSample.Droid.Resource.Attribute.initialActivityCount;
@@ -518,9 +518,9 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Attribute.titleMargin = global::PanCardViewSample.Droid.Resource.Attribute.titleMargin;
 			global::PanCardView.Droid.Resource.Attribute.titleMarginBottom = global::PanCardViewSample.Droid.Resource.Attribute.titleMarginBottom;
 			global::PanCardView.Droid.Resource.Attribute.titleMarginEnd = global::PanCardViewSample.Droid.Resource.Attribute.titleMarginEnd;
-			global::PanCardView.Droid.Resource.Attribute.titleMargins = global::PanCardViewSample.Droid.Resource.Attribute.titleMargins;
 			global::PanCardView.Droid.Resource.Attribute.titleMarginStart = global::PanCardViewSample.Droid.Resource.Attribute.titleMarginStart;
 			global::PanCardView.Droid.Resource.Attribute.titleMarginTop = global::PanCardViewSample.Droid.Resource.Attribute.titleMarginTop;
+			global::PanCardView.Droid.Resource.Attribute.titleMargins = global::PanCardViewSample.Droid.Resource.Attribute.titleMargins;
 			global::PanCardView.Droid.Resource.Attribute.titleTextAppearance = global::PanCardViewSample.Droid.Resource.Attribute.titleTextAppearance;
 			global::PanCardView.Droid.Resource.Attribute.titleTextColor = global::PanCardViewSample.Droid.Resource.Attribute.titleTextColor;
 			global::PanCardView.Droid.Resource.Attribute.titleTextStyle = global::PanCardViewSample.Droid.Resource.Attribute.titleTextStyle;
@@ -653,11 +653,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Color.mtrl_tabs_icon_color_selector_colored = global::PanCardViewSample.Droid.Resource.Color.mtrl_tabs_icon_color_selector_colored;
 			global::PanCardView.Droid.Resource.Color.mtrl_tabs_legacy_text_color_selector = global::PanCardViewSample.Droid.Resource.Color.mtrl_tabs_legacy_text_color_selector;
 			global::PanCardView.Droid.Resource.Color.mtrl_tabs_ripple_color = global::PanCardViewSample.Droid.Resource.Color.mtrl_tabs_ripple_color;
+			global::PanCardView.Droid.Resource.Color.mtrl_text_btn_text_color_selector = global::PanCardViewSample.Droid.Resource.Color.mtrl_text_btn_text_color_selector;
 			global::PanCardView.Droid.Resource.Color.mtrl_textinput_default_box_stroke_color = global::PanCardViewSample.Droid.Resource.Color.mtrl_textinput_default_box_stroke_color;
 			global::PanCardView.Droid.Resource.Color.mtrl_textinput_disabled_color = global::PanCardViewSample.Droid.Resource.Color.mtrl_textinput_disabled_color;
 			global::PanCardView.Droid.Resource.Color.mtrl_textinput_filled_box_default_background_color = global::PanCardViewSample.Droid.Resource.Color.mtrl_textinput_filled_box_default_background_color;
 			global::PanCardView.Droid.Resource.Color.mtrl_textinput_hovered_box_stroke_color = global::PanCardViewSample.Droid.Resource.Color.mtrl_textinput_hovered_box_stroke_color;
-			global::PanCardView.Droid.Resource.Color.mtrl_text_btn_text_color_selector = global::PanCardViewSample.Droid.Resource.Color.mtrl_text_btn_text_color_selector;
 			global::PanCardView.Droid.Resource.Color.notification_action_color_filter = global::PanCardViewSample.Droid.Resource.Color.notification_action_color_filter;
 			global::PanCardView.Droid.Resource.Color.notification_icon_bg_color = global::PanCardViewSample.Droid.Resource.Color.notification_icon_bg_color;
 			global::PanCardView.Droid.Resource.Color.notification_material_background_media_default_color = global::PanCardViewSample.Droid.Resource.Color.notification_material_background_media_default_color;
@@ -981,11 +981,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Drawable.abc_switch_track_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_switch_track_mtrl_alpha;
 			global::PanCardView.Droid.Resource.Drawable.abc_tab_indicator_material = global::PanCardViewSample.Droid.Resource.Drawable.abc_tab_indicator_material;
 			global::PanCardView.Droid.Resource.Drawable.abc_tab_indicator_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_tab_indicator_mtrl_alpha;
-			global::PanCardView.Droid.Resource.Drawable.abc_textfield_activated_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_activated_mtrl_alpha;
-			global::PanCardView.Droid.Resource.Drawable.abc_textfield_default_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_default_mtrl_alpha;
-			global::PanCardView.Droid.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha;
-			global::PanCardView.Droid.Resource.Drawable.abc_textfield_search_default_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_search_default_mtrl_alpha;
-			global::PanCardView.Droid.Resource.Drawable.abc_textfield_search_material = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_search_material;
 			global::PanCardView.Droid.Resource.Drawable.abc_text_cursor_material = global::PanCardViewSample.Droid.Resource.Drawable.abc_text_cursor_material;
 			global::PanCardView.Droid.Resource.Drawable.abc_text_select_handle_left_mtrl_dark = global::PanCardViewSample.Droid.Resource.Drawable.abc_text_select_handle_left_mtrl_dark;
 			global::PanCardView.Droid.Resource.Drawable.abc_text_select_handle_left_mtrl_light = global::PanCardViewSample.Droid.Resource.Drawable.abc_text_select_handle_left_mtrl_light;
@@ -993,6 +988,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Drawable.abc_text_select_handle_middle_mtrl_light = global::PanCardViewSample.Droid.Resource.Drawable.abc_text_select_handle_middle_mtrl_light;
 			global::PanCardView.Droid.Resource.Drawable.abc_text_select_handle_right_mtrl_dark = global::PanCardViewSample.Droid.Resource.Drawable.abc_text_select_handle_right_mtrl_dark;
 			global::PanCardView.Droid.Resource.Drawable.abc_text_select_handle_right_mtrl_light = global::PanCardViewSample.Droid.Resource.Drawable.abc_text_select_handle_right_mtrl_light;
+			global::PanCardView.Droid.Resource.Drawable.abc_textfield_activated_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_activated_mtrl_alpha;
+			global::PanCardView.Droid.Resource.Drawable.abc_textfield_default_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_default_mtrl_alpha;
+			global::PanCardView.Droid.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha;
+			global::PanCardView.Droid.Resource.Drawable.abc_textfield_search_default_mtrl_alpha = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_search_default_mtrl_alpha;
+			global::PanCardView.Droid.Resource.Drawable.abc_textfield_search_material = global::PanCardViewSample.Droid.Resource.Drawable.abc_textfield_search_material;
 			global::PanCardView.Droid.Resource.Drawable.abc_vector_test = global::PanCardViewSample.Droid.Resource.Drawable.abc_vector_test;
 			global::PanCardView.Droid.Resource.Drawable.avd_hide_password = global::PanCardViewSample.Droid.Resource.Drawable.avd_hide_password;
 			global::PanCardView.Droid.Resource.Drawable.avd_show_password = global::PanCardViewSample.Droid.Resource.Drawable.avd_show_password;
@@ -1219,8 +1219,13 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Drawable.notify_panel_notification_icon_bg = global::PanCardViewSample.Droid.Resource.Drawable.notify_panel_notification_icon_bg;
 			global::PanCardView.Droid.Resource.Drawable.tooltip_frame_dark = global::PanCardViewSample.Droid.Resource.Drawable.tooltip_frame_dark;
 			global::PanCardView.Droid.Resource.Drawable.tooltip_frame_light = global::PanCardViewSample.Droid.Resource.Drawable.tooltip_frame_light;
+			global::PanCardView.Droid.Resource.Id.ALT = global::PanCardViewSample.Droid.Resource.Id.ALT;
+			global::PanCardView.Droid.Resource.Id.CTRL = global::PanCardViewSample.Droid.Resource.Id.CTRL;
+			global::PanCardView.Droid.Resource.Id.FUNCTION = global::PanCardViewSample.Droid.Resource.Id.FUNCTION;
+			global::PanCardView.Droid.Resource.Id.META = global::PanCardViewSample.Droid.Resource.Id.META;
+			global::PanCardView.Droid.Resource.Id.SHIFT = global::PanCardViewSample.Droid.Resource.Id.SHIFT;
+			global::PanCardView.Droid.Resource.Id.SYM = global::PanCardViewSample.Droid.Resource.Id.SYM;
 			global::PanCardView.Droid.Resource.Id.action0 = global::PanCardViewSample.Droid.Resource.Id.action0;
-			global::PanCardView.Droid.Resource.Id.actions = global::PanCardViewSample.Droid.Resource.Id.actions;
 			global::PanCardView.Droid.Resource.Id.action_bar = global::PanCardViewSample.Droid.Resource.Id.action_bar;
 			global::PanCardView.Droid.Resource.Id.action_bar_activity_content = global::PanCardViewSample.Droid.Resource.Id.action_bar_activity_content;
 			global::PanCardView.Droid.Resource.Id.action_bar_container = global::PanCardViewSample.Droid.Resource.Id.action_bar_container;
@@ -1238,11 +1243,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.action_mode_bar_stub = global::PanCardViewSample.Droid.Resource.Id.action_mode_bar_stub;
 			global::PanCardView.Droid.Resource.Id.action_mode_close_button = global::PanCardViewSample.Droid.Resource.Id.action_mode_close_button;
 			global::PanCardView.Droid.Resource.Id.action_text = global::PanCardViewSample.Droid.Resource.Id.action_text;
+			global::PanCardView.Droid.Resource.Id.actions = global::PanCardViewSample.Droid.Resource.Id.actions;
 			global::PanCardView.Droid.Resource.Id.activity_chooser_view_content = global::PanCardViewSample.Droid.Resource.Id.activity_chooser_view_content;
 			global::PanCardView.Droid.Resource.Id.add = global::PanCardViewSample.Droid.Resource.Id.add;
 			global::PanCardView.Droid.Resource.Id.alertTitle = global::PanCardViewSample.Droid.Resource.Id.alertTitle;
 			global::PanCardView.Droid.Resource.Id.all = global::PanCardViewSample.Droid.Resource.Id.all;
-			global::PanCardView.Droid.Resource.Id.ALT = global::PanCardViewSample.Droid.Resource.Id.ALT;
 			global::PanCardView.Droid.Resource.Id.always = global::PanCardViewSample.Droid.Resource.Id.always;
 			global::PanCardView.Droid.Resource.Id.async = global::PanCardViewSample.Droid.Resource.Id.async;
 			global::PanCardView.Droid.Resource.Id.auto = global::PanCardViewSample.Droid.Resource.Id.auto;
@@ -1252,9 +1257,9 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.bottomtab_navarea = global::PanCardViewSample.Droid.Resource.Id.bottomtab_navarea;
 			global::PanCardView.Droid.Resource.Id.bottomtab_tabbar = global::PanCardViewSample.Droid.Resource.Id.bottomtab_tabbar;
 			global::PanCardView.Droid.Resource.Id.browser_actions_header_text = global::PanCardViewSample.Droid.Resource.Id.browser_actions_header_text;
-			global::PanCardView.Droid.Resource.Id.browser_actions_menu_items = global::PanCardViewSample.Droid.Resource.Id.browser_actions_menu_items;
 			global::PanCardView.Droid.Resource.Id.browser_actions_menu_item_icon = global::PanCardViewSample.Droid.Resource.Id.browser_actions_menu_item_icon;
 			global::PanCardView.Droid.Resource.Id.browser_actions_menu_item_text = global::PanCardViewSample.Droid.Resource.Id.browser_actions_menu_item_text;
+			global::PanCardView.Droid.Resource.Id.browser_actions_menu_items = global::PanCardViewSample.Droid.Resource.Id.browser_actions_menu_items;
 			global::PanCardView.Droid.Resource.Id.browser_actions_menu_view = global::PanCardViewSample.Droid.Resource.Id.browser_actions_menu_view;
 			global::PanCardView.Droid.Resource.Id.buttonPanel = global::PanCardViewSample.Droid.Resource.Id.buttonPanel;
 			global::PanCardView.Droid.Resource.Id.cancel_action = global::PanCardViewSample.Droid.Resource.Id.cancel_action;
@@ -1270,7 +1275,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.content = global::PanCardViewSample.Droid.Resource.Id.content;
 			global::PanCardView.Droid.Resource.Id.contentPanel = global::PanCardViewSample.Droid.Resource.Id.contentPanel;
 			global::PanCardView.Droid.Resource.Id.coordinator = global::PanCardViewSample.Droid.Resource.Id.coordinator;
-			global::PanCardView.Droid.Resource.Id.CTRL = global::PanCardViewSample.Droid.Resource.Id.CTRL;
 			global::PanCardView.Droid.Resource.Id.custom = global::PanCardViewSample.Droid.Resource.Id.custom;
 			global::PanCardView.Droid.Resource.Id.customPanel = global::PanCardViewSample.Droid.Resource.Id.customPanel;
 			global::PanCardView.Droid.Resource.Id.decor_content_parent = global::PanCardViewSample.Droid.Resource.Id.decor_content_parent;
@@ -1287,17 +1291,16 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.enterAlways = global::PanCardViewSample.Droid.Resource.Id.enterAlways;
 			global::PanCardView.Droid.Resource.Id.enterAlwaysCollapsed = global::PanCardViewSample.Droid.Resource.Id.enterAlwaysCollapsed;
 			global::PanCardView.Droid.Resource.Id.exitUntilCollapsed = global::PanCardViewSample.Droid.Resource.Id.exitUntilCollapsed;
-			global::PanCardView.Droid.Resource.Id.expanded_menu = global::PanCardViewSample.Droid.Resource.Id.expanded_menu;
 			global::PanCardView.Droid.Resource.Id.expand_activities_button = global::PanCardViewSample.Droid.Resource.Id.expand_activities_button;
+			global::PanCardView.Droid.Resource.Id.expanded_menu = global::PanCardViewSample.Droid.Resource.Id.expanded_menu;
 			global::PanCardView.Droid.Resource.Id.fill = global::PanCardViewSample.Droid.Resource.Id.fill;
-			global::PanCardView.Droid.Resource.Id.filled = global::PanCardViewSample.Droid.Resource.Id.filled;
 			global::PanCardView.Droid.Resource.Id.fill_horizontal = global::PanCardViewSample.Droid.Resource.Id.fill_horizontal;
 			global::PanCardView.Droid.Resource.Id.fill_vertical = global::PanCardViewSample.Droid.Resource.Id.fill_vertical;
+			global::PanCardView.Droid.Resource.Id.filled = global::PanCardViewSample.Droid.Resource.Id.filled;
 			global::PanCardView.Droid.Resource.Id.@fixed = global::PanCardViewSample.Droid.Resource.Id.@fixed;
 			global::PanCardView.Droid.Resource.Id.flyoutcontent_appbar = global::PanCardViewSample.Droid.Resource.Id.flyoutcontent_appbar;
 			global::PanCardView.Droid.Resource.Id.flyoutcontent_recycler = global::PanCardViewSample.Droid.Resource.Id.flyoutcontent_recycler;
 			global::PanCardView.Droid.Resource.Id.forever = global::PanCardViewSample.Droid.Resource.Id.forever;
-			global::PanCardView.Droid.Resource.Id.FUNCTION = global::PanCardViewSample.Droid.Resource.Id.FUNCTION;
 			global::PanCardView.Droid.Resource.Id.ghost_view = global::PanCardViewSample.Droid.Resource.Id.ghost_view;
 			global::PanCardView.Droid.Resource.Id.group_divider = global::PanCardViewSample.Droid.Resource.Id.group_divider;
 			global::PanCardView.Droid.Resource.Id.home = global::PanCardViewSample.Droid.Resource.Id.home;
@@ -1323,7 +1326,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.masked = global::PanCardViewSample.Droid.Resource.Id.masked;
 			global::PanCardView.Droid.Resource.Id.media_actions = global::PanCardViewSample.Droid.Resource.Id.media_actions;
 			global::PanCardView.Droid.Resource.Id.message = global::PanCardViewSample.Droid.Resource.Id.message;
-			global::PanCardView.Droid.Resource.Id.META = global::PanCardViewSample.Droid.Resource.Id.META;
 			global::PanCardView.Droid.Resource.Id.middle = global::PanCardViewSample.Droid.Resource.Id.middle;
 			global::PanCardView.Droid.Resource.Id.mini = global::PanCardViewSample.Droid.Resource.Id.mini;
 			global::PanCardView.Droid.Resource.Id.mr_art = global::PanCardViewSample.Droid.Resource.Id.mr_art;
@@ -1398,10 +1400,10 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.save_scale_type = global::PanCardViewSample.Droid.Resource.Id.save_scale_type;
 			global::PanCardView.Droid.Resource.Id.screen = global::PanCardViewSample.Droid.Resource.Id.screen;
 			global::PanCardView.Droid.Resource.Id.scroll = global::PanCardViewSample.Droid.Resource.Id.scroll;
-			global::PanCardView.Droid.Resource.Id.scrollable = global::PanCardViewSample.Droid.Resource.Id.scrollable;
 			global::PanCardView.Droid.Resource.Id.scrollIndicatorDown = global::PanCardViewSample.Droid.Resource.Id.scrollIndicatorDown;
 			global::PanCardView.Droid.Resource.Id.scrollIndicatorUp = global::PanCardViewSample.Droid.Resource.Id.scrollIndicatorUp;
 			global::PanCardView.Droid.Resource.Id.scrollView = global::PanCardViewSample.Droid.Resource.Id.scrollView;
+			global::PanCardView.Droid.Resource.Id.scrollable = global::PanCardViewSample.Droid.Resource.Id.scrollable;
 			global::PanCardView.Droid.Resource.Id.search_badge = global::PanCardViewSample.Droid.Resource.Id.search_badge;
 			global::PanCardView.Droid.Resource.Id.search_bar = global::PanCardViewSample.Droid.Resource.Id.search_bar;
 			global::PanCardView.Droid.Resource.Id.search_button = global::PanCardViewSample.Droid.Resource.Id.search_button;
@@ -1412,11 +1414,10 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.search_plate = global::PanCardViewSample.Droid.Resource.Id.search_plate;
 			global::PanCardView.Droid.Resource.Id.search_src_text = global::PanCardViewSample.Droid.Resource.Id.search_src_text;
 			global::PanCardView.Droid.Resource.Id.search_voice_btn = global::PanCardViewSample.Droid.Resource.Id.search_voice_btn;
-			global::PanCardView.Droid.Resource.Id.selected = global::PanCardViewSample.Droid.Resource.Id.selected;
 			global::PanCardView.Droid.Resource.Id.select_dialog_listview = global::PanCardViewSample.Droid.Resource.Id.select_dialog_listview;
+			global::PanCardView.Droid.Resource.Id.selected = global::PanCardViewSample.Droid.Resource.Id.selected;
 			global::PanCardView.Droid.Resource.Id.shellcontent_appbar = global::PanCardViewSample.Droid.Resource.Id.shellcontent_appbar;
 			global::PanCardView.Droid.Resource.Id.shellcontent_toolbar = global::PanCardViewSample.Droid.Resource.Id.shellcontent_toolbar;
-			global::PanCardView.Droid.Resource.Id.SHIFT = global::PanCardViewSample.Droid.Resource.Id.SHIFT;
 			global::PanCardView.Droid.Resource.Id.shortcut = global::PanCardViewSample.Droid.Resource.Id.shortcut;
 			global::PanCardView.Droid.Resource.Id.showCustom = global::PanCardViewSample.Droid.Resource.Id.showCustom;
 			global::PanCardView.Droid.Resource.Id.showHome = global::PanCardViewSample.Droid.Resource.Id.showHome;
@@ -1436,20 +1437,19 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.stretch = global::PanCardViewSample.Droid.Resource.Id.stretch;
 			global::PanCardView.Droid.Resource.Id.submenuarrow = global::PanCardViewSample.Droid.Resource.Id.submenuarrow;
 			global::PanCardView.Droid.Resource.Id.submit_area = global::PanCardViewSample.Droid.Resource.Id.submit_area;
-			global::PanCardView.Droid.Resource.Id.SYM = global::PanCardViewSample.Droid.Resource.Id.SYM;
 			global::PanCardView.Droid.Resource.Id.tabMode = global::PanCardViewSample.Droid.Resource.Id.tabMode;
 			global::PanCardView.Droid.Resource.Id.tag_transition_group = global::PanCardViewSample.Droid.Resource.Id.tag_transition_group;
 			global::PanCardView.Droid.Resource.Id.tag_unhandled_key_event_manager = global::PanCardViewSample.Droid.Resource.Id.tag_unhandled_key_event_manager;
 			global::PanCardView.Droid.Resource.Id.tag_unhandled_key_listeners = global::PanCardViewSample.Droid.Resource.Id.tag_unhandled_key_listeners;
 			global::PanCardView.Droid.Resource.Id.text = global::PanCardViewSample.Droid.Resource.Id.text;
 			global::PanCardView.Droid.Resource.Id.text2 = global::PanCardViewSample.Droid.Resource.Id.text2;
-			global::PanCardView.Droid.Resource.Id.textinput_counter = global::PanCardViewSample.Droid.Resource.Id.textinput_counter;
-			global::PanCardView.Droid.Resource.Id.textinput_error = global::PanCardViewSample.Droid.Resource.Id.textinput_error;
-			global::PanCardView.Droid.Resource.Id.textinput_helper_text = global::PanCardViewSample.Droid.Resource.Id.textinput_helper_text;
 			global::PanCardView.Droid.Resource.Id.textSpacerNoButtons = global::PanCardViewSample.Droid.Resource.Id.textSpacerNoButtons;
 			global::PanCardView.Droid.Resource.Id.textSpacerNoTitle = global::PanCardViewSample.Droid.Resource.Id.textSpacerNoTitle;
 			global::PanCardView.Droid.Resource.Id.textStart = global::PanCardViewSample.Droid.Resource.Id.textStart;
 			global::PanCardView.Droid.Resource.Id.text_input_password_toggle = global::PanCardViewSample.Droid.Resource.Id.text_input_password_toggle;
+			global::PanCardView.Droid.Resource.Id.textinput_counter = global::PanCardViewSample.Droid.Resource.Id.textinput_counter;
+			global::PanCardView.Droid.Resource.Id.textinput_error = global::PanCardViewSample.Droid.Resource.Id.textinput_error;
+			global::PanCardView.Droid.Resource.Id.textinput_helper_text = global::PanCardViewSample.Droid.Resource.Id.textinput_helper_text;
 			global::PanCardView.Droid.Resource.Id.time = global::PanCardViewSample.Droid.Resource.Id.time;
 			global::PanCardView.Droid.Resource.Id.title = global::PanCardViewSample.Droid.Resource.Id.title;
 			global::PanCardView.Droid.Resource.Id.titleDividerNoCustom = global::PanCardViewSample.Droid.Resource.Id.titleDividerNoCustom;
@@ -1583,8 +1583,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.String.abc_action_bar_up_description = global::PanCardViewSample.Droid.Resource.String.abc_action_bar_up_description;
 			global::PanCardView.Droid.Resource.String.abc_action_menu_overflow_description = global::PanCardViewSample.Droid.Resource.String.abc_action_menu_overflow_description;
 			global::PanCardView.Droid.Resource.String.abc_action_mode_done = global::PanCardViewSample.Droid.Resource.String.abc_action_mode_done;
-			global::PanCardView.Droid.Resource.String.abc_activitychooserview_choose_application = global::PanCardViewSample.Droid.Resource.String.abc_activitychooserview_choose_application;
 			global::PanCardView.Droid.Resource.String.abc_activity_chooser_view_see_all = global::PanCardViewSample.Droid.Resource.String.abc_activity_chooser_view_see_all;
+			global::PanCardView.Droid.Resource.String.abc_activitychooserview_choose_application = global::PanCardViewSample.Droid.Resource.String.abc_activitychooserview_choose_application;
 			global::PanCardView.Droid.Resource.String.abc_capital_off = global::PanCardViewSample.Droid.Resource.String.abc_capital_off;
 			global::PanCardView.Droid.Resource.String.abc_capital_on = global::PanCardViewSample.Droid.Resource.String.abc_capital_on;
 			global::PanCardView.Droid.Resource.String.abc_font_family_body_1_material = global::PanCardViewSample.Droid.Resource.String.abc_font_family_body_1_material;
@@ -1609,12 +1609,12 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.String.abc_menu_space_shortcut_label = global::PanCardViewSample.Droid.Resource.String.abc_menu_space_shortcut_label;
 			global::PanCardView.Droid.Resource.String.abc_menu_sym_shortcut_label = global::PanCardViewSample.Droid.Resource.String.abc_menu_sym_shortcut_label;
 			global::PanCardView.Droid.Resource.String.abc_prepend_shortcut_label = global::PanCardViewSample.Droid.Resource.String.abc_prepend_shortcut_label;
+			global::PanCardView.Droid.Resource.String.abc_search_hint = global::PanCardViewSample.Droid.Resource.String.abc_search_hint;
 			global::PanCardView.Droid.Resource.String.abc_searchview_description_clear = global::PanCardViewSample.Droid.Resource.String.abc_searchview_description_clear;
 			global::PanCardView.Droid.Resource.String.abc_searchview_description_query = global::PanCardViewSample.Droid.Resource.String.abc_searchview_description_query;
 			global::PanCardView.Droid.Resource.String.abc_searchview_description_search = global::PanCardViewSample.Droid.Resource.String.abc_searchview_description_search;
 			global::PanCardView.Droid.Resource.String.abc_searchview_description_submit = global::PanCardViewSample.Droid.Resource.String.abc_searchview_description_submit;
 			global::PanCardView.Droid.Resource.String.abc_searchview_description_voice = global::PanCardViewSample.Droid.Resource.String.abc_searchview_description_voice;
-			global::PanCardView.Droid.Resource.String.abc_search_hint = global::PanCardViewSample.Droid.Resource.String.abc_search_hint;
 			global::PanCardView.Droid.Resource.String.abc_shareactionprovider_share_with = global::PanCardViewSample.Droid.Resource.String.abc_shareactionprovider_share_with;
 			global::PanCardView.Droid.Resource.String.abc_shareactionprovider_share_with_application = global::PanCardViewSample.Droid.Resource.String.abc_shareactionprovider_share_with_application;
 			global::PanCardView.Droid.Resource.String.abc_toolbar_collapse_description = global::PanCardViewSample.Droid.Resource.String.abc_toolbar_collapse_description;
@@ -1670,8 +1670,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Base_Animation_AppCompat_DropDownUp = global::PanCardViewSample.Droid.Resource.Style.Base_Animation_AppCompat_DropDownUp;
 			global::PanCardView.Droid.Resource.Style.Base_Animation_AppCompat_Tooltip = global::PanCardViewSample.Droid.Resource.Style.Base_Animation_AppCompat_Tooltip;
 			global::PanCardView.Droid.Resource.Style.Base_CardView = global::PanCardViewSample.Droid.Resource.Style.Base_CardView;
-			global::PanCardView.Droid.Resource.Style.Base_DialogWindowTitleBackground_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_DialogWindowTitleBackground_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_DialogWindowTitle_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_DialogWindowTitle_AppCompat;
+			global::PanCardView.Droid.Resource.Style.Base_DialogWindowTitleBackground_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_DialogWindowTitleBackground_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_TextAppearance_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_TextAppearance_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_TextAppearance_AppCompat_Body1 = global::PanCardViewSample.Droid.Resource.Style.Base_TextAppearance_AppCompat_Body1;
 			global::PanCardView.Droid.Resource.Style.Base_TextAppearance_AppCompat_Body2 = global::PanCardViewSample.Droid.Resource.Style.Base_TextAppearance_AppCompat_Body2;
@@ -1720,6 +1720,37 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Base_TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::PanCardViewSample.Droid.Resource.Style.Base_TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
 			global::PanCardView.Droid.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::PanCardViewSample.Droid.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
 			global::PanCardView.Droid.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Title = global::PanCardViewSample.Droid.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Title;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_CompactMenu;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Bridge;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_CompactMenu;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_FixedSize;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Bridge;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar_Bridge;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_FixedSize;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DialogWhenLarge;
 			global::PanCardView.Droid.Resource.Style.Base_ThemeOverlay_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_ThemeOverlay_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_ThemeOverlay_AppCompat_ActionBar = global::PanCardViewSample.Droid.Resource.Style.Base_ThemeOverlay_AppCompat_ActionBar;
 			global::PanCardView.Droid.Resource.Style.Base_ThemeOverlay_AppCompat_Dark = global::PanCardViewSample.Droid.Resource.Style.Base_ThemeOverlay_AppCompat_Dark;
@@ -1729,39 +1760,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Base_ThemeOverlay_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Base_ThemeOverlay_AppCompat_Light;
 			global::PanCardView.Droid.Resource.Style.Base_ThemeOverlay_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_ThemeOverlay_MaterialComponents_Dialog;
 			global::PanCardView.Droid.Resource.Style.Base_ThemeOverlay_MaterialComponents_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_ThemeOverlay_MaterialComponents_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_CompactMenu;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Bridge;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_CompactMenu;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_FixedSize;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Bridge;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DarkActionBar_Bridge;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_FixedSize = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_FixedSize;
-			global::PanCardView.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Base_Theme_MaterialComponents_Light_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog;
-			global::PanCardView.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog_Alert;
 			global::PanCardView.Droid.Resource.Style.Base_V14_Theme_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Base_V14_Theme_MaterialComponents;
 			global::PanCardView.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Bridge;
 			global::PanCardView.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Dialog;
@@ -1769,11 +1767,13 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Light_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Light_Bridge;
 			global::PanCardView.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Light_DarkActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Light_DarkActionBar_Bridge;
 			global::PanCardView.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V14_Theme_MaterialComponents_Light_Dialog;
-			global::PanCardView.Droid.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Base_V14_ThemeOverlay_MaterialComponents_Dialog_Alert;
 			global::PanCardView.Droid.Resource.Style.Base_V21_Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_V21_Theme_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_V21_Theme_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V21_Theme_AppCompat_Dialog;
 			global::PanCardView.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light;
 			global::PanCardView.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog;
 			global::PanCardView.Droid.Resource.Style.Base_V22_Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_V22_Theme_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_V22_Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Base_V22_Theme_AppCompat_Light;
 			global::PanCardView.Droid.Resource.Style.Base_V23_Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_V23_Theme_AppCompat;
@@ -1783,11 +1783,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Base_V26_Widget_AppCompat_Toolbar = global::PanCardViewSample.Droid.Resource.Style.Base_V26_Widget_AppCompat_Toolbar;
 			global::PanCardView.Droid.Resource.Style.Base_V28_Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_V28_Theme_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_V28_Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Base_V28_Theme_AppCompat_Light;
-			global::PanCardView.Droid.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog;
 			global::PanCardView.Droid.Resource.Style.Base_V7_Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Base_V7_Theme_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Base_V7_Theme_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V7_Theme_AppCompat_Dialog;
 			global::PanCardView.Droid.Resource.Style.Base_V7_Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Base_V7_Theme_AppCompat_Light;
 			global::PanCardView.Droid.Resource.Style.Base_V7_Theme_AppCompat_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V7_Theme_AppCompat_Light_Dialog;
+			global::PanCardView.Droid.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog;
 			global::PanCardView.Droid.Resource.Style.Base_V7_Widget_AppCompat_AutoCompleteTextView = global::PanCardViewSample.Droid.Resource.Style.Base_V7_Widget_AppCompat_AutoCompleteTextView;
 			global::PanCardView.Droid.Resource.Style.Base_V7_Widget_AppCompat_EditText = global::PanCardViewSample.Droid.Resource.Style.Base_V7_Widget_AppCompat_EditText;
 			global::PanCardView.Droid.Resource.Style.Base_V7_Widget_AppCompat_Toolbar = global::PanCardViewSample.Droid.Resource.Style.Base_V7_Widget_AppCompat_Toolbar;
@@ -1803,13 +1803,13 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_ActivityChooserView = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_ActivityChooserView;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_AutoCompleteTextView = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_AutoCompleteTextView;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_Button = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_Button;
-			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar;
-			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_Button_Borderless = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_Button_Borderless;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_Button_Borderless_Colored = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_Button_Borderless_Colored;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_Button_ButtonBar_AlertDialog = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_Button_ButtonBar_AlertDialog;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_Button_Colored = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_Button_Colored;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_Button_Small = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_Button_Small;
+			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar;
+			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_CompoundButton_CheckBox = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_CompoundButton_CheckBox;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_CompoundButton_RadioButton = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_CompoundButton_RadioButton;
 			global::PanCardView.Droid.Resource.Style.Base_Widget_AppCompat_CompoundButton_Switch = global::PanCardViewSample.Droid.Resource.Style.Base_Widget_AppCompat_CompoundButton_Switch;
@@ -1855,7 +1855,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.CardView = global::PanCardViewSample.Droid.Resource.Style.CardView;
 			global::PanCardView.Droid.Resource.Style.CardView_Dark = global::PanCardViewSample.Droid.Resource.Style.CardView_Dark;
 			global::PanCardView.Droid.Resource.Style.CardView_Light = global::PanCardViewSample.Droid.Resource.Style.CardView_Light;
-			global::PanCardView.Droid.Resource.Style.collectionViewStyle = global::PanCardViewSample.Droid.Resource.Style.collectionViewStyle;
 			global::PanCardView.Droid.Resource.Style.Platform_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Platform_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Platform_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Platform_AppCompat_Light;
 			global::PanCardView.Droid.Resource.Style.Platform_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Platform_MaterialComponents;
@@ -1879,12 +1878,12 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_SubmenuArrow = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_SubmenuArrow;
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Text = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Text;
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Title = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Title;
-			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon;
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown;
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1 = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1;
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2 = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2;
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Query = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Query;
 			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Text = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Text;
+			global::PanCardView.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon = global::PanCardViewSample.Droid.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon;
 			global::PanCardView.Droid.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton = global::PanCardViewSample.Droid.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton;
 			global::PanCardView.Droid.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = global::PanCardViewSample.Droid.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton_Overflow;
 			global::PanCardView.Droid.Resource.Style.TextAppearance_AppCompat = global::PanCardViewSample.Droid.Resource.Style.TextAppearance_AppCompat;
@@ -1974,6 +1973,58 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::PanCardViewSample.Droid.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
 			global::PanCardView.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::PanCardViewSample.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
 			global::PanCardView.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title = global::PanCardViewSample.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_CompactMenu;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_NoActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Dialog;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_DarkActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_Dialog;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_NoActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_NoActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_Design = global::PanCardViewSample.Droid.Resource.Style.Theme_Design;
+			global::PanCardView.Droid.Resource.Style.Theme_Design_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_BottomSheetDialog;
+			global::PanCardView.Droid.Resource.Style.Theme_Design_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_Light;
+			global::PanCardView.Droid.Resource.Style.Theme_Design_Light_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_Light_BottomSheetDialog;
+			global::PanCardView.Droid.Resource.Style.Theme_Design_Light_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_Light_NoActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_Design_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_NoActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_BottomSheetDialog;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Bridge;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_CompactMenu;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Dialog;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_BottomSheetDialog;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Bridge;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar_Bridge;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_Alert;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_MinWidth;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_DialogWhenLarge;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar_Bridge;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar;
+			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar_Bridge;
+			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter;
+			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter_Light;
+			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter_Light_DarkControlPanel = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter_Light_DarkControlPanel;
+			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter_LightControlPanel = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter_LightControlPanel;
 			global::PanCardView.Droid.Resource.Style.ThemeOverlay_AppCompat = global::PanCardViewSample.Droid.Resource.Style.ThemeOverlay_AppCompat;
 			global::PanCardView.Droid.Resource.Style.ThemeOverlay_AppCompat_ActionBar = global::PanCardViewSample.Droid.Resource.Style.ThemeOverlay_AppCompat_ActionBar;
 			global::PanCardView.Droid.Resource.Style.ThemeOverlay_AppCompat_Dark = global::PanCardViewSample.Droid.Resource.Style.ThemeOverlay_AppCompat_Dark;
@@ -1995,58 +2046,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.ThemeOverlay_MaterialComponents_TextInputEditText_OutlinedBox_Dense = global::PanCardViewSample.Droid.Resource.Style.ThemeOverlay_MaterialComponents_TextInputEditText_OutlinedBox_Dense;
 			global::PanCardView.Droid.Resource.Style.ThemeOverlay_MediaRouter_Dark = global::PanCardViewSample.Droid.Resource.Style.ThemeOverlay_MediaRouter_Dark;
 			global::PanCardView.Droid.Resource.Style.ThemeOverlay_MediaRouter_Light = global::PanCardViewSample.Droid.Resource.Style.ThemeOverlay_MediaRouter_Light;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_CompactMenu;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DayNight_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DayNight_NoActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Dialog;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_DarkActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_Dialog;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_Light_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_Light_NoActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_AppCompat_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_AppCompat_NoActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_Design = global::PanCardViewSample.Droid.Resource.Style.Theme_Design;
-			global::PanCardView.Droid.Resource.Style.Theme_Design_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_BottomSheetDialog;
-			global::PanCardView.Droid.Resource.Style.Theme_Design_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_Light;
-			global::PanCardView.Droid.Resource.Style.Theme_Design_Light_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_Light_BottomSheetDialog;
-			global::PanCardView.Droid.Resource.Style.Theme_Design_Light_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_Light_NoActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_Design_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_Design_NoActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_BottomSheetDialog;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Bridge;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_CompactMenu = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_CompactMenu;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Dialog;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_BottomSheetDialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_BottomSheetDialog;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Bridge;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_DarkActionBar_Bridge;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_DialogWhenLarge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_DialogWhenLarge;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_Alert = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_Alert;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_MinWidth = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_Dialog_MinWidth;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_Light_NoActionBar_Bridge;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar;
-			global::PanCardView.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar_Bridge = global::PanCardViewSample.Droid.Resource.Style.Theme_MaterialComponents_NoActionBar_Bridge;
-			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter;
-			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter_Light = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter_Light;
-			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter_LightControlPanel = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter_LightControlPanel;
-			global::PanCardView.Droid.Resource.Style.Theme_MediaRouter_Light_DarkControlPanel = global::PanCardViewSample.Droid.Resource.Style.Theme_MediaRouter_Light_DarkControlPanel;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ActionBar = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ActionBar;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ActionBar_Solid = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ActionBar_Solid;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ActionBar_TabBar = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ActionBar_TabBar;
@@ -2059,13 +2058,13 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ActivityChooserView = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ActivityChooserView;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_AutoCompleteTextView = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_AutoCompleteTextView;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_Button = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_Button;
-			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ButtonBar = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ButtonBar;
-			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_Button_Borderless = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_Button_Borderless;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_Button_Borderless_Colored = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_Button_Borderless_Colored;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_Button_ButtonBar_AlertDialog = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_Button_ButtonBar_AlertDialog;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_Button_Colored = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_Button_Colored;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_Button_Small = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_Button_Small;
+			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ButtonBar = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ButtonBar;
+			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_CompoundButton_CheckBox = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_CompoundButton_CheckBox;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_CompoundButton_RadioButton = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_CompoundButton_RadioButton;
 			global::PanCardView.Droid.Resource.Style.Widget_AppCompat_CompoundButton_Switch = global::PanCardViewSample.Droid.Resource.Style.Widget_AppCompat_CompoundButton_Switch;
@@ -2147,11 +2146,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_Button_UnelevatedButton = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_Button_UnelevatedButton;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_Button_UnelevatedButton_Icon = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_Button_UnelevatedButton_Icon;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_CardView = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_CardView;
-			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_ChipGroup = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_ChipGroup;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_Chip_Action = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_Chip_Action;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_Chip_Choice = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_Chip_Choice;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_Chip_Entry = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_Chip_Entry;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_Chip_Filter = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_Chip_Filter;
+			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_ChipGroup = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_ChipGroup;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_FloatingActionButton = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_FloatingActionButton;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_NavigationView = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_NavigationView;
 			global::PanCardView.Droid.Resource.Style.Widget_MaterialComponents_Snackbar = global::PanCardViewSample.Droid.Resource.Style.Widget_MaterialComponents_Snackbar;
@@ -2170,9 +2169,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.Widget_MediaRouter_Light_MediaRouteButton = global::PanCardViewSample.Droid.Resource.Style.Widget_MediaRouter_Light_MediaRouteButton;
 			global::PanCardView.Droid.Resource.Style.Widget_MediaRouter_MediaRouteButton = global::PanCardViewSample.Droid.Resource.Style.Widget_MediaRouter_MediaRouteButton;
 			global::PanCardView.Droid.Resource.Style.Widget_Support_CoordinatorLayout = global::PanCardViewSample.Droid.Resource.Style.Widget_Support_CoordinatorLayout;
+			global::PanCardView.Droid.Resource.Style.collectionViewStyle = global::PanCardViewSample.Droid.Resource.Style.collectionViewStyle;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar = global::PanCardViewSample.Droid.Resource.Styleable.ActionBar;
-			global::PanCardView.Droid.Resource.Styleable.ActionBarLayout = global::PanCardViewSample.Droid.Resource.Styleable.ActionBarLayout;
-			global::PanCardView.Droid.Resource.Styleable.ActionBarLayout_android_layout_gravity = global::PanCardViewSample.Droid.Resource.Styleable.ActionBarLayout_android_layout_gravity;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_background = global::PanCardViewSample.Droid.Resource.Styleable.ActionBar_background;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_backgroundSplit = global::PanCardViewSample.Droid.Resource.Styleable.ActionBar_backgroundSplit;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_backgroundStacked = global::PanCardViewSample.Droid.Resource.Styleable.ActionBar_backgroundStacked;
@@ -2202,6 +2200,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_subtitleTextStyle = global::PanCardViewSample.Droid.Resource.Styleable.ActionBar_subtitleTextStyle;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_title = global::PanCardViewSample.Droid.Resource.Styleable.ActionBar_title;
 			global::PanCardView.Droid.Resource.Styleable.ActionBar_titleTextStyle = global::PanCardViewSample.Droid.Resource.Styleable.ActionBar_titleTextStyle;
+			global::PanCardView.Droid.Resource.Styleable.ActionBarLayout = global::PanCardViewSample.Droid.Resource.Styleable.ActionBarLayout;
+			global::PanCardView.Droid.Resource.Styleable.ActionBarLayout_android_layout_gravity = global::PanCardViewSample.Droid.Resource.Styleable.ActionBarLayout_android_layout_gravity;
 			global::PanCardView.Droid.Resource.Styleable.ActionMenuItemView = global::PanCardViewSample.Droid.Resource.Styleable.ActionMenuItemView;
 			global::PanCardView.Droid.Resource.Styleable.ActionMenuItemView_android_minWidth = global::PanCardViewSample.Droid.Resource.Styleable.ActionMenuItemView_android_minWidth;
 			global::PanCardView.Droid.Resource.Styleable.ActionMenuView = global::PanCardViewSample.Droid.Resource.Styleable.ActionMenuView;
@@ -2240,20 +2240,20 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.AnimatedStateListDrawableTransition_android_reversible = global::PanCardViewSample.Droid.Resource.Styleable.AnimatedStateListDrawableTransition_android_reversible;
 			global::PanCardView.Droid.Resource.Styleable.AnimatedStateListDrawableTransition_android_toId = global::PanCardViewSample.Droid.Resource.Styleable.AnimatedStateListDrawableTransition_android_toId;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout;
-			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates;
-			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsed = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsed;
-			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsible = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsible;
-			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_liftable = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_liftable;
-			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_lifted = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_lifted;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_android_background = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_android_background;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_android_keyboardNavigationCluster = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_android_keyboardNavigationCluster;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_android_touchscreenBlocksFocus = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_android_touchscreenBlocksFocus;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_elevation = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_elevation;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_expanded = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_expanded;
+			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_liftOnScroll = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_liftOnScroll;
+			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates;
+			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsed = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsed;
+			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsible = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_collapsible;
+			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_liftable = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_liftable;
+			global::PanCardView.Droid.Resource.Styleable.AppBarLayoutStates_state_lifted = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayoutStates_state_lifted;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_Layout = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_Layout;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_Layout_layout_scrollFlags = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_Layout_layout_scrollFlags;
 			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_Layout_layout_scrollInterpolator = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_Layout_layout_scrollInterpolator;
-			global::PanCardView.Droid.Resource.Styleable.AppBarLayout_liftOnScroll = global::PanCardViewSample.Droid.Resource.Styleable.AppBarLayout_liftOnScroll;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatImageView = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatImageView;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatImageView_android_src = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatImageView_android_src;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatImageView_srcCompat = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatImageView_srcCompat;
@@ -2349,8 +2349,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_dialogTheme = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_dialogTheme;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_dividerHorizontal = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_dividerHorizontal;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_dividerVertical = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_dividerVertical;
-			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_dropDownListViewStyle = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_dropDownListViewStyle;
+			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_editTextBackground = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_editTextBackground;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_editTextColor = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_editTextColor;
 			global::PanCardView.Droid.Resource.Styleable.AppCompatTheme_editTextStyle = global::PanCardViewSample.Droid.Resource.Styleable.AppCompatTheme_editTextStyle;
@@ -2446,13 +2446,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.CardView_contentPaddingRight = global::PanCardViewSample.Droid.Resource.Styleable.CardView_contentPaddingRight;
 			global::PanCardView.Droid.Resource.Styleable.CardView_contentPaddingTop = global::PanCardViewSample.Droid.Resource.Styleable.CardView_contentPaddingTop;
 			global::PanCardView.Droid.Resource.Styleable.Chip = global::PanCardViewSample.Droid.Resource.Styleable.Chip;
-			global::PanCardView.Droid.Resource.Styleable.ChipGroup = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup;
-			global::PanCardView.Droid.Resource.Styleable.ChipGroup_checkedChip = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_checkedChip;
-			global::PanCardView.Droid.Resource.Styleable.ChipGroup_chipSpacing = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_chipSpacing;
-			global::PanCardView.Droid.Resource.Styleable.ChipGroup_chipSpacingHorizontal = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_chipSpacingHorizontal;
-			global::PanCardView.Droid.Resource.Styleable.ChipGroup_chipSpacingVertical = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_chipSpacingVertical;
-			global::PanCardView.Droid.Resource.Styleable.ChipGroup_singleLine = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_singleLine;
-			global::PanCardView.Droid.Resource.Styleable.ChipGroup_singleSelection = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_singleSelection;
 			global::PanCardView.Droid.Resource.Styleable.Chip_android_checkable = global::PanCardViewSample.Droid.Resource.Styleable.Chip_android_checkable;
 			global::PanCardView.Droid.Resource.Styleable.Chip_android_ellipsize = global::PanCardViewSample.Droid.Resource.Styleable.Chip_android_ellipsize;
 			global::PanCardView.Droid.Resource.Styleable.Chip_android_maxWidth = global::PanCardViewSample.Droid.Resource.Styleable.Chip_android_maxWidth;
@@ -2487,6 +2480,13 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.Chip_showMotionSpec = global::PanCardViewSample.Droid.Resource.Styleable.Chip_showMotionSpec;
 			global::PanCardView.Droid.Resource.Styleable.Chip_textEndPadding = global::PanCardViewSample.Droid.Resource.Styleable.Chip_textEndPadding;
 			global::PanCardView.Droid.Resource.Styleable.Chip_textStartPadding = global::PanCardViewSample.Droid.Resource.Styleable.Chip_textStartPadding;
+			global::PanCardView.Droid.Resource.Styleable.ChipGroup = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup;
+			global::PanCardView.Droid.Resource.Styleable.ChipGroup_checkedChip = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_checkedChip;
+			global::PanCardView.Droid.Resource.Styleable.ChipGroup_chipSpacing = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_chipSpacing;
+			global::PanCardView.Droid.Resource.Styleable.ChipGroup_chipSpacingHorizontal = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_chipSpacingHorizontal;
+			global::PanCardView.Droid.Resource.Styleable.ChipGroup_chipSpacingVertical = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_chipSpacingVertical;
+			global::PanCardView.Droid.Resource.Styleable.ChipGroup_singleLine = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_singleLine;
+			global::PanCardView.Droid.Resource.Styleable.ChipGroup_singleSelection = global::PanCardViewSample.Droid.Resource.Styleable.ChipGroup_singleSelection;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleGravity = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleGravity;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance;
@@ -2498,15 +2498,15 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_expandedTitleMarginStart = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_expandedTitleMarginStart;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_expandedTitleMarginTop = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_expandedTitleMarginTop;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_expandedTitleTextAppearance = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_expandedTitleTextAppearance;
-			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout;
-			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseMode = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseMode;
-			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_scrimAnimationDuration = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_scrimAnimationDuration;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_statusBarScrim = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_statusBarScrim;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_title = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_title;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_titleEnabled = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_titleEnabled;
 			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_toolbarId = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_toolbarId;
+			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout;
+			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseMode = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseMode;
+			global::PanCardView.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier = global::PanCardViewSample.Droid.Resource.Styleable.CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier;
 			global::PanCardView.Droid.Resource.Styleable.ColorStateListItem = global::PanCardViewSample.Droid.Resource.Styleable.ColorStateListItem;
 			global::PanCardView.Droid.Resource.Styleable.ColorStateListItem_alpha = global::PanCardViewSample.Droid.Resource.Styleable.ColorStateListItem_alpha;
 			global::PanCardView.Droid.Resource.Styleable.ColorStateListItem_android_alpha = global::PanCardViewSample.Droid.Resource.Styleable.ColorStateListItem_android_alpha;
@@ -2517,6 +2517,7 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.CompoundButton_buttonTintMode = global::PanCardViewSample.Droid.Resource.Styleable.CompoundButton_buttonTintMode;
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout;
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_keylines = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_keylines;
+			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground;
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_Layout = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_Layout;
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity;
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor;
@@ -2525,7 +2526,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges;
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
 			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
-			global::PanCardView.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::PanCardViewSample.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground;
 			global::PanCardView.Droid.Resource.Styleable.DesignTheme = global::PanCardViewSample.Droid.Resource.Styleable.DesignTheme;
 			global::PanCardView.Droid.Resource.Styleable.DesignTheme_bottomSheetDialogTheme = global::PanCardViewSample.Droid.Resource.Styleable.DesignTheme_bottomSheetDialogTheme;
 			global::PanCardView.Droid.Resource.Styleable.DesignTheme_bottomSheetStyle = global::PanCardViewSample.Droid.Resource.Styleable.DesignTheme_bottomSheetStyle;
@@ -2541,8 +2541,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton;
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_backgroundTint = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_backgroundTint;
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_backgroundTintMode = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_backgroundTintMode;
-			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout;
-			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout_behavior_autoHide = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout_behavior_autoHide;
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_borderWidth = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_borderWidth;
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_elevation = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_elevation;
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_fabCustomSize = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_fabCustomSize;
@@ -2554,10 +2552,18 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_rippleColor = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_rippleColor;
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_showMotionSpec = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_showMotionSpec;
 			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_useCompatPadding = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_useCompatPadding;
+			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout;
+			global::PanCardView.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout_behavior_autoHide = global::PanCardViewSample.Droid.Resource.Styleable.FloatingActionButton_Behavior_Layout_behavior_autoHide;
 			global::PanCardView.Droid.Resource.Styleable.FlowLayout = global::PanCardViewSample.Droid.Resource.Styleable.FlowLayout;
 			global::PanCardView.Droid.Resource.Styleable.FlowLayout_itemSpacing = global::PanCardViewSample.Droid.Resource.Styleable.FlowLayout_itemSpacing;
 			global::PanCardView.Droid.Resource.Styleable.FlowLayout_lineSpacing = global::PanCardViewSample.Droid.Resource.Styleable.FlowLayout_lineSpacing;
 			global::PanCardView.Droid.Resource.Styleable.FontFamily = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily;
+			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderAuthority = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderAuthority;
+			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderCerts = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderCerts;
+			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
+			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
+			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderPackage = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderPackage;
+			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderQuery = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderQuery;
 			global::PanCardView.Droid.Resource.Styleable.FontFamilyFont = global::PanCardViewSample.Droid.Resource.Styleable.FontFamilyFont;
 			global::PanCardView.Droid.Resource.Styleable.FontFamilyFont_android_font = global::PanCardViewSample.Droid.Resource.Styleable.FontFamilyFont_android_font;
 			global::PanCardView.Droid.Resource.Styleable.FontFamilyFont_android_fontStyle = global::PanCardViewSample.Droid.Resource.Styleable.FontFamilyFont_android_fontStyle;
@@ -2569,20 +2575,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.FontFamilyFont_fontVariationSettings = global::PanCardViewSample.Droid.Resource.Styleable.FontFamilyFont_fontVariationSettings;
 			global::PanCardView.Droid.Resource.Styleable.FontFamilyFont_fontWeight = global::PanCardViewSample.Droid.Resource.Styleable.FontFamilyFont_fontWeight;
 			global::PanCardView.Droid.Resource.Styleable.FontFamilyFont_ttcIndex = global::PanCardViewSample.Droid.Resource.Styleable.FontFamilyFont_ttcIndex;
-			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderAuthority = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderAuthority;
-			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderCerts = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderCerts;
-			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
-			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
-			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderPackage = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderPackage;
-			global::PanCardView.Droid.Resource.Styleable.FontFamily_fontProviderQuery = global::PanCardViewSample.Droid.Resource.Styleable.FontFamily_fontProviderQuery;
 			global::PanCardView.Droid.Resource.Styleable.ForegroundLinearLayout = global::PanCardViewSample.Droid.Resource.Styleable.ForegroundLinearLayout;
 			global::PanCardView.Droid.Resource.Styleable.ForegroundLinearLayout_android_foreground = global::PanCardViewSample.Droid.Resource.Styleable.ForegroundLinearLayout_android_foreground;
 			global::PanCardView.Droid.Resource.Styleable.ForegroundLinearLayout_android_foregroundGravity = global::PanCardViewSample.Droid.Resource.Styleable.ForegroundLinearLayout_android_foregroundGravity;
 			global::PanCardView.Droid.Resource.Styleable.ForegroundLinearLayout_foregroundInsidePadding = global::PanCardViewSample.Droid.Resource.Styleable.ForegroundLinearLayout_foregroundInsidePadding;
 			global::PanCardView.Droid.Resource.Styleable.GradientColor = global::PanCardViewSample.Droid.Resource.Styleable.GradientColor;
-			global::PanCardView.Droid.Resource.Styleable.GradientColorItem = global::PanCardViewSample.Droid.Resource.Styleable.GradientColorItem;
-			global::PanCardView.Droid.Resource.Styleable.GradientColorItem_android_color = global::PanCardViewSample.Droid.Resource.Styleable.GradientColorItem_android_color;
-			global::PanCardView.Droid.Resource.Styleable.GradientColorItem_android_offset = global::PanCardViewSample.Droid.Resource.Styleable.GradientColorItem_android_offset;
 			global::PanCardView.Droid.Resource.Styleable.GradientColor_android_centerColor = global::PanCardViewSample.Droid.Resource.Styleable.GradientColor_android_centerColor;
 			global::PanCardView.Droid.Resource.Styleable.GradientColor_android_centerX = global::PanCardViewSample.Droid.Resource.Styleable.GradientColor_android_centerX;
 			global::PanCardView.Droid.Resource.Styleable.GradientColor_android_centerY = global::PanCardViewSample.Droid.Resource.Styleable.GradientColor_android_centerY;
@@ -2595,6 +2592,9 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.GradientColor_android_startY = global::PanCardViewSample.Droid.Resource.Styleable.GradientColor_android_startY;
 			global::PanCardView.Droid.Resource.Styleable.GradientColor_android_tileMode = global::PanCardViewSample.Droid.Resource.Styleable.GradientColor_android_tileMode;
 			global::PanCardView.Droid.Resource.Styleable.GradientColor_android_type = global::PanCardViewSample.Droid.Resource.Styleable.GradientColor_android_type;
+			global::PanCardView.Droid.Resource.Styleable.GradientColorItem = global::PanCardViewSample.Droid.Resource.Styleable.GradientColorItem;
+			global::PanCardView.Droid.Resource.Styleable.GradientColorItem_android_color = global::PanCardViewSample.Droid.Resource.Styleable.GradientColorItem_android_color;
+			global::PanCardView.Droid.Resource.Styleable.GradientColorItem_android_offset = global::PanCardViewSample.Droid.Resource.Styleable.GradientColorItem_android_offset;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_android_baselineAligned = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_android_baselineAligned;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_android_baselineAlignedChildIndex = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_android_baselineAlignedChildIndex;
@@ -2603,13 +2603,13 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_android_weightSum = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_android_weightSum;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_divider = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_divider;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_dividerPadding = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_dividerPadding;
+			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild;
+			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_showDividers = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_showDividers;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_Layout = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_Layout;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_gravity = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_gravity;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_height = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_height;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_weight = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_weight;
 			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_width = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_width;
-			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild;
-			global::PanCardView.Droid.Resource.Styleable.LinearLayoutCompat_showDividers = global::PanCardViewSample.Droid.Resource.Styleable.LinearLayoutCompat_showDividers;
 			global::PanCardView.Droid.Resource.Styleable.ListPopupWindow = global::PanCardViewSample.Droid.Resource.Styleable.ListPopupWindow;
 			global::PanCardView.Droid.Resource.Styleable.ListPopupWindow_android_dropDownHorizontalOffset = global::PanCardViewSample.Droid.Resource.Styleable.ListPopupWindow_android_dropDownHorizontalOffset;
 			global::PanCardView.Droid.Resource.Styleable.ListPopupWindow_android_dropDownVerticalOffset = global::PanCardViewSample.Droid.Resource.Styleable.ListPopupWindow_android_dropDownVerticalOffset;
@@ -2726,11 +2726,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.NavigationView_itemTextColor = global::PanCardViewSample.Droid.Resource.Styleable.NavigationView_itemTextColor;
 			global::PanCardView.Droid.Resource.Styleable.NavigationView_menu = global::PanCardViewSample.Droid.Resource.Styleable.NavigationView_menu;
 			global::PanCardView.Droid.Resource.Styleable.PopupWindow = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindow;
-			global::PanCardView.Droid.Resource.Styleable.PopupWindowBackgroundState = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindowBackgroundState;
-			global::PanCardView.Droid.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor;
 			global::PanCardView.Droid.Resource.Styleable.PopupWindow_android_popupAnimationStyle = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindow_android_popupAnimationStyle;
 			global::PanCardView.Droid.Resource.Styleable.PopupWindow_android_popupBackground = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindow_android_popupBackground;
 			global::PanCardView.Droid.Resource.Styleable.PopupWindow_overlapAnchor = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindow_overlapAnchor;
+			global::PanCardView.Droid.Resource.Styleable.PopupWindowBackgroundState = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindowBackgroundState;
+			global::PanCardView.Droid.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor = global::PanCardViewSample.Droid.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor;
 			global::PanCardView.Droid.Resource.Styleable.RecycleListView = global::PanCardViewSample.Droid.Resource.Styleable.RecycleListView;
 			global::PanCardView.Droid.Resource.Styleable.RecycleListView_paddingBottomNoButtons = global::PanCardViewSample.Droid.Resource.Styleable.RecycleListView_paddingBottomNoButtons;
 			global::PanCardView.Droid.Resource.Styleable.RecycleListView_paddingTopNoTitle = global::PanCardViewSample.Droid.Resource.Styleable.RecycleListView_paddingTopNoTitle;
@@ -2769,12 +2769,12 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.SearchView_suggestionRowLayout = global::PanCardViewSample.Droid.Resource.Styleable.SearchView_suggestionRowLayout;
 			global::PanCardView.Droid.Resource.Styleable.SearchView_voiceIcon = global::PanCardViewSample.Droid.Resource.Styleable.SearchView_voiceIcon;
 			global::PanCardView.Droid.Resource.Styleable.Snackbar = global::PanCardViewSample.Droid.Resource.Styleable.Snackbar;
+			global::PanCardView.Droid.Resource.Styleable.Snackbar_snackbarButtonStyle = global::PanCardViewSample.Droid.Resource.Styleable.Snackbar_snackbarButtonStyle;
+			global::PanCardView.Droid.Resource.Styleable.Snackbar_snackbarStyle = global::PanCardViewSample.Droid.Resource.Styleable.Snackbar_snackbarStyle;
 			global::PanCardView.Droid.Resource.Styleable.SnackbarLayout = global::PanCardViewSample.Droid.Resource.Styleable.SnackbarLayout;
 			global::PanCardView.Droid.Resource.Styleable.SnackbarLayout_android_maxWidth = global::PanCardViewSample.Droid.Resource.Styleable.SnackbarLayout_android_maxWidth;
 			global::PanCardView.Droid.Resource.Styleable.SnackbarLayout_elevation = global::PanCardViewSample.Droid.Resource.Styleable.SnackbarLayout_elevation;
 			global::PanCardView.Droid.Resource.Styleable.SnackbarLayout_maxActionInlineWidth = global::PanCardViewSample.Droid.Resource.Styleable.SnackbarLayout_maxActionInlineWidth;
-			global::PanCardView.Droid.Resource.Styleable.Snackbar_snackbarButtonStyle = global::PanCardViewSample.Droid.Resource.Styleable.Snackbar_snackbarButtonStyle;
-			global::PanCardView.Droid.Resource.Styleable.Snackbar_snackbarStyle = global::PanCardViewSample.Droid.Resource.Styleable.Snackbar_snackbarStyle;
 			global::PanCardView.Droid.Resource.Styleable.Spinner = global::PanCardViewSample.Droid.Resource.Styleable.Spinner;
 			global::PanCardView.Droid.Resource.Styleable.Spinner_android_dropDownWidth = global::PanCardViewSample.Droid.Resource.Styleable.Spinner_android_dropDownWidth;
 			global::PanCardView.Droid.Resource.Styleable.Spinner_android_entries = global::PanCardViewSample.Droid.Resource.Styleable.Spinner_android_entries;
@@ -2782,14 +2782,14 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.Spinner_android_prompt = global::PanCardViewSample.Droid.Resource.Styleable.Spinner_android_prompt;
 			global::PanCardView.Droid.Resource.Styleable.Spinner_popupTheme = global::PanCardViewSample.Droid.Resource.Styleable.Spinner_popupTheme;
 			global::PanCardView.Droid.Resource.Styleable.StateListDrawable = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawable;
-			global::PanCardView.Droid.Resource.Styleable.StateListDrawableItem = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawableItem;
-			global::PanCardView.Droid.Resource.Styleable.StateListDrawableItem_android_drawable = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawableItem_android_drawable;
 			global::PanCardView.Droid.Resource.Styleable.StateListDrawable_android_constantSize = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawable_android_constantSize;
 			global::PanCardView.Droid.Resource.Styleable.StateListDrawable_android_dither = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawable_android_dither;
 			global::PanCardView.Droid.Resource.Styleable.StateListDrawable_android_enterFadeDuration = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawable_android_enterFadeDuration;
 			global::PanCardView.Droid.Resource.Styleable.StateListDrawable_android_exitFadeDuration = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawable_android_exitFadeDuration;
 			global::PanCardView.Droid.Resource.Styleable.StateListDrawable_android_variablePadding = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawable_android_variablePadding;
 			global::PanCardView.Droid.Resource.Styleable.StateListDrawable_android_visible = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawable_android_visible;
+			global::PanCardView.Droid.Resource.Styleable.StateListDrawableItem = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawableItem;
+			global::PanCardView.Droid.Resource.Styleable.StateListDrawableItem_android_drawable = global::PanCardViewSample.Droid.Resource.Styleable.StateListDrawableItem_android_drawable;
 			global::PanCardView.Droid.Resource.Styleable.SwitchCompat = global::PanCardViewSample.Droid.Resource.Styleable.SwitchCompat;
 			global::PanCardView.Droid.Resource.Styleable.SwitchCompat_android_textOff = global::PanCardViewSample.Droid.Resource.Styleable.SwitchCompat_android_textOff;
 			global::PanCardView.Droid.Resource.Styleable.SwitchCompat_android_textOn = global::PanCardViewSample.Droid.Resource.Styleable.SwitchCompat_android_textOn;
@@ -2907,12 +2907,17 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleMargin = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleMargin;
 			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleMarginBottom = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleMarginBottom;
 			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleMarginEnd = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleMarginEnd;
-			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleMargins = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleMargins;
 			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleMarginStart = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleMarginStart;
 			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleMarginTop = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleMarginTop;
+			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleMargins = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleMargins;
 			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleTextAppearance = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleTextAppearance;
 			global::PanCardView.Droid.Resource.Styleable.Toolbar_titleTextColor = global::PanCardViewSample.Droid.Resource.Styleable.Toolbar_titleTextColor;
 			global::PanCardView.Droid.Resource.Styleable.View = global::PanCardViewSample.Droid.Resource.Styleable.View;
+			global::PanCardView.Droid.Resource.Styleable.View_android_focusable = global::PanCardViewSample.Droid.Resource.Styleable.View_android_focusable;
+			global::PanCardView.Droid.Resource.Styleable.View_android_theme = global::PanCardViewSample.Droid.Resource.Styleable.View_android_theme;
+			global::PanCardView.Droid.Resource.Styleable.View_paddingEnd = global::PanCardViewSample.Droid.Resource.Styleable.View_paddingEnd;
+			global::PanCardView.Droid.Resource.Styleable.View_paddingStart = global::PanCardViewSample.Droid.Resource.Styleable.View_paddingStart;
+			global::PanCardView.Droid.Resource.Styleable.View_theme = global::PanCardViewSample.Droid.Resource.Styleable.View_theme;
 			global::PanCardView.Droid.Resource.Styleable.ViewBackgroundHelper = global::PanCardViewSample.Droid.Resource.Styleable.ViewBackgroundHelper;
 			global::PanCardView.Droid.Resource.Styleable.ViewBackgroundHelper_android_background = global::PanCardViewSample.Droid.Resource.Styleable.ViewBackgroundHelper_android_background;
 			global::PanCardView.Droid.Resource.Styleable.ViewBackgroundHelper_backgroundTint = global::PanCardViewSample.Droid.Resource.Styleable.ViewBackgroundHelper_backgroundTint;
@@ -2921,11 +2926,6 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Styleable.ViewStubCompat_android_id = global::PanCardViewSample.Droid.Resource.Styleable.ViewStubCompat_android_id;
 			global::PanCardView.Droid.Resource.Styleable.ViewStubCompat_android_inflatedId = global::PanCardViewSample.Droid.Resource.Styleable.ViewStubCompat_android_inflatedId;
 			global::PanCardView.Droid.Resource.Styleable.ViewStubCompat_android_layout = global::PanCardViewSample.Droid.Resource.Styleable.ViewStubCompat_android_layout;
-			global::PanCardView.Droid.Resource.Styleable.View_android_focusable = global::PanCardViewSample.Droid.Resource.Styleable.View_android_focusable;
-			global::PanCardView.Droid.Resource.Styleable.View_android_theme = global::PanCardViewSample.Droid.Resource.Styleable.View_android_theme;
-			global::PanCardView.Droid.Resource.Styleable.View_paddingEnd = global::PanCardViewSample.Droid.Resource.Styleable.View_paddingEnd;
-			global::PanCardView.Droid.Resource.Styleable.View_paddingStart = global::PanCardViewSample.Droid.Resource.Styleable.View_paddingStart;
-			global::PanCardView.Droid.Resource.Styleable.View_theme = global::PanCardViewSample.Droid.Resource.Styleable.View_theme;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_in = global::PanCardViewSample.Droid.Resource.Animation.abc_fade_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_out = global::PanCardViewSample.Droid.Resource.Animation.abc_fade_out;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_grow_fade_in_from_bottom = global::PanCardViewSample.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;
@@ -4433,6 +4433,7 @@ namespace PanCardViewSample.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Style.CardView = global::PanCardViewSample.Droid.Resource.Style.CardView;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.CardView_Dark = global::PanCardViewSample.Droid.Resource.Style.CardView_Dark;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.CardView_Light = global::PanCardViewSample.Droid.Resource.Style.CardView_Light;
+			global::Xamarin.Forms.Platform.Android.Resource.Style.NestedScrollBarStyle = global::PanCardViewSample.Droid.Resource.Style.NestedScrollBarStyle;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Platform_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Platform_AppCompat;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Platform_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Platform_AppCompat_Light;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Platform_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Platform_MaterialComponents;
@@ -11169,8 +11170,8 @@ namespace PanCardViewSample.Droid
 			// aapt resource value: 0x7F0D00C5
 			public const int CardView_Light = 2131558597;
 			
-			// aapt resource value: 0x7F0D0202
-			public const int collectionViewStyle = 2131558914;
+			// aapt resource value: 0x7F0D0203
+			public const int collectionViewStyle = 2131558915;
 			
 			// aapt resource value: 0x7F0D00C6
 			public const int MyTheme = 2131558598;
@@ -11179,946 +11180,949 @@ namespace PanCardViewSample.Droid
 			public const int MyTheme_Base = 2131558599;
 			
 			// aapt resource value: 0x7F0D00C8
-			public const int Platform_AppCompat = 2131558600;
+			public const int NestedScrollBarStyle = 2131558600;
 			
 			// aapt resource value: 0x7F0D00C9
-			public const int Platform_AppCompat_Light = 2131558601;
+			public const int Platform_AppCompat = 2131558601;
 			
 			// aapt resource value: 0x7F0D00CA
-			public const int Platform_MaterialComponents = 2131558602;
+			public const int Platform_AppCompat_Light = 2131558602;
 			
 			// aapt resource value: 0x7F0D00CB
-			public const int Platform_MaterialComponents_Dialog = 2131558603;
+			public const int Platform_MaterialComponents = 2131558603;
 			
 			// aapt resource value: 0x7F0D00CC
-			public const int Platform_MaterialComponents_Light = 2131558604;
+			public const int Platform_MaterialComponents_Dialog = 2131558604;
 			
 			// aapt resource value: 0x7F0D00CD
-			public const int Platform_MaterialComponents_Light_Dialog = 2131558605;
+			public const int Platform_MaterialComponents_Light = 2131558605;
 			
 			// aapt resource value: 0x7F0D00CE
-			public const int Platform_ThemeOverlay_AppCompat = 2131558606;
+			public const int Platform_MaterialComponents_Light_Dialog = 2131558606;
 			
 			// aapt resource value: 0x7F0D00CF
-			public const int Platform_ThemeOverlay_AppCompat_Dark = 2131558607;
+			public const int Platform_ThemeOverlay_AppCompat = 2131558607;
 			
 			// aapt resource value: 0x7F0D00D0
-			public const int Platform_ThemeOverlay_AppCompat_Light = 2131558608;
+			public const int Platform_ThemeOverlay_AppCompat_Dark = 2131558608;
 			
 			// aapt resource value: 0x7F0D00D1
-			public const int Platform_V21_AppCompat = 2131558609;
+			public const int Platform_ThemeOverlay_AppCompat_Light = 2131558609;
 			
 			// aapt resource value: 0x7F0D00D2
-			public const int Platform_V21_AppCompat_Light = 2131558610;
+			public const int Platform_V21_AppCompat = 2131558610;
 			
 			// aapt resource value: 0x7F0D00D3
-			public const int Platform_V25_AppCompat = 2131558611;
+			public const int Platform_V21_AppCompat_Light = 2131558611;
 			
 			// aapt resource value: 0x7F0D00D4
-			public const int Platform_V25_AppCompat_Light = 2131558612;
+			public const int Platform_V25_AppCompat = 2131558612;
 			
 			// aapt resource value: 0x7F0D00D5
-			public const int Platform_Widget_AppCompat_Spinner = 2131558613;
+			public const int Platform_V25_AppCompat_Light = 2131558613;
 			
 			// aapt resource value: 0x7F0D00D6
-			public const int RtlOverlay_DialogWindowTitle_AppCompat = 2131558614;
+			public const int Platform_Widget_AppCompat_Spinner = 2131558614;
 			
 			// aapt resource value: 0x7F0D00D7
-			public const int RtlOverlay_Widget_AppCompat_ActionBar_TitleItem = 2131558615;
+			public const int RtlOverlay_DialogWindowTitle_AppCompat = 2131558615;
 			
 			// aapt resource value: 0x7F0D00D8
-			public const int RtlOverlay_Widget_AppCompat_DialogTitle_Icon = 2131558616;
+			public const int RtlOverlay_Widget_AppCompat_ActionBar_TitleItem = 2131558616;
 			
 			// aapt resource value: 0x7F0D00D9
-			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem = 2131558617;
+			public const int RtlOverlay_Widget_AppCompat_DialogTitle_Icon = 2131558617;
 			
 			// aapt resource value: 0x7F0D00DA
-			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_InternalGroup = 2131558618;
+			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem = 2131558618;
 			
 			// aapt resource value: 0x7F0D00DB
-			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_Shortcut = 2131558619;
+			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_InternalGroup = 2131558619;
 			
 			// aapt resource value: 0x7F0D00DC
-			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_SubmenuArrow = 2131558620;
+			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_Shortcut = 2131558620;
 			
 			// aapt resource value: 0x7F0D00DD
-			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_Text = 2131558621;
+			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_SubmenuArrow = 2131558621;
 			
 			// aapt resource value: 0x7F0D00DE
-			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_Title = 2131558622;
-			
-			// aapt resource value: 0x7F0D00E4
-			public const int RtlOverlay_Widget_AppCompat_SearchView_MagIcon = 2131558628;
+			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_Text = 2131558622;
 			
 			// aapt resource value: 0x7F0D00DF
-			public const int RtlOverlay_Widget_AppCompat_Search_DropDown = 2131558623;
-			
-			// aapt resource value: 0x7F0D00E0
-			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1 = 2131558624;
-			
-			// aapt resource value: 0x7F0D00E1
-			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2 = 2131558625;
-			
-			// aapt resource value: 0x7F0D00E2
-			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Query = 2131558626;
-			
-			// aapt resource value: 0x7F0D00E3
-			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Text = 2131558627;
+			public const int RtlOverlay_Widget_AppCompat_PopupMenuItem_Title = 2131558623;
 			
 			// aapt resource value: 0x7F0D00E5
-			public const int RtlUnderlay_Widget_AppCompat_ActionButton = 2131558629;
+			public const int RtlOverlay_Widget_AppCompat_SearchView_MagIcon = 2131558629;
+			
+			// aapt resource value: 0x7F0D00E0
+			public const int RtlOverlay_Widget_AppCompat_Search_DropDown = 2131558624;
+			
+			// aapt resource value: 0x7F0D00E1
+			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1 = 2131558625;
+			
+			// aapt resource value: 0x7F0D00E2
+			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2 = 2131558626;
+			
+			// aapt resource value: 0x7F0D00E3
+			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Query = 2131558627;
+			
+			// aapt resource value: 0x7F0D00E4
+			public const int RtlOverlay_Widget_AppCompat_Search_DropDown_Text = 2131558628;
 			
 			// aapt resource value: 0x7F0D00E6
-			public const int RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = 2131558630;
+			public const int RtlUnderlay_Widget_AppCompat_ActionButton = 2131558630;
 			
 			// aapt resource value: 0x7F0D00E7
-			public const int TextAppearance_AppCompat = 2131558631;
+			public const int RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = 2131558631;
 			
 			// aapt resource value: 0x7F0D00E8
-			public const int TextAppearance_AppCompat_Body1 = 2131558632;
+			public const int TextAppearance_AppCompat = 2131558632;
 			
 			// aapt resource value: 0x7F0D00E9
-			public const int TextAppearance_AppCompat_Body2 = 2131558633;
+			public const int TextAppearance_AppCompat_Body1 = 2131558633;
 			
 			// aapt resource value: 0x7F0D00EA
-			public const int TextAppearance_AppCompat_Button = 2131558634;
+			public const int TextAppearance_AppCompat_Body2 = 2131558634;
 			
 			// aapt resource value: 0x7F0D00EB
-			public const int TextAppearance_AppCompat_Caption = 2131558635;
+			public const int TextAppearance_AppCompat_Button = 2131558635;
 			
 			// aapt resource value: 0x7F0D00EC
-			public const int TextAppearance_AppCompat_Display1 = 2131558636;
+			public const int TextAppearance_AppCompat_Caption = 2131558636;
 			
 			// aapt resource value: 0x7F0D00ED
-			public const int TextAppearance_AppCompat_Display2 = 2131558637;
+			public const int TextAppearance_AppCompat_Display1 = 2131558637;
 			
 			// aapt resource value: 0x7F0D00EE
-			public const int TextAppearance_AppCompat_Display3 = 2131558638;
+			public const int TextAppearance_AppCompat_Display2 = 2131558638;
 			
 			// aapt resource value: 0x7F0D00EF
-			public const int TextAppearance_AppCompat_Display4 = 2131558639;
+			public const int TextAppearance_AppCompat_Display3 = 2131558639;
 			
 			// aapt resource value: 0x7F0D00F0
-			public const int TextAppearance_AppCompat_Headline = 2131558640;
+			public const int TextAppearance_AppCompat_Display4 = 2131558640;
 			
 			// aapt resource value: 0x7F0D00F1
-			public const int TextAppearance_AppCompat_Inverse = 2131558641;
+			public const int TextAppearance_AppCompat_Headline = 2131558641;
 			
 			// aapt resource value: 0x7F0D00F2
-			public const int TextAppearance_AppCompat_Large = 2131558642;
+			public const int TextAppearance_AppCompat_Inverse = 2131558642;
 			
 			// aapt resource value: 0x7F0D00F3
-			public const int TextAppearance_AppCompat_Large_Inverse = 2131558643;
+			public const int TextAppearance_AppCompat_Large = 2131558643;
 			
 			// aapt resource value: 0x7F0D00F4
-			public const int TextAppearance_AppCompat_Light_SearchResult_Subtitle = 2131558644;
+			public const int TextAppearance_AppCompat_Large_Inverse = 2131558644;
 			
 			// aapt resource value: 0x7F0D00F5
-			public const int TextAppearance_AppCompat_Light_SearchResult_Title = 2131558645;
+			public const int TextAppearance_AppCompat_Light_SearchResult_Subtitle = 2131558645;
 			
 			// aapt resource value: 0x7F0D00F6
-			public const int TextAppearance_AppCompat_Light_Widget_PopupMenu_Large = 2131558646;
+			public const int TextAppearance_AppCompat_Light_SearchResult_Title = 2131558646;
 			
 			// aapt resource value: 0x7F0D00F7
-			public const int TextAppearance_AppCompat_Light_Widget_PopupMenu_Small = 2131558647;
+			public const int TextAppearance_AppCompat_Light_Widget_PopupMenu_Large = 2131558647;
 			
 			// aapt resource value: 0x7F0D00F8
-			public const int TextAppearance_AppCompat_Medium = 2131558648;
+			public const int TextAppearance_AppCompat_Light_Widget_PopupMenu_Small = 2131558648;
 			
 			// aapt resource value: 0x7F0D00F9
-			public const int TextAppearance_AppCompat_Medium_Inverse = 2131558649;
+			public const int TextAppearance_AppCompat_Medium = 2131558649;
 			
 			// aapt resource value: 0x7F0D00FA
-			public const int TextAppearance_AppCompat_Menu = 2131558650;
+			public const int TextAppearance_AppCompat_Medium_Inverse = 2131558650;
 			
 			// aapt resource value: 0x7F0D00FB
-			public const int TextAppearance_AppCompat_SearchResult_Subtitle = 2131558651;
+			public const int TextAppearance_AppCompat_Menu = 2131558651;
 			
 			// aapt resource value: 0x7F0D00FC
-			public const int TextAppearance_AppCompat_SearchResult_Title = 2131558652;
+			public const int TextAppearance_AppCompat_SearchResult_Subtitle = 2131558652;
 			
 			// aapt resource value: 0x7F0D00FD
-			public const int TextAppearance_AppCompat_Small = 2131558653;
+			public const int TextAppearance_AppCompat_SearchResult_Title = 2131558653;
 			
 			// aapt resource value: 0x7F0D00FE
-			public const int TextAppearance_AppCompat_Small_Inverse = 2131558654;
+			public const int TextAppearance_AppCompat_Small = 2131558654;
 			
 			// aapt resource value: 0x7F0D00FF
-			public const int TextAppearance_AppCompat_Subhead = 2131558655;
+			public const int TextAppearance_AppCompat_Small_Inverse = 2131558655;
 			
 			// aapt resource value: 0x7F0D0100
-			public const int TextAppearance_AppCompat_Subhead_Inverse = 2131558656;
+			public const int TextAppearance_AppCompat_Subhead = 2131558656;
 			
 			// aapt resource value: 0x7F0D0101
-			public const int TextAppearance_AppCompat_Title = 2131558657;
+			public const int TextAppearance_AppCompat_Subhead_Inverse = 2131558657;
 			
 			// aapt resource value: 0x7F0D0102
-			public const int TextAppearance_AppCompat_Title_Inverse = 2131558658;
+			public const int TextAppearance_AppCompat_Title = 2131558658;
 			
 			// aapt resource value: 0x7F0D0103
-			public const int TextAppearance_AppCompat_Tooltip = 2131558659;
+			public const int TextAppearance_AppCompat_Title_Inverse = 2131558659;
 			
 			// aapt resource value: 0x7F0D0104
-			public const int TextAppearance_AppCompat_Widget_ActionBar_Menu = 2131558660;
+			public const int TextAppearance_AppCompat_Tooltip = 2131558660;
 			
 			// aapt resource value: 0x7F0D0105
-			public const int TextAppearance_AppCompat_Widget_ActionBar_Subtitle = 2131558661;
+			public const int TextAppearance_AppCompat_Widget_ActionBar_Menu = 2131558661;
 			
 			// aapt resource value: 0x7F0D0106
-			public const int TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse = 2131558662;
+			public const int TextAppearance_AppCompat_Widget_ActionBar_Subtitle = 2131558662;
 			
 			// aapt resource value: 0x7F0D0107
-			public const int TextAppearance_AppCompat_Widget_ActionBar_Title = 2131558663;
+			public const int TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse = 2131558663;
 			
 			// aapt resource value: 0x7F0D0108
-			public const int TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse = 2131558664;
+			public const int TextAppearance_AppCompat_Widget_ActionBar_Title = 2131558664;
 			
 			// aapt resource value: 0x7F0D0109
-			public const int TextAppearance_AppCompat_Widget_ActionMode_Subtitle = 2131558665;
+			public const int TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse = 2131558665;
 			
 			// aapt resource value: 0x7F0D010A
-			public const int TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse = 2131558666;
+			public const int TextAppearance_AppCompat_Widget_ActionMode_Subtitle = 2131558666;
 			
 			// aapt resource value: 0x7F0D010B
-			public const int TextAppearance_AppCompat_Widget_ActionMode_Title = 2131558667;
+			public const int TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse = 2131558667;
 			
 			// aapt resource value: 0x7F0D010C
-			public const int TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse = 2131558668;
+			public const int TextAppearance_AppCompat_Widget_ActionMode_Title = 2131558668;
 			
 			// aapt resource value: 0x7F0D010D
-			public const int TextAppearance_AppCompat_Widget_Button = 2131558669;
+			public const int TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse = 2131558669;
 			
 			// aapt resource value: 0x7F0D010E
-			public const int TextAppearance_AppCompat_Widget_Button_Borderless_Colored = 2131558670;
+			public const int TextAppearance_AppCompat_Widget_Button = 2131558670;
 			
 			// aapt resource value: 0x7F0D010F
-			public const int TextAppearance_AppCompat_Widget_Button_Colored = 2131558671;
+			public const int TextAppearance_AppCompat_Widget_Button_Borderless_Colored = 2131558671;
 			
 			// aapt resource value: 0x7F0D0110
-			public const int TextAppearance_AppCompat_Widget_Button_Inverse = 2131558672;
+			public const int TextAppearance_AppCompat_Widget_Button_Colored = 2131558672;
 			
 			// aapt resource value: 0x7F0D0111
-			public const int TextAppearance_AppCompat_Widget_DropDownItem = 2131558673;
+			public const int TextAppearance_AppCompat_Widget_Button_Inverse = 2131558673;
 			
 			// aapt resource value: 0x7F0D0112
-			public const int TextAppearance_AppCompat_Widget_PopupMenu_Header = 2131558674;
+			public const int TextAppearance_AppCompat_Widget_DropDownItem = 2131558674;
 			
 			// aapt resource value: 0x7F0D0113
-			public const int TextAppearance_AppCompat_Widget_PopupMenu_Large = 2131558675;
+			public const int TextAppearance_AppCompat_Widget_PopupMenu_Header = 2131558675;
 			
 			// aapt resource value: 0x7F0D0114
-			public const int TextAppearance_AppCompat_Widget_PopupMenu_Small = 2131558676;
+			public const int TextAppearance_AppCompat_Widget_PopupMenu_Large = 2131558676;
 			
 			// aapt resource value: 0x7F0D0115
-			public const int TextAppearance_AppCompat_Widget_Switch = 2131558677;
+			public const int TextAppearance_AppCompat_Widget_PopupMenu_Small = 2131558677;
 			
 			// aapt resource value: 0x7F0D0116
-			public const int TextAppearance_AppCompat_Widget_TextView_SpinnerItem = 2131558678;
+			public const int TextAppearance_AppCompat_Widget_Switch = 2131558678;
 			
 			// aapt resource value: 0x7F0D0117
-			public const int TextAppearance_Compat_Notification = 2131558679;
+			public const int TextAppearance_AppCompat_Widget_TextView_SpinnerItem = 2131558679;
 			
 			// aapt resource value: 0x7F0D0118
-			public const int TextAppearance_Compat_Notification_Info = 2131558680;
+			public const int TextAppearance_Compat_Notification = 2131558680;
 			
 			// aapt resource value: 0x7F0D0119
-			public const int TextAppearance_Compat_Notification_Info_Media = 2131558681;
+			public const int TextAppearance_Compat_Notification_Info = 2131558681;
 			
 			// aapt resource value: 0x7F0D011A
-			public const int TextAppearance_Compat_Notification_Line2 = 2131558682;
+			public const int TextAppearance_Compat_Notification_Info_Media = 2131558682;
 			
 			// aapt resource value: 0x7F0D011B
-			public const int TextAppearance_Compat_Notification_Line2_Media = 2131558683;
+			public const int TextAppearance_Compat_Notification_Line2 = 2131558683;
 			
 			// aapt resource value: 0x7F0D011C
-			public const int TextAppearance_Compat_Notification_Media = 2131558684;
+			public const int TextAppearance_Compat_Notification_Line2_Media = 2131558684;
 			
 			// aapt resource value: 0x7F0D011D
-			public const int TextAppearance_Compat_Notification_Time = 2131558685;
+			public const int TextAppearance_Compat_Notification_Media = 2131558685;
 			
 			// aapt resource value: 0x7F0D011E
-			public const int TextAppearance_Compat_Notification_Time_Media = 2131558686;
+			public const int TextAppearance_Compat_Notification_Time = 2131558686;
 			
 			// aapt resource value: 0x7F0D011F
-			public const int TextAppearance_Compat_Notification_Title = 2131558687;
+			public const int TextAppearance_Compat_Notification_Time_Media = 2131558687;
 			
 			// aapt resource value: 0x7F0D0120
-			public const int TextAppearance_Compat_Notification_Title_Media = 2131558688;
+			public const int TextAppearance_Compat_Notification_Title = 2131558688;
 			
 			// aapt resource value: 0x7F0D0121
-			public const int TextAppearance_Design_CollapsingToolbar_Expanded = 2131558689;
+			public const int TextAppearance_Compat_Notification_Title_Media = 2131558689;
 			
 			// aapt resource value: 0x7F0D0122
-			public const int TextAppearance_Design_Counter = 2131558690;
+			public const int TextAppearance_Design_CollapsingToolbar_Expanded = 2131558690;
 			
 			// aapt resource value: 0x7F0D0123
-			public const int TextAppearance_Design_Counter_Overflow = 2131558691;
+			public const int TextAppearance_Design_Counter = 2131558691;
 			
 			// aapt resource value: 0x7F0D0124
-			public const int TextAppearance_Design_Error = 2131558692;
+			public const int TextAppearance_Design_Counter_Overflow = 2131558692;
 			
 			// aapt resource value: 0x7F0D0125
-			public const int TextAppearance_Design_HelperText = 2131558693;
+			public const int TextAppearance_Design_Error = 2131558693;
 			
 			// aapt resource value: 0x7F0D0126
-			public const int TextAppearance_Design_Hint = 2131558694;
+			public const int TextAppearance_Design_HelperText = 2131558694;
 			
 			// aapt resource value: 0x7F0D0127
-			public const int TextAppearance_Design_Snackbar_Message = 2131558695;
+			public const int TextAppearance_Design_Hint = 2131558695;
 			
 			// aapt resource value: 0x7F0D0128
-			public const int TextAppearance_Design_Tab = 2131558696;
+			public const int TextAppearance_Design_Snackbar_Message = 2131558696;
 			
 			// aapt resource value: 0x7F0D0129
-			public const int TextAppearance_MaterialComponents_Body1 = 2131558697;
+			public const int TextAppearance_Design_Tab = 2131558697;
 			
 			// aapt resource value: 0x7F0D012A
-			public const int TextAppearance_MaterialComponents_Body2 = 2131558698;
+			public const int TextAppearance_MaterialComponents_Body1 = 2131558698;
 			
 			// aapt resource value: 0x7F0D012B
-			public const int TextAppearance_MaterialComponents_Button = 2131558699;
+			public const int TextAppearance_MaterialComponents_Body2 = 2131558699;
 			
 			// aapt resource value: 0x7F0D012C
-			public const int TextAppearance_MaterialComponents_Caption = 2131558700;
+			public const int TextAppearance_MaterialComponents_Button = 2131558700;
 			
 			// aapt resource value: 0x7F0D012D
-			public const int TextAppearance_MaterialComponents_Chip = 2131558701;
+			public const int TextAppearance_MaterialComponents_Caption = 2131558701;
 			
 			// aapt resource value: 0x7F0D012E
-			public const int TextAppearance_MaterialComponents_Headline1 = 2131558702;
+			public const int TextAppearance_MaterialComponents_Chip = 2131558702;
 			
 			// aapt resource value: 0x7F0D012F
-			public const int TextAppearance_MaterialComponents_Headline2 = 2131558703;
+			public const int TextAppearance_MaterialComponents_Headline1 = 2131558703;
 			
 			// aapt resource value: 0x7F0D0130
-			public const int TextAppearance_MaterialComponents_Headline3 = 2131558704;
+			public const int TextAppearance_MaterialComponents_Headline2 = 2131558704;
 			
 			// aapt resource value: 0x7F0D0131
-			public const int TextAppearance_MaterialComponents_Headline4 = 2131558705;
+			public const int TextAppearance_MaterialComponents_Headline3 = 2131558705;
 			
 			// aapt resource value: 0x7F0D0132
-			public const int TextAppearance_MaterialComponents_Headline5 = 2131558706;
+			public const int TextAppearance_MaterialComponents_Headline4 = 2131558706;
 			
 			// aapt resource value: 0x7F0D0133
-			public const int TextAppearance_MaterialComponents_Headline6 = 2131558707;
+			public const int TextAppearance_MaterialComponents_Headline5 = 2131558707;
 			
 			// aapt resource value: 0x7F0D0134
-			public const int TextAppearance_MaterialComponents_Overline = 2131558708;
+			public const int TextAppearance_MaterialComponents_Headline6 = 2131558708;
 			
 			// aapt resource value: 0x7F0D0135
-			public const int TextAppearance_MaterialComponents_Subtitle1 = 2131558709;
+			public const int TextAppearance_MaterialComponents_Overline = 2131558709;
 			
 			// aapt resource value: 0x7F0D0136
-			public const int TextAppearance_MaterialComponents_Subtitle2 = 2131558710;
+			public const int TextAppearance_MaterialComponents_Subtitle1 = 2131558710;
 			
 			// aapt resource value: 0x7F0D0137
-			public const int TextAppearance_MaterialComponents_Tab = 2131558711;
+			public const int TextAppearance_MaterialComponents_Subtitle2 = 2131558711;
 			
 			// aapt resource value: 0x7F0D0138
-			public const int TextAppearance_MediaRouter_PrimaryText = 2131558712;
+			public const int TextAppearance_MaterialComponents_Tab = 2131558712;
 			
 			// aapt resource value: 0x7F0D0139
-			public const int TextAppearance_MediaRouter_SecondaryText = 2131558713;
+			public const int TextAppearance_MediaRouter_PrimaryText = 2131558713;
 			
 			// aapt resource value: 0x7F0D013A
-			public const int TextAppearance_MediaRouter_Title = 2131558714;
+			public const int TextAppearance_MediaRouter_SecondaryText = 2131558714;
 			
 			// aapt resource value: 0x7F0D013B
-			public const int TextAppearance_Widget_AppCompat_ExpandedMenu_Item = 2131558715;
+			public const int TextAppearance_MediaRouter_Title = 2131558715;
 			
 			// aapt resource value: 0x7F0D013C
-			public const int TextAppearance_Widget_AppCompat_Toolbar_Subtitle = 2131558716;
+			public const int TextAppearance_Widget_AppCompat_ExpandedMenu_Item = 2131558716;
 			
 			// aapt resource value: 0x7F0D013D
-			public const int TextAppearance_Widget_AppCompat_Toolbar_Title = 2131558717;
-			
-			// aapt resource value: 0x7F0D0172
-			public const int ThemeOverlay_AppCompat = 2131558770;
-			
-			// aapt resource value: 0x7F0D0173
-			public const int ThemeOverlay_AppCompat_ActionBar = 2131558771;
-			
-			// aapt resource value: 0x7F0D0174
-			public const int ThemeOverlay_AppCompat_Dark = 2131558772;
-			
-			// aapt resource value: 0x7F0D0175
-			public const int ThemeOverlay_AppCompat_Dark_ActionBar = 2131558773;
-			
-			// aapt resource value: 0x7F0D0176
-			public const int ThemeOverlay_AppCompat_Dialog = 2131558774;
-			
-			// aapt resource value: 0x7F0D0177
-			public const int ThemeOverlay_AppCompat_Dialog_Alert = 2131558775;
-			
-			// aapt resource value: 0x7F0D0178
-			public const int ThemeOverlay_AppCompat_Light = 2131558776;
-			
-			// aapt resource value: 0x7F0D0179
-			public const int ThemeOverlay_MaterialComponents = 2131558777;
-			
-			// aapt resource value: 0x7F0D017A
-			public const int ThemeOverlay_MaterialComponents_ActionBar = 2131558778;
-			
-			// aapt resource value: 0x7F0D017B
-			public const int ThemeOverlay_MaterialComponents_Dark = 2131558779;
-			
-			// aapt resource value: 0x7F0D017C
-			public const int ThemeOverlay_MaterialComponents_Dark_ActionBar = 2131558780;
-			
-			// aapt resource value: 0x7F0D017D
-			public const int ThemeOverlay_MaterialComponents_Dialog = 2131558781;
-			
-			// aapt resource value: 0x7F0D017E
-			public const int ThemeOverlay_MaterialComponents_Dialog_Alert = 2131558782;
-			
-			// aapt resource value: 0x7F0D017F
-			public const int ThemeOverlay_MaterialComponents_Light = 2131558783;
-			
-			// aapt resource value: 0x7F0D0180
-			public const int ThemeOverlay_MaterialComponents_TextInputEditText = 2131558784;
-			
-			// aapt resource value: 0x7F0D0181
-			public const int ThemeOverlay_MaterialComponents_TextInputEditText_FilledBox = 2131558785;
-			
-			// aapt resource value: 0x7F0D0182
-			public const int ThemeOverlay_MaterialComponents_TextInputEditText_FilledBox_Dense = 2131558786;
-			
-			// aapt resource value: 0x7F0D0183
-			public const int ThemeOverlay_MaterialComponents_TextInputEditText_OutlinedBox = 2131558787;
-			
-			// aapt resource value: 0x7F0D0184
-			public const int ThemeOverlay_MaterialComponents_TextInputEditText_OutlinedBox_Dense = 2131558788;
-			
-			// aapt resource value: 0x7F0D0185
-			public const int ThemeOverlay_MediaRouter_Dark = 2131558789;
-			
-			// aapt resource value: 0x7F0D0186
-			public const int ThemeOverlay_MediaRouter_Light = 2131558790;
+			public const int TextAppearance_Widget_AppCompat_Toolbar_Subtitle = 2131558717;
 			
 			// aapt resource value: 0x7F0D013E
-			public const int Theme_AppCompat = 2131558718;
+			public const int TextAppearance_Widget_AppCompat_Toolbar_Title = 2131558718;
 			
-			// aapt resource value: 0x7F0D013F
-			public const int Theme_AppCompat_CompactMenu = 2131558719;
+			// aapt resource value: 0x7F0D0173
+			public const int ThemeOverlay_AppCompat = 2131558771;
 			
-			// aapt resource value: 0x7F0D0140
-			public const int Theme_AppCompat_DayNight = 2131558720;
+			// aapt resource value: 0x7F0D0174
+			public const int ThemeOverlay_AppCompat_ActionBar = 2131558772;
 			
-			// aapt resource value: 0x7F0D0141
-			public const int Theme_AppCompat_DayNight_DarkActionBar = 2131558721;
+			// aapt resource value: 0x7F0D0175
+			public const int ThemeOverlay_AppCompat_Dark = 2131558773;
 			
-			// aapt resource value: 0x7F0D0142
-			public const int Theme_AppCompat_DayNight_Dialog = 2131558722;
+			// aapt resource value: 0x7F0D0176
+			public const int ThemeOverlay_AppCompat_Dark_ActionBar = 2131558774;
 			
-			// aapt resource value: 0x7F0D0145
-			public const int Theme_AppCompat_DayNight_DialogWhenLarge = 2131558725;
+			// aapt resource value: 0x7F0D0177
+			public const int ThemeOverlay_AppCompat_Dialog = 2131558775;
 			
-			// aapt resource value: 0x7F0D0143
-			public const int Theme_AppCompat_DayNight_Dialog_Alert = 2131558723;
+			// aapt resource value: 0x7F0D0178
+			public const int ThemeOverlay_AppCompat_Dialog_Alert = 2131558776;
 			
-			// aapt resource value: 0x7F0D0144
-			public const int Theme_AppCompat_DayNight_Dialog_MinWidth = 2131558724;
+			// aapt resource value: 0x7F0D0179
+			public const int ThemeOverlay_AppCompat_Light = 2131558777;
 			
-			// aapt resource value: 0x7F0D0146
-			public const int Theme_AppCompat_DayNight_NoActionBar = 2131558726;
+			// aapt resource value: 0x7F0D017A
+			public const int ThemeOverlay_MaterialComponents = 2131558778;
 			
-			// aapt resource value: 0x7F0D0147
-			public const int Theme_AppCompat_Dialog = 2131558727;
+			// aapt resource value: 0x7F0D017B
+			public const int ThemeOverlay_MaterialComponents_ActionBar = 2131558779;
 			
-			// aapt resource value: 0x7F0D014A
-			public const int Theme_AppCompat_DialogWhenLarge = 2131558730;
+			// aapt resource value: 0x7F0D017C
+			public const int ThemeOverlay_MaterialComponents_Dark = 2131558780;
 			
-			// aapt resource value: 0x7F0D0148
-			public const int Theme_AppCompat_Dialog_Alert = 2131558728;
+			// aapt resource value: 0x7F0D017D
+			public const int ThemeOverlay_MaterialComponents_Dark_ActionBar = 2131558781;
 			
-			// aapt resource value: 0x7F0D0149
-			public const int Theme_AppCompat_Dialog_MinWidth = 2131558729;
+			// aapt resource value: 0x7F0D017E
+			public const int ThemeOverlay_MaterialComponents_Dialog = 2131558782;
 			
-			// aapt resource value: 0x7F0D014B
-			public const int Theme_AppCompat_Light = 2131558731;
+			// aapt resource value: 0x7F0D017F
+			public const int ThemeOverlay_MaterialComponents_Dialog_Alert = 2131558783;
 			
-			// aapt resource value: 0x7F0D014C
-			public const int Theme_AppCompat_Light_DarkActionBar = 2131558732;
+			// aapt resource value: 0x7F0D0180
+			public const int ThemeOverlay_MaterialComponents_Light = 2131558784;
 			
-			// aapt resource value: 0x7F0D014D
-			public const int Theme_AppCompat_Light_Dialog = 2131558733;
+			// aapt resource value: 0x7F0D0181
+			public const int ThemeOverlay_MaterialComponents_TextInputEditText = 2131558785;
 			
-			// aapt resource value: 0x7F0D0150
-			public const int Theme_AppCompat_Light_DialogWhenLarge = 2131558736;
+			// aapt resource value: 0x7F0D0182
+			public const int ThemeOverlay_MaterialComponents_TextInputEditText_FilledBox = 2131558786;
 			
-			// aapt resource value: 0x7F0D014E
-			public const int Theme_AppCompat_Light_Dialog_Alert = 2131558734;
+			// aapt resource value: 0x7F0D0183
+			public const int ThemeOverlay_MaterialComponents_TextInputEditText_FilledBox_Dense = 2131558787;
 			
-			// aapt resource value: 0x7F0D014F
-			public const int Theme_AppCompat_Light_Dialog_MinWidth = 2131558735;
+			// aapt resource value: 0x7F0D0184
+			public const int ThemeOverlay_MaterialComponents_TextInputEditText_OutlinedBox = 2131558788;
 			
-			// aapt resource value: 0x7F0D0151
-			public const int Theme_AppCompat_Light_NoActionBar = 2131558737;
+			// aapt resource value: 0x7F0D0185
+			public const int ThemeOverlay_MaterialComponents_TextInputEditText_OutlinedBox_Dense = 2131558789;
 			
-			// aapt resource value: 0x7F0D0152
-			public const int Theme_AppCompat_NoActionBar = 2131558738;
-			
-			// aapt resource value: 0x7F0D0153
-			public const int Theme_Design = 2131558739;
-			
-			// aapt resource value: 0x7F0D0154
-			public const int Theme_Design_BottomSheetDialog = 2131558740;
-			
-			// aapt resource value: 0x7F0D0155
-			public const int Theme_Design_Light = 2131558741;
-			
-			// aapt resource value: 0x7F0D0156
-			public const int Theme_Design_Light_BottomSheetDialog = 2131558742;
-			
-			// aapt resource value: 0x7F0D0157
-			public const int Theme_Design_Light_NoActionBar = 2131558743;
-			
-			// aapt resource value: 0x7F0D0158
-			public const int Theme_Design_NoActionBar = 2131558744;
-			
-			// aapt resource value: 0x7F0D0159
-			public const int Theme_MaterialComponents = 2131558745;
-			
-			// aapt resource value: 0x7F0D015A
-			public const int Theme_MaterialComponents_BottomSheetDialog = 2131558746;
-			
-			// aapt resource value: 0x7F0D015B
-			public const int Theme_MaterialComponents_Bridge = 2131558747;
-			
-			// aapt resource value: 0x7F0D015C
-			public const int Theme_MaterialComponents_CompactMenu = 2131558748;
-			
-			// aapt resource value: 0x7F0D015D
-			public const int Theme_MaterialComponents_Dialog = 2131558749;
-			
-			// aapt resource value: 0x7F0D0160
-			public const int Theme_MaterialComponents_DialogWhenLarge = 2131558752;
-			
-			// aapt resource value: 0x7F0D015E
-			public const int Theme_MaterialComponents_Dialog_Alert = 2131558750;
-			
-			// aapt resource value: 0x7F0D015F
-			public const int Theme_MaterialComponents_Dialog_MinWidth = 2131558751;
-			
-			// aapt resource value: 0x7F0D0161
-			public const int Theme_MaterialComponents_Light = 2131558753;
-			
-			// aapt resource value: 0x7F0D0162
-			public const int Theme_MaterialComponents_Light_BottomSheetDialog = 2131558754;
-			
-			// aapt resource value: 0x7F0D0163
-			public const int Theme_MaterialComponents_Light_Bridge = 2131558755;
-			
-			// aapt resource value: 0x7F0D0164
-			public const int Theme_MaterialComponents_Light_DarkActionBar = 2131558756;
-			
-			// aapt resource value: 0x7F0D0165
-			public const int Theme_MaterialComponents_Light_DarkActionBar_Bridge = 2131558757;
-			
-			// aapt resource value: 0x7F0D0166
-			public const int Theme_MaterialComponents_Light_Dialog = 2131558758;
-			
-			// aapt resource value: 0x7F0D0169
-			public const int Theme_MaterialComponents_Light_DialogWhenLarge = 2131558761;
-			
-			// aapt resource value: 0x7F0D0167
-			public const int Theme_MaterialComponents_Light_Dialog_Alert = 2131558759;
-			
-			// aapt resource value: 0x7F0D0168
-			public const int Theme_MaterialComponents_Light_Dialog_MinWidth = 2131558760;
-			
-			// aapt resource value: 0x7F0D016A
-			public const int Theme_MaterialComponents_Light_NoActionBar = 2131558762;
-			
-			// aapt resource value: 0x7F0D016B
-			public const int Theme_MaterialComponents_Light_NoActionBar_Bridge = 2131558763;
-			
-			// aapt resource value: 0x7F0D016C
-			public const int Theme_MaterialComponents_NoActionBar = 2131558764;
-			
-			// aapt resource value: 0x7F0D016D
-			public const int Theme_MaterialComponents_NoActionBar_Bridge = 2131558765;
-			
-			// aapt resource value: 0x7F0D016E
-			public const int Theme_MediaRouter = 2131558766;
-			
-			// aapt resource value: 0x7F0D016F
-			public const int Theme_MediaRouter_Light = 2131558767;
-			
-			// aapt resource value: 0x7F0D0171
-			public const int Theme_MediaRouter_LightControlPanel = 2131558769;
-			
-			// aapt resource value: 0x7F0D0170
-			public const int Theme_MediaRouter_Light_DarkControlPanel = 2131558768;
+			// aapt resource value: 0x7F0D0186
+			public const int ThemeOverlay_MediaRouter_Dark = 2131558790;
 			
 			// aapt resource value: 0x7F0D0187
-			public const int Widget_AppCompat_ActionBar = 2131558791;
+			public const int ThemeOverlay_MediaRouter_Light = 2131558791;
+			
+			// aapt resource value: 0x7F0D013F
+			public const int Theme_AppCompat = 2131558719;
+			
+			// aapt resource value: 0x7F0D0140
+			public const int Theme_AppCompat_CompactMenu = 2131558720;
+			
+			// aapt resource value: 0x7F0D0141
+			public const int Theme_AppCompat_DayNight = 2131558721;
+			
+			// aapt resource value: 0x7F0D0142
+			public const int Theme_AppCompat_DayNight_DarkActionBar = 2131558722;
+			
+			// aapt resource value: 0x7F0D0143
+			public const int Theme_AppCompat_DayNight_Dialog = 2131558723;
+			
+			// aapt resource value: 0x7F0D0146
+			public const int Theme_AppCompat_DayNight_DialogWhenLarge = 2131558726;
+			
+			// aapt resource value: 0x7F0D0144
+			public const int Theme_AppCompat_DayNight_Dialog_Alert = 2131558724;
+			
+			// aapt resource value: 0x7F0D0145
+			public const int Theme_AppCompat_DayNight_Dialog_MinWidth = 2131558725;
+			
+			// aapt resource value: 0x7F0D0147
+			public const int Theme_AppCompat_DayNight_NoActionBar = 2131558727;
+			
+			// aapt resource value: 0x7F0D0148
+			public const int Theme_AppCompat_Dialog = 2131558728;
+			
+			// aapt resource value: 0x7F0D014B
+			public const int Theme_AppCompat_DialogWhenLarge = 2131558731;
+			
+			// aapt resource value: 0x7F0D0149
+			public const int Theme_AppCompat_Dialog_Alert = 2131558729;
+			
+			// aapt resource value: 0x7F0D014A
+			public const int Theme_AppCompat_Dialog_MinWidth = 2131558730;
+			
+			// aapt resource value: 0x7F0D014C
+			public const int Theme_AppCompat_Light = 2131558732;
+			
+			// aapt resource value: 0x7F0D014D
+			public const int Theme_AppCompat_Light_DarkActionBar = 2131558733;
+			
+			// aapt resource value: 0x7F0D014E
+			public const int Theme_AppCompat_Light_Dialog = 2131558734;
+			
+			// aapt resource value: 0x7F0D0151
+			public const int Theme_AppCompat_Light_DialogWhenLarge = 2131558737;
+			
+			// aapt resource value: 0x7F0D014F
+			public const int Theme_AppCompat_Light_Dialog_Alert = 2131558735;
+			
+			// aapt resource value: 0x7F0D0150
+			public const int Theme_AppCompat_Light_Dialog_MinWidth = 2131558736;
+			
+			// aapt resource value: 0x7F0D0152
+			public const int Theme_AppCompat_Light_NoActionBar = 2131558738;
+			
+			// aapt resource value: 0x7F0D0153
+			public const int Theme_AppCompat_NoActionBar = 2131558739;
+			
+			// aapt resource value: 0x7F0D0154
+			public const int Theme_Design = 2131558740;
+			
+			// aapt resource value: 0x7F0D0155
+			public const int Theme_Design_BottomSheetDialog = 2131558741;
+			
+			// aapt resource value: 0x7F0D0156
+			public const int Theme_Design_Light = 2131558742;
+			
+			// aapt resource value: 0x7F0D0157
+			public const int Theme_Design_Light_BottomSheetDialog = 2131558743;
+			
+			// aapt resource value: 0x7F0D0158
+			public const int Theme_Design_Light_NoActionBar = 2131558744;
+			
+			// aapt resource value: 0x7F0D0159
+			public const int Theme_Design_NoActionBar = 2131558745;
+			
+			// aapt resource value: 0x7F0D015A
+			public const int Theme_MaterialComponents = 2131558746;
+			
+			// aapt resource value: 0x7F0D015B
+			public const int Theme_MaterialComponents_BottomSheetDialog = 2131558747;
+			
+			// aapt resource value: 0x7F0D015C
+			public const int Theme_MaterialComponents_Bridge = 2131558748;
+			
+			// aapt resource value: 0x7F0D015D
+			public const int Theme_MaterialComponents_CompactMenu = 2131558749;
+			
+			// aapt resource value: 0x7F0D015E
+			public const int Theme_MaterialComponents_Dialog = 2131558750;
+			
+			// aapt resource value: 0x7F0D0161
+			public const int Theme_MaterialComponents_DialogWhenLarge = 2131558753;
+			
+			// aapt resource value: 0x7F0D015F
+			public const int Theme_MaterialComponents_Dialog_Alert = 2131558751;
+			
+			// aapt resource value: 0x7F0D0160
+			public const int Theme_MaterialComponents_Dialog_MinWidth = 2131558752;
+			
+			// aapt resource value: 0x7F0D0162
+			public const int Theme_MaterialComponents_Light = 2131558754;
+			
+			// aapt resource value: 0x7F0D0163
+			public const int Theme_MaterialComponents_Light_BottomSheetDialog = 2131558755;
+			
+			// aapt resource value: 0x7F0D0164
+			public const int Theme_MaterialComponents_Light_Bridge = 2131558756;
+			
+			// aapt resource value: 0x7F0D0165
+			public const int Theme_MaterialComponents_Light_DarkActionBar = 2131558757;
+			
+			// aapt resource value: 0x7F0D0166
+			public const int Theme_MaterialComponents_Light_DarkActionBar_Bridge = 2131558758;
+			
+			// aapt resource value: 0x7F0D0167
+			public const int Theme_MaterialComponents_Light_Dialog = 2131558759;
+			
+			// aapt resource value: 0x7F0D016A
+			public const int Theme_MaterialComponents_Light_DialogWhenLarge = 2131558762;
+			
+			// aapt resource value: 0x7F0D0168
+			public const int Theme_MaterialComponents_Light_Dialog_Alert = 2131558760;
+			
+			// aapt resource value: 0x7F0D0169
+			public const int Theme_MaterialComponents_Light_Dialog_MinWidth = 2131558761;
+			
+			// aapt resource value: 0x7F0D016B
+			public const int Theme_MaterialComponents_Light_NoActionBar = 2131558763;
+			
+			// aapt resource value: 0x7F0D016C
+			public const int Theme_MaterialComponents_Light_NoActionBar_Bridge = 2131558764;
+			
+			// aapt resource value: 0x7F0D016D
+			public const int Theme_MaterialComponents_NoActionBar = 2131558765;
+			
+			// aapt resource value: 0x7F0D016E
+			public const int Theme_MaterialComponents_NoActionBar_Bridge = 2131558766;
+			
+			// aapt resource value: 0x7F0D016F
+			public const int Theme_MediaRouter = 2131558767;
+			
+			// aapt resource value: 0x7F0D0170
+			public const int Theme_MediaRouter_Light = 2131558768;
+			
+			// aapt resource value: 0x7F0D0172
+			public const int Theme_MediaRouter_LightControlPanel = 2131558770;
+			
+			// aapt resource value: 0x7F0D0171
+			public const int Theme_MediaRouter_Light_DarkControlPanel = 2131558769;
 			
 			// aapt resource value: 0x7F0D0188
-			public const int Widget_AppCompat_ActionBar_Solid = 2131558792;
+			public const int Widget_AppCompat_ActionBar = 2131558792;
 			
 			// aapt resource value: 0x7F0D0189
-			public const int Widget_AppCompat_ActionBar_TabBar = 2131558793;
+			public const int Widget_AppCompat_ActionBar_Solid = 2131558793;
 			
 			// aapt resource value: 0x7F0D018A
-			public const int Widget_AppCompat_ActionBar_TabText = 2131558794;
+			public const int Widget_AppCompat_ActionBar_TabBar = 2131558794;
 			
 			// aapt resource value: 0x7F0D018B
-			public const int Widget_AppCompat_ActionBar_TabView = 2131558795;
+			public const int Widget_AppCompat_ActionBar_TabText = 2131558795;
 			
 			// aapt resource value: 0x7F0D018C
-			public const int Widget_AppCompat_ActionButton = 2131558796;
+			public const int Widget_AppCompat_ActionBar_TabView = 2131558796;
 			
 			// aapt resource value: 0x7F0D018D
-			public const int Widget_AppCompat_ActionButton_CloseMode = 2131558797;
+			public const int Widget_AppCompat_ActionButton = 2131558797;
 			
 			// aapt resource value: 0x7F0D018E
-			public const int Widget_AppCompat_ActionButton_Overflow = 2131558798;
+			public const int Widget_AppCompat_ActionButton_CloseMode = 2131558798;
 			
 			// aapt resource value: 0x7F0D018F
-			public const int Widget_AppCompat_ActionMode = 2131558799;
+			public const int Widget_AppCompat_ActionButton_Overflow = 2131558799;
 			
 			// aapt resource value: 0x7F0D0190
-			public const int Widget_AppCompat_ActivityChooserView = 2131558800;
+			public const int Widget_AppCompat_ActionMode = 2131558800;
 			
 			// aapt resource value: 0x7F0D0191
-			public const int Widget_AppCompat_AutoCompleteTextView = 2131558801;
+			public const int Widget_AppCompat_ActivityChooserView = 2131558801;
 			
 			// aapt resource value: 0x7F0D0192
-			public const int Widget_AppCompat_Button = 2131558802;
-			
-			// aapt resource value: 0x7F0D0198
-			public const int Widget_AppCompat_ButtonBar = 2131558808;
-			
-			// aapt resource value: 0x7F0D0199
-			public const int Widget_AppCompat_ButtonBar_AlertDialog = 2131558809;
+			public const int Widget_AppCompat_AutoCompleteTextView = 2131558802;
 			
 			// aapt resource value: 0x7F0D0193
-			public const int Widget_AppCompat_Button_Borderless = 2131558803;
+			public const int Widget_AppCompat_Button = 2131558803;
 			
-			// aapt resource value: 0x7F0D0194
-			public const int Widget_AppCompat_Button_Borderless_Colored = 2131558804;
-			
-			// aapt resource value: 0x7F0D0195
-			public const int Widget_AppCompat_Button_ButtonBar_AlertDialog = 2131558805;
-			
-			// aapt resource value: 0x7F0D0196
-			public const int Widget_AppCompat_Button_Colored = 2131558806;
-			
-			// aapt resource value: 0x7F0D0197
-			public const int Widget_AppCompat_Button_Small = 2131558807;
+			// aapt resource value: 0x7F0D0199
+			public const int Widget_AppCompat_ButtonBar = 2131558809;
 			
 			// aapt resource value: 0x7F0D019A
-			public const int Widget_AppCompat_CompoundButton_CheckBox = 2131558810;
+			public const int Widget_AppCompat_ButtonBar_AlertDialog = 2131558810;
+			
+			// aapt resource value: 0x7F0D0194
+			public const int Widget_AppCompat_Button_Borderless = 2131558804;
+			
+			// aapt resource value: 0x7F0D0195
+			public const int Widget_AppCompat_Button_Borderless_Colored = 2131558805;
+			
+			// aapt resource value: 0x7F0D0196
+			public const int Widget_AppCompat_Button_ButtonBar_AlertDialog = 2131558806;
+			
+			// aapt resource value: 0x7F0D0197
+			public const int Widget_AppCompat_Button_Colored = 2131558807;
+			
+			// aapt resource value: 0x7F0D0198
+			public const int Widget_AppCompat_Button_Small = 2131558808;
 			
 			// aapt resource value: 0x7F0D019B
-			public const int Widget_AppCompat_CompoundButton_RadioButton = 2131558811;
+			public const int Widget_AppCompat_CompoundButton_CheckBox = 2131558811;
 			
 			// aapt resource value: 0x7F0D019C
-			public const int Widget_AppCompat_CompoundButton_Switch = 2131558812;
+			public const int Widget_AppCompat_CompoundButton_RadioButton = 2131558812;
 			
 			// aapt resource value: 0x7F0D019D
-			public const int Widget_AppCompat_DrawerArrowToggle = 2131558813;
+			public const int Widget_AppCompat_CompoundButton_Switch = 2131558813;
 			
 			// aapt resource value: 0x7F0D019E
-			public const int Widget_AppCompat_DropDownItem_Spinner = 2131558814;
+			public const int Widget_AppCompat_DrawerArrowToggle = 2131558814;
 			
 			// aapt resource value: 0x7F0D019F
-			public const int Widget_AppCompat_EditText = 2131558815;
+			public const int Widget_AppCompat_DropDownItem_Spinner = 2131558815;
 			
 			// aapt resource value: 0x7F0D01A0
-			public const int Widget_AppCompat_ImageButton = 2131558816;
+			public const int Widget_AppCompat_EditText = 2131558816;
 			
 			// aapt resource value: 0x7F0D01A1
-			public const int Widget_AppCompat_Light_ActionBar = 2131558817;
+			public const int Widget_AppCompat_ImageButton = 2131558817;
 			
 			// aapt resource value: 0x7F0D01A2
-			public const int Widget_AppCompat_Light_ActionBar_Solid = 2131558818;
+			public const int Widget_AppCompat_Light_ActionBar = 2131558818;
 			
 			// aapt resource value: 0x7F0D01A3
-			public const int Widget_AppCompat_Light_ActionBar_Solid_Inverse = 2131558819;
+			public const int Widget_AppCompat_Light_ActionBar_Solid = 2131558819;
 			
 			// aapt resource value: 0x7F0D01A4
-			public const int Widget_AppCompat_Light_ActionBar_TabBar = 2131558820;
+			public const int Widget_AppCompat_Light_ActionBar_Solid_Inverse = 2131558820;
 			
 			// aapt resource value: 0x7F0D01A5
-			public const int Widget_AppCompat_Light_ActionBar_TabBar_Inverse = 2131558821;
+			public const int Widget_AppCompat_Light_ActionBar_TabBar = 2131558821;
 			
 			// aapt resource value: 0x7F0D01A6
-			public const int Widget_AppCompat_Light_ActionBar_TabText = 2131558822;
+			public const int Widget_AppCompat_Light_ActionBar_TabBar_Inverse = 2131558822;
 			
 			// aapt resource value: 0x7F0D01A7
-			public const int Widget_AppCompat_Light_ActionBar_TabText_Inverse = 2131558823;
+			public const int Widget_AppCompat_Light_ActionBar_TabText = 2131558823;
 			
 			// aapt resource value: 0x7F0D01A8
-			public const int Widget_AppCompat_Light_ActionBar_TabView = 2131558824;
+			public const int Widget_AppCompat_Light_ActionBar_TabText_Inverse = 2131558824;
 			
 			// aapt resource value: 0x7F0D01A9
-			public const int Widget_AppCompat_Light_ActionBar_TabView_Inverse = 2131558825;
+			public const int Widget_AppCompat_Light_ActionBar_TabView = 2131558825;
 			
 			// aapt resource value: 0x7F0D01AA
-			public const int Widget_AppCompat_Light_ActionButton = 2131558826;
+			public const int Widget_AppCompat_Light_ActionBar_TabView_Inverse = 2131558826;
 			
 			// aapt resource value: 0x7F0D01AB
-			public const int Widget_AppCompat_Light_ActionButton_CloseMode = 2131558827;
+			public const int Widget_AppCompat_Light_ActionButton = 2131558827;
 			
 			// aapt resource value: 0x7F0D01AC
-			public const int Widget_AppCompat_Light_ActionButton_Overflow = 2131558828;
+			public const int Widget_AppCompat_Light_ActionButton_CloseMode = 2131558828;
 			
 			// aapt resource value: 0x7F0D01AD
-			public const int Widget_AppCompat_Light_ActionMode_Inverse = 2131558829;
+			public const int Widget_AppCompat_Light_ActionButton_Overflow = 2131558829;
 			
 			// aapt resource value: 0x7F0D01AE
-			public const int Widget_AppCompat_Light_ActivityChooserView = 2131558830;
+			public const int Widget_AppCompat_Light_ActionMode_Inverse = 2131558830;
 			
 			// aapt resource value: 0x7F0D01AF
-			public const int Widget_AppCompat_Light_AutoCompleteTextView = 2131558831;
+			public const int Widget_AppCompat_Light_ActivityChooserView = 2131558831;
 			
 			// aapt resource value: 0x7F0D01B0
-			public const int Widget_AppCompat_Light_DropDownItem_Spinner = 2131558832;
+			public const int Widget_AppCompat_Light_AutoCompleteTextView = 2131558832;
 			
 			// aapt resource value: 0x7F0D01B1
-			public const int Widget_AppCompat_Light_ListPopupWindow = 2131558833;
+			public const int Widget_AppCompat_Light_DropDownItem_Spinner = 2131558833;
 			
 			// aapt resource value: 0x7F0D01B2
-			public const int Widget_AppCompat_Light_ListView_DropDown = 2131558834;
+			public const int Widget_AppCompat_Light_ListPopupWindow = 2131558834;
 			
 			// aapt resource value: 0x7F0D01B3
-			public const int Widget_AppCompat_Light_PopupMenu = 2131558835;
+			public const int Widget_AppCompat_Light_ListView_DropDown = 2131558835;
 			
 			// aapt resource value: 0x7F0D01B4
-			public const int Widget_AppCompat_Light_PopupMenu_Overflow = 2131558836;
+			public const int Widget_AppCompat_Light_PopupMenu = 2131558836;
 			
 			// aapt resource value: 0x7F0D01B5
-			public const int Widget_AppCompat_Light_SearchView = 2131558837;
+			public const int Widget_AppCompat_Light_PopupMenu_Overflow = 2131558837;
 			
 			// aapt resource value: 0x7F0D01B6
-			public const int Widget_AppCompat_Light_Spinner_DropDown_ActionBar = 2131558838;
+			public const int Widget_AppCompat_Light_SearchView = 2131558838;
 			
 			// aapt resource value: 0x7F0D01B7
-			public const int Widget_AppCompat_ListMenuView = 2131558839;
+			public const int Widget_AppCompat_Light_Spinner_DropDown_ActionBar = 2131558839;
 			
 			// aapt resource value: 0x7F0D01B8
-			public const int Widget_AppCompat_ListPopupWindow = 2131558840;
+			public const int Widget_AppCompat_ListMenuView = 2131558840;
 			
 			// aapt resource value: 0x7F0D01B9
-			public const int Widget_AppCompat_ListView = 2131558841;
+			public const int Widget_AppCompat_ListPopupWindow = 2131558841;
 			
 			// aapt resource value: 0x7F0D01BA
-			public const int Widget_AppCompat_ListView_DropDown = 2131558842;
+			public const int Widget_AppCompat_ListView = 2131558842;
 			
 			// aapt resource value: 0x7F0D01BB
-			public const int Widget_AppCompat_ListView_Menu = 2131558843;
+			public const int Widget_AppCompat_ListView_DropDown = 2131558843;
 			
 			// aapt resource value: 0x7F0D01BC
-			public const int Widget_AppCompat_PopupMenu = 2131558844;
+			public const int Widget_AppCompat_ListView_Menu = 2131558844;
 			
 			// aapt resource value: 0x7F0D01BD
-			public const int Widget_AppCompat_PopupMenu_Overflow = 2131558845;
+			public const int Widget_AppCompat_PopupMenu = 2131558845;
 			
 			// aapt resource value: 0x7F0D01BE
-			public const int Widget_AppCompat_PopupWindow = 2131558846;
+			public const int Widget_AppCompat_PopupMenu_Overflow = 2131558846;
 			
 			// aapt resource value: 0x7F0D01BF
-			public const int Widget_AppCompat_ProgressBar = 2131558847;
+			public const int Widget_AppCompat_PopupWindow = 2131558847;
 			
 			// aapt resource value: 0x7F0D01C0
-			public const int Widget_AppCompat_ProgressBar_Horizontal = 2131558848;
+			public const int Widget_AppCompat_ProgressBar = 2131558848;
 			
 			// aapt resource value: 0x7F0D01C1
-			public const int Widget_AppCompat_RatingBar = 2131558849;
+			public const int Widget_AppCompat_ProgressBar_Horizontal = 2131558849;
 			
 			// aapt resource value: 0x7F0D01C2
-			public const int Widget_AppCompat_RatingBar_Indicator = 2131558850;
+			public const int Widget_AppCompat_RatingBar = 2131558850;
 			
 			// aapt resource value: 0x7F0D01C3
-			public const int Widget_AppCompat_RatingBar_Small = 2131558851;
+			public const int Widget_AppCompat_RatingBar_Indicator = 2131558851;
 			
 			// aapt resource value: 0x7F0D01C4
-			public const int Widget_AppCompat_SearchView = 2131558852;
+			public const int Widget_AppCompat_RatingBar_Small = 2131558852;
 			
 			// aapt resource value: 0x7F0D01C5
-			public const int Widget_AppCompat_SearchView_ActionBar = 2131558853;
+			public const int Widget_AppCompat_SearchView = 2131558853;
 			
 			// aapt resource value: 0x7F0D01C6
-			public const int Widget_AppCompat_SeekBar = 2131558854;
+			public const int Widget_AppCompat_SearchView_ActionBar = 2131558854;
 			
 			// aapt resource value: 0x7F0D01C7
-			public const int Widget_AppCompat_SeekBar_Discrete = 2131558855;
+			public const int Widget_AppCompat_SeekBar = 2131558855;
 			
 			// aapt resource value: 0x7F0D01C8
-			public const int Widget_AppCompat_Spinner = 2131558856;
+			public const int Widget_AppCompat_SeekBar_Discrete = 2131558856;
 			
 			// aapt resource value: 0x7F0D01C9
-			public const int Widget_AppCompat_Spinner_DropDown = 2131558857;
+			public const int Widget_AppCompat_Spinner = 2131558857;
 			
 			// aapt resource value: 0x7F0D01CA
-			public const int Widget_AppCompat_Spinner_DropDown_ActionBar = 2131558858;
+			public const int Widget_AppCompat_Spinner_DropDown = 2131558858;
 			
 			// aapt resource value: 0x7F0D01CB
-			public const int Widget_AppCompat_Spinner_Underlined = 2131558859;
+			public const int Widget_AppCompat_Spinner_DropDown_ActionBar = 2131558859;
 			
 			// aapt resource value: 0x7F0D01CC
-			public const int Widget_AppCompat_TextView_SpinnerItem = 2131558860;
+			public const int Widget_AppCompat_Spinner_Underlined = 2131558860;
 			
 			// aapt resource value: 0x7F0D01CD
-			public const int Widget_AppCompat_Toolbar = 2131558861;
+			public const int Widget_AppCompat_TextView_SpinnerItem = 2131558861;
 			
 			// aapt resource value: 0x7F0D01CE
-			public const int Widget_AppCompat_Toolbar_Button_Navigation = 2131558862;
+			public const int Widget_AppCompat_Toolbar = 2131558862;
 			
 			// aapt resource value: 0x7F0D01CF
-			public const int Widget_Compat_NotificationActionContainer = 2131558863;
+			public const int Widget_AppCompat_Toolbar_Button_Navigation = 2131558863;
 			
 			// aapt resource value: 0x7F0D01D0
-			public const int Widget_Compat_NotificationActionText = 2131558864;
+			public const int Widget_Compat_NotificationActionContainer = 2131558864;
 			
 			// aapt resource value: 0x7F0D01D1
-			public const int Widget_Design_AppBarLayout = 2131558865;
+			public const int Widget_Compat_NotificationActionText = 2131558865;
 			
 			// aapt resource value: 0x7F0D01D2
-			public const int Widget_Design_BottomNavigationView = 2131558866;
+			public const int Widget_Design_AppBarLayout = 2131558866;
 			
 			// aapt resource value: 0x7F0D01D3
-			public const int Widget_Design_BottomSheet_Modal = 2131558867;
+			public const int Widget_Design_BottomNavigationView = 2131558867;
 			
 			// aapt resource value: 0x7F0D01D4
-			public const int Widget_Design_CollapsingToolbar = 2131558868;
+			public const int Widget_Design_BottomSheet_Modal = 2131558868;
 			
 			// aapt resource value: 0x7F0D01D5
-			public const int Widget_Design_FloatingActionButton = 2131558869;
+			public const int Widget_Design_CollapsingToolbar = 2131558869;
 			
 			// aapt resource value: 0x7F0D01D6
-			public const int Widget_Design_NavigationView = 2131558870;
+			public const int Widget_Design_FloatingActionButton = 2131558870;
 			
 			// aapt resource value: 0x7F0D01D7
-			public const int Widget_Design_ScrimInsetsFrameLayout = 2131558871;
+			public const int Widget_Design_NavigationView = 2131558871;
 			
 			// aapt resource value: 0x7F0D01D8
-			public const int Widget_Design_Snackbar = 2131558872;
+			public const int Widget_Design_ScrimInsetsFrameLayout = 2131558872;
 			
 			// aapt resource value: 0x7F0D01D9
-			public const int Widget_Design_TabLayout = 2131558873;
+			public const int Widget_Design_Snackbar = 2131558873;
 			
 			// aapt resource value: 0x7F0D01DA
-			public const int Widget_Design_TextInputLayout = 2131558874;
+			public const int Widget_Design_TabLayout = 2131558874;
 			
 			// aapt resource value: 0x7F0D01DB
-			public const int Widget_MaterialComponents_BottomAppBar = 2131558875;
+			public const int Widget_Design_TextInputLayout = 2131558875;
 			
 			// aapt resource value: 0x7F0D01DC
-			public const int Widget_MaterialComponents_BottomAppBar_Colored = 2131558876;
+			public const int Widget_MaterialComponents_BottomAppBar = 2131558876;
 			
 			// aapt resource value: 0x7F0D01DD
-			public const int Widget_MaterialComponents_BottomNavigationView = 2131558877;
+			public const int Widget_MaterialComponents_BottomAppBar_Colored = 2131558877;
 			
 			// aapt resource value: 0x7F0D01DE
-			public const int Widget_MaterialComponents_BottomNavigationView_Colored = 2131558878;
+			public const int Widget_MaterialComponents_BottomNavigationView = 2131558878;
 			
 			// aapt resource value: 0x7F0D01DF
-			public const int Widget_MaterialComponents_BottomSheet_Modal = 2131558879;
+			public const int Widget_MaterialComponents_BottomNavigationView_Colored = 2131558879;
 			
 			// aapt resource value: 0x7F0D01E0
-			public const int Widget_MaterialComponents_Button = 2131558880;
+			public const int Widget_MaterialComponents_BottomSheet_Modal = 2131558880;
 			
 			// aapt resource value: 0x7F0D01E1
-			public const int Widget_MaterialComponents_Button_Icon = 2131558881;
+			public const int Widget_MaterialComponents_Button = 2131558881;
 			
 			// aapt resource value: 0x7F0D01E2
-			public const int Widget_MaterialComponents_Button_OutlinedButton = 2131558882;
+			public const int Widget_MaterialComponents_Button_Icon = 2131558882;
 			
 			// aapt resource value: 0x7F0D01E3
-			public const int Widget_MaterialComponents_Button_OutlinedButton_Icon = 2131558883;
+			public const int Widget_MaterialComponents_Button_OutlinedButton = 2131558883;
 			
 			// aapt resource value: 0x7F0D01E4
-			public const int Widget_MaterialComponents_Button_TextButton = 2131558884;
+			public const int Widget_MaterialComponents_Button_OutlinedButton_Icon = 2131558884;
 			
 			// aapt resource value: 0x7F0D01E5
-			public const int Widget_MaterialComponents_Button_TextButton_Dialog = 2131558885;
+			public const int Widget_MaterialComponents_Button_TextButton = 2131558885;
 			
 			// aapt resource value: 0x7F0D01E6
-			public const int Widget_MaterialComponents_Button_TextButton_Dialog_Icon = 2131558886;
+			public const int Widget_MaterialComponents_Button_TextButton_Dialog = 2131558886;
 			
 			// aapt resource value: 0x7F0D01E7
-			public const int Widget_MaterialComponents_Button_TextButton_Icon = 2131558887;
+			public const int Widget_MaterialComponents_Button_TextButton_Dialog_Icon = 2131558887;
 			
 			// aapt resource value: 0x7F0D01E8
-			public const int Widget_MaterialComponents_Button_UnelevatedButton = 2131558888;
+			public const int Widget_MaterialComponents_Button_TextButton_Icon = 2131558888;
 			
 			// aapt resource value: 0x7F0D01E9
-			public const int Widget_MaterialComponents_Button_UnelevatedButton_Icon = 2131558889;
+			public const int Widget_MaterialComponents_Button_UnelevatedButton = 2131558889;
 			
 			// aapt resource value: 0x7F0D01EA
-			public const int Widget_MaterialComponents_CardView = 2131558890;
-			
-			// aapt resource value: 0x7F0D01EF
-			public const int Widget_MaterialComponents_ChipGroup = 2131558895;
+			public const int Widget_MaterialComponents_Button_UnelevatedButton_Icon = 2131558890;
 			
 			// aapt resource value: 0x7F0D01EB
-			public const int Widget_MaterialComponents_Chip_Action = 2131558891;
-			
-			// aapt resource value: 0x7F0D01EC
-			public const int Widget_MaterialComponents_Chip_Choice = 2131558892;
-			
-			// aapt resource value: 0x7F0D01ED
-			public const int Widget_MaterialComponents_Chip_Entry = 2131558893;
-			
-			// aapt resource value: 0x7F0D01EE
-			public const int Widget_MaterialComponents_Chip_Filter = 2131558894;
+			public const int Widget_MaterialComponents_CardView = 2131558891;
 			
 			// aapt resource value: 0x7F0D01F0
-			public const int Widget_MaterialComponents_FloatingActionButton = 2131558896;
+			public const int Widget_MaterialComponents_ChipGroup = 2131558896;
+			
+			// aapt resource value: 0x7F0D01EC
+			public const int Widget_MaterialComponents_Chip_Action = 2131558892;
+			
+			// aapt resource value: 0x7F0D01ED
+			public const int Widget_MaterialComponents_Chip_Choice = 2131558893;
+			
+			// aapt resource value: 0x7F0D01EE
+			public const int Widget_MaterialComponents_Chip_Entry = 2131558894;
+			
+			// aapt resource value: 0x7F0D01EF
+			public const int Widget_MaterialComponents_Chip_Filter = 2131558895;
 			
 			// aapt resource value: 0x7F0D01F1
-			public const int Widget_MaterialComponents_NavigationView = 2131558897;
+			public const int Widget_MaterialComponents_FloatingActionButton = 2131558897;
 			
 			// aapt resource value: 0x7F0D01F2
-			public const int Widget_MaterialComponents_Snackbar = 2131558898;
+			public const int Widget_MaterialComponents_NavigationView = 2131558898;
 			
 			// aapt resource value: 0x7F0D01F3
-			public const int Widget_MaterialComponents_Snackbar_FullWidth = 2131558899;
+			public const int Widget_MaterialComponents_Snackbar = 2131558899;
 			
 			// aapt resource value: 0x7F0D01F4
-			public const int Widget_MaterialComponents_TabLayout = 2131558900;
+			public const int Widget_MaterialComponents_Snackbar_FullWidth = 2131558900;
 			
 			// aapt resource value: 0x7F0D01F5
-			public const int Widget_MaterialComponents_TabLayout_Colored = 2131558901;
+			public const int Widget_MaterialComponents_TabLayout = 2131558901;
 			
 			// aapt resource value: 0x7F0D01F6
-			public const int Widget_MaterialComponents_TextInputEditText_FilledBox = 2131558902;
+			public const int Widget_MaterialComponents_TabLayout_Colored = 2131558902;
 			
 			// aapt resource value: 0x7F0D01F7
-			public const int Widget_MaterialComponents_TextInputEditText_FilledBox_Dense = 2131558903;
+			public const int Widget_MaterialComponents_TextInputEditText_FilledBox = 2131558903;
 			
 			// aapt resource value: 0x7F0D01F8
-			public const int Widget_MaterialComponents_TextInputEditText_OutlinedBox = 2131558904;
+			public const int Widget_MaterialComponents_TextInputEditText_FilledBox_Dense = 2131558904;
 			
 			// aapt resource value: 0x7F0D01F9
-			public const int Widget_MaterialComponents_TextInputEditText_OutlinedBox_Dense = 2131558905;
+			public const int Widget_MaterialComponents_TextInputEditText_OutlinedBox = 2131558905;
 			
 			// aapt resource value: 0x7F0D01FA
-			public const int Widget_MaterialComponents_TextInputLayout_FilledBox = 2131558906;
+			public const int Widget_MaterialComponents_TextInputEditText_OutlinedBox_Dense = 2131558906;
 			
 			// aapt resource value: 0x7F0D01FB
-			public const int Widget_MaterialComponents_TextInputLayout_FilledBox_Dense = 2131558907;
+			public const int Widget_MaterialComponents_TextInputLayout_FilledBox = 2131558907;
 			
 			// aapt resource value: 0x7F0D01FC
-			public const int Widget_MaterialComponents_TextInputLayout_OutlinedBox = 2131558908;
+			public const int Widget_MaterialComponents_TextInputLayout_FilledBox_Dense = 2131558908;
 			
 			// aapt resource value: 0x7F0D01FD
-			public const int Widget_MaterialComponents_TextInputLayout_OutlinedBox_Dense = 2131558909;
+			public const int Widget_MaterialComponents_TextInputLayout_OutlinedBox = 2131558909;
 			
 			// aapt resource value: 0x7F0D01FE
-			public const int Widget_MaterialComponents_Toolbar = 2131558910;
+			public const int Widget_MaterialComponents_TextInputLayout_OutlinedBox_Dense = 2131558910;
 			
 			// aapt resource value: 0x7F0D01FF
-			public const int Widget_MediaRouter_Light_MediaRouteButton = 2131558911;
+			public const int Widget_MaterialComponents_Toolbar = 2131558911;
 			
 			// aapt resource value: 0x7F0D0200
-			public const int Widget_MediaRouter_MediaRouteButton = 2131558912;
+			public const int Widget_MediaRouter_Light_MediaRouteButton = 2131558912;
 			
 			// aapt resource value: 0x7F0D0201
-			public const int Widget_Support_CoordinatorLayout = 2131558913;
+			public const int Widget_MediaRouter_MediaRouteButton = 2131558913;
+			
+			// aapt resource value: 0x7F0D0202
+			public const int Widget_Support_CoordinatorLayout = 2131558914;
 			
 			static Style()
 			{

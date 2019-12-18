@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\build\Xamarin.Forms.props" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\build\Xamarin.Forms.props')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\build\Xamarin.Forms.props" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\build\Xamarin.Forms.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -98,19 +98,19 @@
       <HintPath>..\PanCardViewSample\packages\Xamarin.Android.Support.Vector.Drawable.28.0.0.3\lib\monoandroid90\Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
     </Reference>
     <Reference Include="FormsViewGroup">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\lib\MonoAndroid90\FormsViewGroup.dll</HintPath>
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\lib\MonoAndroid90\FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\lib\MonoAndroid90\Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\lib\MonoAndroid90\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform.Android">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\lib\MonoAndroid90\Xamarin.Forms.Platform.Android.dll</HintPath>
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\lib\MonoAndroid90\Xamarin.Forms.Platform.Android.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\lib\MonoAndroid90\Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\lib\MonoAndroid90\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\lib\MonoAndroid90\Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\lib\MonoAndroid90\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Java.Interop" />
     <Reference Include="Xamarin.Android.Arch.Core.Runtime">
@@ -244,5 +244,5 @@
   <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v7.RecyclerView.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.RecyclerView.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v7.RecyclerView.targets')" />
   <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.Design.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.Design.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.Design.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.Design.targets')" />
   <Import Project="..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Android.Support.v7.MediaRouter.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v7.MediaRouter.targets')" />
-  <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\build\Xamarin.Forms.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.4.2.0.848062\build\Xamarin.Forms.targets')" />
+  <Import Project="..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\build\Xamarin.Forms.targets" Condition="Exists('..\PanCardViewSample\packages\Xamarin.Forms.4.4.0.991265\build\Xamarin.Forms.targets')" />
 </Project>
