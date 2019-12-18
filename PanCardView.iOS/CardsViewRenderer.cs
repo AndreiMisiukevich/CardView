@@ -50,8 +50,8 @@ namespace PanCardView.iOS
             if (gestureRecognizer is UIPanGestureRecognizer panGestureRecognizer)
             {
                 gestureRecognizer.ShouldBeRequiredToFailBy = ShouldBeRequiredToFailBy;
+                gestureRecognizer.ShouldRecognizeSimultaneously = ShouldRecognizeSimultaneously;
             }
-            gestureRecognizer.ShouldRecognizeSimultaneously = ShouldRecognizeSimultaneously;
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
