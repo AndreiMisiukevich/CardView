@@ -7,6 +7,7 @@ using Xamarin.Forms.Platform.iOS;
 using PanCardView.Enums;
 using System.ComponentModel;
 using static System.Math;
+using System;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.iOS
@@ -122,10 +123,21 @@ namespace PanCardView.iOS
         }
 
         private bool ShouldBeRequiredToFailBy(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-            => gestureRecognizer is UIPanGestureRecognizer && IsPanGestureHandled() && otherGestureRecognizer.View != this;
+            => IsPanGestureHandled() && otherGestureRecognizer.View != this;
 
         private bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-            => !(otherGestureRecognizer is UIPanGestureRecognizer) && !IsPanGestureHandled();
+        {
+            var parent = Element?.Parent;
+            while(parent != null)
+            {
+                if(parent is MasterDetailPage)
+                {
+                    return false;
+                }
+                parent = parent.Parent;
+            }
+            return !IsPanGestureHandled();
+        }
 
         private bool IsPanGestureHandled()
             => Abs(Element?.CurrentDiff ?? 0) >= Element?.MoveThresholdDistance;
