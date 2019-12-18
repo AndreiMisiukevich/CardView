@@ -60,6 +60,8 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(IndicatorsControl), true);
 
+        public static readonly BindableProperty IsTapToNavigateEnabledProperty = BindableProperty.Create(nameof(IsTapToNavigateEnabled), typeof(bool), typeof(IndicatorsControl), true);
+
         public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(IndicatorsControl), 0);
 
         static IndicatorsControl()
@@ -149,6 +151,12 @@ namespace PanCardView.Controls
         {
             get => (bool)GetValue(UseParentAsBindingContextProperty);
             set => SetValue(UseParentAsBindingContextProperty, value);
+        }
+
+        public bool IsTapToNavigateEnabled
+        {
+            get => (bool)GetValue(IsTapToNavigateEnabledProperty);
+            set => SetValue(IsTapToNavigateEnabledProperty, value);
         }
 
         public int ToFadeDuration
@@ -323,6 +331,10 @@ namespace PanCardView.Controls
                         CommandParameter = item,
                         Command = new Command(p =>
                         {
+                            if (!IsTapToNavigateEnabled)
+                            {
+                                return;
+                            }
                             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWayToSource);
                             SelectedIndex = ItemsSource.FindIndex(p);
                             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
