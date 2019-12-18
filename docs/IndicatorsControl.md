@@ -32,5 +32,6 @@ MaximumVisibleIndicatorsCount | `int` | int.MaxValue | Maximum allowed count of 
 ItemsSource | `IList` | null | Binding contexts for each of the indicators, can be used to bind in the `ItemTemplate`
 ItemTemplate | `DataTemplate` | [IndicatorItemView](IndicatorItemView.md) | The data template used for each of the indicators.
 UseParentAsBindingContext | `bool` | true | Set the `BindingContext` of this control to the parent.
+IsTapToNavigateEnabled | `bool` | true | Determines if the user may tap to indicator item to navigate through the view.
 ToFadeDuration | `int` | 0 | The duration in milliseconds beforethe indicator control will fade out so it is not visible.
 
