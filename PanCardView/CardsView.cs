@@ -106,7 +106,7 @@ namespace PanCardView
 
         public static readonly BindableProperty IsViewReusingEnabledProperty = BindableProperty.Create(nameof(IsViewReusingEnabled), typeof(bool), typeof(CardsView), true);
 
-        public static readonly BindableProperty UserInteractionDelayProperty = BindableProperty.Create(nameof(UserInteractionDelay), typeof(int), typeof(CardsView), 200);
+        public static readonly BindableProperty UserInteractionDelayProperty = BindableProperty.Create(nameof(UserInteractionDelay), typeof(int), typeof(CardsView), 0);
 
         public static readonly BindableProperty IsUserInteractionInCourseProperty = BindableProperty.Create(nameof(IsUserInteractionInCourse), typeof(bool), typeof(CardsView), true);
 
@@ -183,13 +183,13 @@ namespace PanCardView
         private AnimationDirection _currentBackAnimationDirection;
 
         private int _viewsChildrenCount;
-        private int _inCoursePanDelay;
-        private bool _isPanEndRequested = true;
+        private bool _isPanStarted;
         private bool _shouldSkipTouch;
         private bool _isViewInited;
         private bool _hasRenderer;
         private Size _parentSize;
         private DateTime _lastPanTime;
+        private Task _animationTask;
         private CancellationTokenSource _slideShowTokenSource;
 
         public CardsView() : this(new BaseCardFrontViewProcessor(), new BaseCardBackViewProcessor())
@@ -206,10 +206,6 @@ namespace PanCardView
         private bool ShouldIgnoreSetCurrentView { get; set; }
 
         private bool ShouldSetIndexAfterPan { get; set; }
-
-        private int RealUserInteractionDelay => IsUserInteractionInCourse
-            ? _inCoursePanDelay
-            : UserInteractionDelay;
 
         internal double RealMoveDistance
         {
@@ -583,7 +579,7 @@ namespace PanCardView
         public async void OnSwiped(ItemSwipeDirection swipeDirection)
         {
             await Task.Delay(1);
-            if (!IsUserInteractionEnabled || !_isPanEndRequested || !CheckInteractionDelay())
+            if (!IsUserInteractionEnabled || _isPanStarted || !CheckInteractionDelay())
             {
                 return;
             }
@@ -817,7 +813,7 @@ namespace PanCardView
                 BackViewProcessor.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews),
                 FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
 
-            await autoNavigationTask;
+            await (_animationTask = autoNavigationTask);
 
             EndAutoNavigation(views, animationId, animationDirection);
 
@@ -996,10 +992,6 @@ namespace PanCardView
             {
                 _interactions.Add(animationId, InteractionType.Auto, InteractionState.Removing);
                 IsAutoInteractionRunning = true;
-                if (IsUserInteractionInCourse)
-                {
-                    _inCoursePanDelay = int.MaxValue;
-                }
                 lock (_viewsInUseLocker)
                 {
                     _viewsInUseSet.AddRange(views);
@@ -1013,7 +1005,6 @@ namespace PanCardView
         {
             var isProcessingNow = !_interactions.CheckLastId(animationId);
 
-            _inCoursePanDelay = 0;
             if (views != null)
             {
                 lock (_viewsInUseLocker)
@@ -1070,7 +1061,7 @@ namespace PanCardView
 
         private void OnTouchStarted()
         {
-            if (!_isPanEndRequested)
+            if (_isPanStarted)
             {
                 return;
             }
@@ -1082,11 +1073,6 @@ namespace PanCardView
             }
             _shouldSkipTouch = false;
 
-            if (IsUserInteractionInCourse)
-            {
-                _inCoursePanDelay = int.MaxValue;
-            }
-
             var gestureId = Guid.NewGuid();
             _interactions.Add(gestureId, InteractionType.User);
 
@@ -1095,7 +1081,7 @@ namespace PanCardView
             {
                 IsUserInteractionRunning = true;
             }
-            _isPanEndRequested = false;
+            _isPanStarted = true;
 
             SetupBackViews();
             AddRangeViewsInUse(gestureId);
@@ -1136,7 +1122,7 @@ namespace PanCardView
 
         private async void OnTouchEnded()
         {
-            if (_isPanEndRequested || _shouldSkipTouch)
+            if (!_isPanStarted || _shouldSkipTouch)
             {
                 return;
             }
@@ -1155,7 +1141,7 @@ namespace PanCardView
 
             var gestureId = interactionItem.Id;
 
-            _isPanEndRequested = true;
+            _isPanStarted = false;
             var absDiff = Abs(CurrentDiff);
 
             var oldIndex = SelectedIndex;
@@ -1217,7 +1203,7 @@ namespace PanCardView
             }
 
             CurrentDiff = 0;
-            await endingTask;
+            await (_animationTask = endingTask);
 
             FireUserInteracted(UserInteractionStatus.Ended, diff, oldIndex);
             if (isNextSelected.HasValue)
@@ -1240,13 +1226,15 @@ namespace PanCardView
 
             RemoveRedundantChildren(isProcessingNow);
 
-            _inCoursePanDelay = 0;
-
             _interactions.Remove(gestureId);
         }
 
         private bool CheckInteractionDelay()
-            => IsUserInteractionEnabled && Abs((DateTime.UtcNow - _lastPanTime).TotalMilliseconds) >= RealUserInteractionDelay && CurrentView != null;
+            =>
+            CurrentView != null &&
+            IsUserInteractionEnabled &&
+            Abs((DateTime.UtcNow - _lastPanTime).TotalMilliseconds) >= UserInteractionDelay &&
+            (!IsUserInteractionInCourse || (_animationTask?.IsCompleted ?? true));
 
         private bool? CheckPanSwipe()
         {
