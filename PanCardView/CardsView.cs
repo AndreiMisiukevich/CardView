@@ -164,7 +164,7 @@ namespace PanCardView
             remove => _viewsInUseSet.CollectionChanged -= value;
         }
 
-        private readonly object _childLocker = new object();
+        private readonly object _childrenLocker = new object();
         private readonly object _viewsInUseLocker = new object();
         private readonly object _setCurrentViewLocker = new object();
         private readonly object _sizeChangedLocker = new object();
@@ -1564,33 +1564,33 @@ namespace PanCardView
 
         private void SendChildToBackIfNeeded(View view, View topView)
         {
-            lock (_childLocker)
+            if (view == null || topView == null)
             {
-                if (view == null || topView == null)
-                {
-                    return;
-                }
+                return;
+            }
 
-                var currentIndex = Children.IndexOf(topView);
-                var backIndex = Children.IndexOf(view);
+            var currentIndex = Children.IndexOf(topView);
+            var backIndex = Children.IndexOf(view);
 
-                if (currentIndex < backIndex)
-                {
-                    ExecutePreventInvalidOperationException(() => LowerChild(view));
-                }
+            if (currentIndex < backIndex)
+            {
+                ExecutePreventInvalidOperationException(() => LowerChild(view));
             }
         }
 
         private void CleanUnprocessingChildren()
         {
-            lock (_childLocker)
+            InvokeOnMainThreadIfNeeded(() =>
             {
-                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c)).ToArray();
-                foreach (var view in views)
+                lock (_childrenLocker)
                 {
-                    CleanView(view);
+                    var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c)).ToArray();
+                    foreach (var view in views)
+                    {
+                        CleanView(view);
+                    }
                 }
-            }
+            });
         }
 
         private void CleanView(View view)
@@ -1666,29 +1666,32 @@ namespace PanCardView
 
         private void AddChildren(View topView = null, params View[] views)
         {
-            lock (_childLocker)
+            InvokeOnMainThreadIfNeeded(() =>
             {
-                foreach (var view in views)
+                lock (_childrenLocker)
                 {
-                    if (view == null)
+                    foreach (var view in views)
                     {
-                        continue;
+                        if (view == null)
+                        {
+                            continue;
+                        }
+
+                        if (Children.Contains(view))
+                        {
+                            SendChildToBackIfNeeded(view, topView);
+                            continue;
+                        }
+
+                        ++_viewsChildrenCount;
+                        var index = topView != null
+                            ? Children.IndexOf(topView)
+                            : 0;
+
+                        ExecutePreventInvalidOperationException(() => Children.Insert(index, view));
                     }
-
-                    if (Children.Contains(view))
-                    {
-                        SendChildToBackIfNeeded(view, topView);
-                        continue;
-                    }
-
-                    ++_viewsChildrenCount;
-                    var index = topView != null
-                        ? Children.IndexOf(topView)
-                        : 0;
-
-                    ExecutePreventInvalidOperationException(() => Children.Insert(index, view));
                 }
-            }
+            });
         }
 
         private void RemoveRedundantChildren(bool isProcessingNow)
@@ -1697,29 +1700,35 @@ namespace PanCardView
                 ? MaxChildrenCount
                 : DesiredMaxChildrenCount;
 
-            if (_viewsChildrenCount <= maxChildrenCount)
+            InvokeOnMainThreadIfNeeded(() =>
             {
-                return;
-            }
-
-            lock (_childLocker)
-            {
-                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUseSet.Contains(c));
-                if(IsViewReusingEnabled)
+                lock (_childrenLocker)
                 {
-                    views = views.Take(_viewsChildrenCount - DesiredMaxChildrenCount);
+                    if (_viewsChildrenCount <= maxChildrenCount)
+                    {
+                        return;
+                    }
+
+                    var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c) && !_viewsInUseSet.Contains(c));
+                    if (IsViewReusingEnabled)
+                    {
+                        views = views.Take(_viewsChildrenCount - DesiredMaxChildrenCount);
+                    }
+                    RemoveChildren(views.ToArray());
                 }
-                RemoveChildren(views.ToArray());
-            }
+            });
         }
 
         private void RemoveUnprocessingChildren()
         {
-            lock (_childLocker)
+            InvokeOnMainThreadIfNeeded(() =>
             {
-                var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c)).ToArray();
-                RemoveChildren(views);
-            }
+                lock (_childrenLocker)
+                {
+                    var views = Children.Where(c => !CheckIsProtectedView(c) && !CheckIsProcessingView(c)).ToArray();
+                    RemoveChildren(views);
+                }
+            });
         }
 
         private void RemoveChildren(View[] views)
@@ -1737,7 +1746,17 @@ namespace PanCardView
             }
         }
 
-        private void ExecutePreventInvalidOperationException(Action action, int restartCount = 0)
+        private void InvokeOnMainThreadIfNeeded(Action action)
+        {
+            if(Device.IsInvokeRequired)
+            {
+                Device.BeginInvokeOnMainThread(action);
+                return;
+            }
+            action?.Invoke();
+        }
+
+        private void ExecutePreventInvalidOperationException(Action action)
         {
             try
             {
@@ -1753,11 +1772,6 @@ namespace PanCardView
                     }
                     catch (InvalidOperationException)
                     {
-                        if (restartCount <= 0)
-                        {
-                            ExecutePreventInvalidOperationException(action, ++restartCount);
-                            return;
-                        }
 #if NETSTANDARD2_0
                         Console.WriteLine("CardsView: Couldn't handle InvalidOperationException");
 #endif
