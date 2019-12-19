@@ -132,6 +132,8 @@ namespace PanCardView
 
         public static readonly BindableProperty IsVerticalSwipeEnabledProperty = BindableProperty.Create(nameof(IsVerticalSwipeEnabled), typeof(bool), typeof(CardsView), true);
 
+        public static readonly BindableProperty OppositePanDirectionDisablingThresholdProperty = BindableProperty.Create(nameof(OppositePanDirectionDisablingThreshold), typeof(double), typeof(CardsView), double.PositiveInfinity);
+
         public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
 
         public static readonly BindableProperty UserInteractedCommandProperty = BindableProperty.Create(nameof(UserInteractedCommand), typeof(ICommand), typeof(CardsView), null);
@@ -185,6 +187,7 @@ namespace PanCardView
         private int _viewsChildrenCount;
         private bool _isPanStarted;
         private bool _shouldSkipTouch;
+        private bool _isOppositePanDirectionIssueResolved;
         private bool _isViewInited;
         private bool _hasRenderer;
         private Size _parentSize;
@@ -486,6 +489,12 @@ namespace PanCardView
             set => SetValue(IsVerticalSwipeEnabledProperty, value);
         }
 
+        public double OppositePanDirectionDisablingThreshold
+        {
+            get => (double)GetValue(OppositePanDirectionDisablingThresholdProperty);
+            set => SetValue(OppositePanDirectionDisablingThresholdProperty, value);
+        }
+
         public TimeSpan SwipeThresholdTime
         {
             get => (TimeSpan)GetValue(SwipeThresholdTimeProperty);
@@ -555,20 +564,27 @@ namespace PanCardView
                 return;
             }
 
-            var totalValue = IsHorizontalOrientation ? e.TotalX : e.TotalY;
+            var diff = e.TotalX;
+            var oppositeDirectionDiff = e.TotalY;
+            if(!IsHorizontalOrientation)
+            {
+                var tempDiff = diff;
+                diff = oppositeDirectionDiff;
+                oppositeDirectionDiff = tempDiff;
+            }
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
                     OnTouchStarted();
                     return;
                 case GestureStatus.Running:
-                    OnTouchChanged(totalValue);
+                    OnTouchChanged(diff, oppositeDirectionDiff);
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform == Device.Android)
                     {
-                        OnTouchChanged(totalValue);
+                        OnTouchChanged(diff, oppositeDirectionDiff);
                     }
                     OnTouchEnded();
                     return;
@@ -1068,10 +1084,9 @@ namespace PanCardView
 
             if (!CheckInteractionDelay())
             {
-                _shouldSkipTouch = true;
                 return;
             }
-            _shouldSkipTouch = false;
+            _isOppositePanDirectionIssueResolved = false;
 
             var gestureId = Guid.NewGuid();
             _interactions.Add(gestureId, InteractionType.User);
@@ -1093,11 +1108,24 @@ namespace PanCardView
             });
         }
 
-        private void OnTouchChanged(double diff)
+        private void OnTouchChanged(double diff, double oppositeDirectionDiff)
         {
-            if (_shouldSkipTouch || Abs(CurrentDiff - diff) <= double.Epsilon)
+            if (!_isPanStarted || Abs(CurrentDiff - diff) <= double.Epsilon)
             {
                 return;
+            }
+
+            var absDiff = Abs(diff);
+            var absOppositeDirectionDiff = Abs(oppositeDirectionDiff);
+            if (!_isOppositePanDirectionIssueResolved && Max(absDiff, absOppositeDirectionDiff) > OppositePanDirectionDisablingThreshold)
+            {
+                absOppositeDirectionDiff *= 2.5;
+                if (absOppositeDirectionDiff >= absDiff)
+                {
+                    diff = 0;
+                    _isPanStarted = false;
+                }
+                _isOppositePanDirectionIssueResolved = true;
             }
 
             var interactionItem = _interactions.GetFirstItem(InteractionType.User, InteractionState.Regular);
@@ -1122,7 +1150,7 @@ namespace PanCardView
 
         private async void OnTouchEnded()
         {
-            if (!_isPanStarted || _shouldSkipTouch)
+            if (!_isPanStarted)
             {
                 return;
             }
