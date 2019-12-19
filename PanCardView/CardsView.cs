@@ -186,7 +186,6 @@ namespace PanCardView
 
         private int _viewsChildrenCount;
         private bool _isPanStarted;
-        private bool _shouldSkipTouch;
         private bool _isOppositePanDirectionIssueResolved;
         private bool _isViewInited;
         private bool _hasRenderer;
