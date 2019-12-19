@@ -16,6 +16,7 @@ namespace PanCardViewSample.Views
 
 			var carousel = new CardCarouselView
             {
+                OppositePanDirectionDisablingThreshold = 1,
 				ItemTemplate = new ListTemplateSelector()
 			};
 

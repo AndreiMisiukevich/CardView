@@ -30,6 +30,7 @@ IsPanSwipeEnabled | `bool` | true | Set to allow the control to detec swipes fro
 VerticalSwipeThresholdDistance | `double` | 30.0 | **Only used in Android** Determines distance for recognizing movement as vertical swipe.
 ShouldThrottlePanInteraction | `bool` | false | **Only used in Android** Set to allow throttling pan gesture interaction.
 IsVerticalSwipeEnabled | `bool` | true | **Only used in Android and iOS** Determines if vertical swipes are enabled.
+OppositePanDirectionDisablingThreshold | `double` | double.PositiveInfinity | Determines distance for recognizing movement as opposite direction and disable it if it's needed.
 IsRightToLeftFlowDirectionEnabled | `bool` | false | Set RightToLeft flow direction for current control.
 IsUserInteractionEnabled | `bool` | true | Determines if the control can be interacted with, e.g., `OnTouch` events.
 IsUserInteractionInCourse | `bool` | true | Determines if the control should forbid to start new interaction with card before previous ending.
