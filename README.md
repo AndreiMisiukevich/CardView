@@ -47,9 +47,9 @@ https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardViewSample/PanC
 ## Setup
 * Available on NuGet: [CardsView](http://www.nuget.org/packages/CardsView) [![NuGet](https://img.shields.io/nuget/v/CardsView.svg?label=NuGet)](https://www.nuget.org/packages/CardsView)
 * Add nuget package to your Xamarin.Forms .NETSTANDARD/PCL project and to your platform-specific projects
-* Just in case add (**AFTER** ```Forms.Init(...)```):
-  - **CardsViewRenderer.Preserve()** for **iOS** AppDelegate in **FinishedLaunching**
-  - **CardsViewRenderer.Preserve()** for **Android** MainActivity in **OnCreate**
+* Add (**AFTER** ```Forms.Init(...)```):
+  - **CardsViewRenderer.Preserve()** AppDelegate in **FinishedLaunching** for **iOS** 
+  - **CardsViewRenderer.Preserve()** MainActivity in **OnCreate** for **Android**
 
 |Platform|Version|
 | ------------------- | :-----------: |
