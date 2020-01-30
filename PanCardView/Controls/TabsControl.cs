@@ -26,7 +26,10 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty ItemsCountProperty = BindableProperty.Create(nameof(ItemsCount), typeof(int), typeof(TabsControl), -1);
 
-        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(TabsControl), 0);
+        public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(TabsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsTabsView().OnSelectedIndexChanged();
+        });
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(TabsControl), null, propertyChanged: (bindable, oldValue, newValue) =>
         {
@@ -410,6 +413,20 @@ namespace PanCardView.Controls
             var view = MainStripeView;
             MainStripeView = AdditionalStripeView;
             AdditionalStripeView = view;
+        }
+
+        private void OnSelectedIndexChanged()
+        {
+            if(!(Parent is ScrollView scroll))
+            {
+                return;
+            }
+            var index = SelectedIndex.ToCyclicalIndex(ItemsCount);
+            if(index < 0)
+            {
+                return;
+            }
+            scroll.ScrollToAsync(ItemsStackLayout.Children[index], ScrollToPosition.MakeVisible, true);
         }
     }
 }
