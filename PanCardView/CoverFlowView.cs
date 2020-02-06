@@ -11,12 +11,12 @@ namespace PanCardView
     {
         public static readonly BindableProperty PositionShiftPercentageProperty = BindableProperty.Create(nameof(PositionShiftPercentage), typeof(double), typeof(CoverFlowView), .0, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().SetCurrentView();
+            bindable.AsCardsView().ForceRedrawViews();
         });
 
         public static readonly BindableProperty PositionShiftValueProperty = BindableProperty.Create(nameof(PositionShiftValue), typeof(double), typeof(CoverFlowView), .0, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().SetCurrentView();
+            bindable.AsCardsView().ForceRedrawViews();
         });
 
         private bool _shouldForceHardSetCurrentView;

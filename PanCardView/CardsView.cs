@@ -33,7 +33,7 @@ namespace PanCardView
                 view.ShouldIgnoreSetCurrentView = false;
                 return;
             }
-            view.SetCurrentView();
+            view.ForceRedrawViews();
         });
 
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(CardsView), null, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
@@ -49,17 +49,17 @@ namespace PanCardView
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().SetCurrentView();
+            bindable.AsCardsView().ForceRedrawViews();
         });
 
         public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultBackViewsDepth, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().SetCurrentView();
+            bindable.AsCardsView().ForceRedrawViews();
         });
 
         public static readonly BindableProperty IsRightToLeftFlowDirectionEnabledProperty = BindableProperty.Create(nameof(IsRightToLeftFlowDirectionEnabled), typeof(bool), typeof(CardsView), false, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().SetCurrentView();
+            bindable.AsCardsView().ForceRedrawViews();
         });
 
         public static readonly BindableProperty SlideShowDurationProperty = BindableProperty.Create(nameof(SlideShowDuration), typeof(int), typeof(CardsView), 0, propertyChanged: (bindable, oldValue, newValue) =>
@@ -632,7 +632,8 @@ namespace PanCardView
             FireItemSwiped(swipeDirection, oldIndex);
         }
 
-        protected internal virtual async void SetCurrentView()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual async void ForceRedrawViews()
         {
             var isHardSet = CheckIsHardSetCurrentView() ||
                 //https://github.com/AndreiMisiukevich/CardView/issues/313
@@ -713,7 +714,7 @@ namespace PanCardView
                 }
             }
             await Task.Delay(1);// Workaround for https://github.com/AndreiMisiukevich/CardView/issues/194
-            SetCurrentView();
+            ForceRedrawViews();
             RemoveUnprocessingChildren();
             LayoutChildren(X, Y, Width, Height);
             ForceLayout();
@@ -902,7 +903,7 @@ namespace PanCardView
                     _hasRenderer = !_hasRenderer;
                     if (_hasRenderer)
                     {
-                        SetCurrentView();
+                        ForceRedrawViews();
                         return;
                     }
                     AdjustSlideShow(true);
@@ -913,7 +914,7 @@ namespace PanCardView
         protected override void OnParentSet()
         {
             base.OnParentSet();
-            SetCurrentView();
+            ForceRedrawViews();
         }
 
         private IEnumerable<View> SetupNextView(int index, IEnumerable<View> bookedViews)
@@ -1658,7 +1659,7 @@ namespace PanCardView
                 if (!isCurrentContextPresented || BackViewsDepth > 1)
                 {
                     OldIndex = index;
-                    SetCurrentView();
+                    ForceRedrawViews();
                 }
                 return;
             }
