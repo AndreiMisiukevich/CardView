@@ -19,7 +19,7 @@ namespace PanCardView.Utility
                 item.Id = id;
                 item.Type = type;
                 item.State = state;
-                item.WasTouchChanged = false;
+                item.IsInvolved = false;
                 return item;
             }
         }
@@ -40,6 +40,6 @@ namespace PanCardView.Utility
         public Guid Id { get; set; }
         public InteractionType Type { get; set; }
         public InteractionState State { get; set; }
-        public bool WasTouchChanged { get; set; }
+        public bool IsInvolved { get; set; }
     }
 }

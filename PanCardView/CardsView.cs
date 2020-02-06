@@ -583,7 +583,7 @@ namespace PanCardView
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform == Device.Android)
                     {
-                        OnTouchChanged(diff, oppositeDirectionDiff);
+                        OnTouchChanged(diff, oppositeDirectionDiff, true);
                     }
                     OnTouchEnded();
                     return;
@@ -1107,7 +1107,7 @@ namespace PanCardView
             });
         }
 
-        private void OnTouchChanged(double diff, double oppositeDirectionDiff)
+        private void OnTouchChanged(double diff, double oppositeDirectionDiff, bool isTouchCompleted = false)
         {
             if (!_isPanStarted || Abs(CurrentDiff - diff) <= double.Epsilon)
             {
@@ -1133,19 +1133,22 @@ namespace PanCardView
                 return;
             }
 
-            interactionItem.WasTouchChanged = true;
-
+            interactionItem.IsInvolved = true;
             ResetActiveInactiveBackViews(diff);
-
             CurrentDiff = diff;
-
             SetupDiffItems(diff);
 
-            FireUserInteracted(UserInteractionStatus.Running, CurrentDiff, SelectedIndex);
+            if(isTouchCompleted)
+            {
+                return;
+            }
 
+            FireUserInteracted(UserInteractionStatus.Running, CurrentDiff, SelectedIndex);
             FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
             BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
         }
+
+
 
         private async void OnTouchEnded()
         {
@@ -1161,7 +1164,7 @@ namespace PanCardView
             }
             _lastPanTime = DateTime.UtcNow;
             interactionItem.State = InteractionState.Removing;
-            if (interactionItem.Id == default(Guid))
+            if (interactionItem.Id == Guid.Empty)
             {
                 return;
             }
@@ -1215,7 +1218,7 @@ namespace PanCardView
             }
             else
             {
-                endingTask = interactionItem.WasTouchChanged
+                endingTask = interactionItem.IsInvolved
                     ? Task.WhenAll(
                         FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
                         BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews))
