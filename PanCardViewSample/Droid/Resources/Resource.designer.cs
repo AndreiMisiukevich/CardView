@@ -42,6 +42,10 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Animation.design_bottom_sheet_slide_out = global::PanCardViewSample.Droid.Resource.Animation.design_bottom_sheet_slide_out;
 			global::PanCardView.Droid.Resource.Animation.design_snackbar_in = global::PanCardViewSample.Droid.Resource.Animation.design_snackbar_in;
 			global::PanCardView.Droid.Resource.Animation.design_snackbar_out = global::PanCardViewSample.Droid.Resource.Animation.design_snackbar_out;
+			global::PanCardView.Droid.Resource.Animation.EnterFromLeft = global::PanCardViewSample.Droid.Resource.Animation.EnterFromLeft;
+			global::PanCardView.Droid.Resource.Animation.EnterFromRight = global::PanCardViewSample.Droid.Resource.Animation.EnterFromRight;
+			global::PanCardView.Droid.Resource.Animation.ExitToLeft = global::PanCardViewSample.Droid.Resource.Animation.ExitToLeft;
+			global::PanCardView.Droid.Resource.Animation.ExitToRight = global::PanCardViewSample.Droid.Resource.Animation.ExitToRight;
 			global::PanCardView.Droid.Resource.Animator.design_appbar_state_list_animator = global::PanCardViewSample.Droid.Resource.Animator.design_appbar_state_list_animator;
 			global::PanCardView.Droid.Resource.Animator.design_fab_hide_motion_spec = global::PanCardViewSample.Droid.Resource.Animator.design_fab_hide_motion_spec;
 			global::PanCardView.Droid.Resource.Animator.design_fab_show_motion_spec = global::PanCardViewSample.Droid.Resource.Animator.design_fab_show_motion_spec;
@@ -1245,6 +1249,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.beginning = global::PanCardViewSample.Droid.Resource.Id.beginning;
 			global::PanCardView.Droid.Resource.Id.blocking = global::PanCardViewSample.Droid.Resource.Id.blocking;
 			global::PanCardView.Droid.Resource.Id.bottom = global::PanCardViewSample.Droid.Resource.Id.bottom;
+			global::PanCardView.Droid.Resource.Id.bottomtab_navarea = global::PanCardViewSample.Droid.Resource.Id.bottomtab_navarea;
+			global::PanCardView.Droid.Resource.Id.bottomtab_tabbar = global::PanCardViewSample.Droid.Resource.Id.bottomtab_tabbar;
 			global::PanCardView.Droid.Resource.Id.browser_actions_header_text = global::PanCardViewSample.Droid.Resource.Id.browser_actions_header_text;
 			global::PanCardView.Droid.Resource.Id.browser_actions_menu_items = global::PanCardViewSample.Droid.Resource.Id.browser_actions_menu_items;
 			global::PanCardView.Droid.Resource.Id.browser_actions_menu_item_icon = global::PanCardViewSample.Droid.Resource.Id.browser_actions_menu_item_icon;
@@ -1288,6 +1294,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.fill_horizontal = global::PanCardViewSample.Droid.Resource.Id.fill_horizontal;
 			global::PanCardView.Droid.Resource.Id.fill_vertical = global::PanCardViewSample.Droid.Resource.Id.fill_vertical;
 			global::PanCardView.Droid.Resource.Id.@fixed = global::PanCardViewSample.Droid.Resource.Id.@fixed;
+			global::PanCardView.Droid.Resource.Id.flyoutcontent_appbar = global::PanCardViewSample.Droid.Resource.Id.flyoutcontent_appbar;
+			global::PanCardView.Droid.Resource.Id.flyoutcontent_recycler = global::PanCardViewSample.Droid.Resource.Id.flyoutcontent_recycler;
 			global::PanCardView.Droid.Resource.Id.forever = global::PanCardViewSample.Droid.Resource.Id.forever;
 			global::PanCardView.Droid.Resource.Id.FUNCTION = global::PanCardViewSample.Droid.Resource.Id.FUNCTION;
 			global::PanCardView.Droid.Resource.Id.ghost_view = global::PanCardViewSample.Droid.Resource.Id.ghost_view;
@@ -1308,6 +1316,10 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.line3 = global::PanCardViewSample.Droid.Resource.Id.line3;
 			global::PanCardView.Droid.Resource.Id.listMode = global::PanCardViewSample.Droid.Resource.Id.listMode;
 			global::PanCardView.Droid.Resource.Id.list_item = global::PanCardViewSample.Droid.Resource.Id.list_item;
+			global::PanCardView.Droid.Resource.Id.main_appbar = global::PanCardViewSample.Droid.Resource.Id.main_appbar;
+			global::PanCardView.Droid.Resource.Id.main_tablayout = global::PanCardViewSample.Droid.Resource.Id.main_tablayout;
+			global::PanCardView.Droid.Resource.Id.main_toolbar = global::PanCardViewSample.Droid.Resource.Id.main_toolbar;
+			global::PanCardView.Droid.Resource.Id.main_viewpager = global::PanCardViewSample.Droid.Resource.Id.main_viewpager;
 			global::PanCardView.Droid.Resource.Id.masked = global::PanCardViewSample.Droid.Resource.Id.masked;
 			global::PanCardView.Droid.Resource.Id.media_actions = global::PanCardViewSample.Droid.Resource.Id.media_actions;
 			global::PanCardView.Droid.Resource.Id.message = global::PanCardViewSample.Droid.Resource.Id.message;
@@ -1402,6 +1414,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Id.search_voice_btn = global::PanCardViewSample.Droid.Resource.Id.search_voice_btn;
 			global::PanCardView.Droid.Resource.Id.selected = global::PanCardViewSample.Droid.Resource.Id.selected;
 			global::PanCardView.Droid.Resource.Id.select_dialog_listview = global::PanCardViewSample.Droid.Resource.Id.select_dialog_listview;
+			global::PanCardView.Droid.Resource.Id.shellcontent_appbar = global::PanCardViewSample.Droid.Resource.Id.shellcontent_appbar;
+			global::PanCardView.Droid.Resource.Id.shellcontent_toolbar = global::PanCardViewSample.Droid.Resource.Id.shellcontent_toolbar;
 			global::PanCardView.Droid.Resource.Id.SHIFT = global::PanCardViewSample.Droid.Resource.Id.SHIFT;
 			global::PanCardView.Droid.Resource.Id.shortcut = global::PanCardViewSample.Droid.Resource.Id.shortcut;
 			global::PanCardView.Droid.Resource.Id.showCustom = global::PanCardViewSample.Droid.Resource.Id.showCustom;
@@ -1510,6 +1524,7 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Layout.abc_search_view = global::PanCardViewSample.Droid.Resource.Layout.abc_search_view;
 			global::PanCardView.Droid.Resource.Layout.abc_select_dialog_material = global::PanCardViewSample.Droid.Resource.Layout.abc_select_dialog_material;
 			global::PanCardView.Droid.Resource.Layout.abc_tooltip = global::PanCardViewSample.Droid.Resource.Layout.abc_tooltip;
+			global::PanCardView.Droid.Resource.Layout.BottomTabLayout = global::PanCardViewSample.Droid.Resource.Layout.BottomTabLayout;
 			global::PanCardView.Droid.Resource.Layout.browser_actions_context_menu_page = global::PanCardViewSample.Droid.Resource.Layout.browser_actions_context_menu_page;
 			global::PanCardView.Droid.Resource.Layout.browser_actions_context_menu_row = global::PanCardViewSample.Droid.Resource.Layout.browser_actions_context_menu_row;
 			global::PanCardView.Droid.Resource.Layout.design_bottom_navigation_item = global::PanCardViewSample.Droid.Resource.Layout.design_bottom_navigation_item;
@@ -1526,6 +1541,7 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Layout.design_navigation_menu = global::PanCardViewSample.Droid.Resource.Layout.design_navigation_menu;
 			global::PanCardView.Droid.Resource.Layout.design_navigation_menu_item = global::PanCardViewSample.Droid.Resource.Layout.design_navigation_menu_item;
 			global::PanCardView.Droid.Resource.Layout.design_text_input_password_icon = global::PanCardViewSample.Droid.Resource.Layout.design_text_input_password_icon;
+			global::PanCardView.Droid.Resource.Layout.FlyoutContent = global::PanCardViewSample.Droid.Resource.Layout.FlyoutContent;
 			global::PanCardView.Droid.Resource.Layout.mr_cast_dialog = global::PanCardViewSample.Droid.Resource.Layout.mr_cast_dialog;
 			global::PanCardView.Droid.Resource.Layout.mr_cast_group_item = global::PanCardViewSample.Droid.Resource.Layout.mr_cast_group_item;
 			global::PanCardView.Droid.Resource.Layout.mr_cast_group_volume_item = global::PanCardViewSample.Droid.Resource.Layout.mr_cast_group_volume_item;
@@ -1557,9 +1573,11 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Layout.notification_template_media_custom = global::PanCardViewSample.Droid.Resource.Layout.notification_template_media_custom;
 			global::PanCardView.Droid.Resource.Layout.notification_template_part_chronometer = global::PanCardViewSample.Droid.Resource.Layout.notification_template_part_chronometer;
 			global::PanCardView.Droid.Resource.Layout.notification_template_part_time = global::PanCardViewSample.Droid.Resource.Layout.notification_template_part_time;
+			global::PanCardView.Droid.Resource.Layout.RootLayout = global::PanCardViewSample.Droid.Resource.Layout.RootLayout;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_item_material = global::PanCardViewSample.Droid.Resource.Layout.select_dialog_item_material;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_multichoice_material = global::PanCardViewSample.Droid.Resource.Layout.select_dialog_multichoice_material;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_singlechoice_material = global::PanCardViewSample.Droid.Resource.Layout.select_dialog_singlechoice_material;
+			global::PanCardView.Droid.Resource.Layout.ShellContent = global::PanCardViewSample.Droid.Resource.Layout.ShellContent;
 			global::PanCardView.Droid.Resource.Layout.support_simple_spinner_dropdown_item = global::PanCardViewSample.Droid.Resource.Layout.support_simple_spinner_dropdown_item;
 			global::PanCardView.Droid.Resource.String.abc_action_bar_home_description = global::PanCardViewSample.Droid.Resource.String.abc_action_bar_home_description;
 			global::PanCardView.Droid.Resource.String.abc_action_bar_up_description = global::PanCardViewSample.Droid.Resource.String.abc_action_bar_up_description;
@@ -1837,6 +1855,8 @@ namespace PanCardViewSample.Droid
 			global::PanCardView.Droid.Resource.Style.CardView = global::PanCardViewSample.Droid.Resource.Style.CardView;
 			global::PanCardView.Droid.Resource.Style.CardView_Dark = global::PanCardViewSample.Droid.Resource.Style.CardView_Dark;
 			global::PanCardView.Droid.Resource.Style.CardView_Light = global::PanCardViewSample.Droid.Resource.Style.CardView_Light;
+			global::PanCardView.Droid.Resource.Style.collectionViewStyle = global::PanCardViewSample.Droid.Resource.Style.collectionViewStyle;
+			global::PanCardView.Droid.Resource.Style.NestedScrollBarStyle = global::PanCardViewSample.Droid.Resource.Style.NestedScrollBarStyle;
 			global::PanCardView.Droid.Resource.Style.Platform_AppCompat = global::PanCardViewSample.Droid.Resource.Style.Platform_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Platform_AppCompat_Light = global::PanCardViewSample.Droid.Resource.Style.Platform_AppCompat_Light;
 			global::PanCardView.Droid.Resource.Style.Platform_MaterialComponents = global::PanCardViewSample.Droid.Resource.Style.Platform_MaterialComponents;
