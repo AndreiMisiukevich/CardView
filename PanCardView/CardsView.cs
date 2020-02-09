@@ -1033,12 +1033,12 @@ namespace PanCardView
         {
             if (!IsCyclical)
             {
-                return SelectedIndex < OldIndex
+                return SelectedIndex < OldIndex && SelectedIndex != -1
                        ? AnimationDirection.Prev
                        : AnimationDirection.Next;
             }
 
-            if(ShouldAutoNavigateToNext.HasValue)
+            if (ShouldAutoNavigateToNext.HasValue)
             {
                 return ShouldAutoNavigateToNext.GetValueOrDefault()
                     ? AnimationDirection.Next
@@ -1051,6 +1051,10 @@ namespace PanCardView
             var deltaIndex = recIndex - oldRecIndex;
 
             var aniamationDirection = (AnimationDirection)Sign(deltaIndex);
+            if (aniamationDirection == AnimationDirection.Current)
+            {
+                aniamationDirection = AnimationDirection.Next;
+            }
 
             var cyclicalDeltaIndex = ItemsCount - Max(recIndex, oldRecIndex) + Min(recIndex, oldRecIndex);
 
