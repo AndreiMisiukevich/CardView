@@ -96,10 +96,6 @@ namespace PanCardView
 
         public static readonly BindableProperty MoveDistanceProperty = BindableProperty.Create(nameof(MoveDistance), typeof(double), typeof(CardsView), -1.0);
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use MoveSizePercentageProperty")]
-        public static readonly BindableProperty MoveWidthPercentageProperty = MoveSizePercentageProperty;
-
         public static readonly BindableProperty MoveSizePercentageProperty = BindableProperty.Create(nameof(MoveSizePercentage), typeof(double), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultMoveSizePercentage);
 
         public static readonly BindableProperty IsOnlyForwardDirectionProperty = BindableProperty.Create(nameof(IsOnlyForwardDirection), typeof(bool), typeof(CardsView), false);
@@ -366,14 +362,6 @@ namespace PanCardView
         {
             get => (double)GetValue(MoveDistanceProperty);
             set => SetValue(MoveDistanceProperty, value);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use MoveSizePercentage instead")]
-        public double MoveWidthPercentage
-        {
-            get => MoveSizePercentage;
-            set => MoveSizePercentage = value;
         }
 
         public double MoveSizePercentage
@@ -1148,8 +1136,6 @@ namespace PanCardView
             FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
             BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
         }
-
-
 
         private async void OnTouchEnded()
         {
