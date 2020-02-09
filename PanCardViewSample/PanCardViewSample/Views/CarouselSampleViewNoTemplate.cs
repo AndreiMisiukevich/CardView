@@ -24,7 +24,7 @@ namespace PanCardViewSample.Views
             var button = new Button { Text = "Select last" };
             button.Clicked += (sender, args) => { carousel.SelectedIndex = 2; };
 
-            Content = new ParentScrollView
+            Content = new ScrollView
             {
                 Content = new StackLayout
                 {

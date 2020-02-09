@@ -1,5 +1,4 @@
 ﻿using PanCardView.Behaviors;
-using PanCardView.Controls;
 using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Processors;
