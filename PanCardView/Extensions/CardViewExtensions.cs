@@ -83,7 +83,9 @@ namespace PanCardView.Extensions
         {
             if (collection is IList list)
             {
-                return list[index];
+                return index >= 0 && index < list.Count
+                    ? list[index]
+                    : null;
             }
             var searchIndex = 0;
             foreach (var item in collection)
@@ -94,7 +96,7 @@ namespace PanCardView.Extensions
                 }
                 ++searchIndex;
             }
-            throw new IndexOutOfRangeException();
+            return null;
         }
 
         public static int Count(this IEnumerable collection)
