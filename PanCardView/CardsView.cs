@@ -1636,11 +1636,11 @@ namespace PanCardView
             var isCurrentContextPresented = index >= 0;
             if (!isCurrentContextPresented)
             {
-                index = SelectedIndex;
-                if(index > ItemsCount || index < 0)
-                {
-                    index = 0;
-                }
+                index = SelectedIndex < 0
+                    ? 0
+                    : SelectedIndex >= ItemsCount
+                        ? ItemsCount - 1
+                        : SelectedIndex;
             }
 
             if (SelectedIndex == index)
