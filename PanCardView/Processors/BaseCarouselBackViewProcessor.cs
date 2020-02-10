@@ -22,6 +22,10 @@ namespace PanCardView.Processors
 
         public double RotationFactor { get; set; } = 0;
 
+        public double RotationXFactor { get; set; } = 0;
+
+        public double RotationYFactor { get; set; } = 0;
+
         public virtual void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
         {
             var view = views.FirstOrDefault();
@@ -152,6 +156,8 @@ namespace PanCardView.Processors
                 view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
                 view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
                 view.Rotation = CalculateFactoredProperty(value, RotationFactor, cardsView, 0) * Angle360 * Sign(-value);
+                view.RotationX = CalculateFactoredProperty(value, RotationXFactor, cardsView, 0) * Angle360 * Sign(-value);
+                view.RotationY = CalculateFactoredProperty(value, RotationYFactor, cardsView, 0) * Angle360 * Sign(-value);
                 var translation = value - Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
                 if (cardsView.IsHorizontalOrientation)
                 {
