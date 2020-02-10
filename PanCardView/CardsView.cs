@@ -111,7 +111,7 @@ namespace PanCardView
 
         public static readonly BindableProperty IsPanSwipeEnabledProperty = BindableProperty.Create(nameof(IsPanSwipeEnabled), typeof(bool), typeof(CardsView), true);
 
-        public static readonly BindableProperty AreAnimationsEnabledProperty = BindableProperty.Create(nameof(AreAnimationsEnabled), typeof(bool), typeof(CardsView), true);
+        public static readonly BindableProperty ShouldShareViewAmongSameItemsProperty = BindableProperty.Create(nameof(ShouldShareViewAmongSameItems), typeof(bool), typeof(CardsView), false);
 
         public static readonly BindableProperty MaxChildrenCountProperty = BindableProperty.Create(nameof(MaxChildrenCount), typeof(int), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultMaxChildrenCount);
 
@@ -405,10 +405,10 @@ namespace PanCardView
             set => SetValue(IsAutoNavigatingAnimationEnabledProperty, value);
         }
 
-        public bool AreAnimationsEnabled
+        public bool ShouldShareViewAmongSameItems
         {
-            get => (bool)GetValue(AreAnimationsEnabledProperty);
-            set => SetValue(AreAnimationsEnabledProperty, value);
+            get => (bool)GetValue(ShouldShareViewAmongSameItemsProperty);
+            set => SetValue(ShouldShareViewAmongSameItemsProperty, value);
         }
 
         public bool IsPanSwipeEnabled
@@ -1479,6 +1479,11 @@ namespace PanCardView
             {
                 view = view ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
                             ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
+            }
+
+            if(ShouldShareViewAmongSameItems)
+            {
+                view = bookedViews.FirstOrDefault(v => Equals(v.BindingContext, context)) ?? view;
             }
 
             if (view == null)
