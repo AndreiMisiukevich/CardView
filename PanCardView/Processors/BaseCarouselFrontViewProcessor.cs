@@ -39,7 +39,7 @@ namespace PanCardView.Processors
             {
                 view.IsVisible = true;
             }
-            if (inactiveView != null)
+            if (inactiveView != null && inactiveView != view)
             {
                 inactiveView.IsVisible = false;
             }
