@@ -90,12 +90,7 @@ namespace PanCardView
             var hasFirstElement = Min(oldIndex, index) == 0;
             var hasLastElement = Max(oldIndex, index) == ItemsCount - 1;
 
-            if (Abs(index - oldIndex) > 1 && (!isCyclical || !hasFirstElement || !hasLastElement))
-            {
-                return true;
-            }
-
-            return false;
+            return Abs(index - oldIndex) > 1 && (!isCyclical || !hasFirstElement || !hasLastElement);
         }
     }
 }
