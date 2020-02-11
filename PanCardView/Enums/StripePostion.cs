@@ -2,7 +2,7 @@
 {
     public enum StripePosition
     {
-        Top,
-        Bottom
+        Bottom,
+        Top
     }
 }
