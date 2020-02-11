@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using PanCardView.Behaviors;
+using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Utility;
 using Xamarin.Forms;
@@ -69,6 +70,11 @@ namespace PanCardView.Controls
         public static readonly BindableProperty ToFadeDurationProperty = BindableProperty.Create(nameof(ToFadeDuration), typeof(int), typeof(TabsControl), 0);
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(TabsControl), true);
+
+        public static readonly BindableProperty StripePositionProperty = BindableProperty.Create(nameof(StripePosition), typeof(StripePosition), typeof(TabsControl), StripePosition.Bottom, propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsTabsView().ResetItemsLayout();
+        });
 
         static TabsControl()
         {
@@ -181,6 +187,12 @@ namespace PanCardView.Controls
         {
             get => (bool)GetValue(UseParentAsBindingContextProperty);
             set => SetValue(UseParentAsBindingContextProperty, value);
+        }
+
+        public StripePosition StripePosition
+        {
+            get => (StripePosition)GetValue(StripePositionProperty);
+            set => SetValue(StripePositionProperty, value);
         }
 
         public object this[int index] => ItemsSource?.FindValue(index);
@@ -401,11 +413,11 @@ namespace PanCardView.Controls
 
             AdditionalStripeView.IsVisible = isSecondStripeVisible;
             var additionalStripeWidth = isSecondStripeVisible ? secondView.Width * itemProgress : 0;
-            SetLayoutBounds(AdditionalStripeView, new Rectangle(secondView.X, 1, additionalStripeWidth, StripeHeight));
+            SetLayoutBounds(AdditionalStripeView, new Rectangle(secondView.X, StripePosition == StripePosition.Bottom ? 1 : 0, additionalStripeWidth, StripeHeight));
 
             var x = firstView.X + firstView.Width * itemProgress;
             var mainStripewidth = firstView.Width * (1 - itemProgress) + secondView.Width * itemProgress - additionalStripeWidth;
-            SetLayoutBounds(MainStripeView, new Rectangle(x, 1, mainStripewidth, StripeHeight));
+            SetLayoutBounds(MainStripeView, new Rectangle(x, StripePosition == StripePosition.Bottom ? 1 : 0, mainStripewidth, StripeHeight));
         }
 
         private void SwapStripeViews()
