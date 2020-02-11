@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PanCardView.Enums
+﻿namespace PanCardView.Enums
 {
     public enum StripePosition
     {

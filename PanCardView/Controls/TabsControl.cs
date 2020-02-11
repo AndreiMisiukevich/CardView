@@ -71,7 +71,7 @@ namespace PanCardView.Controls
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(TabsControl), true);
 
-        public static readonly BindableProperty StripePositionProperty = BindableProperty.Create(nameof(StripePosition), typeof(StripePosition), typeof(TabsControl), Enums.StripePosition.Bottom, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty StripePositionProperty = BindableProperty.Create(nameof(StripePosition), typeof(StripePosition), typeof(TabsControl), StripePosition.Bottom, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsTabsView().ResetItemsLayout();
         });
