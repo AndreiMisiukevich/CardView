@@ -1,6 +1,9 @@
-﻿using PanCardView.Controls;
+﻿using System.ComponentModel;
+using PanCardView.Controls;
+
 namespace PanCardView
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class Preserver
     {
         public static void Preserve()

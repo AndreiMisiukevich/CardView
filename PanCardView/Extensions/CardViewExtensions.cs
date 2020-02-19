@@ -1,35 +1,36 @@
 ﻿using PanCardView.Controls;
 using Xamarin.Forms;
 using System.Collections;
-using System;
+using System.ComponentModel;
 
 namespace PanCardView.Extensions
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class CardViewExtensions
     {
         public static double GetSize(this CardsView cardsView, View card = null)
-        => cardsView.IsHorizontalOrientation ? (card ?? cardsView).Width : (card ?? cardsView).Height;
+            => cardsView.IsHorizontalOrientation ? (card ?? cardsView).Width : (card ?? cardsView).Height;
 
         public static CardsView AsCardsView(this BindableObject bindable)
-        => bindable as CardsView;
+            => bindable as CardsView;
 
         public static CarouselView AsCarouselView(this BindableObject bindable)
-        => bindable as CarouselView;
+            => bindable as CarouselView;
             
         public static CoverFlowView AsCoverFlowView(this BindableObject bindable)
-        => bindable as CoverFlowView;
+            => bindable as CoverFlowView;
 
         public static IndicatorsControl AsIndicatorsControl(this BindableObject bindable)
-        => bindable as IndicatorsControl;
+            => bindable as IndicatorsControl;
 
         public static CircleFrame AsCircleFrame(this BindableObject bindable)
-        => bindable as CircleFrame;
+            => bindable as CircleFrame;
 
         public static ArrowControl AsArrowControl(this BindableObject bindable)
-        => bindable as ArrowControl;
+            => bindable as ArrowControl;
 
         public static TabsControl AsTabsView(this BindableObject bindable)
-        => bindable as TabsControl;
+            => bindable as TabsControl;
 
         public static View CreateView(this DataTemplate template)
         {

@@ -940,7 +940,7 @@ namespace PanCardView
         }
 
         private void StoreParentSize(double width, double height)
-        => _parentSize = new Size(width, height);
+            => _parentSize = new Size(width, height);
 
         private void SetPanGesture(bool isForceRemoving = false)
         {
@@ -1392,7 +1392,7 @@ namespace PanCardView
         }
 
         private void SwapViews(AnimationDirection animationDirection)
-        => SwapViews(animationDirection == AnimationDirection.Next);
+            => SwapViews(animationDirection == AnimationDirection.Next);
 
         private IEnumerable<View> InitViews(ICardProcessor processor, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
         {
@@ -1541,12 +1541,12 @@ namespace PanCardView
         }
 
         private bool CheckContextAssigned(View view)
-        => view?.Behaviors.Contains(_contextAssignedBehavior) ?? false;
+            => view?.Behaviors.Contains(_contextAssignedBehavior) ?? false;
 
         private object GetItem(View view)
-        => CheckContextAssigned(view)
-            ? view.BindingContext
-            : view;
+            => CheckContextAssigned(view)
+                ? view.BindingContext
+                : view;
 
         private object GetItem(int index)
         {
@@ -1788,10 +1788,10 @@ namespace PanCardView
         }
 
         private bool CheckIsProcessingView(View view)
-        => view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
+            => view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
 
         private bool CheckIndexValid(int index)
-        => index >= 0 && index < ItemsCount;
+            => index >= 0 && index < ItemsCount;
 
         private void AddRangeViewsInUse(Guid gestureId)
         {
