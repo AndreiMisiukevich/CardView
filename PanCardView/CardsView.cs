@@ -383,7 +383,7 @@ namespace PanCardView
 
         public int UserInteractionDelay
         {
-            get =>(int)GetValue(UserInteractionDelayProperty);
+            get => (int)GetValue(UserInteractionDelayProperty);
             set => SetValue(UserInteractionDelayProperty, value);
         }
 
@@ -552,7 +552,7 @@ namespace PanCardView
 
             var diff = e.TotalX;
             var oppositeDirectionDiff = e.TotalY;
-            if(!IsHorizontalOrientation)
+            if (!IsHorizontalOrientation)
             {
                 var tempDiff = diff;
                 diff = oppositeDirectionDiff;
@@ -626,7 +626,7 @@ namespace PanCardView
                 //https://github.com/AndreiMisiukevich/CardView/issues/313
                 (BackViewsDepth > 1 && (IsAutoInteractionRunning || IsUserInteractionRunning));
 
-            if(isHardSet)
+            if (isHardSet)
             {
                 await HardSetAsync();
                 return;
@@ -803,7 +803,6 @@ namespace PanCardView
             SwapViews(realDirection);
             CurrentView = newView;
 
-
             var views = CurrentBackViews
                 .Union(CurrentInactiveBackViews)
                 .Union(Enumerable.Repeat(CurrentView, 1))
@@ -811,12 +810,25 @@ namespace PanCardView
 
             var animationId = Guid.NewGuid();
             StartAutoNavigation(views, animationId, animationDirection);
+
+            //https://github.com/AndreiMisiukevich/CardView/issues/335
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, CurrentView.TranslationX, realDirection, Enumerable.Empty<View>());
+            }
+
             await Task.Delay(5);
             var autoNavigationTask = Task.WhenAll(
                 BackViewProcessor.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews),
                 FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
 
             await (_animationTask = autoNavigationTask);
+
+            //https://github.com/AndreiMisiukevich/CardView/issues/335
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, 0, realDirection, Enumerable.Empty<View>());
+            }
 
             EndAutoNavigation(views, animationId, animationDirection);
 
@@ -940,7 +952,7 @@ namespace PanCardView
         }
 
         private void StoreParentSize(double width, double height)
-            => _parentSize = new Size(width, height);
+        => _parentSize = new Size(width, height);
 
         private void SetPanGesture(bool isForceRemoving = false)
         {
@@ -1130,7 +1142,7 @@ namespace PanCardView
             CurrentDiff = diff;
             SetupDiffItems(diff);
 
-            if(isTouchCompleted)
+            if (isTouchCompleted)
             {
                 return;
             }
@@ -1392,7 +1404,7 @@ namespace PanCardView
         }
 
         private void SwapViews(AnimationDirection animationDirection)
-            => SwapViews(animationDirection == AnimationDirection.Next);
+        => SwapViews(animationDirection == AnimationDirection.Next);
 
         private IEnumerable<View> InitViews(ICardProcessor processor, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
         {
@@ -1475,13 +1487,13 @@ namespace PanCardView
 
             var notUsingViews = viewsCollection.Where(v => !_viewsInUseSet.Contains(v) && !bookedViews.Contains(v));
             var view = notUsingViews.FirstOrDefault(v => Equals(v.BindingContext, context) || v == context);
-            if(IsViewReusingEnabled)
+            if (IsViewReusingEnabled)
             {
                 view = view ?? notUsingViews.FirstOrDefault(v => v.BindingContext == null)
                             ?? notUsingViews.FirstOrDefault(v => !CheckIsProcessingView(v));
             }
 
-            if(ShouldShareViewAmongSameItems)
+            if (ShouldShareViewAmongSameItems)
             {
                 view = bookedViews.FirstOrDefault(v => Equals(v.BindingContext, context)) ?? view;
             }
@@ -1531,7 +1543,7 @@ namespace PanCardView
 
         private void RemoveRangeViewsPool(View[] views)
         {
-            foreach(var view in views)
+            foreach (var view in views)
             {
                 foreach (var viewsCollection in _viewsPool.Values)
                 {
@@ -1541,12 +1553,12 @@ namespace PanCardView
         }
 
         private bool CheckContextAssigned(View view)
-            => view?.Behaviors.Contains(_contextAssignedBehavior) ?? false;
+        => view?.Behaviors.Contains(_contextAssignedBehavior) ?? false;
 
         private object GetItem(View view)
-            => CheckContextAssigned(view)
-                ? view.BindingContext
-                : view;
+        => CheckContextAssigned(view)
+            ? view.BindingContext
+            : view;
 
         private object GetItem(int index)
         {
@@ -1737,7 +1749,7 @@ namespace PanCardView
                 CleanView(view);
             }
 
-            if(!IsViewReusingEnabled)
+            if (!IsViewReusingEnabled)
             {
                 RemoveRangeViewsPool(views);
             }
@@ -1745,7 +1757,7 @@ namespace PanCardView
 
         private void InvokeOnMainThreadIfNeeded(Action action)
         {
-            if(Device.IsInvokeRequired)
+            if (Device.IsInvokeRequired)
             {
                 Device.BeginInvokeOnMainThread(action);
                 return;
@@ -1788,10 +1800,10 @@ namespace PanCardView
         }
 
         private bool CheckIsProcessingView(View view)
-            => view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
+        => view == CurrentView || NextViews.Contains(view) || PrevViews.Contains(view);
 
         private bool CheckIndexValid(int index)
-            => index >= 0 && index < ItemsCount;
+        => index >= 0 && index < ItemsCount;
 
         private void AddRangeViewsInUse(Guid gestureId)
         {
