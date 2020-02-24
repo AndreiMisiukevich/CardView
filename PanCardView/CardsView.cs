@@ -812,9 +812,11 @@ namespace PanCardView
             StartAutoNavigation(views, animationId, animationDirection);
 
             //https://github.com/AndreiMisiukevich/CardView/issues/335
+            Action<double> handlePanChanged = null;
             if (Device.RuntimePlatform == Device.UWP)
             {
-                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, CurrentView.TranslationX, realDirection, Enumerable.Empty<View>());
+                handlePanChanged = value => FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, value, realDirection, Enumerable.Empty<View>());
+                handlePanChanged?.Invoke(Size);
             }
 
             await Task.Delay(5);
@@ -824,11 +826,7 @@ namespace PanCardView
 
             await (_animationTask = autoNavigationTask);
 
-            //https://github.com/AndreiMisiukevich/CardView/issues/335
-            if (Device.RuntimePlatform == Device.UWP)
-            {
-                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, 0, realDirection, Enumerable.Empty<View>());
-            }
+            handlePanChanged?.Invoke(0);
 
             EndAutoNavigation(views, animationId, animationDirection);
 
