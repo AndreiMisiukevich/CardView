@@ -812,11 +812,9 @@ namespace PanCardView
             StartAutoNavigation(views, animationId, animationDirection);
 
             //https://github.com/AndreiMisiukevich/CardView/issues/335
-            Action<double> handlePanChanged = null;
-            if (Device.RuntimePlatform == Device.UWP)
+            if (Device.RuntimePlatform == Device.UWP && ItemTemplate == null)
             {
-                handlePanChanged = value => FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, value, realDirection, Enumerable.Empty<View>());
-                handlePanChanged?.Invoke(Size);
+                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, Size, realDirection, Enumerable.Empty<View>());
             }
 
             await Task.Delay(5);
@@ -825,8 +823,6 @@ namespace PanCardView
                 FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
 
             await (_animationTask = autoNavigationTask);
-
-            handlePanChanged?.Invoke(0);
 
             EndAutoNavigation(views, animationId, animationDirection);
 
@@ -1137,17 +1133,26 @@ namespace PanCardView
 
             interactionItem.IsInvolved = true;
             ResetActiveInactiveBackViews(diff);
+            var prevDiff = CurrentDiff;
             CurrentDiff = diff;
             SetupDiffItems(diff);
 
             if (isTouchCompleted)
             {
-                return;
+                diff = prevDiff;
             }
 
-            FireUserInteracted(UserInteractionStatus.Running, CurrentDiff, SelectedIndex);
-            FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
-            BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
+            FireUserInteracted(UserInteractionStatus.Running, diff, SelectedIndex);
+            try
+            {
+                BatchBegin();
+                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
+                BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
+            }
+            finally
+            {
+                BatchCommit();
+            }
         }
 
         private async void OnTouchEnded()
