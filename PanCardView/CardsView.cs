@@ -811,18 +811,12 @@ namespace PanCardView
             var animationId = Guid.NewGuid();
             StartAutoNavigation(views, animationId, animationDirection);
 
-            //https://github.com/AndreiMisiukevich/CardView/issues/335
-            if (Device.RuntimePlatform == Device.UWP && ItemTemplate == null)
-            {
-                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, Size, realDirection, Enumerable.Empty<View>());
-            }
-
             await Task.Delay(5);
             var autoNavigationTask = Task.WhenAll(
                 BackViewProcessor.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews),
                 FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
 
-            await (_animationTask = autoNavigationTask);
+            await (_animationTask = InvokeOnMainThreadIfNeededAsync(autoNavigationTask));
 
             EndAutoNavigation(views, animationId, animationDirection);
 
@@ -1760,12 +1754,36 @@ namespace PanCardView
 
         private void InvokeOnMainThreadIfNeeded(Action action)
         {
-            if (Device.IsInvokeRequired)
+            if (!Device.IsInvokeRequired)
             {
-                Device.BeginInvokeOnMainThread(action);
+                action.Invoke();
                 return;
             }
-            action?.Invoke();
+            Device.BeginInvokeOnMainThread(action);
+        }
+
+        private async Task InvokeOnMainThreadIfNeededAsync(Task task)
+        {
+            if (!Device.IsInvokeRequired)
+            {
+                await task;
+                return;
+            }
+
+            var tcs = new TaskCompletionSource<object>();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    await task;
+                    tcs.SetResult(null);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+            await tcs.Task;
         }
 
         private void ExecutePreventInvalidOperationException(Action action)
