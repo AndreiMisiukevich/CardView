@@ -810,14 +810,14 @@ namespace PanCardView
 
             var animationId = Guid.NewGuid();
             StartAutoNavigation(views, animationId, animationDirection);
-
+            PerformUWPFrontViewProcessorHandlePanChanged(Size, realDirection);
             await Task.Delay(5);
             var autoNavigationTask = Task.WhenAll(
                 BackViewProcessor.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews),
                 FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
 
-            await (_animationTask = InvokeOnMainThreadIfNeededAsync(autoNavigationTask));
-
+            await (_animationTask = autoNavigationTask);
+            PerformUWPFrontViewProcessorHandlePanChanged(0, realDirection);
             EndAutoNavigation(views, animationId, animationDirection);
 
             return true;
@@ -1762,30 +1762,6 @@ namespace PanCardView
             Device.BeginInvokeOnMainThread(action);
         }
 
-        private async Task InvokeOnMainThreadIfNeededAsync(Task task)
-        {
-            if (!Device.IsInvokeRequired)
-            {
-                await task;
-                return;
-            }
-
-            var tcs = new TaskCompletionSource<object>();
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                try
-                {
-                    await task;
-                    tcs.SetResult(null);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
-            await tcs.Task;
-        }
-
         private void ExecutePreventInvalidOperationException(Action action)
         {
             try
@@ -1808,6 +1784,16 @@ namespace PanCardView
                     }
                 });
             }
+        }
+
+        //https://github.com/AndreiMisiukevich/CardView/issues/335
+        private void PerformUWPFrontViewProcessorHandlePanChanged(double value, AnimationDirection direction)
+        {
+            if (Device.RuntimePlatform != Device.UWP)
+            {
+                return;
+            }
+            FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, value, direction, Enumerable.Empty<View>());
         }
 
         private Page FindParentPage()
