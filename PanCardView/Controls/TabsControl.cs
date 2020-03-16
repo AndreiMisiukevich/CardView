@@ -255,6 +255,12 @@ namespace PanCardView.Controls
             {
                 BindingContext = Parent;
             }
+            
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
             ResetItemsLayout();
         }
 
