@@ -255,13 +255,18 @@ namespace PanCardView.Controls
             {
                 BindingContext = Parent;
             }
-            
         }
 
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
             ResetItemsLayout();
+        }
+
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            UpdateStripePosition();
         }
 
         private void ResetItemsLayout()
