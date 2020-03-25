@@ -127,12 +127,18 @@ namespace PanCardView.iOS
 
         private bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
         {
-            var parent = Element?.Parent;
-            while(parent != null)
+            if (!(gestureRecognizer is UIPanGestureRecognizer panGesture))
             {
-                if(parent is MasterDetailPage)
+                return true;
+            }
+
+            var parent = Element?.Parent;
+            while (parent != null)
+            {
+                if (parent is MasterDetailPage && (Element?.IsHorizontalOrientation ?? false))
                 {
-                    return false;
+                    var velocity = panGesture.VelocityInView(this);
+                    return Abs(velocity.Y) > Abs(velocity.X);
                 }
                 parent = parent.Parent;
             }
