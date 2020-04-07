@@ -132,8 +132,8 @@ namespace PanCardView.Processors
                 view.Scale = CalculateFactoredProperty(value, ScaleFactor, cardsView);
                 view.Opacity = CalculateFactoredProperty(value, OpacityFactor, cardsView);
                 view.Rotation = CalculateFactoredProperty(value, RotationFactor, cardsView, 0) * Angle360 * Sign(-value);
-                view.RotationX = CalculateFactoredProperty(value, RotationXFactor, cardsView, 0) * Angle360 * Sign(-value);
-                view.RotationY = CalculateFactoredProperty(value, RotationYFactor, cardsView, 0) * Angle360 * Sign(-value);
+                view.RotationX = CalculateFactoredProperty(value, RotationXFactor, cardsView, 0) * Angle180 * Sign(-value);
+                view.RotationY = CalculateFactoredProperty(value, RotationYFactor, cardsView, 0) * Angle180 * Sign(-value);
                 var translation = value - Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
                 if (cardsView.IsHorizontalOrientation)
                 {
