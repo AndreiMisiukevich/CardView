@@ -6,7 +6,7 @@
     <title>CardsView</title>
     <authors>Andrei Misiukevich</authors>
     <owners>Andrei Misiukevich</owners>
-    <license type="file">LICENSE.txt</license>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/AndreiMisiukevich/CardView</projectUrl>
     <icon>images\Cardsview-logotype-main.png</icon>
@@ -35,8 +35,6 @@
     </releaseNotes>
   </metadata>
   <files>
-    <!--License-->
-    <file src="docs\LICENSE.txt" target="LICENSE.txt" />
     <!--Icon-->
     <file src="images\Cardsview-logotype-main.png" target="images\" />
     <!--Net Standard1.0-->
