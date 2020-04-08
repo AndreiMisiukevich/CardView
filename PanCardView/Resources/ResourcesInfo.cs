@@ -13,16 +13,15 @@ namespace PanCardView.Resources
 
         private static Assembly ResourceAssembly => typeof(ResourcesInfo).GetTypeInfo().Assembly;
 
-        public static ImageSource WhiteRightArrowImageSource
-            => ImageSource.FromResource($"{ResourcesPath}.{WhiteRightArrowResourceName}", ResourceAssembly);
+        public static ImageSource WhiteRightArrowImageSource => FromResource(WhiteRightArrowResourceName);
 
-        public static ImageSource WhiteLeftArrowImageSource
-            => ImageSource.FromResource($"{ResourcesPath}.{WhiteLeftArrowResourceName}", ResourceAssembly);
+        public static ImageSource WhiteLeftArrowImageSource => FromResource(WhiteLeftArrowResourceName);
 
-        public static ImageSource BlackRightArrowImageSource
-            => ImageSource.FromResource($"{ResourcesPath}.{BlackRightArrowResourceName}", ResourceAssembly);
+        public static ImageSource BlackRightArrowImageSource => FromResource(BlackRightArrowResourceName);
 
-        public static ImageSource BlackLeftArrowImageSource
-            => ImageSource.FromResource($"{ResourcesPath}.{BlackLeftArrowResourceName}", ResourceAssembly);
+        public static ImageSource BlackLeftArrowImageSource => FromResource(BlackLeftArrowResourceName);
+
+        private static ImageSource FromResource(string resourceName)
+            => ImageSource.FromResource($"{ResourcesPath}.{resourceName}", ResourceAssembly);
     }
 }

@@ -1664,6 +1664,7 @@ namespace PanCardView
                     OldIndex = index;
                     ForceRedrawViews();
                 }
+                SetSelectedItem();
                 return;
             }
 
