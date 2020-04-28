@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using PanCardView.Extensions;
 using PanCardView.Processors;
@@ -21,11 +22,17 @@ namespace PanCardView
 
         private bool _shouldForceHardSetCurrentView;
 
-        public CoverFlowView() : this(new BaseCoverFlowFrontViewProcessor(), new BaseCoverFlowBackViewProcessor())
+        public CoverFlowView() : this(new CarouselProcessor())
         {
         }
 
-        public CoverFlowView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor) : base(frontViewProcessor, backViewProcessor)
+        public CoverFlowView(IProcessor processor) : base(processor)
+        {
+        }
+
+        [Obsolete]
+        public CoverFlowView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
+            : base(frontViewProcessor ?? new BaseCoverFlowFrontViewProcessor(), backViewProcessor ?? new BaseCoverFlowBackViewProcessor())
         {
         }
 

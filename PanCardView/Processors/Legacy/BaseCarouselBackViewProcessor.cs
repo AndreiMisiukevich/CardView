@@ -1,6 +1,7 @@
 ﻿using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
+    [Obsolete]
     public class BaseCarouselBackViewProcessor : ICardBackViewProcessor
     {
         public uint AnimationLength { get; set; } = 300;

@@ -29,6 +29,10 @@ namespace PanCardView.Processors
 
         public double RotationYFactor { get; set; } = 0;
 
+        private readonly object _viewSizeChangedMapLocker = new object();
+
+        private readonly Dictionary<View, ViewSizeInfoItem> _viewSizeChangedMap = new Dictionary<View, ViewSizeInfoItem>();
+
         public virtual void Init(CardsView cardsView, params ProcessorItem[] items)
         {
             foreach (var item in items)
@@ -150,6 +154,7 @@ namespace PanCardView.Processors
                     }
                     lenght = animLength;
                     animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0));
+                    continue;
                 }
 
                 if (view == null || view == cardsView.CurrentView)
@@ -177,6 +182,7 @@ namespace PanCardView.Processors
                 if (item.IsFront)
                 {
                     animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0));
+                    continue;
                 }
 
                 var destinationPos = item.Direction == AnimationDirection.Prev
@@ -206,21 +212,20 @@ namespace PanCardView.Processors
                 return;
             }
 
-            void OnViewSizeChanged(object sender, System.EventArgs e)
+            lock (_viewSizeChangedMapLocker)
             {
-                if (cardsView.GetSize(view) < 0)
+                CleanViewSizeChanged(view);
+                if (cardsView.GetSize(view) < 0 && !isClean)
                 {
+                    _viewSizeChangedMap[view] = new ViewSizeInfoItem
+                    {
+                        CardsView = cardsView,
+                        Value = value,
+                        IsVisible = isVisible
+                    };
+                    view.SizeChanged += OnViewSizeChanged;
                     return;
                 }
-                view.SizeChanged -= OnViewSizeChanged;
-                SetTranslationX(view, value, cardsView, isVisible);
-            }
-            view.SizeChanged -= OnViewSizeChanged;
-
-            if (cardsView.GetSize(view) < 0 && !isClean)
-            {
-                view.SizeChanged += OnViewSizeChanged;
-                return;
             }
 
             try
@@ -250,5 +255,26 @@ namespace PanCardView.Processors
 
         protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView, double defaultFactorValue = 1)
             => Abs(value) * (factor - defaultFactorValue) / cardsView.GetSize() + defaultFactorValue;
+
+        private void OnViewSizeChanged(object sender, System.EventArgs e)
+        {
+            lock (_viewSizeChangedMapLocker)
+            {
+                var view = sender as View;
+                var info = _viewSizeChangedMap[view];
+                if (info.CardsView.GetSize(view) < 0)
+                {
+                    return;
+                }
+                CleanViewSizeChanged(view);
+                SetTranslationX(view, info.Value, info.CardsView, info.IsVisible);
+            }
+        }
+
+        private void CleanViewSizeChanged(View view)
+        {
+            view.SizeChanged -= OnViewSizeChanged;
+            _viewSizeChangedMap.Remove(view);
+        }
     }
 }

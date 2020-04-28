@@ -7,9 +7,11 @@ using static PanCardView.Processors.Constants;
 using static System.Math;
 using PanCardView.Utility;
 using PanCardView.Extensions;
+using System;
 
 namespace PanCardView.Processors
 {
+    [Obsolete]
     public class BaseCardFrontViewProcessor : ICardProcessor
     {
         public uint ResetAnimationLength { get; set; } = 150;

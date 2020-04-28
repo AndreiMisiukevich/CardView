@@ -1,10 +1,12 @@
-﻿using PanCardView.Extensions;
+﻿using System;
+using PanCardView.Extensions;
 using Xamarin.Forms;
 using static System.Math;
 using static PanCardView.Processors.Constants;
 
 namespace PanCardView.Processors
 {
+    [Obsolete]
     public class BaseCubeFrontViewProcessor : BaseCarouselFrontViewProcessor
     {
         protected override double GetTranslationX(View view, CardsView cardsView)

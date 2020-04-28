@@ -189,14 +189,21 @@ namespace PanCardView
         private Task _animationTask;
         private CancellationTokenSource _slideShowTokenSource;
 
-        public CardsView() : this(new BaseCardFrontViewProcessor(), new BaseCardBackViewProcessor())
+        public CardsView() : this(new CarouselProcessor())
         {
         }
 
+        public CardsView(IProcessor processor)
+        {
+            Processor = processor;
+            SetPanGesture();
+        }
+
+        [Obsolete]
         public CardsView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
         {
-            FrontViewProcessor = frontViewProcessor;
-            BackViewProcessor = backViewProcessor;
+            FrontViewProcessor = frontViewProcessor ?? new BaseCardFrontViewProcessor();
+            BackViewProcessor = backViewProcessor ?? new BaseCardBackViewProcessor();
             SetPanGesture();
         }
 
@@ -257,9 +264,19 @@ namespace PanCardView
 
         public int OldIndex { get; private set; } = -1;
 
+        public IProcessor Processor { get; }
+
+        [Obsolete]
         public ICardProcessor FrontViewProcessor { get; }
 
+        [Obsolete]
         public ICardBackViewProcessor BackViewProcessor { get; }
+
+#pragma warning disable
+        private ICardProcessor FrontProcessor => FrontViewProcessor;
+
+        private ICardBackViewProcessor BackProcessor => BackViewProcessor;
+#pragma warning restore
 
         public int SelectedIndex
         {
@@ -646,7 +663,7 @@ namespace PanCardView
             {
                 if (ItemsSource != null)
                 {
-                    CurrentView = InitViews(FrontViewProcessor, AnimationDirection.Current, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
+                    CurrentView = InitViews(true, AnimationDirection.Current, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
 
                     if (CurrentView == null && SelectedIndex >= 0)
                     {
@@ -799,7 +816,7 @@ namespace PanCardView
             var oldView = CurrentView;
             SetupBackViews(OldIndex);
             ResetActiveInactiveBackViews(realDirection);
-            var newView = InitViews(BackViewProcessor, realDirection, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
+            var newView = InitViews(false, realDirection, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
             SwapViews(realDirection);
             CurrentView = newView;
 
@@ -812,9 +829,11 @@ namespace PanCardView
             StartAutoNavigation(views, animationId, animationDirection);
             PerformUWPFrontViewProcessorHandlePanChanged(Size, realDirection);
             await Task.Delay(5);
+            _currentBackAnimationDirection = realDirection;
             var autoNavigationTask = Task.WhenAll(
-                BackViewProcessor.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews),
-                FrontViewProcessor.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()));
+                FrontProcessor?.HandleAutoNavigate(Enumerable.Repeat(CurrentView, 1), this, realDirection, Enumerable.Empty<View>()) ?? Task.FromResult(true),
+                BackProcessor?.HandleAutoNavigate(CurrentBackViews, this, realDirection, CurrentInactiveBackViews) ?? Task.FromResult(true),
+                Processor?.Navigate(this, GetAnimationProcessorItems()) ?? Task.FromResult(true));
 
             await (_animationTask = autoNavigationTask);
             PerformUWPFrontViewProcessorHandlePanChanged(0, realDirection);
@@ -866,9 +885,13 @@ namespace PanCardView
                         prevAnimationDirection = AnimationDirection.Next;
                         nextAnimationDirection = AnimationDirection.Prev;
                     }
-                    FrontViewProcessor.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
-                    BackViewProcessor.HandleInitView(PrevViews, this, prevAnimationDirection);
-                    BackViewProcessor.HandleInitView(NextViews, this, nextAnimationDirection);
+                    FrontProcessor?.HandleInitView(Enumerable.Repeat(CurrentView, 1), this, AnimationDirection.Current);
+                    BackProcessor?.HandleInitView(PrevViews, this, prevAnimationDirection);
+                    BackProcessor?.HandleInitView(NextViews, this, nextAnimationDirection);
+                    Processor?.Init(this,
+                        new ProcessorItem { IsFront = true, Views = Enumerable.Repeat(CurrentView, 1) },
+                        new ProcessorItem { Views = PrevViews, Direction = prevAnimationDirection },
+                        new ProcessorItem { Views = NextViews, Direction = nextAnimationDirection });
                 }
                 if (_isViewInited &&
                     isValidParentSize &&
@@ -913,7 +936,7 @@ namespace PanCardView
             }
 
             NextViews = IsNextItemPanInteractionEnabled
-                ? InitViews(BackViewProcessor, AnimationDirection.Next, bookedViews, indeces)
+                ? InitViews(false, AnimationDirection.Next, bookedViews, indeces)
                 : Enumerable.Empty<View>();
             return bookedViews.Union(NextViews);
         }
@@ -934,7 +957,7 @@ namespace PanCardView
             }
 
             PrevViews = (IsPrevItemPanInteractionEnabled && !isForwardOnly) || (IsNextItemPanInteractionEnabled && isForwardOnly)
-                ? InitViews(BackViewProcessor, AnimationDirection.Prev, bookedViews, indeces)
+                ? InitViews(false, AnimationDirection.Prev, bookedViews, indeces)
                 : Enumerable.Empty<View>();
             return bookedViews.Union(PrevViews);
         }
@@ -1140,8 +1163,9 @@ namespace PanCardView
             try
             {
                 BatchBegin();
-                FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
-                BackViewProcessor.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
+                FrontProcessor?.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, diff, _currentBackAnimationDirection, Enumerable.Empty<View>());
+                BackProcessor?.HandlePanChanged(CurrentBackViews, this, diff, _currentBackAnimationDirection, CurrentInactiveBackViews);
+                Processor?.Change(this, diff, GetAnimationProcessorItems());
             }
             finally
             {
@@ -1211,16 +1235,18 @@ namespace PanCardView
                 SelectedIndex = index;
 
                 endingTask = Task.WhenAll(
-                    FrontViewProcessor.HandlePanApply(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
-                    BackViewProcessor.HandlePanApply(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews)
+                    FrontProcessor?.HandlePanApply(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()) ?? Task.FromResult(true),
+                    BackProcessor?.HandlePanApply(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews) ?? Task.FromResult(true),
+                    Processor?.Proceed(this, GetAnimationProcessorItems()) ?? Task.FromResult(true)
                 );
             }
             else
             {
                 endingTask = interactionItem.IsInvolved
                     ? Task.WhenAll(
-                        FrontViewProcessor.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()),
-                        BackViewProcessor.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews))
+                        FrontProcessor?.HandlePanReset(Enumerable.Repeat(CurrentView, 1), this, _currentBackAnimationDirection, Enumerable.Empty<View>()) ?? Task.FromResult(true),
+                        BackProcessor?.HandlePanReset(CurrentBackViews, this, _currentBackAnimationDirection, CurrentInactiveBackViews) ?? Task.FromResult(true),
+                        Processor?.Reset(this, GetAnimationProcessorItems()) ?? Task.FromResult(true))
                     : Task.FromResult(true);
             }
 
@@ -1403,7 +1429,7 @@ namespace PanCardView
         private void SwapViews(AnimationDirection animationDirection)
         => SwapViews(animationDirection == AnimationDirection.Next);
 
-        private IEnumerable<View> InitViews(ICardProcessor processor, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
+        private IEnumerable<View> InitViews(bool isFront, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
         {
             var views = new View[indeces.Length];
 
@@ -1430,7 +1456,8 @@ namespace PanCardView
                 return Enumerable.Empty<View>();
             }
 
-            processor.HandleInitView(views, this, animationDirection);
+            (isFront ? FrontProcessor : BackProcessor)?.HandleInitView(views, this, animationDirection);
+            Processor?.Init(this, new ProcessorItem { IsFront = isFront, Views = views, Direction = animationDirection });
 
             SetupLayout(views);
 
@@ -1507,7 +1534,8 @@ namespace PanCardView
                 var duplicatedViews = notUsingViews
                     .Except(Enumerable.Repeat(view, 1))
                     .Where(v => Equals(GetItem(v), GetItem(view)));
-                BackViewProcessor.HandleCleanView(duplicatedViews, this);
+                BackProcessor?.HandleCleanView(duplicatedViews, this);
+                Processor?.Clean(this, new ProcessorItem { Views = duplicatedViews });
             }
 
             return view;
@@ -1606,7 +1634,8 @@ namespace PanCardView
                 view.BindingContext = null;
             }
             view.Behaviors.Remove(_contextAssignedBehavior);
-            BackViewProcessor.HandleCleanView(Enumerable.Repeat(view, 1), this);
+            BackProcessor?.HandleCleanView(Enumerable.Repeat(view, 1), this);
+            Processor?.Clean(this, new ProcessorItem { Views = Enumerable.Repeat(view, 1) });
         }
 
         private void SetItemsSource(IEnumerable oldCollection)
@@ -1753,6 +1782,24 @@ namespace PanCardView
             }
         }
 
+        private ProcessorItem[] GetAnimationProcessorItems()
+            => new ProcessorItem[]
+            {
+                new ProcessorItem
+                {
+                    IsFront = true,
+                    Views = Enumerable.Repeat(CurrentView, 1),
+                    Direction = _currentBackAnimationDirection,
+                    InactiveViews = Enumerable.Empty<View>()
+                },
+                new ProcessorItem
+                {
+                    Views = CurrentBackViews,
+                    Direction = _currentBackAnimationDirection,
+                    InactiveViews = CurrentInactiveBackViews
+                }
+            };
+
         private void InvokeOnMainThreadIfNeeded(Action action)
         {
             if (!Device.IsInvokeRequired)
@@ -1794,7 +1841,15 @@ namespace PanCardView
             {
                 return;
             }
-            FrontViewProcessor.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, value, direction, Enumerable.Empty<View>());
+            FrontProcessor?.HandlePanChanged(Enumerable.Repeat(CurrentView, 1), this, value, direction, Enumerable.Empty<View>());
+            Processor?.Change(this, value,
+                new ProcessorItem
+                {
+                    IsFront = true,
+                    Views = Enumerable.Repeat(CurrentView, 1),
+                    Direction = direction,
+                    InactiveViews = Enumerable.Empty<View>()
+                });
         }
 
         private Page FindParentPage()

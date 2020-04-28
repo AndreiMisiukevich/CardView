@@ -1,15 +1,22 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using PanCardView.Processors;
 
 namespace PanCardView
 {
     public class CubeView : CarouselView
     {
-        public CubeView() : this(new BaseCubeFrontViewProcessor(), new BaseCubeBackViewProcessor())
+        public CubeView() : this(new CarouselProcessor())
         {
         }
 
-        public CubeView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor) : base(frontViewProcessor, backViewProcessor)
+        public CubeView(IProcessor processor) : base(processor)
+        {
+        }
+
+        [Obsolete]
+        public CubeView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
+            : base(frontViewProcessor ?? new BaseCubeFrontViewProcessor(), backViewProcessor ?? new BaseCubeBackViewProcessor())
         {
         }
 

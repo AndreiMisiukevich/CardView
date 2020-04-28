@@ -1,6 +1,7 @@
 ﻿using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
+    [Obsolete]
     public class BaseCoverFlowFrontViewProcessor : BaseCarouselFrontViewProcessor
     {
         public BaseCoverFlowFrontViewProcessor()

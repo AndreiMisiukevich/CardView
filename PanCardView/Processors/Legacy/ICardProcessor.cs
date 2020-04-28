@@ -1,10 +1,12 @@
 ﻿using PanCardView.Enums;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace PanCardView.Processors
 {
+    [Obsolete]
     public interface ICardProcessor
     {
         void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection);

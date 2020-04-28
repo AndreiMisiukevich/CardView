@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using static System.Math;
 using PanCardView.Extensions;
+using System;
 
 namespace PanCardView.Processors
 {
+    [Obsolete]
     public class BaseCoverFlowBackViewProcessor : BaseCarouselBackViewProcessor
     {
         public override void HandleInitView(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection)
