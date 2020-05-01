@@ -39,10 +39,10 @@ namespace PanCardView.Processors
             {
                 if (item.IsFront)
                 {
-                    SetTranslationX(item.Views.FirstOrDefault(), 0, cardsView, true);
+                    SetTranslationX(item.Views.FirstOrDefault(), 0, cardsView, true, true);
                     continue;
                 }
-                SetTranslationX(item.Views.FirstOrDefault(), Sign((int)item.Direction) * cardsView.GetSize(), cardsView, false);
+                SetTranslationX(item.Views.FirstOrDefault(), Sign((int)item.Direction) * cardsView.GetSize(), cardsView, false, false);
             }
         }
 
@@ -50,7 +50,7 @@ namespace PanCardView.Processors
         {
             foreach (var item in items)
             {
-                SetTranslationX(item.Views.FirstOrDefault(), cardsView.GetSize(), cardsView, false, true);
+                SetTranslationX(item.Views.FirstOrDefault(), cardsView.GetSize(), cardsView, item.IsFront, false, true);
             }
         }
 
@@ -83,7 +83,7 @@ namespace PanCardView.Processors
                         xPos = Sign(xPos) * Min(Abs(xPos / 4), NoViewMaxChangeValue);
                     }
 
-                    SetTranslationX(view, xPos, cardsView);
+                    SetTranslationX(view, xPos, cardsView, true);
                     continue;
                 }
 
@@ -97,7 +97,7 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
-                SetTranslationX(view, value, cardsView);
+                SetTranslationX(view, value, cardsView, false);
             }
         }
 
@@ -122,11 +122,11 @@ namespace PanCardView.Processors
                         return Task.FromResult(true);
                     }
                     lenght = animLength;
-                    animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0));
+                    animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, true), GetTranslationX(view, cardsView), 0));
                     continue;
                 }
 
-                animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), -Sign((int)item.Direction) * cardsView.GetSize()));
+                animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, false), GetTranslationX(view, cardsView), -Sign((int)item.Direction) * cardsView.GetSize()));
             }
 
             return animation.Commit(cardsView, Path.GetRandomFileName(), 16, lenght, AnimationEasing);
@@ -153,7 +153,7 @@ namespace PanCardView.Processors
                         return Task.FromResult(true);
                     }
                     lenght = animLength;
-                    animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0));
+                    animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, true), GetTranslationX(view, cardsView), 0));
                     continue;
                 }
 
@@ -161,7 +161,7 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
-                animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), Sign((int)item.Direction) * cardsView.GetSize()));
+                animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, false), GetTranslationX(view, cardsView), Sign((int)item.Direction) * cardsView.GetSize()));
             }
 
             return animation.Commit(cardsView, Path.GetRandomFileName(), 16, lenght, AnimationEasing);
@@ -181,7 +181,7 @@ namespace PanCardView.Processors
                 view.IsVisible = true;
                 if (item.IsFront)
                 {
-                    animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), GetTranslationX(view, cardsView), 0));
+                    animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, true), GetTranslationX(view, cardsView), 0));
                     continue;
                 }
 
@@ -189,7 +189,7 @@ namespace PanCardView.Processors
                     ? cardsView.GetSize()
                     : -cardsView.GetSize();
 
-                animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView), 0, destinationPos));
+                animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, false), 0, destinationPos));
             }
             return animation.Commit(cardsView, Path.GetRandomFileName(), 16, AnimationLength, AnimationEasing);
         }
@@ -205,27 +205,11 @@ namespace PanCardView.Processors
             return value;
         }
 
-        protected virtual void SetTranslationX(View view, double value, CardsView cardsView, bool? isVisible = null, bool isClean = false)
+        protected virtual void SetTranslationX(View view, double value, CardsView cardsView, bool isFront, bool? isVisible = null, bool isClean = false)
         {
-            if (view == null)
+            if (view == null || !CheckSize(view, cardsView, value, isVisible, isFront, isClean))
             {
                 return;
-            }
-
-            lock (_viewSizeChangedMapLocker)
-            {
-                CleanViewSizeChanged(view);
-                if (cardsView.GetSize(view) < 0 && !isClean)
-                {
-                    _viewSizeChangedMap[view] = new ViewSizeInfoItem
-                    {
-                        CardsView = cardsView,
-                        Value = value,
-                        IsVisible = isVisible
-                    };
-                    view.SizeChanged += OnViewSizeChanged;
-                    return;
-                }
             }
 
             try
@@ -246,6 +230,10 @@ namespace PanCardView.Processors
                     view.TranslationY = translation;
                 }
                 view.IsVisible = isVisible ?? view.IsVisible;
+                if (isFront)
+                {
+                    cardsView.ProcessorDiff = value;
+                }
             }
             finally
             {
@@ -255,6 +243,27 @@ namespace PanCardView.Processors
 
         protected virtual double CalculateFactoredProperty(double value, double factor, CardsView cardsView, double defaultFactorValue = 1)
             => Abs(value) * (factor - defaultFactorValue) / cardsView.GetSize() + defaultFactorValue;
+
+        protected bool CheckSize(View view, CardsView cardsView, double value, bool? isVisible, bool isFront, bool isClean)
+        {
+            lock (_viewSizeChangedMapLocker)
+            {
+                CleanViewSizeChanged(view);
+                if (cardsView.GetSize(view) < 0 && !isClean)
+                {
+                    _viewSizeChangedMap[view] = new ViewSizeInfoItem
+                    {
+                        CardsView = cardsView,
+                        Value = value,
+                        IsVisible = isVisible,
+                        IsFront = isFront
+                    };
+                    view.SizeChanged += OnViewSizeChanged;
+                    return false;
+                }
+            }
+            return true;
+        }
 
         private void OnViewSizeChanged(object sender, System.EventArgs e)
         {
@@ -267,7 +276,7 @@ namespace PanCardView.Processors
                     return;
                 }
                 CleanViewSizeChanged(view);
-                SetTranslationX(view, info.Value, info.CardsView, info.IsVisible);
+                SetTranslationX(view, info.Value, info.CardsView, info.IsFront, info.IsVisible);
             }
         }
 

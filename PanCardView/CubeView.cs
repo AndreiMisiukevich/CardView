@@ -6,7 +6,7 @@ namespace PanCardView
 {
     public class CubeView : CarouselView
     {
-        public CubeView() : this(new CarouselProcessor())
+        public CubeView() : this(new CubeProcessor())
         {
         }
 
