@@ -11,13 +11,13 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
-    public class CarouselProcessor: IProcessor
+    public class CarouselProcessor : IProcessor
     {
         public uint AnimationLength { get; set; } = 300;
 
         public Easing AnimationEasing { get; set; } = Easing.SinInOut;
 
-        public double NoViewMaxChangeValue { get; set; } = 25;
+        public double NoViewMaxShiftValue { get; set; } = 25;
 
         public double ScaleFactor { get; set; } = 1;
 
@@ -50,13 +50,13 @@ namespace PanCardView.Processors
         {
             foreach (var item in items)
             {
-                SetTranslationX(item.Views.FirstOrDefault(), cardsView.GetSize(), cardsView, item.IsFront, false, true);
+                SetTranslationX(item.Views.FirstOrDefault(), cardsView.GetSize(), cardsView, false, false, true);
             }
         }
 
-        public virtual void Change(CardsView cardsView, double xPos, params ProcessorItem[] items)
+        public virtual void Change(CardsView cardsView, double value, params ProcessorItem[] items)
         {
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 var view = item.Views.FirstOrDefault();
                 var inactiveView = item.InactiveViews.FirstOrDefault();
@@ -73,17 +73,17 @@ namespace PanCardView.Processors
 
                 if (item.IsFront)
                 {
-                    if (Abs(xPos) > cardsView.GetSize() || (item.Direction == AnimationDirection.Prev && xPos < 0) || (item.Direction == AnimationDirection.Next && xPos > 0))
+                    if (Abs(value) > cardsView.GetSize() || (item.Direction == AnimationDirection.Prev && value < 0) || (item.Direction == AnimationDirection.Next && value > 0))
                     {
                         continue;
                     }
 
                     if (item.Direction == AnimationDirection.Null)
                     {
-                        xPos = Sign(xPos) * Min(Abs(xPos / 4), NoViewMaxChangeValue);
+                        value = Sign(value) * Min(Abs(value / 4), NoViewMaxShiftValue);
                     }
 
-                    SetTranslationX(view, xPos, cardsView, true);
+                    SetTranslationX(view, value, cardsView, true);
                     continue;
                 }
 
@@ -92,7 +92,7 @@ namespace PanCardView.Processors
                     continue;
                 }
 
-                var value = Sign((int)item.Direction) * cardsView.GetSize() + xPos;
+                value = Sign((int)item.Direction) * cardsView.GetSize() + value;
                 if (Abs(value) > cardsView.GetSize() || (item.Direction == AnimationDirection.Prev && value > 0) || (item.Direction == AnimationDirection.Next && value < 0))
                 {
                     continue;
@@ -104,7 +104,7 @@ namespace PanCardView.Processors
         public virtual Task Proceed(CardsView cardsView, params ProcessorItem[] items)
         {
             var animation = new AnimationWrapper();
-            var lenght = AnimationLength;
+            var animLength = AnimationLength;
             foreach (var item in items)
             {
                 var view = item.Views.FirstOrDefault();
@@ -116,12 +116,7 @@ namespace PanCardView.Processors
                 if (item.IsFront)
                 {
                     var animTimePercent = 1 - (cardsView.GetSize() - Abs(GetTranslationX(view, cardsView))) / cardsView.GetSize();
-                    var animLength = (uint)(AnimationLength * animTimePercent);
-                    if (animLength == 0)
-                    {
-                        return Task.FromResult(true);
-                    }
-                    lenght = animLength;
+                    animLength = Max((uint)(AnimationLength * animTimePercent), 1);
                     animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, true), GetTranslationX(view, cardsView), 0));
                     continue;
                 }
@@ -129,13 +124,13 @@ namespace PanCardView.Processors
                 animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, false), GetTranslationX(view, cardsView), -Sign((int)item.Direction) * cardsView.GetSize()));
             }
 
-            return animation.Commit(cardsView, Path.GetRandomFileName(), 16, lenght, AnimationEasing);
+            return animation.Commit(cardsView, Path.GetRandomFileName(), 16, animLength, AnimationEasing);
         }
 
         public virtual Task Reset(CardsView cardsView, params ProcessorItem[] items)
         {
             var animation = new AnimationWrapper();
-            var lenght = AnimationLength;
+            var animLength = AnimationLength;
             foreach (var item in items)
             {
                 var view = item.Views.FirstOrDefault();
@@ -144,27 +139,22 @@ namespace PanCardView.Processors
                     continue;
                 }
 
-                if(item.IsFront)
+                if (item.IsFront)
                 {
                     var animTimePercent = 1 - (cardsView.GetSize() - Abs(GetTranslationX(view, cardsView))) / cardsView.GetSize();
-                    var animLength = (uint)(AnimationLength * animTimePercent) * 3 / 2;
-                    if (animLength == 0)
-                    {
-                        return Task.FromResult(true);
-                    }
-                    lenght = animLength;
+                    animLength = Max((uint)(AnimationLength * animTimePercent) * 3 / 2, 1);
                     animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, true), GetTranslationX(view, cardsView), 0));
                     continue;
                 }
 
-                if (view == null || view == cardsView.CurrentView)
+                if (view == cardsView.CurrentView)
                 {
                     continue;
                 }
                 animation.Add(0, 1, new AnimationWrapper(v => SetTranslationX(view, v, cardsView, false), GetTranslationX(view, cardsView), Sign((int)item.Direction) * cardsView.GetSize()));
             }
 
-            return animation.Commit(cardsView, Path.GetRandomFileName(), 16, lenght, AnimationEasing);
+            return animation.Commit(cardsView, Path.GetRandomFileName(), 16, animLength, AnimationEasing);
         }
 
         public virtual Task Navigate(CardsView cardsView, params ProcessorItem[] items)

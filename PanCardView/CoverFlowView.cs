@@ -22,7 +22,7 @@ namespace PanCardView
 
         private bool _shouldForceHardSetCurrentView;
 
-        public CoverFlowView() : this(new CarouselProcessor())
+        public CoverFlowView() : this(new CoverFlowProcessor())
         {
         }
 
