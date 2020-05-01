@@ -8,9 +8,11 @@ using static System.Math;
 using PanCardView.Utility;
 using PanCardView.Extensions;
 using System;
+using System.ComponentModel;
 
 namespace PanCardView.Processors
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete]
     public class BaseCardBackViewProcessor : ICardBackViewProcessor
     {

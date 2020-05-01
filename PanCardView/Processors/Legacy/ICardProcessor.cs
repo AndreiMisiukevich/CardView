@@ -1,11 +1,13 @@
 ﻿using PanCardView.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace PanCardView.Processors
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete]
     public interface ICardProcessor
     {

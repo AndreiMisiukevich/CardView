@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using PanCardView.Extensions;
 using Xamarin.Forms;
 using static System.Math;
@@ -6,6 +7,7 @@ using static PanCardView.Processors.Constants;
 
 namespace PanCardView.Processors
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete]
     public class BaseCubeBackViewProcessor : BaseCarouselBackViewProcessor
     {

@@ -199,6 +199,7 @@ namespace PanCardView
             SetPanGesture();
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public CardsView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
         {
@@ -266,9 +267,11 @@ namespace PanCardView
 
         public IProcessor Processor { get; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public ICardProcessor FrontViewProcessor { get; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public ICardBackViewProcessor BackViewProcessor { get; }
 

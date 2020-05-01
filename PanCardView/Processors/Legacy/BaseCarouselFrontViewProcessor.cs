@@ -3,6 +3,7 @@ using PanCardView.Extensions;
 using PanCardView.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -11,6 +12,7 @@ using static System.Math;
 
 namespace PanCardView.Processors
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete]
     public class BaseCarouselFrontViewProcessor : ICardProcessor
     {

@@ -7,9 +7,11 @@ using Xamarin.Forms;
 using static System.Math;
 using PanCardView.Extensions;
 using System;
+using System.ComponentModel;
 
 namespace PanCardView.Processors
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete]
     public class BaseCoverFlowBackViewProcessor : BaseCarouselBackViewProcessor
     {
