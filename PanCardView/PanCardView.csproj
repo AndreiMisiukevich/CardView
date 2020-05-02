@@ -7,7 +7,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="Processors\Legacy\" />
+    <Folder Include="Processors\Deprecated\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\leftArrow.png" />
