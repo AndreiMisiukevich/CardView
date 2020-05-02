@@ -159,7 +159,7 @@ if you want to add items directly through xaml
 ...
 ```
 
-if you want to achieve scale or opacity changing effects for side views (**ScaleFactor** & **OpacityFactor**), you should mange corresponding properties in processors and pass them to view constructor via **x:Arguments**:
+if you want to achieve scale or opacity changing effects for side views (**ScaleFactor** & **OpacityFactor**), you should mange corresponding properties in processor and pass them to view constructor via **x:Arguments**:
 
 ``` xml
 <ContentPage 
@@ -174,8 +174,7 @@ if you want to achieve scale or opacity changing effects for side views (**Scale
       ItemsSource="{Binding Items}">
 
       <x:Arguments>
-          <proc:BaseCoverFlowFrontViewProcessor ScaleFactor="0.75" OpacityFactor="0.25" />
-          <proc:BaseCoverFlowBackViewProcessor  ScaleFactor="0.75" OpacityFactor="0.25" />
+          <proc:CoverFlowProcessor ScaleFactor="0.75" OpacityFactor="0.25" />
       </x:Arguments>
 
   <cards:CoverFlowView.ItemTemplate>
@@ -204,7 +203,7 @@ https://github.com/AndreiMisiukevich/CardView/blob/master/PanCardView/Styles/Def
 **MORE SAMPLES** you can find here https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardViewSample
 
 ## Custom Animations
-You are able to create custom animations, just implement *ICardProcessor* & *ICardBackViewProcessor* or extend existing processors (change animation speed or type etc.)
+You are able to create custom animations, just implement *IProcessor* or extend existing processors (change animation speed or type etc.)
 https://github.com/AndreiMisiukevich/CardView/tree/master/PanCardView/Processors
 
 
