@@ -73,7 +73,6 @@ namespace PanCardView.Processors
         public virtual async Task HandlePanReset(IEnumerable<View> views, CardsView cardsView, AnimationDirection animationDirection, IEnumerable<View> inactiveViews)
         {
             var view = views.FirstOrDefault();
-            var tcs = new TaskCompletionSource<bool>();
 
             if (!CheckIsInitialPosition(view))
             {

@@ -189,7 +189,7 @@ namespace PanCardView
         private Task _animationTask;
         private CancellationTokenSource _slideShowTokenSource;
 
-        public CardsView() : this(new CarouselProcessor())
+        public CardsView() : this(new CardsProcessor())
         {
         }
 
