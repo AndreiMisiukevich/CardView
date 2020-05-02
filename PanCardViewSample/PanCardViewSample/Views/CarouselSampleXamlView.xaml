@@ -21,8 +21,7 @@
         SelectedIndex="{Binding CurrentIndex}">
 
         <x:Arguments>
-            <proc:BaseCarouselFrontViewProcessor ScaleFactor="0.5" OpacityFactor="0" RotationFactor="0.1" />
-            <proc:BaseCarouselBackViewProcessor ScaleFactor="0.5" OpacityFactor="0" RotationFactor="0.1" />
+            <proc:CarouselProcessor ScaleFactor="0.5" OpacityFactor="0" RotationFactor="0.1" />
         </x:Arguments>
 
         <cards:CarouselView.ItemTemplate>

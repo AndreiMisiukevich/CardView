@@ -24,8 +24,7 @@
                 ItemsSource="{Binding Items}">
 
                 <x:Arguments>
-                    <proc:BaseCoverFlowFrontViewProcessor ScaleFactor="0.75" OpacityFactor="0.25" />
-                    <proc:BaseCoverFlowBackViewProcessor  ScaleFactor="0.75" OpacityFactor="0.25" />
+                    <proc:CoverFlowProcessor ScaleFactor="0.75" OpacityFactor="0.25" />
                 </x:Arguments>
 
             <cards:CoverFlowView.ItemTemplate>

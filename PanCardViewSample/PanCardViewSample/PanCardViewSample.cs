@@ -20,13 +20,13 @@ namespace PanCardViewSample
 	{
 		public StartPage()
 		{
-			var toCardsBtn = new Button { Text = "CardsView Items" };
+			var toCardsBtn = new Button { Text = "CardsView Items", FontSize = 20, TextColor = Color.Black };
 			toCardsBtn.Clicked += (sender, e) =>
 			{
 				this.Navigation.PushAsync(new CardsSampleView());
 			};
 
-			var toCoverFlowBtn = new Button { Text = "CoverFlowView" };
+			var toCoverFlowBtn = new Button { Text = "CoverFlowView", FontSize = 20, TextColor = Color.Black };
             toCoverFlowBtn.Clicked += (sender, e) =>
 			{
                 this.Navigation.PushAsync(new CoverFlowSampleXamlView());
@@ -50,7 +50,7 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CarouselSampleViewNoTemplate());
 			};
 
-			var toCarouselXamlBtn = new Button { Text = "CarouselView Xaml" };
+			var toCarouselXamlBtn = new Button { Text = "CarouselView Xaml", FontSize = 20, TextColor = Color.Black };
 			toCarouselXamlBtn.Clicked += (sender, e) =>
 			{
 				this.Navigation.PushAsync(new CarouselSampleXamlView());
@@ -68,13 +68,7 @@ namespace PanCardViewSample
 				this.Navigation.PushAsync(new CarouselSampleEmbeddedView());
 			};
 
-            var toPanBtn = new Button { Text = "Panorama Xaml" };
-            toPanBtn.Clicked += (sender, e) =>
-            {
-                this.Navigation.PushAsync(new PanoramaSampleView());
-            };
-
-            var toCubeBtn = new Button { Text = "CubeView Xaml" };
+            var toCubeBtn = new Button { Text = "CubeView Xaml", FontSize = 20, TextColor = Color.Black };
             toCubeBtn.Clicked += (sender, e) =>
             {
                 this.Navigation.PushAsync(new CubeSampleXamlView());
@@ -86,15 +80,14 @@ namespace PanCardViewSample
 				{
 					Children = {
 						toCardsBtn,
-                        toCoverFlowBtn,
+						toCarouselXamlBtn,
+						toCoverFlowBtn,
+						toCubeBtn,
 						toCarouselScrollBtn,
 						toCarouselDoubleBtn,
 						toCarouselNoTemplateBtn,
-						toCarouselXamlBtn,
 						toCarouselListBtn,
-						toCarouselEmbBtn,
-                        toPanBtn,
-                        toCubeBtn
+						toCarouselEmbBtn
                     }
 				}
 			};
