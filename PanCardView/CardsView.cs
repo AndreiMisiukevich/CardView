@@ -841,7 +841,6 @@ namespace PanCardView
             await (_animationTask = autoNavigationTask);
             PerformUWPFrontViewProcessorHandlePanChanged(0, realDirection);
             EndAutoNavigation(views, animationId, animationDirection);
-
             return true;
         }
 
@@ -1048,7 +1047,6 @@ namespace PanCardView
                     }
                 }
             }
-
             IsAutoInteractionRunning = false;
             RemoveRedundantChildren(isProcessingNow);
             FireItemAppeared(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
@@ -1735,6 +1733,11 @@ namespace PanCardView
 
         private void RemoveRedundantChildren(bool isProcessingNow)
         {
+            if (!isProcessingNow && BackViewsDepth > 1)
+            {
+                SetupBackViews();
+            }
+
             var maxChildrenCount = isProcessingNow
                 ? MaxChildrenCount
                 : DesiredMaxChildrenCount;
