@@ -1048,7 +1048,7 @@ namespace PanCardView
                 }
             }
             IsAutoInteractionRunning = false;
-            RemoveRedundantChildren(isProcessingNow);
+            CompleteInteraction(isProcessingNow, true);
             FireItemAppeared(InteractionType.Auto, animationDirection != AnimationDirection.Prev, SelectedIndex);
             _interactions.Remove(animationId);
         }
@@ -1280,7 +1280,7 @@ namespace PanCardView
                 }
             }
 
-            RemoveRedundantChildren(isProcessingNow);
+            CompleteInteraction(isProcessingNow, isNextSelected.HasValue);
 
             _interactions.Remove(gestureId);
         }
@@ -1701,6 +1701,15 @@ namespace PanCardView
             SelectedIndex = index;
         }
 
+        private void CompleteInteraction(bool isProcessingNow, bool isNewItemSelected)
+        {
+            if (!isProcessingNow && isNewItemSelected && BackViewsDepth > 1)
+            {
+                SetupBackViews();
+            }
+            RemoveRedundantChildren(isProcessingNow);
+        }
+
         private void AddChildren(View topView = null, params View[] views)
         {
             InvokeOnMainThreadIfNeeded(() =>
@@ -1733,11 +1742,6 @@ namespace PanCardView
 
         private void RemoveRedundantChildren(bool isProcessingNow)
         {
-            if (!isProcessingNow && BackViewsDepth > 1)
-            {
-                SetupBackViews();
-            }
-
             var maxChildrenCount = isProcessingNow
                 ? MaxChildrenCount
                 : DesiredMaxChildrenCount;
