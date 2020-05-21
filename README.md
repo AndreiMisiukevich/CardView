@@ -26,10 +26,12 @@
   <table style="width:100%">
     <tr>
       <th>ScaleFactor & OpacityFactor</th>
+      <th>ScaleFactory & OpacityFactor [2]</th>
       <th>TabsControl</th>
     </tr>
     <tr>
       <td><img src="https://media.giphy.com/media/S9EVF6Xzq6K488rr5B/giphy.gif"></td>
+      <td><img height="480" src="https://github.com/AndreiMisiukevich/AvengersCards/blob/master/example.gif?raw=true"></td>
       <td><img src="https://media.giphy.com/media/JNxG5fFS1pa886U9N0/giphy.gif"></td>
     </tr>
   </table>
