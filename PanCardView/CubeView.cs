@@ -14,6 +14,7 @@ namespace PanCardView
         {
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public CubeView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
             : base(frontViewProcessor ?? new BaseCubeFrontViewProcessor(), backViewProcessor ?? new BaseCubeBackViewProcessor())

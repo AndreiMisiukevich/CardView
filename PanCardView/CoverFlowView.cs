@@ -30,6 +30,7 @@ namespace PanCardView
         {
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public CoverFlowView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
             : base(frontViewProcessor ?? new BaseCoverFlowFrontViewProcessor(), backViewProcessor ?? new BaseCoverFlowBackViewProcessor())

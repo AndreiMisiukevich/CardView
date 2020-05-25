@@ -15,6 +15,7 @@ namespace PanCardView
             IsClippedToBounds = true;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public CarouselView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
             : base(frontViewProcessor ?? new BaseCarouselFrontViewProcessor(), backViewProcessor ?? new BaseCarouselBackViewProcessor())
