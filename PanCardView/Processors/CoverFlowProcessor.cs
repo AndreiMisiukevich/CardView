@@ -19,6 +19,7 @@ namespace PanCardView.Processors
 
         public override void Init(CardsView cardsView, params ProcessorItem[] items)
         {
+            var step = GetStep(cardsView);
             foreach (var item in items)
             {
                 if (item.IsFront)
@@ -36,7 +37,7 @@ namespace PanCardView.Processors
                     }
                     SetTranslationX(view, Sign((int)item.Direction)
                         * (cardsView.IsRightToLeftFlowDirectionEnabled ? -1 : 1)
-                        * GetStep(cardsView)
+                        * step
                         * index, cardsView, false, true);
                 }
             }
@@ -52,11 +53,12 @@ namespace PanCardView.Processors
 
         public override void Change(CardsView cardsView, double value, params ProcessorItem[] items)
         {
+            var step = GetStep(cardsView);
             foreach (var item in items)
             {
                 var view = item.Views.FirstOrDefault();
 
-                if (Abs(value) > GetStep(cardsView) || (item.Direction == AnimationDirection.Prev && value < 0) || (item.Direction == AnimationDirection.Next && value > 0))
+                if (Abs(value) > step || (item.Direction == AnimationDirection.Prev && value < 0) || (item.Direction == AnimationDirection.Next && value > 0))
                 {
                     return;
                 }
@@ -91,8 +93,6 @@ namespace PanCardView.Processors
                     continue;
                 }
 
-                var step = GetStep(cardsView);
-
                 var otherViews = item.Views.Union(item.InactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
                 ProceedPositionChanged(Sign((int)item.Direction) * step + value, view, otherViews, cardsView);
             }
@@ -100,6 +100,7 @@ namespace PanCardView.Processors
 
         public override Task Navigate(CardsView cardsView, params ProcessorItem[] items)
         {
+            var step = GetStep(cardsView);
             var animation = new AnimationWrapper();
             foreach (var item in items)
             {
@@ -116,7 +117,7 @@ namespace PanCardView.Processors
                 }
 
                 var otherViews = item.Views.Union(item.InactiveViews ?? Enumerable.Empty<View>()).Except(Enumerable.Repeat(view, 1));
-                animation.Add(0, 1, new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews, cardsView), 0, -Sign((int)item.Direction) * GetStep(cardsView)));
+                animation.Add(0, 1, new AnimationWrapper(v => ProceedPositionChanged(v, view, otherViews, cardsView), 0, -Sign((int)item.Direction) * step));
 
             }
             return animation.Commit(cardsView, Path.GetRandomFileName(), 16, AnimationLength, AnimationEasing);
@@ -124,10 +125,9 @@ namespace PanCardView.Processors
 
         public override Task Proceed(CardsView cardsView, params ProcessorItem[] items)
         {
+            var step = GetStep(cardsView);
             var animation = new AnimationWrapper();
             var animLength = AnimationLength;
-            var step = GetStep(cardsView);
-
             foreach (var item in items)
             {
                 var view = item.Views.FirstOrDefault();
@@ -152,10 +152,9 @@ namespace PanCardView.Processors
 
         public override Task Reset(CardsView cardsView, params ProcessorItem[] items)
         {
+            var step = GetStep(cardsView);
             var animation = new AnimationWrapper();
             var animLength = AnimationLength;
-            var step = GetStep(cardsView);
-
             foreach (var item in items)
             {
                 var view = item.Views.FirstOrDefault();
