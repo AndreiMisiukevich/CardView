@@ -14,7 +14,6 @@ namespace PanCardView.Controls
 
         public CircleFrame()
         {
-            HasShadow = false;
             VerticalOptions = LayoutOptions.Center;
             HorizontalOptions = LayoutOptions.Center;
             HasShadow = false;
