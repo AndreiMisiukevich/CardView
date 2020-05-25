@@ -1208,14 +1208,10 @@ namespace PanCardView
 
             if (IsEnabled && _currentBackAnimationDirection != AnimationDirection.Null)
             {
-                var checkSwipe = CheckPanSwipe();
-                if (checkSwipe.HasValue)
+                if (absDiff > RealMoveDistance || CheckPanSwipe())
                 {
-                    if (checkSwipe.Value || absDiff > RealMoveDistance)
-                    {
-                        isNextSelected = diff < 0;
-                        FireItemSwiped(isNextSelected.Value ? ItemSwipeDirection.Left : ItemSwipeDirection.Right, oldIndex);
-                    }
+                    isNextSelected = diff < 0;
+                    FireItemSwiped(isNextSelected.Value ? ItemSwipeDirection.Left : ItemSwipeDirection.Right, oldIndex);
                 }
             }
 
@@ -1292,14 +1288,9 @@ namespace PanCardView
             Abs((DateTime.UtcNow - _lastPanTime).TotalMilliseconds) >= UserInteractionDelay &&
             (!IsUserInteractionInCourse || (_animationTask?.IsCompleted ?? true));
 
-        private bool? CheckPanSwipe()
+        private bool CheckPanSwipe()
         {
-            if (!IsPanSwipeEnabled)
-            {
-                return null;
-            }
-
-            if (_timeDiffItems.Count < 2)
+            if (!IsPanSwipeEnabled || _timeDiffItems.Count < 2)
             {
                 return false;
             }
@@ -1311,7 +1302,7 @@ namespace PanCardView
 
             if (Sign(distDiff) != Sign(lastItem.Diff))
             {
-                return null;
+                return false;
             }
 
             var absDistDiff = Abs(distDiff);
