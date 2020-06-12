@@ -101,7 +101,13 @@ namespace PanCardView.Processors
                 {
 
                     view.IsVisible = true;
-                    animations.Add(new AnimationWrapper(v => view.Scale = v, view.Scale, 1).Commit(view, Path.GetRandomFileName(), 16, AnimationLength, AnimationEasing));
+                    animations.Add(new AnimationWrapper(v => {
+                        if (double.IsNaN(v))
+                        {
+                            return;
+                        }
+                        view.Scale = v;
+                    }, view.Scale, 1).Commit(view, Path.GetRandomFileName(), 16, AnimationLength, AnimationEasing));
                     continue;
                 }
 
@@ -173,7 +179,13 @@ namespace PanCardView.Processors
                 {
                     continue;
                 }
-                animation.Add(0, 1, new AnimationWrapper(v => view.Scale = v, view.Scale, BackViewInitialScale));
+                animation.Add(0, 1, new AnimationWrapper(v => {
+                    if(double.IsNaN(v))
+                    {
+                        return;
+                    }
+                    view.Scale = v;
+                }, view.Scale, BackViewInitialScale));
             }
             await animation.Commit(cardsView, Path.GetRandomFileName(), 16, animLength, AnimationEasing);
             onFinish?.Invoke();

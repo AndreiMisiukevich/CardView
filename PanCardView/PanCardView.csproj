@@ -3,7 +3,7 @@
     <TargetFrameworks>netstandard2.0;netstandard1.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.847" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
