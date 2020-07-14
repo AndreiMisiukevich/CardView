@@ -28,7 +28,7 @@ namespace PanCardViewSample.Views
 			var nextItem = new ToolbarItem
 			{
 				Text = "**Next**",
-				IconImageSource = Device.RuntimePlatform != Device.Tizen ? "next" : "next.png",
+				IconImageSource = "next.png",
 				CommandParameter = true
 			};
 			nextItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
