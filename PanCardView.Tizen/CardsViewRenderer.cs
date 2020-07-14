@@ -30,7 +30,6 @@ namespace PanCardView.Tizen
             Initialize();
         }
 
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
