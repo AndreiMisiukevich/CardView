@@ -17,7 +17,6 @@ using System.Runtime.CompilerServices;
 using PanCardView.EventArgs;
 using PanCardView.Delegates;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace PanCardView
 {
