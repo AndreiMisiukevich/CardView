@@ -20,6 +20,9 @@ namespace PanCardViewSample
 	{
 		public StartPage()
 		{
+			Title = "PanCardViewSample";
+			BackgroundColor = Color.White;
+
 			var toCardsBtn = new Button { Text = "CardsView Items", FontSize = 20, TextColor = Color.Black };
 			toCardsBtn.Clicked += (sender, e) =>
 			{
@@ -78,6 +81,7 @@ namespace PanCardViewSample
 			{
 				Content = new StackLayout
 				{
+					Margin = 20,
 					Children = {
 						toCardsBtn,
 						toCarouselXamlBtn,

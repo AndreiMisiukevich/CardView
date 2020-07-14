@@ -1,14 +1,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardViewSample", "PanCardViewSample\PanCardViewSample.csproj", "{38EB6700-89D2-4DB8-978E-20AFEF8766A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanCardViewSample", "PanCardViewSample\PanCardViewSample.csproj", "{38EB6700-89D2-4DB8-978E-20AFEF8766A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardViewSample.iOS", "iOS\PanCardViewSample.iOS.csproj", "{FF9DDA8B-0FDD-48BC-8B8D-E1A2CE4F1F60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardViewSample.Droid", "Droid\PanCardViewSample.Droid.csproj", "{085CD104-EC22-43A7-A79F-78FC9FE58DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardView", "..\PanCardView\PanCardView.csproj", "{662BF768-43C5-4A71-8F1E-7FA54DD6157A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanCardView", "..\PanCardView\PanCardView.csproj", "{662BF768-43C5-4A71-8F1E-7FA54DD6157A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardView.Droid", "..\PanCardView.Droid\PanCardView.Droid.csproj", "{47A15982-1485-4E70-8440-84EFBA28C584}"
 EndProject
@@ -19,6 +19,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardViewSample.MacOS", "MacOS\PanCardViewSample.MacOS.csproj", "{5B661715-3851-4F6E-9C4B-9E308AF2B5C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanCardViewSample.Gtk", "Gtk\PanCardViewSample.Gtk.csproj", "{88EA9AEA-D833-47D2-9B27-38991F20F5EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanCardViewSample.Tizen", "Tizen\PanCardViewSample.Tizen.csproj", "{2180A0B2-D5D9-442C-B968-7E03F0AB3853}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanCardView.Tizen", "..\PanCardView.Tizen\PanCardView.Tizen.csproj", "{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -254,6 +258,54 @@ Global
 		{88EA9AEA-D833-47D2-9B27-38991F20F5EE}.Release|x64.Build.0 = Release|Any CPU
 		{88EA9AEA-D833-47D2-9B27-38991F20F5EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{88EA9AEA-D833-47D2-9B27-38991F20F5EE}.Release|x86.Build.0 = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|ARM.Build.0 = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|x64.Build.0 = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Debug|x86.Build.0 = Debug|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|ARM.Build.0 = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|iPhone.Build.0 = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|x64.ActiveCfg = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|x64.Build.0 = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|x86.ActiveCfg = Release|Any CPU
+		{2180A0B2-D5D9-442C-B968-7E03F0AB3853}.Release|x86.Build.0 = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|ARM.Build.0 = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|x64.Build.0 = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Debug|x86.Build.0 = Debug|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|ARM.ActiveCfg = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|ARM.Build.0 = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|iPhone.Build.0 = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|x64.ActiveCfg = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|x64.Build.0 = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|x86.ActiveCfg = Release|Any CPU
+		{4DE477BB-C621-4DE4-AD6E-DF73DB28FA62}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -265,34 +317,27 @@ Global
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
-		$0.TextStylePolicy = $2
+		$0.TextStylePolicy = $17
 		$2.scope = text/x-csharp
 		$2.FileWidth = 80
 		$2.TabsToSpaces = True
 		$0.CSharpFormattingPolicy = $3
 		$3.scope = text/x-csharp
-		$0.TextStylePolicy = $4
 		$4.FileWidth = 80
 		$4.TabsToSpaces = True
 		$4.scope = text/plain
-		$0.TextStylePolicy = $5
 		$5.inheritsSet = null
 		$5.scope = application/config+xml
-		$0.XmlFormattingPolicy = $6
+		$0.XmlFormattingPolicy = $18
 		$6.inheritsSet = null
 		$6.scope = application/config+xml
-		$0.TextStylePolicy = $7
 		$7.inheritsSet = null
 		$7.scope = application/xml
-		$0.XmlFormattingPolicy = $8
 		$8.scope = application/xml
-		$0.TextStylePolicy = $9
 		$9.inheritsSet = null
 		$9.scope = application/xaml+xml
-		$0.XmlFormattingPolicy = $10
 		$10.inheritsSet = null
 		$10.scope = application/xaml+xml
-		$0.TextStylePolicy = $11
 		$11.inheritsSet = null
 		$11.scope = text/x-json
 		$0.JSONFormattingPolicy = $12
@@ -300,22 +345,16 @@ Global
 		$12.BracePositions = SemiExpanded
 		$12.FormatOnPaste = True
 		$12.scope = text/x-json
-		$0.TextStylePolicy = $13
 		$13.inheritsSet = null
 		$13.scope = text/x-web
-		$0.TextStylePolicy = $14
 		$14.inheritsSet = null
 		$14.scope = text/x-vs
-		$0.TextStylePolicy = $15
 		$15.inheritsSet = null
 		$15.scope = application/vnd.apple-xcode-storyboard
-		$0.XmlFormattingPolicy = $16
 		$16.inheritsSet = null
 		$16.scope = application/vnd.apple-xcode-storyboard
-		$0.TextStylePolicy = $17
 		$17.inheritsSet = null
 		$17.scope = application/android+xml
-		$0.XmlFormattingPolicy = $18
 		$18.inheritsSet = null
 		$18.scope = application/android+xml
 		$0.StandardHeader = $19
