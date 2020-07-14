@@ -5,7 +5,7 @@ using PanCardView.Tizen;
 
 namespace PanCardViewSample.Tizen
 {
-    class Program :FormsApplication
+    class Program : FormsApplication
     {
         protected override void OnCreate()
         {
