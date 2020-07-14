@@ -20,7 +20,7 @@ namespace PanCardViewSample.Views
 			var prevItem = new ToolbarItem
 			{
 				Text = "**Prev**",
-				IconImageSource = Device.RuntimePlatform != Device.Tizen ? "prev" : "prev.png",
+				IconImageSource = "prev.png",
 				CommandParameter = false
 			};
 			prevItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
