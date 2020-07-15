@@ -1600,7 +1600,7 @@ namespace PanCardView
 
             if (currentIndex < backIndex)
             {
-                ExecutePreventInvalidOperationException(() => LowerChild(view));
+                ExecutePreventException(() => LowerChild(view));
             }
         }
 
@@ -1725,7 +1725,7 @@ namespace PanCardView
                             ? Children.IndexOf(topView)
                             : 0;
 
-                        ExecutePreventInvalidOperationException(() => Children.Insert(index, view));
+                        ExecutePreventException(() => Children.Insert(index, view));
                     }
                 }
             });
@@ -1773,7 +1773,7 @@ namespace PanCardView
             _viewsChildrenCount -= views.Length;
             foreach (var view in views)
             {
-                ExecutePreventInvalidOperationException(() => Children.Remove(view));
+                ExecutePreventException(() => Children.Remove(view));
                 CleanView(view);
             }
 
@@ -1811,13 +1811,13 @@ namespace PanCardView
             Device.BeginInvokeOnMainThread(action);
         }
 
-        private void ExecutePreventInvalidOperationException(Action action)
+        private void ExecutePreventException(Action action)
         {
             try
             {
                 action?.Invoke();
             }
-            catch (Exception)
+            catch
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -1825,10 +1825,10 @@ namespace PanCardView
                     {
                         action?.Invoke();
                     }
-                    catch (InvalidOperationException)
+                    catch
                     {
 #if NETSTANDARD2_0
-                        Console.WriteLine("CardsView: Couldn't handle InvalidOperationException");
+                        Console.WriteLine("CardsView: Unhandled Exception occurred during the interaction with Children collection.");
 #endif
                     }
                 });
