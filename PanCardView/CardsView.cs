@@ -981,7 +981,7 @@ namespace PanCardView
                 GestureRecognizers.Add(_panGesture);
             }
 
-            if (Device.RuntimePlatform == Device.GTK || Device.RuntimePlatform == Device.Tizen)
+            if (Device.RuntimePlatform == Device.GTK)
             {
                 var lastTapTime = DateTime.MinValue;
                 const int delay = 200;
@@ -1817,7 +1817,7 @@ namespace PanCardView
             {
                 action?.Invoke();
             }
-            catch (InvalidOperationException)
+            catch (Exception)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {

@@ -65,6 +65,7 @@
 
     <!--Tizen-->
     <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\tizen40\PanCardView.dll" />
+    <file src="PanCardView.Tizen\bin\Release\tizen40\PanCardView.Tizen.dll" target="lib\tizen40\PanCardView.Tizen.dll" />
 
     <!--GTK-->
     <file src="PanCardView\bin\Release\netstandard2.0\PanCardView.dll" target="lib\net46\PanCardView.dll" />

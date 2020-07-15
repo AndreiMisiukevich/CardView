@@ -20,7 +20,7 @@ namespace PanCardViewSample.Views
 			var prevItem = new ToolbarItem
 			{
 				Text = "**Prev**",
-				IconImageSource = "prev",
+				IconImageSource = "prev.png",
 				CommandParameter = false
 			};
 			prevItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
@@ -28,7 +28,7 @@ namespace PanCardViewSample.Views
 			var nextItem = new ToolbarItem
 			{
 				Text = "**Next**",
-				IconImageSource = "next",
+				IconImageSource = "next.png",
 				CommandParameter = true
 			};
 			nextItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));

@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>tizen40</TargetFramework>
+    <TargetFrameworkIdentifier>Tizen</TargetFrameworkIdentifier>
+    <RootNamespace>PanCardView.Tizen</RootNamespace>
+    <AssemblyTitle>PanCardView.Tizen</AssemblyTitle>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.847" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PanCardView\PanCardView.csproj" />
+  </ItemGroup>
+
+</Project>

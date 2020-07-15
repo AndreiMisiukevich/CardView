@@ -42,7 +42,7 @@ namespace PanCardViewSample.ViewModels
 		private ICommand _command;
 		public ICommand Command => _command ?? (_command = new Command(() =>
 		{
-			Application.Current.MainPage.DisplayAlert("Tap", null, "Ok");
+			Application.Current.MainPage.DisplayAlert("Tap", "", "Ok");
 		}));
 	}
 }
