@@ -570,7 +570,9 @@ namespace PanCardView
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void OnPanUpdated(PanUpdatedEventArgs e)
         {
-            if (IsPanControlledByChild || ShouldParentHandleTouch(e))
+            var statusType = e.StatusType;
+
+            if (IsPanControlledByChild || ShouldParentHandleTouch(statusType))
             {
                 return;
             }
@@ -586,30 +588,29 @@ namespace PanCardView
             if (ItemsCount <= 0 || !IsPanInteractionEnabled)
             {
                 OnTouchChanged(diff, oppositeDirectionDiff);
-                SetParentTouchHandlerIfNeeded(e);
+                SetParentTouchHandlerIfNeeded(statusType);
                 OnTouchChanged(0, 0);
                 return;
             }
-
-            SetParentCardsViewView(e);
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
+                    SetParentCardsViewOption();
                     OnTouchStarted();
                     return;
                 case GestureStatus.Running:
                     OnTouchChanged(diff, oppositeDirectionDiff);
-                    SetParentTouchHandlerIfNeeded(e);
+                    SetParentTouchHandlerIfNeeded(statusType);
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform == Device.Android)
                     {
                         OnTouchChanged(diff, oppositeDirectionDiff, true);
-                        SetParentTouchHandlerIfNeeded(e);
+                        SetParentTouchHandlerIfNeeded(statusType);
                     }
                     OnTouchEnded();
-                    ClearParentCardsViewView();
+                    ClearParentCardsViewOption();
                     return;
             }
         }
@@ -637,15 +638,17 @@ namespace PanCardView
                 var haveItems = (isLeftSwiped && NextViews.Any()) || (!isLeftSwiped && PrevViews.Any());
                 var isAndroid = Device.RuntimePlatform == Device.Android;
 
-                _parentCardsViewOption = new Optional<CardsView>(FindParentElement<CardsView>());
-                if (!haveItems)
+                var parentCardsViewOption = new Optional<CardsView>(FindParentElement<CardsView>());
+                if (!haveItems && parentCardsViewOption?.Value != null)
                 {
-                    _parentCardsViewOption.Value?.OnSwiped(swipeDirection);
-                    _parentCardsViewOption = null;
+                    if (!isAndroid || IsPanSwipeEnabled)
+                    {
+                        parentCardsViewOption.Value.OnSwiped(swipeDirection);
+                    }
                     return;
                 }
 
-                if (IsPanSwipeEnabled && haveItems && isAndroid)
+                if (IsPanSwipeEnabled && isAndroid && haveItems)
                 {
                     return;
                 }
@@ -1306,17 +1309,20 @@ namespace PanCardView
             _interactions.Remove(gestureId);
         }
 
-        private bool ShouldParentHandleTouch(PanUpdatedEventArgs e)
+        private bool ShouldParentHandleTouch(GestureStatus satusType)
         {
             var result = _parentCardsViewTouchHandlerOption?.Value != null;
-            if (e.StatusType == GestureStatus.Canceled || e.StatusType == GestureStatus.Completed)
+            switch(satusType)
             {
-                ClearParentCardsViewView();
+                case GestureStatus.Canceled:
+                case GestureStatus.Completed:
+                    ClearParentCardsViewOption();
+                    break;
             }
             return result;
         }
 
-        private void SetParentTouchHandlerIfNeeded(PanUpdatedEventArgs e)
+        private void SetParentTouchHandlerIfNeeded(GestureStatus statusType)
         {
             if (CurrentDiff == 0 || _parentCardsViewTouchHandlerOption != null)
             {
@@ -1334,13 +1340,17 @@ namespace PanCardView
 
             _parentCardsViewOption.Value.IsPanControlledByChild = false;
             OnTouchChanged(0, 0, true);
-            if (e.StatusType != GestureStatus.Canceled && e.StatusType != GestureStatus.Completed)
+
+            switch(statusType)
             {
-                OnTouchEnded();
+                case GestureStatus.Started:
+                case GestureStatus.Running:
+                    OnTouchEnded();
+                    break;
             }
         }
 
-        private void SetParentCardsViewView(PanUpdatedEventArgs e)
+        private void SetParentCardsViewOption()
         {
             if (_parentCardsViewOption != null)
             {
@@ -1357,7 +1367,7 @@ namespace PanCardView
             _parentCardsViewOption.Value.IsPanControlledByChild = true;
         }
 
-        private void ClearParentCardsViewView()
+        private void ClearParentCardsViewOption()
         {
             if (_parentCardsViewOption?.Value != null)
             {
