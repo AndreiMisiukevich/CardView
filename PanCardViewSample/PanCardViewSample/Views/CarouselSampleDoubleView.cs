@@ -12,7 +12,10 @@ namespace PanCardViewSample.Views
 			var cardsView = new CardCarouselView
 			{
 				IsCyclical = false,
-				ItemTemplate = new DataTemplate(GetCardItem),
+				IsViewReusingEnabled = false,
+				DesiredMaxChildrenCount = 20,
+				MaxChildrenCount = 20,
+				ItemTemplate = new DataTemplate(GetCardItem)
 			};
 			cardsView.SetBinding(CardsView.ItemsSourceProperty, "Items");
 			cardsView.SetBinding(CardsView.SelectedIndexProperty, "CurrentIndex");
@@ -41,6 +44,9 @@ namespace PanCardViewSample.Views
 			var cardsView = new CardCarouselView
 			{
 				IsCyclical = false,
+				IsViewReusingEnabled = false,
+				DesiredMaxChildrenCount = 20,
+				MaxChildrenCount = 20,
 				ItemTemplate = new DataTemplate(() =>
 				{
 					var subCard = new ContentView();

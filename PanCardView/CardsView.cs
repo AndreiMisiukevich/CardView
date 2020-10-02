@@ -1311,7 +1311,6 @@ namespace PanCardView
             var result = _parentCardsViewTouchHandlerOption?.Value != null;
             if (e.StatusType == GestureStatus.Canceled || e.StatusType == GestureStatus.Completed)
             {
-                _parentCardsViewTouchHandlerOption = null;
                 ClearParentCardsViewView();
             }
             return result;
@@ -1365,6 +1364,8 @@ namespace PanCardView
                 _parentCardsViewOption.Value.IsPanControlledByChild = false;
             }
 
+            IsPanControlledByChild = false;
+            _parentCardsViewTouchHandlerOption = null;
             _parentCardsViewOption = null;
         }
 

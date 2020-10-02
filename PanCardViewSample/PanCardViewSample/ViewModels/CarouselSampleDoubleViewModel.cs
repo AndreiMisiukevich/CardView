@@ -48,13 +48,13 @@ namespace PanCardViewSample.ViewModels
 
 		public int Number { get; }
 
-		public ObservableCollection<object> Items { get; } = new ObservableCollection<object>
+		public ObservableCollection<ColorItem> Items { get; } = new ObservableCollection<ColorItem>
 		{
-			new
+			new ColorItem
 			{
 				Color = Color.Yellow
 			},
-			new
+			new ColorItem
 			{
 				Color = Color.Red
 			}
@@ -70,4 +70,9 @@ namespace PanCardViewSample.ViewModels
 			}
 		}
 	}
+
+	public class ColorItem
+    {
+		public Color Color { get; set; }
+    }
 }
