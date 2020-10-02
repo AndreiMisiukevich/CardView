@@ -15,15 +15,9 @@ namespace PanCardView.Droid
     [Preserve(AllMembers = true)]
     public class CardsViewRenderer : VisualElementRenderer<CardsView>
     {
-        private static readonly Random _randomGenerator = new Random();
-        private static Guid? _lastTouchHandlerId;
-
-        public static bool IsTouchHandled { get; private set; }
-
         public static int SwipeThreshold { get; set; } = 100;
         public static int SwipeVelocityThreshold { get; set; } = 1200;
 
-        private int _gestureId;
         private Guid _elementId;
         private bool _panStarted;
         private float? _startX;
@@ -41,7 +35,7 @@ namespace PanCardView.Droid
         {
             DetectEvent(ev);
 
-            if (!Element.IsPanInteractionEnabled || Element.ShouldThrottlePanInteraction)
+            if (Element.IsPanControlledByChild || !Element.IsPanInteractionEnabled || Element.ShouldThrottlePanInteraction)
             {
                 base.OnInterceptTouchEvent(ev);
                 return false;
@@ -49,11 +43,6 @@ namespace PanCardView.Droid
 
             if (ev.ActionMasked == MotionEventActions.Move)
             {
-                if (_lastTouchHandlerId.HasValue && _lastTouchHandlerId != _elementId)
-                {
-                    return false;
-                }
-
                 return SetIsTouchHandled(GetTotalX(ev), GetTotalY(ev));
             }
 
@@ -130,7 +119,7 @@ namespace PanCardView.Droid
 
             Element.IsUserInteractionRunning |= isHandled;
             Parent?.RequestDisallowInterceptTouchEvent(isHandled);
-            return IsTouchHandled = isHandled;
+            return isHandled;
         }
 
         private void HandleDownUpEvents(MotionEvent ev)
@@ -153,10 +142,8 @@ namespace PanCardView.Droid
             var yDelta = GetTotalY(ev);
             UpdatePan(isUpAction ? GestureStatus.Completed : GestureStatus.Canceled, xDelta, yDelta);
             _panStarted = false;
-            _lastTouchHandlerId = null;
 
             Parent?.RequestDisallowInterceptTouchEvent(false);
-            IsTouchHandled = false;
 
             _startX = null;
             _startY = null;
@@ -168,13 +155,11 @@ namespace PanCardView.Droid
             {
                 return;
             }
-            _gestureId = _randomGenerator.Next();
             _startX = ev.GetX();
             _startY = ev.GetY();
 
             UpdatePan(GestureStatus.Started);
             _panStarted = true;
-            _lastTouchHandlerId = _elementId;
         }
 
         private void UpdatePan(GestureStatus status, double totalX = 0, double totalY = 0)
@@ -183,7 +168,7 @@ namespace PanCardView.Droid
         private void OnSwiped(ItemSwipeDirection swipeDirection) => Element.OnSwiped(swipeDirection);
 
         private PanUpdatedEventArgs GetPanUpdatedEventArgs(GestureStatus status, double totalX = 0, double totalY = 0)
-        => new PanUpdatedEventArgs(status, _gestureId, totalX, totalY);
+        => new PanUpdatedEventArgs(status, 0, totalX, totalY);
 
         private float GetTotalX(MotionEvent ev) => (ev.GetX() - _startX.GetValueOrDefault()) / Context.Resources.DisplayMetrics.Density;
 
