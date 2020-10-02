@@ -18,7 +18,6 @@ namespace PanCardView.Droid
         public static int SwipeThreshold { get; set; } = 100;
         public static int SwipeVelocityThreshold { get; set; } = 1200;
 
-        private Guid _elementId;
         private bool _panStarted;
         private float? _startX;
         private float? _startY;
@@ -76,7 +75,6 @@ namespace PanCardView.Droid
             if (e.NewElement != null)
             {
                 _panStarted = false;
-                _elementId = Guid.NewGuid();
             }
         }
 
@@ -133,6 +131,7 @@ namespace PanCardView.Droid
             var action = ev.ActionMasked;
             var isUpAction = action == MotionEventActions.Up;
             var isCancelAction = action == MotionEventActions.Cancel;
+
             if (!_panStarted || (!isUpAction && !isCancelAction))
             {
                 return;
