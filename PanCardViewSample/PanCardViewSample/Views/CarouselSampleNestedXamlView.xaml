@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+             xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="PanCardViewSample.Views.CarouselSampleNestedXamlView">
+
+    <ContentPage.Resources>
+        <Style x:Key="CarouselStyle" TargetType="cards:CarouselView">
+            <Setter Property="IsCyclical" Value="False" />
+            <Setter Property="MaxChildrenCount" Value="15" />
+            <Setter Property="DesiredMaxChildrenCount" Value="15" />
+            <Setter Property="IsViewReusingEnabled" Value="False" />
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+        </Style>
+
+        <DataTemplate x:Key="NestedItemTemplate">
+            <AbsoluteLayout BackgroundColor="{Binding Color}">
+                <ffimage:CachedImage Source="{Binding Source}"
+                                     Aspect="AspectFill"
+                                     AbsoluteLayout.LayoutFlags="All"
+                                     AbsoluteLayout.LayoutBounds="0, 0, 1, 1"/>
+
+                <Label Text="{Binding Text}"
+                       TextColor="White"
+                       BackgroundColor="#66000000"
+                       Style="{StaticResource LabelStyle}"
+                       AbsoluteLayout.LayoutFlags="All"
+                       AbsoluteLayout.LayoutBounds="0, 0, 1, 1"/>
+            </AbsoluteLayout>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TopItemTemplate">
+            <AbsoluteLayout BackgroundColor="{Binding Color}">
+                <cards:CarouselView Style="{StaticResource CarouselStyle}"
+                                    ItemTemplate="{StaticResource NestedItemTemplate}"
+                                    ItemsSource="{Binding Items}"
+                                    AbsoluteLayout.LayoutFlags="All"
+                                    AbsoluteLayout.LayoutBounds="0, 0, 1, 0.5" />
+
+                <Label Text="{Binding Text}"
+                       TextColor="Black"
+                       Style="{StaticResource LabelStyle}"
+                       AbsoluteLayout.LayoutFlags="All"
+                       AbsoluteLayout.LayoutBounds="0, 1, 1, 0.5"/>
+
+            </AbsoluteLayout>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewModels:CarouselSampleNestedViewModel />
+    </ContentPage.BindingContext>
+
+    <cards:CarouselView Style="{StaticResource CarouselStyle}"
+                        ItemTemplate="{StaticResource TopItemTemplate}"
+                        ItemsSource="{Binding Items}" />
+
+</ContentPage>

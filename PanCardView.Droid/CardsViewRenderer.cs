@@ -34,7 +34,7 @@ namespace PanCardView.Droid
         {
             DetectEvent(ev);
 
-            if (Element.IsPanControlledByChild || !Element.IsPanInteractionEnabled || Element.ShouldThrottlePanInteraction)
+            if (Element.IsPanControllingdByChild || !Element.IsPanInteractionEnabled || Element.ShouldThrottlePanInteraction)
             {
                 base.OnInterceptTouchEvent(ev);
                 return false;
@@ -42,7 +42,7 @@ namespace PanCardView.Droid
 
             if (ev.ActionMasked == MotionEventActions.Move)
             {
-                return SetIsTouchHandled(GetTotalX(ev), GetTotalY(ev));
+                return CheckTouchHandled(GetTotalX(ev), GetTotalY(ev));
             }
 
             HandleDownUpEvents(ev);
@@ -56,7 +56,7 @@ namespace PanCardView.Droid
             {
                 var xDelta = GetTotalX(e);
                 var yDelta = GetTotalY(e);
-                SetIsTouchHandled(xDelta, yDelta);
+                CheckTouchHandled(xDelta, yDelta);
 
                 if ((Abs(yDelta) <= Abs(xDelta) && Element.IsHorizontalOrientation) ||
                     (Abs(yDelta) >= Abs(xDelta) && !Element.IsHorizontalOrientation))
@@ -99,7 +99,7 @@ namespace PanCardView.Droid
             }
         }
 
-        private bool SetIsTouchHandled(float xDelta, float yDelta)
+        private bool CheckTouchHandled(float xDelta, float yDelta)
         {
             var xDeltaAbs = Abs(xDelta);
             var yDeltaAbs = Abs(yDelta);
