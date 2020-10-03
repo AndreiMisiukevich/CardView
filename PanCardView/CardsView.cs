@@ -179,6 +179,9 @@ namespace PanCardView
 
         private AnimationDirection _currentBackAnimationDirection;
 
+        private Optional<CardsView> _parentCardsViewOption;
+        private Optional<CardsView> _parentCardsViewTouchHandlerOption;
+
         private int _viewsChildrenCount;
         private bool _isPanStarted;
         private bool _isOppositePanDirectionIssueResolved;
@@ -232,6 +235,9 @@ namespace PanCardView
         protected virtual int DefaultMaxChildrenCount => 12;
 
         protected virtual int DefaultDesiredMaxChildrenCount => 7;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool IsPanControllingdByChild { get; set; }
 
         public View CurrentView { get; private set; }
 
@@ -565,7 +571,9 @@ namespace PanCardView
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void OnPanUpdated(PanUpdatedEventArgs e)
         {
-            if (ItemsCount <= 0 || !IsPanInteractionEnabled)
+            var statusType = e.StatusType;
+
+            if (IsPanControllingdByChild || ShouldParentHandleTouch(statusType))
             {
                 return;
             }
@@ -574,25 +582,47 @@ namespace PanCardView
             var oppositeDirectionDiff = e.TotalY;
             if (!IsHorizontalOrientation)
             {
-                var tempDiff = diff;
-                diff = oppositeDirectionDiff;
-                oppositeDirectionDiff = tempDiff;
+                diff = e.TotalY;
+                oppositeDirectionDiff = e.TotalX;
             }
-            switch (e.StatusType)
+
+            if (ItemsCount <= 0 || !IsPanInteractionEnabled)
+            {
+                switch(statusType)
+                {
+                    case GestureStatus.Started:
+                        SetParentCardsViewOption();
+                        SetupBackViews();
+                        ResetActiveInactiveBackViews(diff);
+                        SetParentTouchHandlerIfNeeded(statusType);
+                        break;
+                    case GestureStatus.Canceled:
+                    case GestureStatus.Completed:
+                        ClearParentCardsViewOption();
+                        break;
+                }
+                return;
+            }
+
+            SetParentCardsViewOption();
+            switch (statusType)
             {
                 case GestureStatus.Started:
                     OnTouchStarted();
                     return;
                 case GestureStatus.Running:
                     OnTouchChanged(diff, oppositeDirectionDiff);
+                    SetParentTouchHandlerIfNeeded(statusType);
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     if (Device.RuntimePlatform == Device.Android)
                     {
                         OnTouchChanged(diff, oppositeDirectionDiff, true);
+                        SetParentTouchHandlerIfNeeded(statusType);
                     }
                     OnTouchEnded();
+                    ClearParentCardsViewOption();
                     return;
             }
         }
@@ -620,7 +650,17 @@ namespace PanCardView
                 var haveItems = (isLeftSwiped && NextViews.Any()) || (!isLeftSwiped && PrevViews.Any());
                 var isAndroid = Device.RuntimePlatform == Device.Android;
 
-                if (IsPanSwipeEnabled && haveItems && isAndroid)
+                var parentCardsViewOption = new Optional<CardsView>(FindParentElement<CardsView>());
+                if (!haveItems && parentCardsViewOption?.Value != null)
+                {
+                    if (!isAndroid || !IsPanSwipeEnabled)
+                    {
+                        parentCardsViewOption.Value.OnSwiped(swipeDirection);
+                    }
+                    return;
+                }
+
+                if (IsPanSwipeEnabled && isAndroid && haveItems)
                 {
                     return;
                 }
@@ -865,7 +905,7 @@ namespace PanCardView
 
             lock (_sizeChangedLocker)
             {
-                var parent = FindParentPage();
+                var parent = FindParentElement<Page>();
                 if (parent == null)
                 {
                     return;
@@ -1281,9 +1321,82 @@ namespace PanCardView
             _interactions.Remove(gestureId);
         }
 
+        private bool ShouldParentHandleTouch(GestureStatus satusType)
+        {
+            var result = _parentCardsViewTouchHandlerOption?.Value != null;
+            switch(satusType)
+            {
+                case GestureStatus.Canceled:
+                case GestureStatus.Completed:
+                    ClearParentCardsViewOption();
+                    break;
+            }
+            return result;
+        }
+
+        private void SetParentTouchHandlerIfNeeded(GestureStatus statusType)
+        {
+            if (CurrentDiff == 0 || _parentCardsViewTouchHandlerOption != null)
+            {
+                return;
+            }
+
+            _parentCardsViewTouchHandlerOption = CurrentBackViews.Any()
+                ? new Optional<CardsView>(null)
+                : _parentCardsViewOption;
+
+            if (_parentCardsViewTouchHandlerOption.Value == null)
+            {
+                return;
+            }
+
+            _parentCardsViewOption.Value.IsPanControllingdByChild = false;
+
+            if (statusType == GestureStatus.Running)
+            {
+                OnTouchChanged(0, 0, true);
+            }
+
+            switch(statusType)
+            {
+                case GestureStatus.Started:
+                case GestureStatus.Running:
+                    OnTouchEnded();
+                    break;
+            }
+        }
+
+        private void SetParentCardsViewOption()
+        {
+            if (_parentCardsViewOption != null)
+            {
+                return;
+            }
+
+            _parentCardsViewOption = new Optional<CardsView>(FindParentElement<CardsView>());
+
+            if (_parentCardsViewOption.Value == null)
+            {
+                return;
+            }
+
+            _parentCardsViewOption.Value.IsPanControllingdByChild = true;
+        }
+
+        private void ClearParentCardsViewOption()
+        {
+            if (_parentCardsViewOption?.Value != null)
+            {
+                _parentCardsViewOption.Value.IsPanControllingdByChild = false;
+            }
+
+            IsPanControllingdByChild = false;
+            _parentCardsViewTouchHandlerOption = null;
+            _parentCardsViewOption = null;
+        }
+
         private bool CheckInteractionDelay()
-            =>
-            CurrentView != null &&
+            => CurrentView != null &&
             IsUserInteractionEnabled &&
             Abs((DateTime.UtcNow - _lastPanTime).TotalMilliseconds) >= UserInteractionDelay &&
             (!IsUserInteractionInCourse || (_animationTask?.IsCompleted ?? true));
@@ -1853,14 +1966,14 @@ namespace PanCardView
                 });
         }
 
-        private Page FindParentPage()
+        private TElement FindParentElement<TElement>() where TElement : VisualElement
         {
             var parent = Parent;
-            while (parent != null && !(parent is Page))
+            while (parent != null && !(parent is TElement))
             {
                 parent = parent.Parent;
             }
-            return parent as Page;
+            return parent as TElement;
         }
 
         private bool CheckIsProcessingView(View view)

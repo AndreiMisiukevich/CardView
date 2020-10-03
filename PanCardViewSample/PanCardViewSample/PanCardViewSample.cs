@@ -35,16 +35,16 @@ namespace PanCardViewSample
                 this.Navigation.PushAsync(new CoverFlowSampleXamlView());
 			};
 
+			var toCarouselNestedBtn = new Button { Text = "CarouselView Nested" };
+			toCarouselNestedBtn.Clicked += (sender, e) =>
+			{
+				this.Navigation.PushAsync(new CarouselSampleNestedXamlView());
+			};
+
 			var toCarouselScrollBtn = new Button { Text = "CarouselView scroll" };
 			toCarouselScrollBtn.Clicked += (sender, e) =>
 			{
 				this.Navigation.PushAsync(new CarouselSampleSrollView());
-			};
-
-			var toCarouselDoubleBtn = new Button { Text = "CarouselView DoubleView" };
-			toCarouselDoubleBtn.Clicked += (sender, e) =>
-			{
-				this.Navigation.PushAsync(new CarouselSampleDoubleView());
 			};
 
 			var toCarouselNoTemplateBtn = new Button { Text = "CarouselView No template" };
@@ -87,8 +87,8 @@ namespace PanCardViewSample
 						toCarouselXamlBtn,
 						toCoverFlowBtn,
 						toCubeBtn,
+						toCarouselNestedBtn,
 						toCarouselScrollBtn,
-						toCarouselDoubleBtn,
 						toCarouselNoTemplateBtn,
 						toCarouselListBtn,
 						toCarouselEmbBtn
