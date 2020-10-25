@@ -191,6 +191,7 @@ namespace PanCardView
         private DateTime _lastPanTime;
         private Task _animationTask;
         private CancellationTokenSource _slideShowTokenSource;
+        private CancellationTokenSource _hardSetTokenSource;
 
         public CardsView() : this(new CardsProcessor())
         {
@@ -733,18 +734,46 @@ namespace PanCardView
         //https://github.com/AndreiMisiukevich/CardView/issues/286
         protected virtual async Task HardSetAsync()
         {
+            _hardSetTokenSource?.Cancel();
+            _hardSetTokenSource?.Dispose();
+            _hardSetTokenSource = new CancellationTokenSource();
+            var token = _hardSetTokenSource.Token;
+            ViewExtensions.CancelAnimations(this);
+
+            await Task.Delay(5);
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
+
             var opacity = Opacity;
             var scale = Scale;
             var time = 150u;
 
-            await Task.WhenAll(
-                this.FadeTo(0, time, Easing.CubicIn),
-                this.ScaleTo(.75, time, Easing.CubicIn));
-            SetAllViews(true);
-            await Task.Delay(10);
-            await Task.WhenAll(
-                this.FadeTo(opacity, time, Easing.CubicOut),
-                this.ScaleTo(scale, time, Easing.CubicOut));
+            var rollbackAction = new Action(() =>
+            {
+                Opacity = opacity;
+                Scale = scale;
+            });
+
+            try
+            {
+                await Task.WhenAll(
+                    this.FadeTo(0, time, Easing.CubicIn),
+                    this.ScaleTo(.75, time, Easing.CubicIn));
+                token.ThrowIfCancellationRequested();
+                SetAllViews(true);
+                await Task.Delay(10);
+                token.ThrowIfCancellationRequested();
+                await Task.WhenAll(
+                    this.FadeTo(opacity, time, Easing.CubicOut),
+                    this.ScaleTo(scale, time, Easing.CubicOut));
+                token.ThrowIfCancellationRequested();
+            }
+            catch
+            {
+                rollbackAction?.Invoke();
+            }
         }
 
         protected virtual async void OnSizeChanged()
@@ -811,6 +840,7 @@ namespace PanCardView
         protected virtual async void AdjustSlideShow(bool isForceStop = false)
         {
             _slideShowTokenSource?.Cancel();
+            _slideShowTokenSource?.Dispose();
             if (isForceStop)
             {
                 return;
@@ -1036,6 +1066,7 @@ namespace PanCardView
                         if (Abs((now - lastTapTime).TotalMilliseconds) < delay)
                         {
                             tapCts?.Cancel();
+                            tapCts?.Dispose();
                             lastTapTime = DateTime.MinValue;
                             SelectedIndex = (SelectedIndex.ToCyclicalIndex(ItemsCount) - 1).ToCyclicalIndex(ItemsCount);
                             return;

@@ -50,12 +50,10 @@ namespace PanCardView.Utility
             if (currentCount > 0)
             {
                 _viewsSet[view] = currentCount;
+                return;
             }
-            else
-            {
-                _viewsSet.Remove(view);
-            }
-            return;
+
+            _viewsSet.Remove(view);
         }
     }
 }
