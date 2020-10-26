@@ -734,8 +734,7 @@ namespace PanCardView
         //https://github.com/AndreiMisiukevich/CardView/issues/286
         protected virtual async Task HardSetAsync()
         {
-            _hardSetTokenSource?.Cancel();
-            _hardSetTokenSource?.Dispose();
+            DisposeCancellationTokenSource(ref _hardSetTokenSource);
             _hardSetTokenSource = new CancellationTokenSource();
             var token = _hardSetTokenSource.Token;
             ViewExtensions.CancelAnimations(this);
@@ -839,8 +838,7 @@ namespace PanCardView
 
         protected virtual async void AdjustSlideShow(bool isForceStop = false)
         {
-            _slideShowTokenSource?.Cancel();
-            _slideShowTokenSource?.Dispose();
+            DisposeCancellationTokenSource(ref _slideShowTokenSource);
             if (isForceStop)
             {
                 return;
@@ -1065,8 +1063,7 @@ namespace PanCardView
                         var now = DateTime.UtcNow;
                         if (Abs((now - lastTapTime).TotalMilliseconds) < delay)
                         {
-                            tapCts?.Cancel();
-                            tapCts?.Dispose();
+                            DisposeCancellationTokenSource(ref tapCts);
                             lastTapTime = DateTime.MinValue;
                             SelectedIndex = (SelectedIndex.ToCyclicalIndex(ItemsCount) - 1).ToCyclicalIndex(ItemsCount);
                             return;
@@ -2043,6 +2040,13 @@ namespace PanCardView
                 }
                 _viewsGestureCounter.Remove(gestureId);
             }
+        }
+
+        private void DisposeCancellationTokenSource(ref CancellationTokenSource tokenSource)
+        {
+            tokenSource?.Cancel();
+            tokenSource?.Dispose();
+            tokenSource = null;
         }
 
         private void FireUserInteracted(UserInteractionStatus status, double diff, int index)
