@@ -396,7 +396,7 @@ namespace PanCardView.Controls
                 affectedIndex = affectedIndex.ToCyclicalIndex(itemsCount);
             }
 
-            if (affectedIndex < 0 || affectedIndex >= itemsCount)
+            if (affectedIndex < 0 || affectedIndex >= ItemsStackLayout.Children.Count)
             {
                 return;
             }

@@ -749,12 +749,6 @@ namespace PanCardView
             var scale = Scale;
             var time = 150u;
 
-            var rollbackAction = new Action(() =>
-            {
-                Opacity = opacity;
-                Scale = scale;
-            });
-
             try
             {
                 await Task.WhenAll(
@@ -771,7 +765,8 @@ namespace PanCardView
             }
             catch
             {
-                rollbackAction?.Invoke();
+                Opacity = opacity;
+                Scale = scale;
             }
         }
 
