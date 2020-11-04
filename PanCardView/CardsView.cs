@@ -238,7 +238,7 @@ namespace PanCardView
         protected virtual int DefaultDesiredMaxChildrenCount => 7;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool IsPanControllingdByChild { get; set; }
+        public bool IsPanControllingByChild { get; set; }
 
         public View CurrentView { get; private set; }
 
@@ -574,7 +574,7 @@ namespace PanCardView
         {
             var statusType = e.StatusType;
 
-            if (IsPanControllingdByChild || ShouldParentHandleTouch(statusType))
+            if (IsPanControllingByChild || ShouldParentHandleTouch(statusType))
             {
                 return;
             }
@@ -1373,7 +1373,7 @@ namespace PanCardView
                 return;
             }
 
-            _parentCardsViewOption.Value.IsPanControllingdByChild = false;
+            _parentCardsViewOption.Value.IsPanControllingByChild = false;
 
             if (statusType == GestureStatus.Running)
             {
@@ -1403,17 +1403,17 @@ namespace PanCardView
                 return;
             }
 
-            _parentCardsViewOption.Value.IsPanControllingdByChild = true;
+            _parentCardsViewOption.Value.IsPanControllingByChild = true;
         }
 
         private void ClearParentCardsViewOption()
         {
             if (_parentCardsViewOption?.Value != null)
             {
-                _parentCardsViewOption.Value.IsPanControllingdByChild = false;
+                _parentCardsViewOption.Value.IsPanControllingByChild = false;
             }
 
-            IsPanControllingdByChild = false;
+            IsPanControllingByChild = false;
             _parentCardsViewTouchHandlerOption = null;
             _parentCardsViewOption = null;
         }
