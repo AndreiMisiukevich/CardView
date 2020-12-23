@@ -115,6 +115,9 @@ namespace PanCardView.Droid
                             (yDeltaAbs > xDeltaAbs &&
                              yDeltaAbs > Element.MoveThresholdDistance);
 
+            if (!Element.IsPanInteractionEnabled || !Element.IsUserInteractionEnabled)
+                isHandled = false;
+
             Element.IsUserInteractionRunning |= isHandled;
             Parent?.RequestDisallowInterceptTouchEvent(isHandled);
             return isHandled;
