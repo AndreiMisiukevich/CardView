@@ -15,14 +15,6 @@ namespace PanCardView
             IsClippedToBounds = true;
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete]
-        public CarouselView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
-            : base(frontViewProcessor ?? new BaseCarouselFrontViewProcessor(), backViewProcessor ?? new BaseCarouselBackViewProcessor())
-        {
-            IsClippedToBounds = true;
-        }
-
         protected override double DefaultMoveSizePercentage => .3;
 
         protected override bool DefaultIsCyclical => true;

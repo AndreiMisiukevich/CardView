@@ -30,13 +30,6 @@ namespace PanCardView
         {
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete]
-        public CoverFlowView(ICardProcessor frontViewProcessor, ICardBackViewProcessor backViewProcessor)
-            : base(frontViewProcessor ?? new BaseCoverFlowFrontViewProcessor(), backViewProcessor ?? new BaseCoverFlowBackViewProcessor())
-        {
-        }
-
         /// <summary>
         /// Shift to current view percentage (percengate of CoverFlowView Size)
         /// </summary>
