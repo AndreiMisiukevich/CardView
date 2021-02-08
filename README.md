@@ -270,7 +270,7 @@ private void CarouselView_UserInteracted(PanCardView.CardsView view, PanCardView
 
 -> **GTK** use click / double click for forward/back navigation.
 
-Check source code for more info, or 🇧🇾 ***just ask me =)*** 🇧🇾
+Check source code for more info, or ***just ask me =)***
 
 ## Full documentation
 
