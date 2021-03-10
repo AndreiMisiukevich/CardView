@@ -953,6 +953,7 @@ namespace PanCardView
                         return;
                     }
                     AdjustSlideShow(true);
+                    Processor?.Clean(this, new ProcessorItem { Views = NextViews.Union(PrevViews).Union(Enumerable.Repeat(CurrentView, 1)) });
                     return;
             }
         }
