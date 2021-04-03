@@ -30,6 +30,21 @@ namespace PanCardView.Droid
         public static void Preserve()
         => Preserver.Preserve();
 
+        public override bool DispatchTouchEvent(MotionEvent e)
+        {
+            switch (e.ActionMasked)
+            {
+                case MotionEventActions.Up:
+                case MotionEventActions.Cancel:
+                    if (Abs(Element?.CurrentDiff ?? 0) <= 0)
+                    {
+                        HandleUpCancelEvent(GestureStatus.Canceled, 0, 0);
+                    }
+                    break;
+            }
+            return base.DispatchTouchEvent(e);
+        }
+
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
             DetectEvent(ev);
@@ -135,20 +150,14 @@ namespace PanCardView.Droid
             var isUpAction = action == MotionEventActions.Up;
             var isCancelAction = action == MotionEventActions.Cancel;
 
-            if (!_panStarted || (!isUpAction && !isCancelAction))
+            if (!isUpAction && !isCancelAction)
             {
                 return;
             }
 
             var xDelta = GetTotalX(ev);
             var yDelta = GetTotalY(ev);
-            UpdatePan(isUpAction ? GestureStatus.Completed : GestureStatus.Canceled, xDelta, yDelta);
-            _panStarted = false;
-
-            Parent?.RequestDisallowInterceptTouchEvent(false);
-
-            _startX = null;
-            _startY = null;
+            HandleUpCancelEvent(isUpAction ? GestureStatus.Completed : GestureStatus.Canceled, xDelta, yDelta);
         }
 
         private void HandleDownEvent(MotionEvent ev)
@@ -162,6 +171,22 @@ namespace PanCardView.Droid
 
             UpdatePan(GestureStatus.Started);
             _panStarted = true;
+        }
+
+        private void HandleUpCancelEvent(GestureStatus status, double xDelta, double yDelta)
+        {
+            if (!_panStarted)
+            {
+                return;
+            }
+            _panStarted = false;
+
+            UpdatePan(status, xDelta, yDelta);
+
+            Parent?.RequestDisallowInterceptTouchEvent(false);
+
+            _startX = null;
+            _startY = null;
         }
 
         private void UpdatePan(GestureStatus status, double totalX = 0, double totalY = 0)

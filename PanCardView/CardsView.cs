@@ -666,11 +666,19 @@ namespace PanCardView
 
             if (isHardSet)
             {
-                await HardSetAsync();
+                await (_animationTask = HardSetAsync());
                 return;
             }
 
-            if (!_hasRenderer || Parent == null || await TryAutoNavigate())
+            if (!_hasRenderer || Parent == null)
+            {
+                return;
+            }
+
+            var tryAutoNavigateTask = TryAutoNavigate();
+            _animationTask = tryAutoNavigateTask;
+
+            if (await tryAutoNavigateTask)
             {
                 return;
             }
@@ -682,6 +690,7 @@ namespace PanCardView
         {
             lock (_setCurrentViewLocker)
             {
+                var oldAllViews = GetNextPrevCurrentViews();
                 if (ItemsSource != null)
                 {
                     CurrentView = InitViews(true, AnimationDirection.Current, Enumerable.Empty<View>(), SelectedIndex).FirstOrDefault();
@@ -701,9 +710,14 @@ namespace PanCardView
 
                     SetupBackViews();
                 }
+
                 if (shouldCleanUnprocessingChildren)
                 {
                     CleanUnprocessingChildren();
+                }
+                else
+                {
+                    Processor?.Clean(this, new ProcessorItem { Views = oldAllViews.Where(view => !CheckIsProcessingView(view)) });
                 }
             }
         }
@@ -873,9 +887,8 @@ namespace PanCardView
             PerformUWPFrontViewProcessorHandlePanChanged(Size, realDirection);
             await Task.Delay(5);
             _currentBackAnimationDirection = realDirection;
-            var autoNavigationTask = Processor?.Navigate(this, GetAnimationProcessorItems()) ?? Task.FromResult(true);
 
-            await (_animationTask = autoNavigationTask);
+            await (Processor?.Navigate(this, GetAnimationProcessorItems()) ?? Task.FromResult(true));
             PerformUWPFrontViewProcessorHandlePanChanged(0, realDirection);
             EndAutoNavigation(views, animationId, animationDirection);
             return true;
@@ -953,7 +966,7 @@ namespace PanCardView
                         return;
                     }
                     AdjustSlideShow(true);
-                    Processor?.Clean(this, new ProcessorItem { Views = NextViews.Union(PrevViews).Union(Enumerable.Repeat(CurrentView, 1)) });
+                    Processor?.Clean(this, new ProcessorItem { Views = GetNextPrevCurrentViews() });
                     return;
             }
         }
@@ -963,6 +976,9 @@ namespace PanCardView
             base.OnParentSet();
             ForceRedrawViews();
         }
+
+        private IEnumerable<View> GetNextPrevCurrentViews()
+        => NextViews.Union(PrevViews).Union(Enumerable.Repeat(CurrentView, 1)).Where(view => view != null);
 
         private IEnumerable<View> SetupNextView(int index, IEnumerable<View> bookedViews)
         {
@@ -1968,7 +1984,7 @@ namespace PanCardView
         {
             lock (_viewsInUseLocker)
             {
-                var views = NextViews.Union(PrevViews).Union(Enumerable.Repeat(CurrentView, 1));
+                var views = GetNextPrevCurrentViews();
                 _viewsGestureCounter[gestureId] = views;
                 _viewsInUseSet.AddRange(views);
             }

@@ -48,7 +48,7 @@ namespace PanCardView.Processors
 
         public virtual void Clean(CardsView cardsView, params ProcessorItem[] items)
         {
-            foreach (var view in items.SelectMany(x => x.Views) ?? Enumerable.Empty<View>())
+            foreach (var view in items.SelectMany(x => x.Views).Where(x => x != null) ?? Enumerable.Empty<View>())
             {
                 SetTranslationX(view, cardsView.GetSize(), cardsView, false, false, true);
             }
