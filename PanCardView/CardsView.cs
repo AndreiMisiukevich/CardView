@@ -944,8 +944,8 @@ namespace PanCardView
                 }
                 if (_isViewInited &&
                     isValidParentSize &&
-                    Abs(_parentSize.Width - parentWidth) > double.Epsilon &&
-                    Abs(_parentSize.Height - parentHeight) > double.Epsilon)
+                    (Abs(_parentSize.Width - parentWidth) > double.Epsilon ||
+                    Abs(_parentSize.Height - parentHeight) > double.Epsilon))
                 {
                     StoreParentSize(parentWidth, parentHeight);
                     OnSizeChanged();
