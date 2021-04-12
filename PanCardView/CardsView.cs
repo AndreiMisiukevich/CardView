@@ -884,7 +884,7 @@ namespace PanCardView
 
             var animationId = Guid.NewGuid();
             StartAutoNavigation(views, animationId, animationDirection);
-            PerformUWPFrontViewProcessorHandlePanChanged(Size, realDirection);
+            PerformUWPFrontViewProcessorHandlePanChanged(Size * Sign((int)realDirection), realDirection);
             await Task.Delay(5);
             _currentBackAnimationDirection = realDirection;
 
