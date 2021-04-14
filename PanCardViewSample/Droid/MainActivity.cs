@@ -8,7 +8,7 @@ using PanCardView.Droid;
 
 namespace PanCardViewSample.Droid
 {
-	[Activity(Label = "PanCardViewSample.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity(Label = "PanCardViewSample.Droid", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
 		protected override void OnCreate(Bundle bundle)
@@ -20,10 +20,10 @@ namespace PanCardViewSample.Droid
 
 			Forms.SetFlags("FastRenderers_Experimental");
 			global::Xamarin.Forms.Forms.Init(this, bundle);
-            CachedImageRenderer.Init(true);
-            CardsViewRenderer.Preserve();
+			CachedImageRenderer.Init(true);
+			CardsViewRenderer.Preserve();
 
-            LoadApplication(new App());
+			LoadApplication(new App());
 		}
 	}
 }

@@ -111,12 +111,12 @@ namespace PanCardView.iOS
         private void OnSwiped(UISwipeGestureRecognizer gesture)
         {
             var swipeDirection = gesture.Direction == UISwipeGestureRecognizerDirection.Left
-                                ? ItemSwipeDirection.Left
-                                : gesture.Direction == UISwipeGestureRecognizerDirection.Right
-                                    ? ItemSwipeDirection.Right
-                                    : gesture.Direction == UISwipeGestureRecognizerDirection.Up
-                                        ? ItemSwipeDirection.Up
-                                        : ItemSwipeDirection.Down;
+                ? ItemSwipeDirection.Left
+                : gesture.Direction == UISwipeGestureRecognizerDirection.Right
+                    ? ItemSwipeDirection.Right
+                    : gesture.Direction == UISwipeGestureRecognizerDirection.Up
+                        ? ItemSwipeDirection.Up
+                        : ItemSwipeDirection.Down;
 
             Element?.OnSwiped(swipeDirection);
         }
@@ -134,7 +134,7 @@ namespace PanCardView.iOS
             var parent = Element?.Parent;
             while (parent != null)
             {
-                if (parent is MasterDetailPage && (Element?.IsHorizontalOrientation ?? false))
+                if (parent is FlyoutPage && (Element?.IsHorizontalOrientation ?? false))
                 {
                     var velocity = panGesture.VelocityInView(this);
                     return Abs(velocity.Y) > Abs(velocity.X);
