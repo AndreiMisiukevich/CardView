@@ -77,7 +77,7 @@ namespace PanCardViewSample
                 this.Navigation.PushAsync(new CubeSampleXamlView());
             };
 
-            var toXFIndicatorViewBtn = new Button { Text = "XF indicator view", FontSize = 20, TextColor = Color.Black };
+            var toXFIndicatorViewBtn = new Button { Text = "XF IndicatorView" };
             toXFIndicatorViewBtn.Clicked += (sender, e) =>
             {
                 this.Navigation.PushAsync(new CarouselSampleXamlViewXFIndicatorView());
