@@ -14,4 +14,9 @@
     <Compile Remove="ViewModels\CoverFlowViewModel.cs" />
     <Compile Remove="Views\CoverFlowSampleView.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\CarouselSampleXamlViewXFIndicatorView.xaml.cs">
+      <DependentUpon>CarouselSampleXamlViewXFIndicatorView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

@@ -144,6 +144,29 @@ namespace PanCardView
         internal static readonly BindableProperty ShouldAutoNavigateToNextProperty = BindableProperty.Create(nameof(ShouldAutoNavigateToNext), typeof(bool?), typeof(CardsView), null);
 
         internal static readonly BindableProperty ProcessorDiffProperty = BindableProperty.Create(nameof(ProcessorDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
+        [Xamarin.Forms.TypeConverter(typeof(ReferenceTypeConverter))]
+        public IndicatorView IndicatorView
+        {
+            set => LinkToIndicatorView(this, value);
+        }
+
+        static void LinkToIndicatorView(CardsView cardsView, IndicatorView indicatorView)
+        {
+            if (indicatorView == null)
+                return;
+
+            indicatorView.SetBinding(IndicatorView.PositionProperty, new Binding
+            {
+                Path = nameof(SelectedIndex),
+                Source = cardsView
+            });
+
+            indicatorView.SetBinding(IndicatorView.ItemsSourceProperty, new Binding
+            {
+                Path = nameof(ItemsView.ItemsSource),
+                Source = cardsView
+            });
+        }
 
         public event CardsViewUserInteractedHandler UserInteracted;
         public event CardsViewItemDisappearingHandler ItemDisappearing;
