@@ -50,7 +50,7 @@
         <IndicatorView x:Name="indicatorView"
                        Margin="10"
                        HorizontalOptions="Center"
-                       IndicatorColor="Blue"
+                       IndicatorColor="LightGray"
                        SelectedIndicatorColor="DarkGray" />
 
     </StackLayout>
