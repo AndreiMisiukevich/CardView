@@ -77,6 +77,12 @@ namespace PanCardViewSample
                 this.Navigation.PushAsync(new CubeSampleXamlView());
             };
 
+            var toXFIndicatorViewBtn = new Button { Text = "XF IndicatorView" };
+            toXFIndicatorViewBtn.Clicked += (sender, e) =>
+            {
+                this.Navigation.PushAsync(new CarouselSampleXamlViewXFIndicatorView());
+            };
+
             Content = new ScrollView
 			{
 				Content = new StackLayout
@@ -91,7 +97,8 @@ namespace PanCardViewSample
 						toCarouselScrollBtn,
 						toCarouselNoTemplateBtn,
 						toCarouselListBtn,
-						toCarouselEmbBtn
+						toCarouselEmbBtn,
+                        toXFIndicatorViewBtn
                     }
 				}
 			};

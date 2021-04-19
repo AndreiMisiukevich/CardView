@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Class="PanCardViewSample.Views.CarouselSampleXamlViewXFIndicatorView"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+             xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+             Title="Carousel Xaml"
+             BackgroundColor="Black">
+
+    <ContentPage.BindingContext>
+        <viewModels:CardsSampleViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout>
+        <cards:CarouselView IndicatorView="indicatorView"
+                            ItemsSource="{Binding Items}"
+                            SelectedIndex="{Binding CurrentIndex}"
+                            SlideShowDuration="3500">
+
+            <x:Arguments>
+                <proc:CarouselProcessor OpacityFactor="0"
+                                        RotationFactor="0.1"
+                                        ScaleFactor="0.5" />
+            </x:Arguments>
+
+            <cards:CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView>
+                        <Frame Padding="0"
+                               BackgroundColor="{Binding Color}"
+                               CornerRadius="10"
+                               HasShadow="false"
+                               HeightRequest="300"
+                               HorizontalOptions="Center"
+                               IsClippedToBounds="true"
+                               VerticalOptions="Center"
+                               WidthRequest="300">
+
+                            <ffimage:CachedImage Source="{Binding Source}" />
+
+                        </Frame>
+                    </ContentView>
+                </DataTemplate>
+            </cards:CarouselView.ItemTemplate>
+            <controls:LeftArrowControl ToFadeDuration="2500" />
+            <controls:RightArrowControl ToFadeDuration="2500" />
+        </cards:CarouselView>
+        <IndicatorView x:Name="indicatorView"
+                       Margin="10"
+                       HorizontalOptions="Center"
+                       IndicatorColor="LightGray"
+                       SelectedIndicatorColor="DarkGray" />
+
+    </StackLayout>
+</ContentPage>

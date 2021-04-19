@@ -145,6 +145,30 @@ namespace PanCardView
 
         internal static readonly BindableProperty ProcessorDiffProperty = BindableProperty.Create(nameof(ProcessorDiff), typeof(double), typeof(CardsView), 0.0, BindingMode.OneWayToSource);
 
+        [Xamarin.Forms.TypeConverter(typeof(ReferenceTypeConverter))]
+        public IndicatorView IndicatorView
+        {
+            set
+            {
+                if (value == null) 
+                {
+                    return;
+                }
+                
+                value.SetBinding(IndicatorView.PositionProperty, new Binding
+                {
+                    Path = nameof(SelectedIndex),
+                    Source = this
+                });
+                
+                value.SetBinding(IndicatorView.ItemsSourceProperty, new Binding
+                {
+                    Path = nameof(ItemsView.ItemsSource),
+                    Source = this
+                });
+            }
+        }
+
         public event CardsViewUserInteractedHandler UserInteracted;
         public event CardsViewItemDisappearingHandler ItemDisappearing;
         public event CardsViewItemAppearingHandler ItemAppearing;
