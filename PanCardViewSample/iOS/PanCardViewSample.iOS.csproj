@@ -113,7 +113,7 @@
       <Name>PanCardViewSample</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\PanCardView.iOS\PanCardView.iOS.csproj">
-      <Project>{00BA6657-0102-46EC-B936-1512FA8BBD92}</Project>
+      <Project>{8D8B85B4-6F23-49B6-A188-91BBBBF51EF6}</Project>
       <Name>PanCardView.iOS</Name>
     </ProjectReference>
   </ItemGroup>
