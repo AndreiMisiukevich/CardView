@@ -50,6 +50,7 @@ namespace PanCardView.iOS
             {
                 gestureRecognizer.ShouldBeRequiredToFailBy = ShouldBeRequiredToFailBy;
                 gestureRecognizer.ShouldRecognizeSimultaneously = ShouldRecognizeSimultaneously;
+                gestureRecognizer.ShouldBegin = ShouldBegin;
             }
         }
 
@@ -119,6 +120,21 @@ namespace PanCardView.iOS
                         : ItemSwipeDirection.Down;
 
             Element?.OnSwiped(swipeDirection);
+        }
+
+        private bool ShouldBegin(UIGestureRecognizer recognizer)
+        {
+            if (recognizer is UIPanGestureRecognizer pangesture)
+            {
+                var velocity = pangesture.VelocityInView(this);
+                var absVelocityX = Abs(velocity.X);
+                var absVelocityY = Abs(velocity.Y);
+                var isHorizontal = Element.IsHorizontalOrientation;
+                return (absVelocityY < absVelocityX && isHorizontal) ||
+                       (absVelocityY > absVelocityX && !isHorizontal);
+            }
+
+            return true;
         }
 
         private bool ShouldBeRequiredToFailBy(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
