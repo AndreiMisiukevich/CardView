@@ -50,7 +50,7 @@ namespace PanCardView.iOS
             {
                 gestureRecognizer.ShouldBeRequiredToFailBy = ShouldBeRequiredToFailBy;
                 gestureRecognizer.ShouldRecognizeSimultaneously = ShouldRecognizeSimultaneously;
-                gestureRecognizer.ShouldBegin = ShouldBeginPan;
+                gestureRecognizer.ShouldBegin = ShouldBegin;
             }
         }
 
@@ -122,12 +122,16 @@ namespace PanCardView.iOS
             Element?.OnSwiped(swipeDirection);
         }
 
-        private bool ShouldBeginPan(UIGestureRecognizer recognizer)
+        private bool ShouldBegin(UIGestureRecognizer recognizer)
         {
-            if (recognizer is UIPanGestureRecognizer pangesture && !Element.IsVerticalSwipeEnabled)
+            if (recognizer is UIPanGestureRecognizer pangesture)
             {
                 var velocity = pangesture.VelocityInView(this);
-                return Abs(velocity.X) > Abs(velocity.Y);
+                var absVelocityX = Abs(velocity.X);
+                var absVelocityY = Abs(velocity.Y);
+                var isHorizontal = Element.IsHorizontalOrientation;
+                return (absVelocityY < absVelocityX && isHorizontal) ||
+                       (absVelocityY > absVelocityX && !isHorizontal);
             }
 
             return true;
