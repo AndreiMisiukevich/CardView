@@ -73,11 +73,7 @@ namespace PanCardView.Droid
                 var yDelta = GetTotalY(e);
                 CheckTouchHandled(xDelta, yDelta);
 
-                if ((Abs(yDelta) <= Abs(xDelta) && Element.IsHorizontalOrientation) ||
-                    (Abs(yDelta) >= Abs(xDelta) && !Element.IsHorizontalOrientation))
-                {
-                    UpdatePan(GestureStatus.Running, xDelta, yDelta);
-                }
+                UpdatePan(GestureStatus.Running, xDelta, yDelta);
             }
 
             HandleDownUpEvents(e);

@@ -48,7 +48,6 @@ namespace PanCardView.iOS
 
             if (gestureRecognizer is UIPanGestureRecognizer panGestureRecognizer)
             {
-                gestureRecognizer.ShouldBeRequiredToFailBy = ShouldBeRequiredToFailBy;
                 gestureRecognizer.ShouldRecognizeSimultaneously = ShouldRecognizeSimultaneously;
                 gestureRecognizer.ShouldBegin = ShouldBegin;
             }
@@ -126,41 +125,26 @@ namespace PanCardView.iOS
         {
             if (recognizer is UIPanGestureRecognizer pangesture)
             {
-                var velocity = pangesture.VelocityInView(this);
-                var absVelocityX = Abs(velocity.X);
-                var absVelocityY = Abs(velocity.Y);
-                var isHorizontal = Element.IsHorizontalOrientation;
-                return (absVelocityY < absVelocityX && isHorizontal) ||
-                       (absVelocityY > absVelocityX && !isHorizontal);
+                var superview = pangesture.View.Superview;
+                while (superview != null)
+                {
+                    if (superview is UIScrollView)
+                    {
+                        var velocity = pangesture.VelocityInView(this);
+                        var absVelocityX = Abs(velocity.X);
+                        var absVelocityY = Abs(velocity.Y);
+                        var isHorizontal = Element.IsHorizontalOrientation;
+                        return (absVelocityY < absVelocityX && isHorizontal) ||
+                               (absVelocityY > absVelocityX && !isHorizontal);
+                    }
+                    superview = superview.Superview;
+                }
             }
 
             return true;
         }
 
-        private bool ShouldBeRequiredToFailBy(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-            => IsPanGestureHandled() && otherGestureRecognizer.View != this;
-
         private bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-        {
-            if (!(gestureRecognizer is UIPanGestureRecognizer panGesture))
-            {
-                return true;
-            }
-
-            var parent = Element?.Parent;
-            while (parent != null)
-            {
-                if (parent is FlyoutPage && (Element?.IsHorizontalOrientation ?? false))
-                {
-                    var velocity = panGesture.VelocityInView(this);
-                    return Abs(velocity.Y) > Abs(velocity.X);
-                }
-                parent = parent.Parent;
-            }
-            return !IsPanGestureHandled();
-        }
-
-        private bool IsPanGestureHandled()
-            => Abs(Element?.CurrentDiff ?? 0) >= Element?.MoveThresholdDistance;
+            => Element == null || !(otherGestureRecognizer is UIPanGestureRecognizer);
     }
 }

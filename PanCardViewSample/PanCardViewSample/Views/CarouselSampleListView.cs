@@ -1,8 +1,6 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using PanCardViewSample.ViewModels;
 using PanCardView;
-using System.Collections.Generic;
 using PanCardView.Extensions;
 using CardCarouselView = PanCardView.CarouselView;
 
