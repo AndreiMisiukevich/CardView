@@ -7,6 +7,7 @@ using Xamarin.Forms.Platform.iOS;
 using PanCardView.Enums;
 using System.ComponentModel;
 using static System.Math;
+using System;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.iOS
@@ -56,9 +57,15 @@ namespace PanCardView.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
         {
             base.OnElementChanged(e);
+            if (e.OldElement != null)
+            {
+                e.OldElement.AccessibilityChangeRequested -= OnAccessibilityChangeRequested;
+            }
+
             if (e.NewElement != null)
             {
                 SetSwipeGestures();
+                Element.AccessibilityChangeRequested += OnAccessibilityChangeRequested;
             }
         }
 
@@ -106,6 +113,18 @@ namespace PanCardView.iOS
             var shouldRemoveVerticalSwipes = !(Element?.IsVerticalSwipeEnabled ?? false);
             ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveVerticalSwipes);
             ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveVerticalSwipes);
+        }
+
+        private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
+        {
+            if (sender is View view)
+            {
+                var nativeView = Platform.GetRenderer(view)?.NativeView;
+                if (nativeView != null)
+                {
+                    nativeView.AccessibilityElementsHidden = !isEnabled;
+                }
+            }
         }
 
         private void OnSwiped(UISwipeGestureRecognizer gesture)

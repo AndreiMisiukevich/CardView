@@ -1,5 +1,4 @@
 ﻿using PanCardView.Processors;
-using System;
 using System.ComponentModel;
 
 namespace PanCardView

@@ -182,6 +182,8 @@ namespace PanCardView
             add => _viewsInUseSet.CollectionChanged += value;
             remove => _viewsInUseSet.CollectionChanged -= value;
         }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public event EventHandler<bool> AccessibilityChangeRequested;
 
         private readonly object _childrenLocker = new object();
         private readonly object _viewsInUseLocker = new object();
@@ -196,6 +198,7 @@ namespace PanCardView
         private readonly PanGestureRecognizer _panGesture = new PanGestureRecognizer();
         private readonly ContextAssignedBehavior _contextAssignedBehavior = new ContextAssignedBehavior();
 
+        private View _currentView;
         private IEnumerable<View> _prevViews = Enumerable.Empty<View>();
         private IEnumerable<View> _nextViews = Enumerable.Empty<View>();
         private IEnumerable<View> _currentBackViews = Enumerable.Empty<View>();
@@ -255,7 +258,21 @@ namespace PanCardView
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool IsPanControllingByChild { get; set; }
 
-        public View CurrentView { get; private set; }
+        public View CurrentView
+        {
+            get => _currentView;
+            private set
+            {
+                var oldValue = _currentView;
+                _currentView = value;
+
+                if (value != oldValue)
+                {
+                    AccessibilityChangeRequested?.Invoke(oldValue, false);
+                    AccessibilityChangeRequested?.Invoke(value, true);
+                }
+            }
+        }
 
         public IReadOnlyList<View> ViewsInUseCollection => _viewsInUseSet.Views;
 
@@ -1006,14 +1023,14 @@ namespace PanCardView
 
         private IEnumerable<View> SetupNextView(int index, IEnumerable<View> bookedViews)
         {
-            var indeces = new int[BackViewsDepth];
-            for (int i = 0; i < indeces.Length; ++i)
+            var indices = new int[BackViewsDepth];
+            for (int i = 0; i < indices.Length; ++i)
             {
-                indeces[i] = index + 1 + i;
+                indices[i] = index + 1 + i;
             }
 
             NextViews = IsNextItemPanInteractionEnabled
-                ? InitViews(false, AnimationDirection.Next, bookedViews, indeces)
+                ? InitViews(false, AnimationDirection.Next, bookedViews, indices)
                 : Enumerable.Empty<View>();
             return bookedViews.Union(NextViews);
         }
@@ -1022,19 +1039,19 @@ namespace PanCardView
         {
             var isForwardOnly = IsOnlyForwardDirection;
 
-            var indeces = new int[BackViewsDepth];
-            for (int i = 0; i < indeces.Length; ++i)
+            var indices = new int[BackViewsDepth];
+            for (int i = 0; i < indices.Length; ++i)
             {
                 var incValue = i + 1;
                 if (!isForwardOnly)
                 {
                     incValue = -incValue;
                 }
-                indeces[i] = index + incValue;
+                indices[i] = index + incValue;
             }
 
             PrevViews = (IsPrevItemPanInteractionEnabled && !isForwardOnly) || (IsNextItemPanInteractionEnabled && isForwardOnly)
-                ? InitViews(false, AnimationDirection.Prev, bookedViews, indeces)
+                ? InitViews(false, AnimationDirection.Prev, bookedViews, indices)
                 : Enumerable.Empty<View>();
             return bookedViews.Union(PrevViews);
         }
@@ -1560,16 +1577,16 @@ namespace PanCardView
         private void SwapViews(AnimationDirection animationDirection)
         => SwapViews(animationDirection == AnimationDirection.Next);
 
-        private IEnumerable<View> InitViews(bool isFront, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indeces)
+        private IEnumerable<View> InitViews(bool isFront, AnimationDirection animationDirection, IEnumerable<View> bookedViews, params int[] indices)
         {
-            var views = new View[indeces.Length];
+            var views = new View[indices.Length];
 
             try
             {
                 BatchBegin();
-                for (int i = 0; i < indeces.Length; ++i)
+                for (int i = 0; i < indices.Length; ++i)
                 {
-                    var view = PrepareView(bookedViews, indeces[i]);
+                    var view = PrepareView(bookedViews, indices[i]);
                     views[i] = view;
                     if (view != null)
                     {
@@ -1860,8 +1877,12 @@ namespace PanCardView
                         var index = topView != null
                             ? Children.IndexOf(topView)
                             : 0;
-
-                        ExecutePreventException(() => Children.Insert(index, view));
+                        
+                        ExecutePreventException(() =>
+                        {
+                            Children.Insert(index, view);
+                            AccessibilityChangeRequested?.Invoke(view, view == CurrentView);
+                        });
                     }
                 }
             });
