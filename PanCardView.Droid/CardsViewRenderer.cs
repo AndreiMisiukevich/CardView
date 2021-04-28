@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static System.Math;
 using PanCardView.Enums;
+using XView = Xamarin.Forms.View;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.Droid
@@ -83,9 +84,29 @@ namespace PanCardView.Droid
         protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
         {
             base.OnElementChanged(e);
+            if (e.OldElement != null)
+            {
+                e.OldElement.AccessibilityChangeRequested -= OnAccessibilityChangeRequested;
+            }
+
             if (e.NewElement != null)
             {
                 _panStarted = false;
+                Element.AccessibilityChangeRequested += OnAccessibilityChangeRequested;
+            }
+        }
+
+        private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
+        {
+            if (sender is XView view)
+            {
+                var nativeView = Platform.GetRenderer(view)?.View;
+                if (nativeView != null)
+                {
+                    nativeView.ImportantForAccessibility = isEnabled
+                        ? ImportantForAccessibility.Auto
+                        : ImportantForAccessibility.NoHideDescendants;
+                }
             }
         }
 
