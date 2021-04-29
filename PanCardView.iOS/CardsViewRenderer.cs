@@ -7,7 +7,6 @@ using Xamarin.Forms.Platform.iOS;
 using PanCardView.Enums;
 using System.ComponentModel;
 using static System.Math;
-using System;
 
 [assembly: ExportRenderer(typeof(CardsView), typeof(CardsViewRenderer))]
 namespace PanCardView.iOS
@@ -164,6 +163,6 @@ namespace PanCardView.iOS
         }
 
         private bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-            => Element == null || !(otherGestureRecognizer is UIPanGestureRecognizer);
+            => Element == null || !(otherGestureRecognizer is UIPanGestureRecognizer) || otherGestureRecognizer.View is CardsViewRenderer;
     }
 }
