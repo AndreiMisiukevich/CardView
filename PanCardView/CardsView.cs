@@ -758,7 +758,7 @@ namespace PanCardView
                 }
                 else
                 {
-                    Processor?.Clean(this, new ProcessorItem { Views = oldAllViews.Where(view => !CheckIsProcessingView(view)) });
+                    Processor.Clean(this, new ProcessorItem { Views = oldAllViews.Where(view => !CheckIsProcessingView(view)) });
                 }
             }
         }
@@ -929,7 +929,7 @@ namespace PanCardView
             await Task.Delay(5);
             _currentBackAnimationDirection = realDirection;
 
-            await (Processor?.Navigate(this, GetAnimationProcessorItems()) ?? Task.FromResult(true));
+            await InvokeOnMainThreadIfNeededAsync(() => Processor.Navigate(this, GetAnimationProcessorItems()));
             PerformUWPFrontViewProcessorHandlePanChanged(0, realDirection);
             EndAutoNavigation(views, animationId, animationDirection);
             return true;
@@ -978,7 +978,7 @@ namespace PanCardView
                         prevAnimationDirection = AnimationDirection.Next;
                         nextAnimationDirection = AnimationDirection.Prev;
                     }
-                    Processor?.Init(this,
+                    Processor.Init(this,
                         new ProcessorItem { IsFront = true, Views = Enumerable.Repeat(CurrentView, 1) },
                         new ProcessorItem { Views = PrevViews, Direction = prevAnimationDirection },
                         new ProcessorItem { Views = NextViews, Direction = nextAnimationDirection });
@@ -1007,7 +1007,7 @@ namespace PanCardView
                         return;
                     }
                     AdjustSlideShow(true);
-                    Processor?.Clean(this, new ProcessorItem { Views = GetNextPrevCurrentViews() });
+                    Processor.Clean(this, new ProcessorItem { Views = GetNextPrevCurrentViews() });
                     return;
             }
         }
@@ -1256,7 +1256,7 @@ namespace PanCardView
             try
             {
                 BatchBegin();
-                Processor?.Change(this, diff, GetAnimationProcessorItems());
+                Processor.Change(this, diff, GetAnimationProcessorItems());
             }
             finally
             {
@@ -1321,12 +1321,12 @@ namespace PanCardView
 
                 SelectedIndex = index;
 
-                endingTask = Processor?.Proceed(this, GetAnimationProcessorItems()) ?? Task.FromResult(true);
+                endingTask = Processor.Proceed(this, GetAnimationProcessorItems());
             }
             else
             {
                 endingTask = interactionItem.IsInvolved
-                    ? Processor?.Reset(this, GetAnimationProcessorItems()) ?? Task.FromResult(true)
+                    ? Processor.Reset(this, GetAnimationProcessorItems())
                     : Task.FromResult(true);
             }
 
@@ -1604,7 +1604,7 @@ namespace PanCardView
                 return Enumerable.Empty<View>();
             }
 
-            Processor?.Init(this, new ProcessorItem { IsFront = isFront, Views = views, Direction = animationDirection });
+            Processor.Init(this, new ProcessorItem { IsFront = isFront, Views = views, Direction = animationDirection });
 
             SetupLayout(views);
 
@@ -1681,7 +1681,7 @@ namespace PanCardView
                 var duplicatedViews = notUsingViews
                     .Except(Enumerable.Repeat(view, 1))
                     .Where(v => Equals(GetItem(v), GetItem(view)));
-                Processor?.Clean(this, new ProcessorItem { Views = duplicatedViews });
+                Processor.Clean(this, new ProcessorItem { Views = duplicatedViews });
             }
 
             return view;
@@ -1780,7 +1780,7 @@ namespace PanCardView
                 view.BindingContext = null;
             }
             view.Behaviors.Remove(_contextAssignedBehavior);
-            Processor?.Clean(this, new ProcessorItem { Views = Enumerable.Repeat(view, 1) });
+            Processor.Clean(this, new ProcessorItem { Views = Enumerable.Repeat(view, 1) });
         }
 
         private void SetItemsSource(IEnumerable oldCollection)
@@ -1968,6 +1968,11 @@ namespace PanCardView
             Device.BeginInvokeOnMainThread(action);
         }
 
+        private Task InvokeOnMainThreadIfNeededAsync(Func<Task> action)
+            => !Device.IsInvokeRequired
+            ? action.Invoke()
+            : Device.InvokeOnMainThreadAsync(action);
+
         private void ExecutePreventException(Action action)
         {
             try
@@ -1999,7 +2004,7 @@ namespace PanCardView
             {
                 return;
             }
-            Processor?.Change(this, value,
+            Processor.Change(this, value,
                 new ProcessorItem
                 {
                     IsFront = true,
