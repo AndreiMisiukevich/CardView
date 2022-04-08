@@ -71,7 +71,8 @@ namespace PanCardView.iOS
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == CardsView.IsVerticalSwipeEnabledProperty.PropertyName)
+            if (e.PropertyName == CardsView.IsVerticalSwipeEnabledProperty.PropertyName
+                || e.PropertyName == CardsView.IsUserInteractionEnabled.PropertyName)
             {
                 SetSwipeGestures();
                 return;
@@ -106,13 +107,13 @@ namespace PanCardView.iOS
 
         protected void SetSwipeGestures()
         {
-            var shouldRemoveAllGestures = !(Element?.IsUserInteractionEnabled ?? false);
+            var shouldRemoveAllSwipes = !(Element?.IsUserInteractionEnabled ?? false);
             var shouldRemoveVerticalSwipes = !(Element?.IsVerticalSwipeEnabled ?? false);
 
-            ResetSwipeGestureRecognizer(_leftSwipeGesture, shouldRemoveAllGestures);
-            ResetSwipeGestureRecognizer(_rightSwipeGesture, shouldRemoveAllGestures);
-            ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveVerticalSwipes || shouldRemoveAllGestures);
-            ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveVerticalSwipes || shouldRemoveAllGestures);
+            ResetSwipeGestureRecognizer(_leftSwipeGesture, shouldRemoveAllSwipes);
+            ResetSwipeGestureRecognizer(_rightSwipeGesture, shouldRemoveAllSwipes);
+            ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveAllSwipes || shouldRemoveVerticalSwipes);
+            ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveAllSwipes || shouldRemoveVerticalSwipes);
         }
 
         private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
