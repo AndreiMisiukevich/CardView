@@ -106,12 +106,13 @@ namespace PanCardView.iOS
 
         protected void SetSwipeGestures()
         {
-            ResetSwipeGestureRecognizer(_leftSwipeGesture);
-            ResetSwipeGestureRecognizer(_rightSwipeGesture);
-
+            var shouldRemoveAllGestures = !(Element?.IsUserInteractionEnabled ?? false);
             var shouldRemoveVerticalSwipes = !(Element?.IsVerticalSwipeEnabled ?? false);
-            ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveVerticalSwipes);
-            ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveVerticalSwipes);
+
+            ResetSwipeGestureRecognizer(_leftSwipeGesture, shouldRemoveAllGestures);
+            ResetSwipeGestureRecognizer(_rightSwipeGesture, shouldRemoveAllGestures);
+            ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveVerticalSwipes || shouldRemoveAllGestures);
+            ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveVerticalSwipes || shouldRemoveAllGestures);
         }
 
         private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
