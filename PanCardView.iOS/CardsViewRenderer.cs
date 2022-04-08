@@ -72,7 +72,7 @@ namespace PanCardView.iOS
         {
             base.OnElementPropertyChanged(sender, e);
             if (e.PropertyName == CardsView.IsVerticalSwipeEnabledProperty.PropertyName
-                || e.PropertyName == CardsView.IsUserInteractionEnabled.PropertyName)
+                || e.PropertyName == CardsView.IsUserInteractionEnabledProperty.PropertyName)
             {
                 SetSwipeGestures();
                 return;
