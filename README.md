@@ -116,7 +116,7 @@ carouselView.Children.Add(new IndicatorsControl());
 </cards:CarouselView>
 ```
 Also you are able to manage **IndicatorsControl** appearing/disappearing. For example if user doesn't select new page during N miliseconds, the indicators will disappear. Just set ToFadeDuration = 2000 (2 seconds delay before disappearing)
-Yoy manage **LeftArrowControl** and **RightArrowControl** as well as IndicatorsControl (ToFadeDuration is presented too).
+You manage **LeftArrowControl** and **RightArrowControl** as well as IndicatorsControl (ToFadeDuration is presented too).
 
 Indicators styling:
 ``` xml
